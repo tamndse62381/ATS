@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.ats.repository.GenericDao;
 
 @Repository
-public class GenericDaoImpl<T,ID extends Serializable> implements GenericDao<T, ID> {
+public class GenericDaoImpl<T, ID extends Serializable> implements GenericDao<T, ID> {
 	/**
 	 * Entity Manager
 	 * 
