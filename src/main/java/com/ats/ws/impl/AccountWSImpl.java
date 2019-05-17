@@ -1,6 +1,5 @@
 package com.ats.ws.impl;
 
-import java.util.HashMap;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,7 +43,6 @@ public class AccountWSImpl implements AccountWS {
 
 	@Override
 	public String registratrion(String username, String password, int typeID, int status) {
-		int accountId = -1;
 		byte st = 1;
 		AccountDTO accountDTO = new AccountDTO();
 		System.out.println(username);
@@ -58,7 +56,8 @@ public class AccountWSImpl implements AccountWS {
 		LOGGER.info("Begin registration with AccountDTO Id : " + accountDTO.getId());
 		if (accountDTO != null) {
 			try {
-				accountId = accountService.registration(accountDTO);
+				int accountId = accountService.registration(accountDTO);
+				
 				LOGGER.info("End registration with AccountDTO Id : " + accountDTO.getUsername());
 				// if (accountId > -1) {
 				//// MemberDTO memberDTO = new MemberDTO();

@@ -18,7 +18,7 @@ public class AccountTransformerImpl implements AccountTransformer {
 	public Account convertToEntity(AccountDTO dto) {
 		LOGGER.info("Begin convertToEntity with Account Entity ID: {}", dto.getId());
 		Account account = null;
-		byte status = 1;
+		
 		if (dto != null) {
 			account = new Account();
 			account.setId(dto.getId());
@@ -35,7 +35,7 @@ public class AccountTransformerImpl implements AccountTransformer {
 	public AccountDTO convertToDTO(Account account) {
 		LOGGER.info("Begin convertToDTO with User Entity: {}", account.toString());
 		AccountDTO accountDTO = null;
-		byte status = 1;
+		
 		if (account != null) {
 			accountDTO = new AccountDTO();
 			accountDTO.setId(account.getId());
