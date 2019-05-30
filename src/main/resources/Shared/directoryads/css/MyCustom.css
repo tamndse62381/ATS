@@ -1,0 +1,10 @@
+@charset "ISO-8859-1";
+.customtext {
+	color: black;
+	font-weight: bolder; !important
+}
+
+.custombg {
+	background-color: #f0f0f0; !important
+	padding-bottom: 0px;
+}

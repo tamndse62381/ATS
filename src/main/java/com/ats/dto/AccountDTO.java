@@ -1,75 +1,108 @@
 package com.ats.dto;
 
+import java.util.Date;
+
 public class AccountDTO {
 	int id;
-	String username;
+	String email;
 	String password;
-	int typeId;
-	byte enable;
-	
+	String fullname;
+	String status;
+	Date createdDate;
+	Date lastLogin;
+	Date lastModify;
+	int roleId;
+
 	public AccountDTO() {
 		super();
 	}
-	
-	public AccountDTO(int id, String username, String password, int typeId, byte enable) {
+
+	public AccountDTO(int id, String email, String password, String fullname, String status, Date createdDate,
+			Date lastLogin, Date lastModify, int roleId) {
 		super();
 		this.id = id;
-		this.username = username;
+		this.email = email;
 		this.password = password;
-		this.typeId = typeId;
-		this.enable = enable;
+		this.fullname = fullname;
+		this.status = status;
+		this.createdDate = createdDate;
+		this.lastLogin = lastLogin;
+		this.lastModify = lastModify;
+		this.roleId = roleId;
 	}
-
 
 	public int getId() {
 		return id;
 	}
 
-
 	public void setId(int id) {
 		this.id = id;
 	}
 
-
-	public String getUsername() {
-		return username;
+	public String getEmail() {
+		return email;
 	}
 
-
-	public void setUsername(String username) {
-		this.username = username;
+	public void setEmail(String email) {
+		this.email = email;
 	}
-
 
 	public String getPassword() {
 		return password;
 	}
 
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
-
-	public int getTypeId() {
-		return typeId;
+	public String getFullname() {
+		return fullname;
 	}
 
-
-	public void setTypeId(int typeId) {
-		this.typeId = typeId;
+	public void setFullname(String fullname) {
+		this.fullname = fullname;
 	}
 
-
-	public byte isEnable() {
-		return enable;
+	public String getStatus() {
+		return status;
 	}
 
-
-	public void setEnable(byte enable) {
-		this.enable = enable;
+	public void setStatus(String status) {
+		this.status = status;
 	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public Date getLastLogin() {
+		return lastLogin;
+	}
+
+	public void setLastLogin(Date lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+
+	public Date getLastModify() {
+		return lastModify;
+	}
+
+	public void setLastModify(Date lastModify) {
+		this.lastModify = lastModify;
+	}
+
+	public int getRoleId() {
+		return roleId;
+	}
+
+	public void setRoleId(int roleId) {
+		this.roleId = roleId;
+	}
+
 	
-	
-	
+
 }

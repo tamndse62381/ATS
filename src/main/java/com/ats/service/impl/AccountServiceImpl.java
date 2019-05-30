@@ -29,12 +29,12 @@ public class AccountServiceImpl implements AccountService {
 	private EncrytedPasswordUtils passwordUtil;
 	
 	@Override
-	public AccountDTO login(String username, String password) {
-		LOGGER.info("Begin login in Account Service with username - password: {}", username + " - " + password);
+	public AccountDTO login(String email, String password) {
+		LOGGER.info("Begin login in Account Service with username - password: {}", email + " - " + password);
 		AccountDTO accountDTO = null;
 		passwordUtil = new EncrytedPasswordUtils();
-		if (username != null) {
-			accountDTO = findAccountByUsername(username);
+		if (email != null) {
+			accountDTO = findAccountByEmail(email);
 			if (accountDTO != null) {
 				if (passwordUtil.compare(password, accountDTO.getPassword())) {
 					return accountDTO;
@@ -59,12 +59,12 @@ public class AccountServiceImpl implements AccountService {
 		Account account = accountTransformer.convertToEntity(dto);
 
 		AccountDTO existedAccount = null;
-		existedAccount = findAccountByUsername(dto.getUsername());
+		existedAccount = findAccountByEmail(dto.getEmail());
 
 		if (existedAccount == null) {
 			if (account != null) {
 				try {
-					newAccount = accountDao.registration(account);
+					newAccount = accountDao.save(account);
 					LOGGER.info("End registration in Account Service with result: {}", newAccount.toString());
 
 				} catch (Exception e) {
@@ -78,10 +78,10 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public boolean checkAccountValidation(String username) {
+	public boolean checkAccountValidation(String email) {
 		boolean valid = true;
 
-		if (accountDao.findAccountByUsername(username) != null) {
+		if (accountDao.findAccountByEmail(email) != null) {
 			valid = false;
 		}
 
@@ -89,12 +89,12 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public AccountDTO findAccountByUsername(String username) {
-		LOGGER.info("Begin findAccountByUsername in Account Service with username{}", username);
+	public AccountDTO findAccountByEmail(String email) {
+		LOGGER.info("Begin findAccountByUsername in Account Service with email{}", email);
 		AccountDTO accountDTO = null;
 		Account account = null;
-		if (username != null) {
-			account = accountDao.findAccountByUsername(username);
+		if (email != null) {
+			account = accountDao.findAccountByEmail(email);
 			if (account != null) {
 				accountDTO = accountTransformer.convertToDTO(account);
 			}
@@ -109,7 +109,7 @@ public class AccountServiceImpl implements AccountService {
 		AccountDTO accountDTO = null;
 		Account account = null;
 
-		account = accountDao.findAccountById(id);
+		account = accountDao.findOne(id);
 		if (account != null) {
 			accountDTO = accountTransformer.convertToDTO(account);
 		}

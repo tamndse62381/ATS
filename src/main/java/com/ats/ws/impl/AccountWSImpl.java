@@ -1,5 +1,6 @@
 package com.ats.ws.impl;
 
+import java.util.Date;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,14 +24,14 @@ public class AccountWSImpl implements AccountWS {
 	public String checkLogin(String username, String password) {
 		LOGGER.info("Begin login in Account WS with username - password: {}", username + " - " + password);
 		AccountDTO accountDTO = null;
-//		HashMap<String, Integer> hm = new HashMap<String, Integer>();
+		// HashMap<String, Integer> hm = new HashMap<String, Integer>();
 		String result = "start";
 		try {
 			accountDTO = new AccountDTO();
 			accountDTO = accountService.login(username, password);
-			if(accountDTO != null) {
+			if (accountDTO != null) {
 				result = "success";
-			}else {
+			} else {
 				result = "false";
 			}
 			LOGGER.info("End login in Account WS with username - password : {}", username + " - " + password);
@@ -42,46 +43,20 @@ public class AccountWSImpl implements AccountWS {
 	}
 
 	@Override
-	public String registratrion(String username, String password, int typeID, int status) {
-		byte st = 1;
-		AccountDTO accountDTO = new AccountDTO();
-		System.out.println(username);
-		System.out.println(password);
-		System.out.println(typeID);
-		System.out.println(status);
-		accountDTO.setUsername(username);
-		accountDTO.setPassword(password);
-		accountDTO.setTypeId(1);
-		accountDTO.setEnable(st);
-		LOGGER.info("Begin registration with AccountDTO Id : " + accountDTO.getId());
-		if (accountDTO != null) {
-			try {
-				int accountId = accountService.registration(accountDTO);
-				
-				LOGGER.info("End registration with AccountDTO Id : " + accountDTO.getUsername());
-				// if (accountId > -1) {
-				//// MemberDTO memberDTO = new MemberDTO();
-				//// memberDTO.setAccountId(accountId);
-				////// Date dob = new SimpleDateFormat("dd/MM/yyyy").parse("17/02/1997");
-				//// memberDTO.setEmail(email);
-				//// memberDTO.setTel(tel);
-				//// memberDTO.setMoney(0);
-				// LOGGER.info("Begin registration with MemberDTO Id : " +
-				// memberDTO.getAccountId());
-				// memberService.registration(memberDTO);
-				// LOGGER.info("End registration with MemberDTO Id : " +
-				// memberDTO.getAccountId());
-				// status = "Successfull";
-				// } else if (accountId == -1) {
-				// status = "Existed";
-				// }
-
-			} catch (Exception e) {
-				System.out.println(e);
-				return "FAIL SML";
-			}
-		}
-		return "success";
+	public String registratrion(String email, String password, String fullname) {
+		LOGGER.info("Begin Registration in AccountWS with email - password - fullname: {}",
+				email + " - " + password + " - " + fullname);
+		String status = "new";
+		int id = 1;
+		Date createdDate = new Date();
+		Date lastLogin = null;
+		Date lastModify = null;
+		int roleId = 1;
+		AccountDTO accountDTO = new AccountDTO(id, email, password, fullname, status, createdDate, lastLogin, lastModify, roleId);
+		accountService.registration(accountDTO);
+		LOGGER.info("End Registration in AccountWS with email - password - fullname: {}",
+				email + " - " + password + " - " + fullname);
+		return null;
 	}
 
 }
