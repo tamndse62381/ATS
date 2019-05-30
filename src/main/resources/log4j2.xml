@@ -16,7 +16,7 @@
 				</pattern>
 			</PatternLayout>
 		</Console>
-		<RollingFile name="RollingFile-Appender" fileName="${log-path}/multiple.log"
+		<RollingFile name="RollingFile-Appender" fileName="${log-path}/ats.log"
 			filePattern="${log-path}/multiple.log.%d{yyyy-MM-dd}-%i.zip">
 			<PatternLayout>
 				<pattern>

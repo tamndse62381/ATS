@@ -6,13 +6,13 @@ import com.ats.dto.AccountDTO;
 
 @Service
 public interface AccountService {
-	public AccountDTO login(String username, String password);
+	public AccountDTO login(String email, String password);
 
 	public int registration(AccountDTO dto);
 
-	boolean checkAccountValidation(String username);
+	boolean checkAccountValidation(String email);
 
-	public AccountDTO findAccountByUsername(String username);
+	public AccountDTO findAccountByEmail(String email);
 
 	public AccountDTO findAccountById(int id);
 }
