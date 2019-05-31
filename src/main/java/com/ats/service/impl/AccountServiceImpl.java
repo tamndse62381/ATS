@@ -1,5 +1,7 @@
 package com.ats.service.impl;
 
+import java.util.Date;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +32,15 @@ public class AccountServiceImpl implements AccountService {
 	
 	@Override
 	public AccountDTO login(String email, String password) {
-		LOGGER.info("Begin login in Account Service with username - password: {}", email + " - " + password);
+		LOGGER.info("Begin login in Account Service with email - password: {}", email + " - " + password);
 		AccountDTO accountDTO = null;
 		passwordUtil = new EncrytedPasswordUtils();
 		if (email != null) {
 			accountDTO = findAccountByEmail(email);
 			if (accountDTO != null) {
 				if (passwordUtil.compare(password, accountDTO.getPassword())) {
+					Date lastLoginDate = new Date();
+					accountDao.editAccountLastLogin(lastLoginDate, accountDTO.getEmail());
 					return accountDTO;
 				} else {
 					return null;
@@ -49,7 +53,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public int registration(AccountDTO dto) {
-		LOGGER.info("Begin registration in Account Service with Account DTO ID : {}", dto.getId());
+		LOGGER.info("Begin registration in Account Service with Account DTO Email : {}", dto.getEmail());
 		Account newAccount = null;
 		EncrytedPasswordUtils passwordUtil = new EncrytedPasswordUtils();
 
@@ -90,7 +94,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public AccountDTO findAccountByEmail(String email) {
-		LOGGER.info("Begin findAccountByUsername in Account Service with email{}", email);
+		LOGGER.info("Begin findAccountByEmail in Account Service with email {}", email);
 		AccountDTO accountDTO = null;
 		Account account = null;
 		if (email != null) {
@@ -99,7 +103,7 @@ public class AccountServiceImpl implements AccountService {
 				accountDTO = accountTransformer.convertToDTO(account);
 			}
 		}
-		LOGGER.info("End findAccountByUserName in Account Service with result: {}", accountDTO);
+		LOGGER.info("End findAccountByEmail in Account Service with result: {}", accountDTO);
 		return accountDTO;
 	}
 

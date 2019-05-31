@@ -3,7 +3,6 @@ package com.ats.dto;
 import java.util.Date;
 
 public class AccountDTO {
-	int id;
 	String email;
 	String password;
 	String fullname;
@@ -12,15 +11,15 @@ public class AccountDTO {
 	Date lastLogin;
 	Date lastModify;
 	int roleId;
+	String accessToken;
 
 	public AccountDTO() {
 		super();
 	}
 
-	public AccountDTO(int id, String email, String password, String fullname, String status, Date createdDate,
-			Date lastLogin, Date lastModify, int roleId) {
+	public AccountDTO(String email, String password, String fullname, String status, Date createdDate, Date lastLogin,
+			Date lastModify, int roleId, String accessToken) {
 		super();
-		this.id = id;
 		this.email = email;
 		this.password = password;
 		this.fullname = fullname;
@@ -29,14 +28,7 @@ public class AccountDTO {
 		this.lastLogin = lastLogin;
 		this.lastModify = lastModify;
 		this.roleId = roleId;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
+		this.accessToken = accessToken;
 	}
 
 	public String getEmail() {
@@ -103,6 +95,13 @@ public class AccountDTO {
 		this.roleId = roleId;
 	}
 
-	
+	public String getAccessToken() {
+		return accessToken;
+	}
 
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	
 }
