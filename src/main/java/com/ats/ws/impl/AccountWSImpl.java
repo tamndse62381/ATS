@@ -5,55 +5,60 @@ import java.util.Date;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ats.ws.AccountWS;
 import com.ats.dto.AccountDTO;
-
+import com.ats.entity.Account;
 import com.ats.service.AccountService;
+import com.ats.token.TokenAuthenticationService;
 
 @RestController
 public class AccountWSImpl implements AccountWS {
 
 	@Autowired
 	AccountService accountService;
-
+	@Autowired
+	TokenAuthenticationService tokenService;
 	private static final Logger LOGGER = LogManager.getLogger(AccountWSImpl.class);
 
 	@Override
-	public String checkLogin(String username, String password) {
-		LOGGER.info("Begin login in Account WS with username - password: {}", username + " - " + password);
+	@ResponseBody
+	public AccountDTO checkLogin(String email, String password) {
+		LOGGER.info("Begin login in Account WS with username - password: {}", email + " - " + password);
 		AccountDTO accountDTO = null;
 		// HashMap<String, Integer> hm = new HashMap<String, Integer>();
-		String result = "start";
+		accountDTO = new AccountDTO();
 		try {
-			accountDTO = new AccountDTO();
-			accountDTO = accountService.login(username, password);
-			if (accountDTO != null) {
-				result = "success";
+			accountDTO = accountService.login(email, password);
+			if (accountDTO != null) {			
 			} else {
-				result = "false";
+				
 			}
-			LOGGER.info("End login in Account WS with username - password : {}", username + " - " + password);
+			LOGGER.info("End login in Account WS with username - password : {}", email + " - " + password);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		return result;
+		return accountDTO;
 	}
 
 	@Override
 	public String registratrion(String email, String password, String fullname) {
 		LOGGER.info("Begin Registration in AccountWS with email - password - fullname: {}",
 				email + " - " + password + " - " + fullname);
-		String status = "new";
-		int id = 1;
-		Date createdDate = new Date();
-		Date lastLogin = null;
-		Date lastModify = null;
-		int roleId = 1;
-		AccountDTO accountDTO = new AccountDTO(id, email, password, fullname, status, createdDate, lastLogin, lastModify, roleId);
-		accountService.registration(accountDTO);
+		try {
+			String status = "new";
+			Date createdDate = new Date();			
+			String tokenString = tokenService.addAuthentication(email);
+			System.out.println("Result : " + tokenString);
+			AccountDTO accountDTO = new AccountDTO(email, password, fullname, status, createdDate, null, null, 1,
+					tokenString);
+			accountService.registration(accountDTO);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		LOGGER.info("End Registration in AccountWS with email - password - fullname: {}",
 				email + " - " + password + " - " + fullname);
 		return null;
