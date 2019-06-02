@@ -250,48 +250,48 @@ public class Job implements Serializable {
 		this.joblevel = joblevel;
 	}
 
-	public List<Jobseekerlikejob> getJobseekerlikejobs() {
-		return this.jobseekerlikejobs;
-	}
-
-	public void setJobseekerlikejobs(List<Jobseekerlikejob> jobseekerlikejobs) {
-		this.jobseekerlikejobs = jobseekerlikejobs;
-	}
-
-	public Jobseekerlikejob addJobseekerlikejob(Jobseekerlikejob jobseekerlikejob) {
-		getJobseekerlikejobs().add(jobseekerlikejob);
-		jobseekerlikejob.setJob(this);
-
-		return jobseekerlikejob;
-	}
-
-	public Jobseekerlikejob removeJobseekerlikejob(Jobseekerlikejob jobseekerlikejob) {
-		getJobseekerlikejobs().remove(jobseekerlikejob);
-		jobseekerlikejob.setJob(null);
-
-		return jobseekerlikejob;
-	}
-
-	public List<Skillneedforjob> getSkillneedforjobs() {
-		return this.skillneedforjobs;
-	}
-
-	public void setSkillneedforjobs(List<Skillneedforjob> skillneedforjobs) {
-		this.skillneedforjobs = skillneedforjobs;
-	}
-
-	public Skillneedforjob addSkillneedforjob(Skillneedforjob skillneedforjob) {
-		getSkillneedforjobs().add(skillneedforjob);
-		skillneedforjob.setJob(this);
-
-		return skillneedforjob;
-	}
-
-	public Skillneedforjob removeSkillneedforjob(Skillneedforjob skillneedforjob) {
-		getSkillneedforjobs().remove(skillneedforjob);
-		skillneedforjob.setJob(null);
-
-		return skillneedforjob;
-	}
+//	public List<Jobseekerlikejob> getJobseekerlikejobs() {
+//		return this.jobseekerlikejobs;
+//	}
+//
+//	public void setJobseekerlikejobs(List<Jobseekerlikejob> jobseekerlikejobs) {
+//		this.jobseekerlikejobs = jobseekerlikejobs;
+//	}
+//
+//	public Jobseekerlikejob addJobseekerlikejob(Jobseekerlikejob jobseekerlikejob) {
+//		getJobseekerlikejobs().add(jobseekerlikejob);
+//		jobseekerlikejob.setJob(this);
+//
+//		return jobseekerlikejob;
+//	}
+//
+//	public Jobseekerlikejob removeJobseekerlikejob(Jobseekerlikejob jobseekerlikejob) {
+//		getJobseekerlikejobs().remove(jobseekerlikejob);
+//		jobseekerlikejob.setJob(null);
+//
+//		return jobseekerlikejob;
+//	}
+//
+//	public List<Skillneedforjob> getSkillneedforjobs() {
+//		return this.skillneedforjobs;
+//	}
+//
+//	public void setSkillneedforjobs(List<Skillneedforjob> skillneedforjobs) {
+//		this.skillneedforjobs = skillneedforjobs;
+//	}
+//
+//	public Skillneedforjob addSkillneedforjob(Skillneedforjob skillneedforjob) {
+//		getSkillneedforjobs().add(skillneedforjob);
+//		skillneedforjob.setJob(this);
+//
+//		return skillneedforjob;
+//	}
+//
+//	public Skillneedforjob removeSkillneedforjob(Skillneedforjob skillneedforjob) {
+//		getSkillneedforjobs().remove(skillneedforjob);
+//		skillneedforjob.setJob(null);
+//
+//		return skillneedforjob;
+//	}
 
 }

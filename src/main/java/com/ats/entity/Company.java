@@ -144,48 +144,48 @@ public class Company implements Serializable {
 		this.employer = employer;
 	}
 
-	public List<Companyindustry> getCompanyindustries() {
-		return this.companyindustries;
-	}
-
-	public void setCompanyindustries(List<Companyindustry> companyindustries) {
-		this.companyindustries = companyindustries;
-	}
-
-	public Companyindustry addCompanyindustry(Companyindustry companyindustry) {
-		getCompanyindustries().add(companyindustry);
-		companyindustry.setCompany(this);
-
-		return companyindustry;
-	}
-
-	public Companyindustry removeCompanyindustry(Companyindustry companyindustry) {
-		getCompanyindustries().remove(companyindustry);
-		companyindustry.setCompany(null);
-
-		return companyindustry;
-	}
-
-	public List<Job> getJobs() {
-		return this.jobs;
-	}
-
-	public void setJobs(List<Job> jobs) {
-		this.jobs = jobs;
-	}
-
-	public Job addJob(Job job) {
-		getJobs().add(job);
-		job.setCompany(this);
-
-		return job;
-	}
-
-	public Job removeJob(Job job) {
-		getJobs().remove(job);
-		job.setCompany(null);
-
-		return job;
-	}
+//	public List<Companyindustry> getCompanyindustries() {
+//		return this.companyindustries;
+//	}
+//
+//	public void setCompanyindustries(List<Companyindustry> companyindustries) {
+//		this.companyindustries = companyindustries;
+//	}
+//
+//	public Companyindustry addCompanyindustry(Companyindustry companyindustry) {
+//		getCompanyindustries().add(companyindustry);
+//		companyindustry.setCompany(this);
+//
+//		return companyindustry;
+//	}
+//
+//	public Companyindustry removeCompanyindustry(Companyindustry companyindustry) {
+//		getCompanyindustries().remove(companyindustry);
+//		companyindustry.setCompany(null);
+//
+//		return companyindustry;
+//	}
+//
+//	public List<Job> getJobs() {
+//		return this.jobs;
+//	}
+//
+//	public void setJobs(List<Job> jobs) {
+//		this.jobs = jobs;
+//	}
+//
+//	public Job addJob(Job job) {
+//		getJobs().add(job);
+//		job.setCompany(this);
+//
+//		return job;
+//	}
+//
+//	public Job removeJob(Job job) {
+//		getJobs().remove(job);
+//		job.setCompany(null);
+//
+//		return job;
+//	}
 
 }
