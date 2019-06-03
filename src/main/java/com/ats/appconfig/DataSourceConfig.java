@@ -31,6 +31,8 @@ public class DataSourceConfig {
 		return new JpaTransactionManager(ATSEntityManagerFactory().getObject());
 	}
 
+	
+	
 	/**
 	 * Create data source instance for ats.
 	 * 
