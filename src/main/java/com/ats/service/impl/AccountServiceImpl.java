@@ -99,6 +99,8 @@ public class AccountServiceImpl implements AccountService {
 		Account account = null;
 		if (email != null) {
 			account = accountDao.findAccountByEmail(email);
+
+		
 			if (account != null) {
 				accountDTO = accountTransformer.convertToDTO(account);
 			}

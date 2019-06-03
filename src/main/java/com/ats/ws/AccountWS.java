@@ -21,16 +21,18 @@ import com.ats.dto.AccountDTO;
 public interface AccountWS {
 
 	@POST
+	@CrossOrigin(origins = "http://127.0.0.1:5500")
 	@RequestMapping(value = "/login")
-	@ResponseBody AccountDTO checkLogin(@RequestParam("email") String email, @RequestParam("password") String password) 
-			throws JSONException;
+	@ResponseBody AccountDTO checkLogin(@RequestParam("email") String email, @RequestParam("password") String password);
 
 	@POST
 	@CrossOrigin(origins = "http://127.0.0.1:5500")
 	@RequestMapping(value = "/registration", produces = "application/json;charset=UTF-8")
-	String registratrion(@RequestParam("email") String email, @RequestParam("password") String password,
+	Object registratrion(@RequestParam("email") String email, @RequestParam("password") String password,
 			@RequestParam("fullname") String fullname);
-//	
+
+	
+	
 //	@PostMapping(value = "/register", produces = "application/json;charset=UTF-8")
 //	public @ResponseBody User register(@RequestBody User user) {
 //        user = userRepository.insert(user);
