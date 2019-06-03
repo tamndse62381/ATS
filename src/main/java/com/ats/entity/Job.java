@@ -188,67 +188,67 @@ public class Job implements Serializable {
 		this.yearExperience = yearExperience;
 	}
 
-	public List<Apply> getApplies() {
-		return this.applies;
-	}
-
-	public void setApplies(List<Apply> applies) {
-		this.applies = applies;
-	}
-
-	public Apply addApply(Apply apply) {
-		getApplies().add(apply);
-		apply.setJob(this);
-
-		return apply;
-	}
-
-	public Apply removeApply(Apply apply) {
-		getApplies().remove(apply);
-		apply.setJob(null);
-
-		return apply;
-	}
-
-	public City getCity() {
-		return this.city;
-	}
-
-	public void setCity(City city) {
-		this.city = city;
-	}
-
-	public Employer getEmployer() {
-		return this.employer;
-	}
-
-	public void setEmployer(Employer employer) {
-		this.employer = employer;
-	}
-
-	public Industry getIndustry() {
-		return this.industry;
-	}
-
-	public void setIndustry(Industry industry) {
-		this.industry = industry;
-	}
-
-	public Company getCompany() {
-		return this.company;
-	}
-
-	public void setCompany(Company company) {
-		this.company = company;
-	}
-
-	public Joblevel getJoblevel() {
-		return this.joblevel;
-	}
-
-	public void setJoblevel(Joblevel joblevel) {
-		this.joblevel = joblevel;
-	}
+//	public List<Apply> getApplies() {
+//		return this.applies;
+//	}
+//
+//	public void setApplies(List<Apply> applies) {
+//		this.applies = applies;
+//	}
+//
+//	public Apply addApply(Apply apply) {
+//		getApplies().add(apply);
+//		apply.setJob(this);
+//
+//		return apply;
+//	}
+//
+//	public Apply removeApply(Apply apply) {
+//		getApplies().remove(apply);
+//		apply.setJob(null);
+//
+//		return apply;
+//	}
+//
+//	public City getCity() {
+//		return this.city;
+//	}
+//
+//	public void setCity(City city) {
+//		this.city = city;
+//	}
+//
+//	public Employer getEmployer() {
+//		return this.employer;
+//	}
+//
+//	public void setEmployer(Employer employer) {
+//		this.employer = employer;
+//	}
+//
+//	public Industry getIndustry() {
+//		return this.industry;
+//	}
+//
+//	public void setIndustry(Industry industry) {
+//		this.industry = industry;
+//	}
+//
+//	public Company getCompany() {
+//		return this.company;
+//	}
+//
+//	public void setCompany(Company company) {
+//		this.company = company;
+//	}
+//
+//	public Joblevel getJoblevel() {
+//		return this.joblevel;
+//	}
+//
+//	public void setJoblevel(Joblevel joblevel) {
+//		this.joblevel = joblevel;
+//	}
 
 //	public List<Jobseekerlikejob> getJobseekerlikejobs() {
 //		return this.jobseekerlikejobs;

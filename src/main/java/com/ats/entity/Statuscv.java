@@ -50,18 +50,18 @@ public class Statuscv implements Serializable {
 		this.cvs = cvs;
 	}
 
-	public Cv addCv(Cv cv) {
-		getCvs().add(cv);
-		cv.setStatuscv(this);
-
-		return cv;
-	}
-
-	public Cv removeCv(Cv cv) {
-		getCvs().remove(cv);
-		cv.setStatuscv(null);
-
-		return cv;
-	}
+//	public Cv addCv(Cv cv) {
+//		getCvs().add(cv);
+//		cv.setStatuscv(this);
+//
+//		return cv;
+//	}
+//
+//	public Cv removeCv(Cv cv) {
+//		getCvs().remove(cv);
+//		cv.setStatuscv(null);
+//
+//		return cv;
+//	}
 
 }
