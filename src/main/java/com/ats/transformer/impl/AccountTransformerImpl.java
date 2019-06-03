@@ -34,7 +34,7 @@ public class AccountTransformerImpl implements AccountTransformer {
 			account.setCreatedDate(dto.getCreatedDate());
 			account.setFullName(dto.getFullname());
 			account.setLastLogin(dto.getLastLogin());
-//			account.setRole(roleTransformer.convertDTOToEntity(roleService.findRoleById(dto.getRoleId())));
+			account.setRole(roleTransformer.convertDTOToEntity(roleService.findRoleById(dto.getRoleId())));
 			account.setStatus(dto.getStatus());
 			account.setAccessToken(dto.getAccessToken());
 		}
