@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,16 +26,17 @@ public class AccountWSImpl implements AccountWS {
 
 	@Override
 	@ResponseBody
-	public AccountDTO checkLogin(String email, String password) {
+	public AccountDTO checkLogin(String email, String password) throws JSONException{
 		LOGGER.info("Begin login in Account WS with username - password: {}", email + " - " + password);
 		AccountDTO accountDTO = null;
 		// HashMap<String, Integer> hm = new HashMap<String, Integer>();
 		accountDTO = new AccountDTO();
 		try {
 			accountDTO = accountService.login(email, password);
-			if (accountDTO != null) {			
+			if (accountDTO != null) {	
+				//Khi Login thành công
 			} else {
-				
+				//Khi login thất bại
 			}
 			LOGGER.info("End login in Account WS with username - password : {}", email + " - " + password);
 		} catch (Exception e) {
