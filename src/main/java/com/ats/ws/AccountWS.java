@@ -5,8 +5,7 @@ package com.ats.ws;
 import javax.ws.rs.POST;
 //import javax.ws.rs.Produces;
 
-import org.json.JSONException;
-//import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
 //import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,7 +26,8 @@ public interface AccountWS {
 			throws JSONException;
 
 	@POST
-	@RequestMapping(value = "/registration")
+	@CrossOrigin(origins = "http://127.0.0.1:5500")
+	@RequestMapping(value = "/registration", produces = "application/json;charset=UTF-8")
 	String registratrion(@RequestParam("email") String email, @RequestParam("password") String password,
 			@RequestParam("fullname") String fullname);
 //	
