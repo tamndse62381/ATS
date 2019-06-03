@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ats.dto.AccountDTO;
+import com.ats.util.RestResponse;
 
 
 
@@ -28,7 +29,7 @@ public interface AccountWS {
 	@POST
 	@CrossOrigin(origins = "http://127.0.0.1:5500")
 	@RequestMapping(value = "/registration", produces = "application/json;charset=UTF-8")
-	Object registratrion(@RequestParam("email") String email, @RequestParam("password") String password,
+	RestResponse registratrion(@RequestParam("email") String email, @RequestParam("password") String password,
 			@RequestParam("fullname") String fullname);
 
 	

@@ -15,6 +15,7 @@ import com.ats.dto.AccountDTO;
 import com.ats.dto.ErrorDTO;
 import com.ats.service.AccountService;
 import com.ats.token.TokenAuthenticationService;
+import com.ats.util.RestResponse;
 
 @RestController
 public class AccountWSImpl implements AccountWS {
@@ -47,25 +48,24 @@ public class AccountWSImpl implements AccountWS {
 	}
 
 	@Override
-	public Object registratrion(String email, String password, String fullname) {
+	public RestResponse registratrion(String email, String password, String fullname) {
 		LOGGER.info("Begin Registration in AccountWS with email - password - fullname: {}",
 				email + " - " + password + " - " + fullname);
-
+		int result = 0;
 		try {
 			String status = "new";
 			Date createdDate = new Date();
 			String tokenString = tokenService.addAuthentication(email);
 			AccountDTO accountDTO = new AccountDTO(email, password, fullname, status, createdDate, null, null, 1,
 					tokenString);
-			int result = accountService.registration(accountDTO);
+			result = accountService.registration(accountDTO);
 			LOGGER.info("End Registration in AccountWS with email - password - fullname: {}",
 					email + " - " + password + " - " + fullname);
 			if (result > -1) {
-				return accountDTO;
+				return new RestResponse(true, "Create Successful Account", accountDTO);
 			} else {
-				ErrorDTO errorDTO = new ErrorDTO();
-				errorDTO.setMessage("Create Account Fail");
-				return errorDTO;
+		
+				return new RestResponse(false, "Fail Create To Account", null);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
