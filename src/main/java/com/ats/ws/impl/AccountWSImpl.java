@@ -2,13 +2,12 @@ package com.ats.ws.impl;
 
 import java.util.Date;
 //import java.util.HashMap;
-import java.util.HashMap;
+
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,7 +30,7 @@ public class AccountWSImpl implements AccountWS {
 
 	@Override
 	@ResponseBody
-	public RestResponse Login(String email, String password) {
+	public RestResponse login(String email, String password) {
 		LOGGER.info("Begin login in Account WS with username - password: {}", email + " - " + password);
 		AccountDTO accountDTO = null;
 		// HashMap<String, Integer> hm = new HashMap<String, Integer>();
@@ -98,5 +97,19 @@ public class AccountWSImpl implements AccountWS {
 		}
 		return null;
 	}
+
+	@Override
+	public RestResponse changePassword(String oldPassword, String newPassword) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public RestResponse changeStatus(String accessToken) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 }

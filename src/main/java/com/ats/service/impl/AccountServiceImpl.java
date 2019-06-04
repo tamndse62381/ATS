@@ -49,7 +49,7 @@ public class AccountServiceImpl implements AccountService {
 					accountDao.editAccountLastLogin(lastLoginDate, accountDTO.getEmail(), accountDTO.getAccessToken());
 
 					reTurnAccountDTO = new AccountDTO(accountDTO.getId(), accountDTO.getFullname(),
-							accountDTO.getEmail(), accountDTO.getRoleId());
+							accountDTO.getEmail(), accountDTO.getRoleId(),accountDTO.getAccessToken());
 					return reTurnAccountDTO;
 				} else {
 					return null;
@@ -78,7 +78,6 @@ public class AccountServiceImpl implements AccountService {
 			if (account != null) {
 				try {
 					newAccount = accountDao.save(account);
-					this.login(newAccount.getEmail(), newAccount.getPassword());
 					LOGGER.info("End registration in Account Service with result: {}", newAccount.toString());
 
 				} catch (Exception e) {
@@ -154,15 +153,26 @@ public class AccountServiceImpl implements AccountService {
 				} else {
 					accountDTO = accountTransformer.convertToDTO(account);
 					reTurnAccountDTO = new AccountDTO(accountDTO.getId(), accountDTO.getFullname(),
-							accountDTO.getEmail(), accountDTO.getRoleId());
+							accountDTO.getEmail(), accountDTO.getRoleId(),accountDTO.getAccessToken());
 					LOGGER.info("End findAccountByToken in Account Service with token: {}",
 							reTurnAccountDTO.getAccessToken());
 				}
 			} else {
 				return null;
 			}
-
 		}
 		return reTurnAccountDTO;
+	}
+
+	@Override
+	public int update(AccountDTO dto) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int changeStatus(AccountDTO dto) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

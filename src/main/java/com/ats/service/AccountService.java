@@ -1,6 +1,6 @@
 package com.ats.service;
 
-import java.util.HashMap;
+
 
 import org.springframework.stereotype.Service;
 
@@ -11,6 +11,10 @@ public interface AccountService {
 	public AccountDTO login(String email, String password);
 
 	public int registration(AccountDTO dto);
+	
+	public int update(AccountDTO dto);
+	
+	public int changeStatus(AccountDTO dto);
 
 	boolean checkAccountValidation(String email);
 

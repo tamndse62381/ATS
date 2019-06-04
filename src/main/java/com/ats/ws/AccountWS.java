@@ -25,7 +25,7 @@ public interface AccountWS {
 	@CrossOrigin(origins = "http://127.0.0.1:5500")
 	@RequestMapping(value = "/login")
 	@ResponseBody
-	RestResponse Login(@RequestParam("email") String email, @RequestParam("password") String password);
+	RestResponse login(@RequestParam("email") String email, @RequestParam("password") String password);
 
 	@POST
 	@CrossOrigin(origins = "http://127.0.0.1:5500")
@@ -37,4 +37,15 @@ public interface AccountWS {
 	@CrossOrigin(origins = "http://127.0.0.1:5500")
 	@RequestMapping(value = "/checkLogin", produces = "application/json;charset=UTF-8")
 	RestResponse checkLogin(@RequestParam("accessToken") String accessToken);
+
+	@POST
+	@CrossOrigin(origins = "http://127.0.0.1:5500")
+	@RequestMapping(value = "/changePassword", produces = "application/json;charset=UTF-8")
+	RestResponse changePassword(@RequestParam("oldPassword") String oldPassword,
+			@RequestParam("newPassword") String newPassword);
+
+	@POST
+	@CrossOrigin(origins = "http://127.0.0.1:5500")
+	@RequestMapping(value = "/changeStatus", produces = "application/json;charset=UTF-8")
+	RestResponse changeStatus(@RequestParam("accessToken") String accessToken);
 }
