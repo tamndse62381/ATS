@@ -51,7 +51,7 @@ public class AccountWSImpl implements AccountWS {
 	}
 
 	@Override
-	public RestResponse registratrion(String email, String password, String fullname) {
+	public RestResponse registration(String email, String password, String fullname) {
 		LOGGER.info("Begin Registration in AccountWS with email - password - fullname: {}",
 				email + " - " + password + " - " + fullname);
 		int result = 0;
