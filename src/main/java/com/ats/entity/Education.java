@@ -24,6 +24,8 @@ public class Education implements Serializable {
 
 	private String major;
 
+	private String schoolType;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date startTime;
 
@@ -31,11 +33,6 @@ public class Education implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="CVID")
 	private Cv cv;
-
-	//bi-directional many-to-one association to School
-	@ManyToOne
-	@JoinColumn(name="SchoolID")
-	private School school;
 
 	public Education() {
 	}
@@ -72,6 +69,14 @@ public class Education implements Serializable {
 		this.major = major;
 	}
 
+	public String getSchoolType() {
+		return this.schoolType;
+	}
+
+	public void setSchoolType(String schoolType) {
+		this.schoolType = schoolType;
+	}
+
 	public Date getStartTime() {
 		return this.startTime;
 	}
@@ -86,14 +91,6 @@ public class Education implements Serializable {
 
 	public void setCv(Cv cv) {
 		this.cv = cv;
-	}
-
-	public School getSchool() {
-		return this.school;
-	}
-
-	public void setSchool(School school) {
-		this.school = school;
 	}
 
 }

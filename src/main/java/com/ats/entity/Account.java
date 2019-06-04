@@ -145,62 +145,62 @@ public class Account implements Serializable {
 		this.cvs = cvs;
 	}
 
-//	public Cv addCsv(Cv cv) {
-//		getCvs().add(cv);
-//		cv.setAccount(this);
-//
-//		return cv;
-//	}
-//
-//	public Cv removeCv(Cv cv) {
-//		getCvs().remove(cv);
-//		cv.setAccount(null);
-//
-//		return cv;
-//	}
+	public Cv addCv(Cv cv) {
+		getCvs().add(cv);
+		cv.setAccount(this);
 
-//	public List<Employer> getEmployers() {
-//		return this.employers;
-//	}
-//
-//	public void setEmployers(List<Employer> employers) {
-//		this.employers = employers;
-//	}
-//
-//	public Employer addEmployer(Employer employer) {
-//		getEmployers().add(employer);
-//		employer.setAccount(this);
-//
-//		return employer;
-//	}
-//
-//	public Employer removeEmployer(Employer employer) {
-//		getEmployers().remove(employer);
-//		employer.setAccount(null);
-//
-//		return employer;
-//	}
-//
-//	public List<Jobseekerlikejob> getJobseekerlikejobs() {
-//		return this.jobseekerlikejobs;
-//	}
-//
-//	public void setJobseekerlikejobs(List<Jobseekerlikejob> jobseekerlikejobs) {
-//		this.jobseekerlikejobs = jobseekerlikejobs;
-//	}
-//
-//	public Jobseekerlikejob addJobseekerlikejob(Jobseekerlikejob jobseekerlikejob) {
-//		getJobseekerlikejobs().add(jobseekerlikejob);
-//		jobseekerlikejob.setAccount(this);
-//
-//		return jobseekerlikejob;
-//	}
-//
-//	public Jobseekerlikejob removeJobseekerlikejob(Jobseekerlikejob jobseekerlikejob) {
-//		getJobseekerlikejobs().remove(jobseekerlikejob);
-//		jobseekerlikejob.setAccount(null);
-//
-//		return jobseekerlikejob;
-//	}
+		return cv;
+	}
+
+	public Cv removeCv(Cv cv) {
+		getCvs().remove(cv);
+		cv.setAccount(null);
+
+		return cv;
+	}
+
+	public List<Employer> getEmployers() {
+		return this.employers;
+	}
+
+	public void setEmployers(List<Employer> employers) {
+		this.employers = employers;
+	}
+
+	public Employer addEmployer(Employer employer) {
+		getEmployers().add(employer);
+		employer.setAccount(this);
+
+		return employer;
+	}
+
+	public Employer removeEmployer(Employer employer) {
+		getEmployers().remove(employer);
+		employer.setAccount(null);
+
+		return employer;
+	}
+
+	public List<Jobseekerlikejob> getJobseekerlikejobs() {
+		return this.jobseekerlikejobs;
+	}
+
+	public void setJobseekerlikejobs(List<Jobseekerlikejob> jobseekerlikejobs) {
+		this.jobseekerlikejobs = jobseekerlikejobs;
+	}
+
+	public Jobseekerlikejob addJobseekerlikejob(Jobseekerlikejob jobseekerlikejob) {
+		getJobseekerlikejobs().add(jobseekerlikejob);
+		jobseekerlikejob.setAccount(this);
+
+		return jobseekerlikejob;
+	}
+
+	public Jobseekerlikejob removeJobseekerlikejob(Jobseekerlikejob jobseekerlikejob) {
+		getJobseekerlikejobs().remove(jobseekerlikejob);
+		jobseekerlikejob.setAccount(null);
+
+		return jobseekerlikejob;
+	}
 
 }

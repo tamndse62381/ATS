@@ -21,6 +21,8 @@ public interface AccountService {
 	boolean checkPassword(String password,int id);
 
 	public AccountDTO findAccountByEmail(String email);
+	
+	public AccountDTO findAccountByToken(String token);
 
 	public AccountDTO findAccountById(int id);
 }

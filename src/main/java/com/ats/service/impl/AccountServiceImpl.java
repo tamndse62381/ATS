@@ -1,6 +1,7 @@
 package com.ats.service.impl;
 
 import java.util.Date;
+//import java.util.HashMap;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,6 +16,7 @@ import com.ats.transformer.AccountTransformer;
 
 import com.ats.entity.Account;
 import com.ats.service.impl.AccountServiceImpl;
+import com.ats.token.TokenAuthenticationService;
 import com.ats.util.EncrytedPasswordUtils;
 
 @Service
@@ -25,15 +27,18 @@ public class AccountServiceImpl implements AccountService {
 	private AccountDao accountDao;
 	@Autowired
 	private AccountTransformer accountTransformer;
-	
+
+	@Autowired
+	TokenAuthenticationService tokenService;
 	private static final Logger LOGGER = LogManager.getLogger(AccountServiceImpl.class);
 
 	private EncrytedPasswordUtils passwordUtil;
-	
+
 	@Override
 	public AccountDTO login(String email, String password) {
 		LOGGER.info("Begin login in Account Service with email - password: {}", email + " - " + password);
 		AccountDTO accountDTO = null;
+		AccountDTO reTurnAccountDTO = null;
 		passwordUtil = new EncrytedPasswordUtils();
 		if (email != null) {
 			accountDTO = findAccountByEmail(email);
@@ -52,7 +57,7 @@ public class AccountServiceImpl implements AccountService {
 			}
 		}
 		LOGGER.info("End login in Account Service with result: {}", accountDTO);
-		return accountDTO;
+		return reTurnAccountDTO;
 	}
 
 	@Override
