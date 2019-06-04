@@ -49,7 +49,7 @@ public class AccountServiceImpl implements AccountService {
 					accountDao.editAccountLastLogin(lastLoginDate, accountDTO.getEmail(), accountDTO.getAccessToken());
 
 					reTurnAccountDTO = new AccountDTO(accountDTO.getId(), accountDTO.getFullname(),
-							accountDTO.getAccessToken(), accountDTO.getRoleId());
+							accountDTO.getEmail(), accountDTO.getRoleId());
 					return reTurnAccountDTO;
 				} else {
 					return null;
@@ -78,6 +78,7 @@ public class AccountServiceImpl implements AccountService {
 			if (account != null) {
 				try {
 					newAccount = accountDao.save(account);
+					this.login(newAccount.getEmail(), newAccount.getPassword());
 					LOGGER.info("End registration in Account Service with result: {}", newAccount.toString());
 
 				} catch (Exception e) {
@@ -153,7 +154,7 @@ public class AccountServiceImpl implements AccountService {
 				} else {
 					accountDTO = accountTransformer.convertToDTO(account);
 					reTurnAccountDTO = new AccountDTO(accountDTO.getId(), accountDTO.getFullname(),
-							accountDTO.getAccessToken(), accountDTO.getRoleId());
+							accountDTO.getEmail(), accountDTO.getRoleId());
 					LOGGER.info("End findAccountByToken in Account Service with token: {}",
 							reTurnAccountDTO.getAccessToken());
 				}
