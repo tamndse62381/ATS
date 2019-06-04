@@ -12,11 +12,13 @@ public interface AccountService {
 
 	public int registration(AccountDTO dto);
 	
-	public int update(AccountDTO dto);
+	public int changePassword(int id , String newPassword , String oldPassword);
 	
 	public int changeStatus(AccountDTO dto);
 
 	boolean checkAccountValidation(String email);
+	
+	boolean checkPassword(String password,int id);
 
 	public AccountDTO findAccountByEmail(String email);
 	

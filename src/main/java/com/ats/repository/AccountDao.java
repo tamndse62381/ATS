@@ -26,8 +26,8 @@ public interface AccountDao extends JpaRepository<Account, Integer> {
 	public void editAccountLastLogin(@Param("lastDate") Date date, @Param("email") String email,
 			@Param("accessToken") String accessToken);
 	
-//	@Transactional
-//	@Modifying
-//	@Query("UPDATE Account b SET b.password = :lastDate WHERE b.password = :email")
-//	public void changePassword(@Param("oldPassword") Date oldPassword, @Param("newPassword") String newPassword);
+	@Transactional
+	@Modifying
+	@Query("UPDATE Account b SET b.password = :newPassword WHERE b.id = :id")
+	public int changePassword(@Param("id") int id, @Param("newPassword") String newPassword);
 }

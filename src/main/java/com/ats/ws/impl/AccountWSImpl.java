@@ -3,7 +3,6 @@ package com.ats.ws.impl;
 import java.util.Date;
 //import java.util.HashMap;
 
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -58,8 +57,8 @@ public class AccountWSImpl implements AccountWS {
 			String status = "new";
 			Date createdDate = new Date();
 			String tokenString = tokenService.addAuthentication(email);
-			AccountDTO accountDTO = new AccountDTO(0, email, password, fullname, status, createdDate, createdDate, null, 1,
-					tokenString);
+			AccountDTO accountDTO = new AccountDTO(0, email, password, fullname, status, createdDate, createdDate, null,
+					1, tokenString);
 			result = accountService.registration(accountDTO);
 			LOGGER.info("End Registration in AccountWS with email - password - fullname: {}",
 					email + " - " + password + " - " + fullname);
@@ -80,8 +79,8 @@ public class AccountWSImpl implements AccountWS {
 	public RestResponse checkLogin(String accessToken) {
 		LOGGER.info("Begin login in Account WS with Token : {}", accessToken);
 		AccountDTO accountDTO = null;
-//		HashMap<Integer, AccountDTO> hm = null;
-		
+		// HashMap<Integer, AccountDTO> hm = null;
+
 		try {
 			accountDTO = accountService.findAccountByToken(accessToken);
 			LOGGER.info("End login in Account WS with Token : ", accessToken);
@@ -99,8 +98,21 @@ public class AccountWSImpl implements AccountWS {
 	}
 
 	@Override
-	public RestResponse changePassword(String oldPassword, String newPassword) {
-		// TODO Auto-generated method stub
+	public RestResponse changePassword(int id, String oldPassword, String newPassword) {
+		LOGGER.info("Begin changePassword in AccountWS with Account id {}" + id);
+		int success = 0;
+		try {
+			success = accountService.changePassword(id, newPassword, oldPassword);
+			if (success > 0) {
+				return new RestResponse(true, "changePassword Successful with new password is " + newPassword, null);
+			} else {
+				return new RestResponse(false, "changePassword Fail", null);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		LOGGER.info("End changePassword in AccountWS with Account id {}" + id);
 		return null;
 	}
 
@@ -109,7 +121,5 @@ public class AccountWSImpl implements AccountWS {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
 
 }
