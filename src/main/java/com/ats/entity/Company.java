@@ -20,6 +20,8 @@ public class Company implements Serializable {
 
 	private String address;
 
+	private int cityID;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdDate;
 
@@ -28,8 +30,6 @@ public class Company implements Serializable {
 
 	private String email;
 
-	private int industryID;
-
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastModify;
 
@@ -37,6 +37,8 @@ public class Company implements Serializable {
 	private String logoImg;
 
 	private String nameCompany;
+
+	private String status;
 
 	private String telephoneNumber;
 
@@ -72,6 +74,14 @@ public class Company implements Serializable {
 		this.address = address;
 	}
 
+	public int getCityID() {
+		return this.cityID;
+	}
+
+	public void setCityID(int cityID) {
+		this.cityID = cityID;
+	}
+
 	public Date getCreatedDate() {
 		return this.createdDate;
 	}
@@ -96,14 +106,6 @@ public class Company implements Serializable {
 		this.email = email;
 	}
 
-	public int getIndustryID() {
-		return this.industryID;
-	}
-
-	public void setIndustryID(int industryID) {
-		this.industryID = industryID;
-	}
-
 	public Date getLastModify() {
 		return this.lastModify;
 	}
@@ -126,6 +128,14 @@ public class Company implements Serializable {
 
 	public void setNameCompany(String nameCompany) {
 		this.nameCompany = nameCompany;
+	}
+
+	public String getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public String getTelephoneNumber() {

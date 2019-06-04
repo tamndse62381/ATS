@@ -27,10 +27,6 @@ public class Industry implements Serializable {
 	@OneToMany(mappedBy="industry")
 	private List<Cv> cvs;
 
-	//bi-directional many-to-one association to Job
-	@OneToMany(mappedBy="industry")
-	private List<Job> jobs;
-
 	public Industry() {
 	}
 
@@ -92,28 +88,6 @@ public class Industry implements Serializable {
 		cv.setIndustry(null);
 
 		return cv;
-	}
-
-	public List<Job> getJobs() {
-		return this.jobs;
-	}
-
-	public void setJobs(List<Job> jobs) {
-		this.jobs = jobs;
-	}
-
-	public Job addJob(Job job) {
-		getJobs().add(job);
-		job.setIndustry(this);
-
-		return job;
-	}
-
-	public Job removeJob(Job job) {
-		getJobs().remove(job);
-		job.setIndustry(null);
-
-		return job;
 	}
 
 }

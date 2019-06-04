@@ -1,5 +1,7 @@
 package com.ats.ws;
 
+import java.util.HashMap;
+
 //import javax.ws.rs.Consumes;
 //import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -24,7 +26,7 @@ public interface AccountWS {
 	@POST
 	@CrossOrigin(origins = "http://127.0.0.1:5500")
 	@RequestMapping(value = "/login")
-	@ResponseBody AccountDTO checkLogin(@RequestParam("email") String email, @RequestParam("password") String password);
+	@ResponseBody HashMap<String, Integer> checkLogin(@RequestParam("email") String email, @RequestParam("password") String password);
 
 	@POST
 	@CrossOrigin(origins = "http://127.0.0.1:5500")

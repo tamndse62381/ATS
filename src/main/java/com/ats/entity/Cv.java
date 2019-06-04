@@ -49,6 +49,8 @@ public class Cv implements Serializable {
 
 	private double salaryTo;
 
+	private String status;
+
 	private String title;
 
 	private int yearExperience;
@@ -75,11 +77,6 @@ public class Cv implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="AccountID")
 	private Account account;
-
-	//bi-directional many-to-one association to Statuscv
-	@ManyToOne
-	@JoinColumn(name="StatusID")
-	private Statuscv statuscv;
 
 	//bi-directional many-to-one association to Education
 	@OneToMany(mappedBy="cv")
@@ -224,6 +221,14 @@ public class Cv implements Serializable {
 		this.salaryTo = salaryTo;
 	}
 
+	public String getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public String getTitle() {
 		return this.title;
 	}
@@ -306,14 +311,6 @@ public class Cv implements Serializable {
 
 	public void setAccount(Account account) {
 		this.account = account;
-	}
-
-	public Statuscv getStatuscv() {
-		return this.statuscv;
-	}
-
-	public void setStatuscv(Statuscv statuscv) {
-		this.statuscv = statuscv;
 	}
 
 	public List<Education> getEducations() {
