@@ -58,11 +58,6 @@ public class Job implements Serializable {
 	@JoinColumn(name="EmployerID")
 	private Employer employer;
 
-	//bi-directional many-to-one association to Industry
-	@ManyToOne
-	@JoinColumn(name="IndustryID")
-	private Industry industry;
-
 	//bi-directional many-to-one association to Company
 	@ManyToOne
 	@JoinColumn(name="CompanyID")
@@ -224,14 +219,6 @@ public class Job implements Serializable {
 
 	public void setEmployer(Employer employer) {
 		this.employer = employer;
-	}
-
-	public Industry getIndustry() {
-		return this.industry;
-	}
-
-	public void setIndustry(Industry industry) {
-		this.industry = industry;
 	}
 
 	public Company getCompany() {

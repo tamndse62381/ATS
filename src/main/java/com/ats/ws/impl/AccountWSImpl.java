@@ -1,6 +1,7 @@
 package com.ats.ws.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ats.ws.AccountWS;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ats.dto.AccountDTO;
 import com.ats.dto.ErrorDTO;
 import com.ats.service.AccountService;
@@ -28,15 +31,16 @@ public class AccountWSImpl implements AccountWS {
 
 	@Override
 	@ResponseBody
-	public AccountDTO checkLogin(String email, String password) {
+	public HashMap<String, Integer> checkLogin(String email, String password) {
 		LOGGER.info("Begin login in Account WS with username - password: {}", email + " - " + password);
 		AccountDTO accountDTO = null;
-		// HashMap<String, Integer> hm = new HashMap<String, Integer>();
+		 HashMap<String, Integer> hm = new HashMap<String, Integer>();
 		accountDTO = new AccountDTO();
 		try {
 			accountDTO = accountService.login(email, password);
+			
 			if (accountDTO != null) {
-				// Khi Login thành công
+				hm.put(accountDTO.getFullname(), accountDTO.getRoleId());
 			} else {
 				// Khi login thất bại
 			}
@@ -44,7 +48,7 @@ public class AccountWSImpl implements AccountWS {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return accountDTO;
+		return hm;
 	}
 
 	@Override
@@ -62,7 +66,7 @@ public class AccountWSImpl implements AccountWS {
 			LOGGER.info("End Registration in AccountWS with email - password - fullname: {}",
 					email + " - " + password + " - " + fullname);
 			if (result > -1) {
-				return new RestResponse(true, "Create Successful Account", accountDTO);
+				return new RestResponse(true, "Create To Successful", accountDTO);
 			} else {
 		
 				return new RestResponse(false, "Fail Create To Account", null);

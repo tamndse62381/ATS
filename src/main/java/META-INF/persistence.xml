@@ -20,8 +20,6 @@
 		<class>com.ats.entity.Projectorproductworked</class>
 		<class>com.ats.entity.Receipt</class>
 		<class>com.ats.entity.Role</class>
-		<class>com.ats.entity.School</class>
-		<class>com.ats.entity.Schooltype</class>
 		<class>com.ats.entity.Servicepackage</class>
 		<class>com.ats.entity.Skill</class>
 		<class>com.ats.entity.Skillincv</class>
@@ -29,7 +27,6 @@
 		<class>com.ats.entity.Skillneedforjob</class>
 		<class>com.ats.entity.Skilltype</class>
 		<class>com.ats.entity.Socialactivity</class>
-		<class>com.ats.entity.Statuscv</class>
 		<class>com.ats.entity.Workexperience</class>		
 	</persistence-unit>
 </persistence>
