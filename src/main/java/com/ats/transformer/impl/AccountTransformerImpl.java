@@ -49,7 +49,8 @@ public class AccountTransformerImpl implements AccountTransformer {
 		AccountDTO accountDTO = null;
 
 		if (account != null) {	
-			accountDTO = new AccountDTO();			
+			accountDTO = new AccountDTO();
+			accountDTO.setId(account.getId());
 			accountDTO.setEmail(account.getEmail());
 			accountDTO.setPassword(account.getPassword());
 			accountDTO.setCreatedDate(account.getCreatedDate());

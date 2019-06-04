@@ -13,6 +13,8 @@ public interface AccountService {
 	boolean checkAccountValidation(String email);
 
 	public AccountDTO findAccountByEmail(String email);
+	
+	public AccountDTO findAccountByToken(String token);
 
 	public AccountDTO findAccountById(int id);
 }

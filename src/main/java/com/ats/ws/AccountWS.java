@@ -1,6 +1,6 @@
 package com.ats.ws;
 
-import java.util.HashMap;
+//import java.util.HashMap;
 
 //import javax.ws.rs.Consumes;
 //import javax.ws.rs.GET;
@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ats.dto.AccountDTO;
 import com.ats.util.RestResponse;
 
-
-
 @RestController
 @RequestMapping("/account")
 public interface AccountWS {
@@ -26,7 +24,8 @@ public interface AccountWS {
 	@POST
 	@CrossOrigin(origins = "http://127.0.0.1:5500")
 	@RequestMapping(value = "/login")
-	@ResponseBody HashMap<String, Integer> checkLogin(@RequestParam("email") String email, @RequestParam("password") String password);
+	@ResponseBody
+	RestResponse Login(@RequestParam("email") String email, @RequestParam("password") String password);
 
 	@POST
 	@CrossOrigin(origins = "http://127.0.0.1:5500")
@@ -34,12 +33,8 @@ public interface AccountWS {
 	RestResponse registratrion(@RequestParam("email") String email, @RequestParam("password") String password,
 			@RequestParam("fullname") String fullname);
 
-	
-	
-//	@PostMapping(value = "/register", produces = "application/json;charset=UTF-8")
-//	public @ResponseBody User register(@RequestBody User user) {
-//        user = userRepository.insert(user);
-//		return user ;
-//	}
-
+	@POST
+	@CrossOrigin(origins = "http://127.0.0.1:5500")
+	@RequestMapping(value = "/checkLogin", produces = "application/json;charset=UTF-8")
+	public AccountDTO checkLogin(String token);
 }
