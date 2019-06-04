@@ -2,6 +2,7 @@ package com.ats.ws.impl;
 
 import java.util.Date;
 //import java.util.HashMap;
+import java.util.HashMap;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,7 +34,7 @@ public class AccountWSImpl implements AccountWS {
 	public RestResponse Login(String email, String password) {
 		LOGGER.info("Begin login in Account WS with username - password: {}", email + " - " + password);
 		AccountDTO accountDTO = null;
-//		HashMap<String, Integer> hm = new HashMap<String, Integer>();
+		// HashMap<String, Integer> hm = new HashMap<String, Integer>();
 		accountDTO = new AccountDTO();
 		try {
 			accountDTO = accountService.login(email, password);
@@ -77,23 +78,25 @@ public class AccountWSImpl implements AccountWS {
 	}
 
 	@Override
-	public AccountDTO checkLogin(String token) {
-		LOGGER.info("Begin login in Account WS with Token : ", token);
+	public RestResponse checkLogin(String accessToken) {
+		LOGGER.info("Begin login in Account WS with Token : {}", accessToken);
 		AccountDTO accountDTO = null;
-		// HashMap<String, Integer> hm = new HashMap<String, Integer>();
-		accountDTO = new AccountDTO();
+//		HashMap<Integer, AccountDTO> hm = null;
+		
 		try {
-			accountDTO = accountService.findAccountByToken(token);
+			accountDTO = accountService.findAccountByToken(accessToken);
+			LOGGER.info("End login in Account WS with Token : ", accessToken);
+			System.out.println(" Có null hay ko abcd " + accountDTO);
 			if (accountDTO != null) {
-				// hm.put(accountDTO.getFullname(), accountDTO.getRoleId());
+				return new RestResponse(true, "CheckLogin To Successful", accountDTO);
 			} else {
-				// Khi login thất bại
+				return new RestResponse(false, "CheckLogin To Fail", null);
 			}
-			LOGGER.info("End login in Account WS with Token : ", token);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return accountDTO;
+		return null;
 	}
 
 }
