@@ -29,7 +29,7 @@ public interface AccountWS {
 	@POST
 	@CrossOrigin(origins = "http://127.0.0.1:5500")
 	@RequestMapping(value = "/registration", produces = "application/json;charset=UTF-8")
-	RestResponse registratrion(@RequestParam("email") String email, @RequestParam("password") String password,
+	RestResponse registration(@RequestParam("email") String email, @RequestParam("password") String password,
 			@RequestParam("fullname") String fullname);
 
 	
