@@ -8,7 +8,6 @@ public class AccountDTO implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	int id;
 	String email;
 	String password;
 	String fullname;
@@ -39,7 +38,6 @@ public class AccountDTO implements Serializable{
 	public AccountDTO(int id,String email, String password, String fullname, String status, Date createdDate, Date lastLogin,
 			Date lastModify, int roleId, String accessToken) {
 		super();
-		this.id = id;
 		this.email = email;
 		this.password = password;
 		this.fullname = fullname;
@@ -50,18 +48,6 @@ public class AccountDTO implements Serializable{
 		this.roleId = roleId;
 		this.accessToken = accessToken;
 	}
-
-	public int getId() {
-		return id;
-	}
-
-
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-
 
 	public String getEmail() {
 		return email;

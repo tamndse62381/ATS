@@ -1,5 +1,6 @@
 package com.ats.transformer.impl;
 
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,6 @@ public class AccountTransformerImpl implements AccountTransformer {
 	public Account convertToEntity(AccountDTO dto) {
 		LOGGER.info("Begin convertToEntity with Account Entity ID: {}");
 		Account account = null;
-		
 		if (dto != null) {
 			account = new Account();
 			
@@ -49,8 +49,7 @@ public class AccountTransformerImpl implements AccountTransformer {
 		AccountDTO accountDTO = null;
 
 		if (account != null) {	
-			accountDTO = new AccountDTO();
-			accountDTO.setId(account.getId());
+			accountDTO = new AccountDTO();			
 			accountDTO.setEmail(account.getEmail());
 			accountDTO.setPassword(account.getPassword());
 			accountDTO.setCreatedDate(account.getCreatedDate());

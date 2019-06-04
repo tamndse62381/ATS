@@ -58,6 +58,11 @@ public class Job implements Serializable {
 	@JoinColumn(name="EmployerID")
 	private Employer employer;
 
+	//bi-directional many-to-one association to Industry
+	@ManyToOne
+	@JoinColumn(name="IndustryID")
+	private Industry industry;
+
 	//bi-directional many-to-one association to Company
 	@ManyToOne
 	@JoinColumn(name="CompanyID")
@@ -183,102 +188,110 @@ public class Job implements Serializable {
 		this.yearExperience = yearExperience;
 	}
 
-	public List<Apply> getApplies() {
-		return this.applies;
-	}
+//	public List<Apply> getApplies() {
+//		return this.applies;
+//	}
+//
+//	public void setApplies(List<Apply> applies) {
+//		this.applies = applies;
+//	}
+//
+//	public Apply addApply(Apply apply) {
+//		getApplies().add(apply);
+//		apply.setJob(this);
+//
+//		return apply;
+//	}
+//
+//	public Apply removeApply(Apply apply) {
+//		getApplies().remove(apply);
+//		apply.setJob(null);
+//
+//		return apply;
+//	}
+//
+//	public City getCity() {
+//		return this.city;
+//	}
+//
+//	public void setCity(City city) {
+//		this.city = city;
+//	}
+//
+//	public Employer getEmployer() {
+//		return this.employer;
+//	}
+//
+//	public void setEmployer(Employer employer) {
+//		this.employer = employer;
+//	}
+//
+//	public Industry getIndustry() {
+//		return this.industry;
+//	}
+//
+//	public void setIndustry(Industry industry) {
+//		this.industry = industry;
+//	}
+//
+//	public Company getCompany() {
+//		return this.company;
+//	}
+//
+//	public void setCompany(Company company) {
+//		this.company = company;
+//	}
+//
+//	public Joblevel getJoblevel() {
+//		return this.joblevel;
+//	}
+//
+//	public void setJoblevel(Joblevel joblevel) {
+//		this.joblevel = joblevel;
+//	}
 
-	public void setApplies(List<Apply> applies) {
-		this.applies = applies;
-	}
-
-	public Apply addApply(Apply apply) {
-		getApplies().add(apply);
-		apply.setJob(this);
-
-		return apply;
-	}
-
-	public Apply removeApply(Apply apply) {
-		getApplies().remove(apply);
-		apply.setJob(null);
-
-		return apply;
-	}
-
-	public City getCity() {
-		return this.city;
-	}
-
-	public void setCity(City city) {
-		this.city = city;
-	}
-
-	public Employer getEmployer() {
-		return this.employer;
-	}
-
-	public void setEmployer(Employer employer) {
-		this.employer = employer;
-	}
-
-	public Company getCompany() {
-		return this.company;
-	}
-
-	public void setCompany(Company company) {
-		this.company = company;
-	}
-
-	public Joblevel getJoblevel() {
-		return this.joblevel;
-	}
-
-	public void setJoblevel(Joblevel joblevel) {
-		this.joblevel = joblevel;
-	}
-
-	public List<Jobseekerlikejob> getJobseekerlikejobs() {
-		return this.jobseekerlikejobs;
-	}
-
-	public void setJobseekerlikejobs(List<Jobseekerlikejob> jobseekerlikejobs) {
-		this.jobseekerlikejobs = jobseekerlikejobs;
-	}
-
-	public Jobseekerlikejob addJobseekerlikejob(Jobseekerlikejob jobseekerlikejob) {
-		getJobseekerlikejobs().add(jobseekerlikejob);
-		jobseekerlikejob.setJob(this);
-
-		return jobseekerlikejob;
-	}
-
-	public Jobseekerlikejob removeJobseekerlikejob(Jobseekerlikejob jobseekerlikejob) {
-		getJobseekerlikejobs().remove(jobseekerlikejob);
-		jobseekerlikejob.setJob(null);
-
-		return jobseekerlikejob;
-	}
-
-	public List<Skillneedforjob> getSkillneedforjobs() {
-		return this.skillneedforjobs;
-	}
-
-	public void setSkillneedforjobs(List<Skillneedforjob> skillneedforjobs) {
-		this.skillneedforjobs = skillneedforjobs;
-	}
-
-	public Skillneedforjob addSkillneedforjob(Skillneedforjob skillneedforjob) {
-		getSkillneedforjobs().add(skillneedforjob);
-		skillneedforjob.setJob(this);
-
-		return skillneedforjob;
-	}
-
-	public Skillneedforjob removeSkillneedforjob(Skillneedforjob skillneedforjob) {
-		getSkillneedforjobs().remove(skillneedforjob);
-		skillneedforjob.setJob(null);
-
-		return skillneedforjob;
-	}
+//	public List<Jobseekerlikejob> getJobseekerlikejobs() {
+//		return this.jobseekerlikejobs;
+//	}
+//
+//	public void setJobseekerlikejobs(List<Jobseekerlikejob> jobseekerlikejobs) {
+//		this.jobseekerlikejobs = jobseekerlikejobs;
+//	}
+//
+//	public Jobseekerlikejob addJobseekerlikejob(Jobseekerlikejob jobseekerlikejob) {
+//		getJobseekerlikejobs().add(jobseekerlikejob);
+//		jobseekerlikejob.setJob(this);
+//
+//		return jobseekerlikejob;
+//	}
+//
+//	public Jobseekerlikejob removeJobseekerlikejob(Jobseekerlikejob jobseekerlikejob) {
+//		getJobseekerlikejobs().remove(jobseekerlikejob);
+//		jobseekerlikejob.setJob(null);
+//
+//		return jobseekerlikejob;
+//	}
+//
+//	public List<Skillneedforjob> getSkillneedforjobs() {
+//		return this.skillneedforjobs;
+//	}
+//
+//	public void setSkillneedforjobs(List<Skillneedforjob> skillneedforjobs) {
+//		this.skillneedforjobs = skillneedforjobs;
+//	}
+//
+//	public Skillneedforjob addSkillneedforjob(Skillneedforjob skillneedforjob) {
+//		getSkillneedforjobs().add(skillneedforjob);
+//		skillneedforjob.setJob(this);
+//
+//		return skillneedforjob;
+//	}
+//
+//	public Skillneedforjob removeSkillneedforjob(Skillneedforjob skillneedforjob) {
+//		getSkillneedforjobs().remove(skillneedforjob);
+//		skillneedforjob.setJob(null);
+//
+//		return skillneedforjob;
+//	}
 
 }

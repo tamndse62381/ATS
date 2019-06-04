@@ -20,8 +20,6 @@ public class Company implements Serializable {
 
 	private String address;
 
-	private int cityID;
-
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdDate;
 
@@ -30,6 +28,8 @@ public class Company implements Serializable {
 
 	private String email;
 
+	private int industryID;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastModify;
 
@@ -37,8 +37,6 @@ public class Company implements Serializable {
 	private String logoImg;
 
 	private String nameCompany;
-
-	private String status;
 
 	private String telephoneNumber;
 
@@ -74,14 +72,6 @@ public class Company implements Serializable {
 		this.address = address;
 	}
 
-	public int getCityID() {
-		return this.cityID;
-	}
-
-	public void setCityID(int cityID) {
-		this.cityID = cityID;
-	}
-
 	public Date getCreatedDate() {
 		return this.createdDate;
 	}
@@ -104,6 +94,14 @@ public class Company implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public int getIndustryID() {
+		return this.industryID;
+	}
+
+	public void setIndustryID(int industryID) {
+		this.industryID = industryID;
 	}
 
 	public Date getLastModify() {
@@ -130,14 +128,6 @@ public class Company implements Serializable {
 		this.nameCompany = nameCompany;
 	}
 
-	public String getStatus() {
-		return this.status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
 	public String getTelephoneNumber() {
 		return this.telephoneNumber;
 	}
@@ -154,48 +144,48 @@ public class Company implements Serializable {
 		this.employer = employer;
 	}
 
-	public List<Companyindustry> getCompanyindustries() {
-		return this.companyindustries;
-	}
-
-	public void setCompanyindustries(List<Companyindustry> companyindustries) {
-		this.companyindustries = companyindustries;
-	}
-
-	public Companyindustry addCompanyindustry(Companyindustry companyindustry) {
-		getCompanyindustries().add(companyindustry);
-		companyindustry.setCompany(this);
-
-		return companyindustry;
-	}
-
-	public Companyindustry removeCompanyindustry(Companyindustry companyindustry) {
-		getCompanyindustries().remove(companyindustry);
-		companyindustry.setCompany(null);
-
-		return companyindustry;
-	}
-
-	public List<Job> getJobs() {
-		return this.jobs;
-	}
-
-	public void setJobs(List<Job> jobs) {
-		this.jobs = jobs;
-	}
-
-	public Job addJob(Job job) {
-		getJobs().add(job);
-		job.setCompany(this);
-
-		return job;
-	}
-
-	public Job removeJob(Job job) {
-		getJobs().remove(job);
-		job.setCompany(null);
-
-		return job;
-	}
+//	public List<Companyindustry> getCompanyindustries() {
+//		return this.companyindustries;
+//	}
+//
+//	public void setCompanyindustries(List<Companyindustry> companyindustries) {
+//		this.companyindustries = companyindustries;
+//	}
+//
+//	public Companyindustry addCompanyindustry(Companyindustry companyindustry) {
+//		getCompanyindustries().add(companyindustry);
+//		companyindustry.setCompany(this);
+//
+//		return companyindustry;
+//	}
+//
+//	public Companyindustry removeCompanyindustry(Companyindustry companyindustry) {
+//		getCompanyindustries().remove(companyindustry);
+//		companyindustry.setCompany(null);
+//
+//		return companyindustry;
+//	}
+//
+//	public List<Job> getJobs() {
+//		return this.jobs;
+//	}
+//
+//	public void setJobs(List<Job> jobs) {
+//		this.jobs = jobs;
+//	}
+//
+//	public Job addJob(Job job) {
+//		getJobs().add(job);
+//		job.setCompany(this);
+//
+//		return job;
+//	}
+//
+//	public Job removeJob(Job job) {
+//		getJobs().remove(job);
+//		job.setCompany(null);
+//
+//		return job;
+//	}
 
 }

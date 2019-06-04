@@ -1,7 +1,5 @@
 package com.ats.ws;
 
-//import java.util.HashMap;
-
 //import javax.ws.rs.Consumes;
 //import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -14,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-//import com.ats.dto.AccountDTO;
+import com.ats.dto.AccountDTO;
 import com.ats.util.RestResponse;
+
+
 
 @RestController
 @RequestMapping("/account")

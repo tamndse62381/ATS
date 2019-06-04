@@ -17,8 +17,6 @@ public interface AccountDao extends JpaRepository<Account, Integer> {
 	@Query("Select b from Account b where b.email = :email")
 	public Account findAccountByEmail(@Param("email") String email);
 
-	@Query("Select b from Account b where b.accessToken = :accessToken")
-	public Account findAccountByToken(@Param("accessToken") String token);
 	
 	@Transactional
 	@Modifying

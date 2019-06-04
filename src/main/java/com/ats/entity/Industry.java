@@ -27,7 +27,20 @@ public class Industry implements Serializable {
 	@OneToMany(mappedBy="industry")
 	private List<Cv> cvs;
 
+	//bi-directional many-to-one association to Job
+	@OneToMany(mappedBy="industry")
+	private List<Job> jobs;
+
 	public Industry() {
+	}
+	
+	public Industry(int id, String name, List<Companyindustry> companyindustries, List<Cv> cvs, List<Job> jobs) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.companyindustries = companyindustries;
+		this.cvs = cvs;
+		this.jobs = jobs;
 	}
 
 	public int getId() {
@@ -46,48 +59,69 @@ public class Industry implements Serializable {
 		this.name = name;
 	}
 
-	public List<Companyindustry> getCompanyindustries() {
-		return this.companyindustries;
-	}
-
-	public void setCompanyindustries(List<Companyindustry> companyindustries) {
-		this.companyindustries = companyindustries;
-	}
-
-	public Companyindustry addCompanyindustry(Companyindustry companyindustry) {
-		getCompanyindustries().add(companyindustry);
-		companyindustry.setIndustry(this);
-
-		return companyindustry;
-	}
-
-	public Companyindustry removeCompanyindustry(Companyindustry companyindustry) {
-		getCompanyindustries().remove(companyindustry);
-		companyindustry.setIndustry(null);
-
-		return companyindustry;
-	}
-
-	public List<Cv> getCvs() {
-		return this.cvs;
-	}
-
-	public void setCvs(List<Cv> cvs) {
-		this.cvs = cvs;
-	}
-
-	public Cv addCv(Cv cv) {
-		getCvs().add(cv);
-		cv.setIndustry(this);
-
-		return cv;
-	}
-
-	public Cv removeCv(Cv cv) {
-		getCvs().remove(cv);
-		cv.setIndustry(null);
-
-		return cv;
-	}
-
+//	public List<Companyindustry> getCompanyindustries() {
+//		return this.companyindustries;
+//	}
+//
+//	public void setCompanyindustries(List<Companyindustry> companyindustries) {
+//		this.companyindustries = companyindustries;
+//	}
+//
+//	public Companyindustry addCompanyindustry(Companyindustry companyindustry) {
+//		getCompanyindustries().add(companyindustry);
+//		companyindustry.setIndustry(this);
+//
+//		return companyindustry;
+//	}
+//
+//	public Companyindustry removeCompanyindustry(Companyindustry companyindustry) {
+//		getCompanyindustries().remove(companyindustry);
+//		companyindustry.setIndustry(null);
+//
+//		return companyindustry;
+//	}
+//
+//	public List<Cv> getCvs() {
+//		return this.cvs;
+//	}
+//
+//	public void setCvs(List<Cv> cvs) {
+//		this.cvs = cvs;
+//	}
+//
+//	public Cv addCv(Cv cv) {
+//		getCvs().add(cv);
+//		cv.setIndustry(this);
+//
+//		return cv;
+//	}
+//
+//	public Cv removeCv(Cv cv) {
+//		getCvs().remove(cv);
+//		cv.setIndustry(null);
+//
+//		return cv;
+//	}
+//
+//	public List<Job> getJobs() {
+//		return this.jobs;
+//	}
+//
+//	public void setJobs(List<Job> jobs) {
+//		this.jobs = jobs;
+//	}
+//
+//	public Job addJob(Job job) {
+//		getJobs().add(job);
+//		job.setIndustry(this);
+//
+//		return job;
+//	}
+//
+//	public Job removeJob(Job job) {
+//		getJobs().remove(job);
+//		job.setIndustry(null);
+//
+//		return job;
+//	}
 }

@@ -3,7 +3,7 @@
 
 <Configuration monitorInterval="60">
 	<Properties>
-		<Property name="log-path">C:/log</Property>
+		<Property name="log-path">D:/log</Property>
 		<Property name="archive">${log-path}/archive</Property>
 	</Properties>
 
