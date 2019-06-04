@@ -41,7 +41,7 @@ public interface AccountWS {
 	@POST
 	@CrossOrigin(origins = "http://127.0.0.1:5500")
 	@RequestMapping(value = "/changePassword", produces = "application/json;charset=UTF-8")
-	RestResponse changePassword(@RequestParam("oldPassword") String oldPassword,
+	RestResponse changePassword(@RequestParam("id") int id, @RequestParam("oldPassword") String oldPassword,
 			@RequestParam("newPassword") String newPassword);
 
 	@POST

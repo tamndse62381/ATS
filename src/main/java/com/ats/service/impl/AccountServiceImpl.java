@@ -49,7 +49,7 @@ public class AccountServiceImpl implements AccountService {
 					accountDao.editAccountLastLogin(lastLoginDate, accountDTO.getEmail(), accountDTO.getAccessToken());
 
 					reTurnAccountDTO = new AccountDTO(accountDTO.getId(), accountDTO.getFullname(),
-							accountDTO.getEmail(), accountDTO.getRoleId(),accountDTO.getAccessToken());
+							accountDTO.getEmail(), accountDTO.getRoleId(), accountDTO.getAccessToken());
 					return reTurnAccountDTO;
 				} else {
 					return null;
@@ -93,12 +93,20 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public boolean checkAccountValidation(String email) {
 		boolean valid = true;
-
 		if (accountDao.findAccountByEmail(email) != null) {
 			valid = false;
 		}
-
 		return valid;
+	}
+
+	@Override
+	public boolean checkPassword(String password, int id) {
+		boolean same = true;
+		passwordUtil = new EncrytedPasswordUtils();
+		if (passwordUtil.compare(password, accountDao.getOne(id).getPassword())) {
+			same = false;
+		}
+		return same;
 	}
 
 	@Override
@@ -108,7 +116,6 @@ public class AccountServiceImpl implements AccountService {
 		Account account = null;
 		if (email != null) {
 			account = accountDao.findAccountByEmail(email);
-
 			if (account != null) {
 				accountDTO = accountTransformer.convertToDTO(account);
 			}
@@ -122,12 +129,10 @@ public class AccountServiceImpl implements AccountService {
 		LOGGER.info("Begin findAccountById in Account Service with id ", +id);
 		AccountDTO accountDTO = null;
 		Account account = null;
-
 		account = accountDao.findOne(id);
 		if (account != null) {
 			accountDTO = accountTransformer.convertToDTO(account);
 		}
-
 		LOGGER.info("Begin findAccountById in Account Service with id ", +id);
 		return accountDTO;
 	}
@@ -153,7 +158,7 @@ public class AccountServiceImpl implements AccountService {
 				} else {
 					accountDTO = accountTransformer.convertToDTO(account);
 					reTurnAccountDTO = new AccountDTO(accountDTO.getId(), accountDTO.getFullname(),
-							accountDTO.getEmail(), accountDTO.getRoleId(),accountDTO.getAccessToken());
+							accountDTO.getEmail(), accountDTO.getRoleId(), accountDTO.getAccessToken());
 					LOGGER.info("End findAccountByToken in Account Service with token: {}",
 							reTurnAccountDTO.getAccessToken());
 				}
@@ -165,14 +170,23 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public int update(AccountDTO dto) {
+	public int changeStatus(AccountDTO dto) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int changeStatus(AccountDTO dto) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int changePassword(int id, String newPassword, String oldPassword) {
+		LOGGER.info("Begin changePassword in Account Service with Account id : {}", id);
+		boolean existedPassword = checkPassword(oldPassword, id);
+		int success = 0;
+		if (existedPassword) {
+			return success;
+		} else {
+			success = accountDao.changePassword(id, newPassword);
+			LOGGER.info("End changePassword in Account Service with result: {}", success);
+		}
+		return success;
 	}
+
 }
