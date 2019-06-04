@@ -59,7 +59,7 @@ public class AccountWSImpl implements AccountWS {
 			String status = "new";
 			Date createdDate = new Date();
 			String tokenString = tokenService.addAuthentication(email);
-			AccountDTO accountDTO = new AccountDTO(0, email, password, fullname, status, createdDate, null, null, 1,
+			AccountDTO accountDTO = new AccountDTO(0, email, password, fullname, status, createdDate, createdDate, null, 1,
 					tokenString);
 			result = accountService.registration(accountDTO);
 			LOGGER.info("End Registration in AccountWS with email - password - fullname: {}",

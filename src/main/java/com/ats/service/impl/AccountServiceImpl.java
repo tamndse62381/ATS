@@ -78,6 +78,7 @@ public class AccountServiceImpl implements AccountService {
 			if (account != null) {
 				try {
 					newAccount = accountDao.save(account);
+					
 					LOGGER.info("End registration in Account Service with result: {}", newAccount.toString());
 
 				} catch (Exception e) {
