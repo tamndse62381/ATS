@@ -34,7 +34,8 @@ public class AccountTransformerImpl implements AccountTransformer {
 			account.setCreatedDate(dto.getCreatedDate());
 			account.setFullName(dto.getFullname());
 			account.setLastLogin(dto.getLastLogin());
-//			account.setRole(roleTransformer.convertDTOToEntity(roleService.findRoleById(dto.getRoleId())));
+			System.out.println(dto.getRoleId());
+			account.setRole(roleTransformer.convertDTOToEntity(roleService.findRoleById(dto.getRoleId())));
 			account.setStatus(dto.getStatus());
 			account.setAccessToken(dto.getAccessToken());
 		}
@@ -44,10 +45,10 @@ public class AccountTransformerImpl implements AccountTransformer {
 
 	@Override
 	public AccountDTO convertToDTO(Account account) {
-		LOGGER.info("Begin convertToDTO with User Entity: {}", account.toString());
+		LOGGER.info("Begin convertToDTO with Account Entity: {}", account.toString());
 		AccountDTO accountDTO = null;
-		
-		if (account != null) {
+
+		if (account != null) {	
 			accountDTO = new AccountDTO();			
 			accountDTO.setEmail(account.getEmail());
 			accountDTO.setPassword(account.getPassword());
@@ -57,7 +58,7 @@ public class AccountTransformerImpl implements AccountTransformer {
 			accountDTO.setRoleId(account.getRole().getId());
 			accountDTO.setStatus(account.getStatus());
 			accountDTO.setAccessToken(account.getAccessToken());
-
+			
 		}
 		LOGGER.info("End convertToDTO with result: {}", accountDTO.toString());
 		return accountDTO;
