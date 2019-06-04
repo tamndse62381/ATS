@@ -26,7 +26,6 @@ public class AccountTransformerImpl implements AccountTransformer {
 	public Account convertToEntity(AccountDTO dto) {
 		LOGGER.info("Begin convertToEntity with Account Entity ID: {}");
 		Account account = null;
-		ModelMapper
 		if (dto != null) {
 			account = new Account();
 			
