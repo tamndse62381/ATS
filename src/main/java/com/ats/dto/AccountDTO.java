@@ -25,12 +25,13 @@ public class AccountDTO implements Serializable{
 
 
 	
-	public AccountDTO(int id, String fullname, String email,int roleId) {
+	public AccountDTO(int id, String fullname, String email,int roleId, String accessToken) {
 		super();
 		this.id = id;
 		this.fullname = fullname;
 		this.email = email;
 		this.roleId = roleId;
+		this.accessToken = accessToken;
 	}
 
 

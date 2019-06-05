@@ -16,10 +16,6 @@ public class TokenAuthenticationService {
      final long EXPIRATIONTIME = 864_000_000; // 10 days
      
      final String SECRET = "ThisIsASecret";
-     
-     final String TOKEN_PREFIX = "Bearer";
-     
-     final String HEADER_STRING = "Authorization";
  
     public  String addAuthentication(String username) {
     	System.out.println("addAuthentication username : " + username);

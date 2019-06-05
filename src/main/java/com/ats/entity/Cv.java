@@ -49,6 +49,8 @@ public class Cv implements Serializable {
 
 	private double salaryTo;
 
+	private String status;
+
 	private String title;
 
 	private int yearExperience;
@@ -75,11 +77,6 @@ public class Cv implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="AccountID")
 	private Account account;
-
-	//bi-directional many-to-one association to Statuscv
-	@ManyToOne
-	@JoinColumn(name="StatusID")
-	private Statuscv statuscv;
 
 	//bi-directional many-to-one association to Education
 	@OneToMany(mappedBy="cv")
@@ -224,6 +221,14 @@ public class Cv implements Serializable {
 		this.salaryTo = salaryTo;
 	}
 
+	public String getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public String getTitle() {
 		return this.title;
 	}
@@ -262,211 +267,204 @@ public class Cv implements Serializable {
 		return apply;
 	}
 
-//	public List<Certification> getCertifications() {
-//		return this.certifications;
-//	}
-//
-//	public void setCertifications(List<Certification> certifications) {
-//		this.certifications = certifications;
-//	}
-//
-//	public Certification addCertification(Certification certification) {
-//		getCertifications().add(certification);
-//		certification.setCv(this);
-//
-//		return certification;
-//	}
-//
-//	public Certification removeCertification(Certification certification) {
-//		getCertifications().remove(certification);
-//		certification.setCv(null);
-//
-//		return certification;
-//	}
-//
-//	public City getCity() {
-//		return this.city;
-//	}
-//
-//	public void setCity(City city) {
-//		this.city = city;
-//	}
-//
-//	public Industry getIndustry() {
-//		return this.industry;
-//	}
-//
-//	public void setIndustry(Industry industry) {
-//		this.industry = industry;
-//	}
-//
-//	public Account getAccount() {
-//		return this.account;
-//	}
-//
-//	public void setAccount(Account account) {
-//		this.account = account;
-//	}
-//
-//	public Statuscv getStatuscv() {
-//		return this.statuscv;
-//	}
-//
-//	public void setStatuscv(Statuscv statuscv) {
-//		this.statuscv = statuscv;
-//	}
-//
-//	public List<Education> getEducations() {
-//		return this.educations;
-//	}
-//
-//	public void setEducations(List<Education> educations) {
-//		this.educations = educations;
-//	}
-//
-//	public Education addEducation(Education education) {
-//		getEducations().add(education);
-//		education.setCv(this);
-//
-//		return education;
-//	}
-//
-//	public Education removeEducation(Education education) {
-//		getEducations().remove(education);
-//		education.setCv(null);
-//
-//		return education;
-//	}
-//
-//	public List<Employerlikecv> getEmployerlikecvs() {
-//		return this.employerlikecvs;
-//	}
-//
-//	public void setEmployerlikecvs(List<Employerlikecv> employerlikecvs) {
-//		this.employerlikecvs = employerlikecvs;
-//	}
-//
-//	public Employerlikecv addEmployerlikecv(Employerlikecv employerlikecv) {
-//		getEmployerlikecvs().add(employerlikecv);
-//		employerlikecv.setCv(this);
-//
-//		return employerlikecv;
-//	}
-//
-//	public Employerlikecv removeEmployerlikecv(Employerlikecv employerlikecv) {
-//		getEmployerlikecvs().remove(employerlikecv);
-//		employerlikecv.setCv(null);
-//
-//		return employerlikecv;
-//	}
-//
-//	public List<Logaccount> getLogaccounts() {
-//		return this.logaccounts;
-//	}
-//
-//	public void setLogaccounts(List<Logaccount> logaccounts) {
-//		this.logaccounts = logaccounts;
-//	}
-//
-//	public Logaccount addLogaccount(Logaccount logaccount) {
-//		getLogaccounts().add(logaccount);
-//		logaccount.setCv(this);
-//
-//		return logaccount;
-//	}
-//
-//	public Logaccount removeLogaccount(Logaccount logaccount) {
-//		getLogaccounts().remove(logaccount);
-//		logaccount.setCv(null);
-//
-//		return logaccount;
-//	}
-//
-//	public List<Projectorproductworked> getProjectorproductworkeds() {
-//		return this.projectorproductworkeds;
-//	}
-//
-//	public void setProjectorproductworkeds(List<Projectorproductworked> projectorproductworkeds) {
-//		this.projectorproductworkeds = projectorproductworkeds;
-//	}
-//
-//	public Projectorproductworked addProjectorproductworked(Projectorproductworked projectorproductworked) {
-//		getProjectorproductworkeds().add(projectorproductworked);
-//		projectorproductworked.setCv(this);
-//
-//		return projectorproductworked;
-//	}
-//
-//	public Projectorproductworked removeProjectorproductworked(Projectorproductworked projectorproductworked) {
-//		getProjectorproductworkeds().remove(projectorproductworked);
-//		projectorproductworked.setCv(null);
-//
-//		return projectorproductworked;
-//	}
-//
-//	public List<Skillincv> getSkillincvs() {
-//		return this.skillincvs;
-//	}
-//
-//	public void setSkillincvs(List<Skillincv> skillincvs) {
-//		this.skillincvs = skillincvs;
-//	}
-//
-//	public Skillincv addSkillincv(Skillincv skillincv) {
-//		getSkillincvs().add(skillincv);
-//		skillincv.setCv(this);
-//
-//		return skillincv;
-//	}
-//
-//	public Skillincv removeSkillincv(Skillincv skillincv) {
-//		getSkillincvs().remove(skillincv);
-//		skillincv.setCv(null);
-//
-//		return skillincv;
-//	}
-//
-//	public List<Socialactivity> getSocialactivities() {
-//		return this.socialactivities;
-//	}
-//
-//	public void setSocialactivities(List<Socialactivity> socialactivities) {
-//		this.socialactivities = socialactivities;
-//	}
-//
-//	public Socialactivity addSocialactivity(Socialactivity socialactivity) {
-//		getSocialactivities().add(socialactivity);
-//		socialactivity.setCv(this);
-//
-//		return socialactivity;
-//	}
-//
-//	public Socialactivity removeSocialactivity(Socialactivity socialactivity) {
-//		getSocialactivities().remove(socialactivity);
-//		socialactivity.setCv(null);
-//
-//		return socialactivity;
-//	}
-//
-//	public List<Workexperience> getWorkexperiences() {
-//		return this.workexperiences;
-//	}
-//
-//	public void setWorkexperiences(List<Workexperience> workexperiences) {
-//		this.workexperiences = workexperiences;
-//	}
-//
-//	public Workexperience addWorkexperience(Workexperience workexperience) {
-//		getWorkexperiences().add(workexperience);
-//		workexperience.setCv(this);
-//
-//		return workexperience;
-//	}
-//
-//	public Workexperience removeWorkexperience(Workexperience workexperience) {
-//		getWorkexperiences().remove(workexperience);
-//		workexperience.setCv(null);
-//
-//		return workexperience;
-//	}
+	public List<Certification> getCertifications() {
+		return this.certifications;
+	}
+
+	public void setCertifications(List<Certification> certifications) {
+		this.certifications = certifications;
+	}
+
+	public Certification addCertification(Certification certification) {
+		getCertifications().add(certification);
+		certification.setCv(this);
+
+		return certification;
+	}
+
+	public Certification removeCertification(Certification certification) {
+		getCertifications().remove(certification);
+		certification.setCv(null);
+
+		return certification;
+	}
+
+	public City getCity() {
+		return this.city;
+	}
+
+	public void setCity(City city) {
+		this.city = city;
+	}
+
+	public Industry getIndustry() {
+		return this.industry;
+	}
+
+	public void setIndustry(Industry industry) {
+		this.industry = industry;
+	}
+
+	public Account getAccount() {
+		return this.account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+
+	public List<Education> getEducations() {
+		return this.educations;
+	}
+
+	public void setEducations(List<Education> educations) {
+		this.educations = educations;
+	}
+
+	public Education addEducation(Education education) {
+		getEducations().add(education);
+		education.setCv(this);
+
+		return education;
+	}
+
+	public Education removeEducation(Education education) {
+		getEducations().remove(education);
+		education.setCv(null);
+
+		return education;
+	}
+
+	public List<Employerlikecv> getEmployerlikecvs() {
+		return this.employerlikecvs;
+	}
+
+	public void setEmployerlikecvs(List<Employerlikecv> employerlikecvs) {
+		this.employerlikecvs = employerlikecvs;
+	}
+
+	public Employerlikecv addEmployerlikecv(Employerlikecv employerlikecv) {
+		getEmployerlikecvs().add(employerlikecv);
+		employerlikecv.setCv(this);
+
+		return employerlikecv;
+	}
+
+	public Employerlikecv removeEmployerlikecv(Employerlikecv employerlikecv) {
+		getEmployerlikecvs().remove(employerlikecv);
+		employerlikecv.setCv(null);
+
+		return employerlikecv;
+	}
+
+	public List<Logaccount> getLogaccounts() {
+		return this.logaccounts;
+	}
+
+	public void setLogaccounts(List<Logaccount> logaccounts) {
+		this.logaccounts = logaccounts;
+	}
+
+	public Logaccount addLogaccount(Logaccount logaccount) {
+		getLogaccounts().add(logaccount);
+		logaccount.setCv(this);
+
+		return logaccount;
+	}
+
+	public Logaccount removeLogaccount(Logaccount logaccount) {
+		getLogaccounts().remove(logaccount);
+		logaccount.setCv(null);
+
+		return logaccount;
+	}
+
+	public List<Projectorproductworked> getProjectorproductworkeds() {
+		return this.projectorproductworkeds;
+	}
+
+	public void setProjectorproductworkeds(List<Projectorproductworked> projectorproductworkeds) {
+		this.projectorproductworkeds = projectorproductworkeds;
+	}
+
+	public Projectorproductworked addProjectorproductworked(Projectorproductworked projectorproductworked) {
+		getProjectorproductworkeds().add(projectorproductworked);
+		projectorproductworked.setCv(this);
+
+		return projectorproductworked;
+	}
+
+	public Projectorproductworked removeProjectorproductworked(Projectorproductworked projectorproductworked) {
+		getProjectorproductworkeds().remove(projectorproductworked);
+		projectorproductworked.setCv(null);
+
+		return projectorproductworked;
+	}
+
+	public List<Skillincv> getSkillincvs() {
+		return this.skillincvs;
+	}
+
+	public void setSkillincvs(List<Skillincv> skillincvs) {
+		this.skillincvs = skillincvs;
+	}
+
+	public Skillincv addSkillincv(Skillincv skillincv) {
+		getSkillincvs().add(skillincv);
+		skillincv.setCv(this);
+
+		return skillincv;
+	}
+
+	public Skillincv removeSkillincv(Skillincv skillincv) {
+		getSkillincvs().remove(skillincv);
+		skillincv.setCv(null);
+
+		return skillincv;
+	}
+
+	public List<Socialactivity> getSocialactivities() {
+		return this.socialactivities;
+	}
+
+	public void setSocialactivities(List<Socialactivity> socialactivities) {
+		this.socialactivities = socialactivities;
+	}
+
+	public Socialactivity addSocialactivity(Socialactivity socialactivity) {
+		getSocialactivities().add(socialactivity);
+		socialactivity.setCv(this);
+
+		return socialactivity;
+	}
+
+	public Socialactivity removeSocialactivity(Socialactivity socialactivity) {
+		getSocialactivities().remove(socialactivity);
+		socialactivity.setCv(null);
+
+		return socialactivity;
+	}
+
+	public List<Workexperience> getWorkexperiences() {
+		return this.workexperiences;
+	}
+
+	public void setWorkexperiences(List<Workexperience> workexperiences) {
+		this.workexperiences = workexperiences;
+	}
+
+	public Workexperience addWorkexperience(Workexperience workexperience) {
+		getWorkexperiences().add(workexperience);
+		workexperience.setCv(this);
+
+		return workexperience;
+	}
+
+	public Workexperience removeWorkexperience(Workexperience workexperience) {
+		getWorkexperiences().remove(workexperience);
+		workexperience.setCv(null);
+
+		return workexperience;
+	}
+
 }

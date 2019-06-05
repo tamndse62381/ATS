@@ -20,7 +20,7 @@ public class City implements Serializable {
 	private String fullName;
 
 	private String shortName;
-	
+
 	//bi-directional many-to-one association to Cv
 	@OneToMany(mappedBy="city")
 	private List<Cv> cvs;
@@ -35,14 +35,7 @@ public class City implements Serializable {
 
 	public City() {
 	}
-	
-	public City(int id, String fullName, String shortName) {
-		super();
-		this.id = id;
-		this.fullName = fullName;
-		this.shortName = shortName;
-	}
-	
+
 	public int getId() {
 		return this.id;
 	}
@@ -66,71 +59,71 @@ public class City implements Serializable {
 	public void setShortName(String shortName) {
 		this.shortName = shortName;
 	}
-//
-//	public List<Cv> getCvs() {
-//		return this.cvs;
-//	}
-//
-//	public void setCvs(List<Cv> cvs) {
-//		this.cvs = cvs;
-//	}
-//
-//	public Cv addCv(Cv cv) {
-//		getCvs().add(cv);
-//		cv.setCity(this);
-//
-//		return cv;
-//	}
-//
-//	public Cv removeCv(Cv cv) {
-//		getCvs().remove(cv);
-//		cv.setCity(null);
-//
-//		return cv;
-//	}
-//
-//	public List<Employer> getEmployers() {
-//		return this.employers;
-//	}
-//
-//	public void setEmployers(List<Employer> employers) {
-//		this.employers = employers;
-//	}
-//
-//	public Employer addEmployer(Employer employer) {
-//		getEmployers().add(employer);
-//		employer.setCity(this);
-//
-//		return employer;
-//	}
-//
-//	public Employer removeEmployer(Employer employer) {
-//		getEmployers().remove(employer);
-//		employer.setCity(null);
-//
-//		return employer;
-//	}
-//
-//	public List<Job> getJobs() {
-//		return this.jobs;
-//	}
-//
-//	public void setJobs(List<Job> jobs) {
-//		this.jobs = jobs;
-//	}
-//
-//	public Job addJob(Job job) {
-//		getJobs().add(job);
-//		job.setCity(this);
-//
-//		return job;
-//	}
-//
-//	public Job removeJob(Job job) {
-//		getJobs().remove(job);
-//		job.setCity(null);
-//
-//		return job;
-//	}
+
+	public List<Cv> getCvs() {
+		return this.cvs;
+	}
+
+	public void setCvs(List<Cv> cvs) {
+		this.cvs = cvs;
+	}
+
+	public Cv addCv(Cv cv) {
+		getCvs().add(cv);
+		cv.setCity(this);
+
+		return cv;
+	}
+
+	public Cv removeCv(Cv cv) {
+		getCvs().remove(cv);
+		cv.setCity(null);
+
+		return cv;
+	}
+
+	public List<Employer> getEmployers() {
+		return this.employers;
+	}
+
+	public void setEmployers(List<Employer> employers) {
+		this.employers = employers;
+	}
+
+	public Employer addEmployer(Employer employer) {
+		getEmployers().add(employer);
+		employer.setCity(this);
+
+		return employer;
+	}
+
+	public Employer removeEmployer(Employer employer) {
+		getEmployers().remove(employer);
+		employer.setCity(null);
+
+		return employer;
+	}
+
+	public List<Job> getJobs() {
+		return this.jobs;
+	}
+
+	public void setJobs(List<Job> jobs) {
+		this.jobs = jobs;
+	}
+
+	public Job addJob(Job job) {
+		getJobs().add(job);
+		job.setCity(this);
+
+		return job;
+	}
+
+	public Job removeJob(Job job) {
+		getJobs().remove(job);
+		job.setCity(null);
+
+		return job;
+	}
 
 }

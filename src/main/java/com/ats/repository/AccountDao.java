@@ -17,9 +17,17 @@ public interface AccountDao extends JpaRepository<Account, Integer> {
 	@Query("Select b from Account b where b.email = :email")
 	public Account findAccountByEmail(@Param("email") String email);
 
+	@Query("Select b from Account b where b.accessToken = :accessToken")
+	public Account findAccountByToken(@Param("accessToken") String token);
 	
 	@Transactional
 	@Modifying
-	@Query("UPDATE Account b SET b.lastLogin = :lastDate WHERE b.email = :email")
-	public void editAccountLastLogin(@Param("lastDate") Date date, @Param("email") String email);
+	@Query("UPDATE Account b SET b.lastLogin = :lastDate WHERE b.email = :email and  b.accessToken = :accessToken")
+	public void editAccountLastLogin(@Param("lastDate") Date date, @Param("email") String email,
+			@Param("accessToken") String accessToken);
+	
+	@Transactional
+	@Modifying
+	@Query("UPDATE Account b SET b.password = :newPassword WHERE b.id = :id")
+	public int changePassword(@Param("id") int id, @Param("newPassword") String newPassword);
 }
