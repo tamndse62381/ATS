@@ -23,7 +23,7 @@ public class JobServiceImpl implements JobService {
 	public int createJob(Job job) {
 		LOGGER.info("Begin createJob in Job Service with job name : {}", job.getTitle());
 		int result = 0;
-		Job newJob = new Job();
+		Job newJob ;
 		try {
 			newJob = jobDao.save(job);
 			result = newJob.getId();

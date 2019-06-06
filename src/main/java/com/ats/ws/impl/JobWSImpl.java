@@ -19,19 +19,17 @@ public class JobWSImpl implements JobWS {
 	@Override
 	public RestResponse createJob(Job job) {
 		LOGGER.info("Begin createJob in JobWS with Job title : {}" + job.getTitle());
-		int result = 0;
+		int result ;
 		try {
 			result = jobService.createJob(job);
 			if (result == 1) {
 				return new RestResponse(true, "Create New Job Successfull", null);
-			} else {
-				return new RestResponse(false, "Fail To Create New Job Successfull", null);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		LOGGER.info("End createJob in JobWS with Job title : {}" + job.getTitle());
-		return null;
+		return new RestResponse(false, "Fail To Create New Job Successfull", null);
 	}
 
 }

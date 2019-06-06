@@ -8,5 +8,5 @@ import com.ats.entity.Job;
 
 @Service
 public interface JobService {
-	public int createJob(Job job);
+	int createJob(Job job);
 }
