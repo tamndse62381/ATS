@@ -1,12 +1,12 @@
 package com.ats.transformer.impl;
 
+import com.ats.entity.Role;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.ats.dto.RoleDTO;
-import com.ats.entity.Role;
 import com.ats.transformer.RoleTransformer;
 
 @Service

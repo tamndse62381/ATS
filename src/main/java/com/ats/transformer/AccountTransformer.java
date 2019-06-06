@@ -1,9 +1,9 @@
 package com.ats.transformer;
 
+import com.ats.entity.Account;
 import org.springframework.stereotype.Service;
 
 import com.ats.dto.AccountDTO;
-import com.ats.entity.Account;
 
 @Service
 public interface AccountTransformer {

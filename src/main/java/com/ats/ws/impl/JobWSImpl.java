@@ -1,10 +1,10 @@
 package com.ats.ws.impl;
 
+import com.ats.entity.Job;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.ats.entity.Job;
 import com.ats.service.JobService;
 import com.ats.util.RestResponse;
 import com.ats.ws.JobWS;

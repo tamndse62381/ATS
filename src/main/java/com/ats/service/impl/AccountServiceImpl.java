@@ -3,6 +3,8 @@ package com.ats.service.impl;
 import java.util.Date;
 //import java.util.HashMap;
 
+import com.ats.entity.Account;
+import com.ats.repository.AccountDao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ats.dto.AccountDTO;
 import com.ats.service.AccountService;
-import com.ats.repository.AccountDao;
 import com.ats.transformer.AccountTransformer;
 
-import com.ats.entity.Account;
-import com.ats.service.impl.AccountServiceImpl;
 import com.ats.token.TokenAuthenticationService;
 import com.ats.util.EncrytedPasswordUtils;
 

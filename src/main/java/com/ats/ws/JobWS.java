@@ -2,12 +2,12 @@ package com.ats.ws;
 
 import javax.ws.rs.POST;
 
+import com.ats.entity.Job;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ats.entity.Job;
 import com.ats.util.RestResponse;
 
 @RestController

@@ -1,9 +1,9 @@
 package com.ats.transformer;
 
+import com.ats.entity.Role;
 import org.springframework.stereotype.Service;
 
 import com.ats.dto.RoleDTO;
-import com.ats.entity.Role;
 
 @Service
 public interface RoleTransformer {
