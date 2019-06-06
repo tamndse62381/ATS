@@ -7,6 +7,7 @@ package com.ats.ws;
 import javax.ws.rs.POST;
 //import javax.ws.rs.Produces;
 
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 //import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-//import com.ats.dto.AccountDTO;
 import com.ats.util.RestResponse;
 
 @RestController
@@ -47,5 +47,7 @@ public interface AccountWS {
 	@POST
 	@CrossOrigin(origins = "http://127.0.0.1:5500")
 	@RequestMapping(value = "/changeStatus", produces = "application/json;charset=UTF-8")
-	RestResponse changeStatus(@RequestParam("accessToken") String accessToken);
+	RestResponse changeStatus(@RequestParam("id") int id,@RequestParam("newStatus") String newStatus);
+
+	
 }

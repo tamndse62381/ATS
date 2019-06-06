@@ -56,7 +56,7 @@
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 
-		
+
 
 
 		<!-- Spring Security -->
@@ -95,7 +95,7 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		
+
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -113,8 +113,8 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- Rest Moc and hal browser -->
-	
-	
+
+
 
 		<!-- Log4j2 -->
 		<dependency>
@@ -132,8 +132,8 @@
 			<artifactId>spring-boot-starter-log4j2</artifactId>
 		</dependency>
 
-		
-		
+
+
 
 
 
@@ -145,7 +145,7 @@
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct-processor -->
 
-		
+
 
 		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
 		<dependency>
@@ -172,6 +172,12 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<!-- Model mapper repository -->
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>2.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -180,16 +186,16 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			
+
 			<plugin>
-		    <artifactId>maven-war-plugin</artifactId>		    
-		    <configuration>
-		        <failOnMissingWebXml>false</failOnMissingWebXml>    
-		    </configuration>
-		</plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
 		</plugins>
-		
-		
+
+
 	</build>
 
 </project>
