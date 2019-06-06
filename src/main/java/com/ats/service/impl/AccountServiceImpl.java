@@ -37,24 +37,26 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountDTO login(String email, String password) {
         LOGGER.info("Begin login in Account Service with email - password: {}", email + " - " + password);
-        AccountDTO accountDTO = null;
+        AccountDTO accountDTO;
         AccountDTO reTurnAccountDTO = null;
         passwordUtil = new EncrytedPasswordUtils();
         if (email != null) {
             accountDTO = findAccountByEmail(email);
             if (accountDTO != null) {
                 if (passwordUtil.compare(password, accountDTO.getPassword())) {
-                    Date lastLoginDate = new Date();
-                    accountDao.editAccountLastLogin(lastLoginDate, accountDTO.getEmail(), accountDTO.getAccessToken());
-                    reTurnAccountDTO = new AccountDTO(accountDTO.getId(), accountDTO.getFullname(),
-                            accountDTO.getEmail(), accountDTO.getRoleId(), accountDTO.getAccessToken());
-                    return reTurnAccountDTO;
-                } else {
-                    return null;
+                    System.out.println("Status is : " + accountDTO.getStatus());
+                    if (accountDTO.getStatus().matches("new")) {
+                        Date lastLoginDate = new Date();
+                        accountDao.editAccountLastLogin(lastLoginDate, accountDTO.getEmail(), accountDTO.getAccessToken());
+                        reTurnAccountDTO = new AccountDTO(accountDTO.getId(), accountDTO.getFullname(),
+                                accountDTO.getEmail(), accountDTO.getRoleId(), accountDTO.getAccessToken());
+                    } else {
+                        return null;
+                    }
                 }
             }
+            LOGGER.info("End login in Account Service with result: {}", accountDTO);
         }
-        LOGGER.info("End login in Account Service with result: {}", accountDTO);
         return reTurnAccountDTO;
     }
 
@@ -66,7 +68,7 @@ public class AccountServiceImpl implements AccountService {
         String newPassword = passwordUtil.encrytePassword(dto.getPassword());
         dto.setPassword(newPassword);
         Account account = accountTransformer.convertToEntity(dto);
-        AccountDTO existedAccount = null;
+        AccountDTO existedAccount;
         existedAccount = findAccountByEmail(dto.getEmail());
 
         if (existedAccount == null) {
@@ -134,8 +136,8 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountDTO findAccountByToken(String token) {
         LOGGER.info("Begin findAccountByToken in Account Service with token {}", token);
-        AccountDTO accountDTO ;
-        Account account ;
+        AccountDTO accountDTO;
+        Account account;
         AccountDTO reTurnAccountDTO = null;
         int i;
 
@@ -163,7 +165,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public int changeStatus(int id, String newStatus) {
         LOGGER.info("Begin changeStatus in Account Service with Account id - newStatus : {}", id + newStatus);
-        int success ;
+        int success;
         success = accountDao.changeStatus(id, newStatus);
         LOGGER.info("End changeStatus in Account Service with result: {}", success);
         return success;
