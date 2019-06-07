@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.ats.service.JobService;
 import com.ats.util.RestResponse;
 import com.ats.ws.JobWS;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
 public class JobWSImpl implements JobWS {
 
 	@Autowired
@@ -18,6 +20,8 @@ public class JobWSImpl implements JobWS {
 
 	@Override
 	public RestResponse createJob(Job job) {
+		System.out.println("Job Title : " + String.format(job.toString()));
+
 		LOGGER.info("Begin createJob in JobWS with Job title : {}" + job.getTitle());
 		int result ;
 		try {
@@ -29,7 +33,7 @@ public class JobWSImpl implements JobWS {
 			e.printStackTrace();
 		}
 		LOGGER.info("End createJob in JobWS with Job title : {}" + job.getTitle());
-		return new RestResponse(false, "Fail To Create New Job Successfull", null);
+		return new RestResponse(false, "Fail To Create New Job ", null);
 	}
 
 }

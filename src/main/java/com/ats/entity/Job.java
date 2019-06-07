@@ -8,7 +8,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+
 
 @Data
 @Entity
@@ -18,55 +21,56 @@ public class Job implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID", insertable = false, nullable = false)
+//  @Column(name = "ID", insertable = false, nullable = false)
+  @JsonProperty("ID")
   private Integer ID;
 
-  @Column(name = "EmployerID")
+  @JsonProperty("EmployerID")
   private Integer EmployerID;
 
-  @Column(name = "CompanyID")
+  @JsonProperty("CompanyID")
   private Integer CompanyID;
 
-  @Column(name = "Title")
+  @JsonProperty("Title")
   private String Title;
 
-  @Column(name = "CityID")
+  @JsonProperty("CityID")
   private Integer CityID;
 
-  @Column(name = "Address")
+  @JsonProperty("Address")
   private String Address;
 
-  @Column(name = "JobLevelID")
+  @JsonProperty("JobLevelID")
   private Integer JobLevelID;
 
-  @Column(name = "VacancyName")
+  @JsonProperty("VacancyName")
   private String VacancyName;
 
-  @Column(name = "SalaryFrom")
+  @JsonProperty("SalaryFrom")
   private Double SalaryFrom;
 
-  @Column(name = "SalaryTo")
+  @JsonProperty("SalaryTo")
   private Double SalaryTo;
 
-  @Column(name = "YearExperience")
+  @JsonProperty("YearExperience")
   private Integer YearExperience;
 
-  @Column(name = "CreatedDate")
+  @JsonProperty("CreatedDate")
   private Date CreatedDate;
 
-  @Column(name = "EndDateForApply")
+  @JsonProperty("EndDateForApply")
   private Date EndDateForApply;
 
-  @Column(name = "JobDescription")
+  @JsonProperty("JobDescription")
   private String JobDescription;
 
-  @Column(name = "AdditionalRequest")
+  @JsonProperty("AdditionalRequest")
   private String AdditionalRequest;
 
-  @Column(name = "CandidateBenefits")
+  @JsonProperty("CandidateBenefits")
   private String CandidateBenefits;
 
-  @Column(name = "Status")
+  @JsonProperty("Status")
   private String Status;
 
   
