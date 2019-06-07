@@ -25,8 +25,6 @@ public class JobWSImpl implements JobWS {
 	@ResponseBody
 	@Override
 	public RestResponse createJob(@Valid @RequestBody Job job) {
-		System.out.println("Job Title : " + job.getTitle());
-		System.out.println("Job salary : " + job.getSalaryTo());
 		LOGGER.info("Begin createJob in JobWS with Job title : {}" + job.getTitle());
 		int result = 0;
 		try {

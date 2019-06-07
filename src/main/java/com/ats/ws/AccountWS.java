@@ -19,24 +19,24 @@ public interface AccountWS {
 
 
 	@CrossOrigin(origins = "http://127.0.0.1:5500")
-	@PostMapping(value = "/login")
+	@GetMapping(value = "/login")
 	@ResponseBody
 	RestResponse login(@RequestParam("email") String email, @RequestParam("password") String password);
 
 
 	@CrossOrigin(origins = "http://127.0.0.1:5500")
-	@PostMapping(value = "/registration", produces = "application/json;charset=UTF-8")
+	@GetMapping(value = "/registration", produces = "application/json;charset=UTF-8")
 	RestResponse registration(@RequestParam("email") String email, @RequestParam("password") String password,
 			@RequestParam("fullname") String fullname);
 
 
 	@CrossOrigin(origins = "http://127.0.0.1:5500")
-	@PostMapping(value = "/checkLogin", produces = "application/json;charset=UTF-8")
+	@GetMapping(value = "/checkLogin", produces = "application/json;charset=UTF-8")
 	RestResponse checkLogin(@RequestParam("accessToken") String accessToken);
 
 
 	@CrossOrigin(origins = "http://127.0.0.1:5500")
-	@PostMapping(value = "/changePassword", produces = "application/json;charset=UTF-8")
+	@GetMapping(value = "/changePassword", produces = "application/json;charset=UTF-8")
 	RestResponse changePassword(@RequestParam("id") int id, @RequestParam("oldPassword") String oldPassword,
 			@RequestParam("newPassword") String newPassword);
 
