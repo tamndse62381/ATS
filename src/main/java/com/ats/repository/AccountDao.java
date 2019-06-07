@@ -14,25 +14,25 @@ import com.ats.entity.Account;
 @Repository
 public interface AccountDao extends JpaRepository<Account, Integer> {
 
-    @Query("Select b from Account b where b.email = :email")
+    @Query("Select b from Account b where b.Email = :email")
     Account findAccountByEmail(@Param("email") String email);
 
-    @Query("Select b from Account b where b.accessToken = :accessToken")
+    @Query("Select b from Account b where b.AccessToken = :accessToken")
     Account findAccountByToken(@Param("accessToken") String token);
 
     @Transactional
     @Modifying
-    @Query("UPDATE Account b SET b.lastLogin = :lastDate WHERE b.email = :email and  b.accessToken = :accessToken")
+    @Query("UPDATE Account b SET b.LastLogin = :lastDate WHERE b.Email = :email and  b.AccessToken = :accessToken")
     void editAccountLastLogin(@Param("lastDate") Date date, @Param("email") String email,
                               @Param("accessToken") String accessToken);
 
     @Transactional
     @Modifying
-    @Query("UPDATE Account b SET b.password = :newPassword WHERE b.id = :id")
+    @Query("UPDATE Account b SET b.Password = :newPassword WHERE b.ID = :id")
     int changePassword(@Param("id") int id, @Param("newPassword") String newPassword);
 
     @Transactional
     @Modifying
-    @Query("UPDATE Account b SET b.status = :newStatus WHERE b.id = :id")
+    @Query("UPDATE Account b SET b.Status = :newStatus WHERE b.ID = :id")
     int changeStatus(@Param("id") int id, @Param("newStatus") String newStatus);
 }

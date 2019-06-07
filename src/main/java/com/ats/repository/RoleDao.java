@@ -7,6 +7,5 @@ import com.ats.entity.Role;
 
 @Repository
 public interface RoleDao extends JpaRepository<Role, Integer> {
-	Role findRoleById(int id);
 
 }
