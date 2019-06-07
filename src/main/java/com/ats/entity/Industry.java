@@ -1,5 +1,7 @@
 package com.ats.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
@@ -21,11 +23,13 @@ public class Industry implements Serializable {
 
 	//bi-directional many-to-one association to Companyindustry
 	@OneToMany(mappedBy="industry")
-	private List<Companyindustry> companyindustries;
+	//@JsonIgnore
+	private transient List<Companyindustry> companyindustries;
 
 	//bi-directional many-to-one association to Cv
 	@OneToMany(mappedBy="industry")
-	private List<Cv> cvs;
+	//@JsonIgnore
+	private transient List<Cv> cvs;
 
 	public Industry() {
 	}
@@ -46,48 +50,48 @@ public class Industry implements Serializable {
 		this.name = name;
 	}
 
-	public List<Companyindustry> getCompanyindustries() {
-		return this.companyindustries;
-	}
+//	public List<Companyindustry> getCompanyindustries() {
+//		return this.companyindustries;
+//	}
+//
+//	public void setCompanyindustries(List<Companyindustry> companyindustries) {
+//		this.companyindustries = companyindustries;
+//	}
+//
+//	public Companyindustry addCompanyindustry(Companyindustry companyindustry) {
+//		getCompanyindustries().add(companyindustry);
+//		companyindustry.setIndustry(this);
+//
+//		return companyindustry;
+//	}
+//
+//	public Companyindustry removeCompanyindustry(Companyindustry companyindustry) {
+//		getCompanyindustries().remove(companyindustry);
+//		companyindustry.setIndustry(null);
+//
+//		return companyindustry;
+//	}
 
-	public void setCompanyindustries(List<Companyindustry> companyindustries) {
-		this.companyindustries = companyindustries;
-	}
-
-	public Companyindustry addCompanyindustry(Companyindustry companyindustry) {
-		getCompanyindustries().add(companyindustry);
-		companyindustry.setIndustry(this);
-
-		return companyindustry;
-	}
-
-	public Companyindustry removeCompanyindustry(Companyindustry companyindustry) {
-		getCompanyindustries().remove(companyindustry);
-		companyindustry.setIndustry(null);
-
-		return companyindustry;
-	}
-
-	public List<Cv> getCvs() {
-		return this.cvs;
-	}
-
-	public void setCvs(List<Cv> cvs) {
-		this.cvs = cvs;
-	}
-
-	public Cv addCv(Cv cv) {
-		getCvs().add(cv);
-		cv.setIndustry(this);
-
-		return cv;
-	}
-
-	public Cv removeCv(Cv cv) {
-		getCvs().remove(cv);
-		cv.setIndustry(null);
-
-		return cv;
-	}
+//	public List<Cv> getCvs() {
+//		return this.cvs;
+//	}
+//
+//	public void setCvs(List<Cv> cvs) {
+//		this.cvs = cvs;
+//	}
+//
+//	public Cv addCv(Cv cv) {
+//		getCvs().add(cv);
+//		cv.setIndustry(this);
+//
+//		return cv;
+//	}
+//
+//	public Cv removeCv(Cv cv) {
+//		getCvs().remove(cv);
+//		cv.setIndustry(null);
+//
+//		return cv;
+//	}
 
 }

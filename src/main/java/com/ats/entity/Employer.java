@@ -144,138 +144,138 @@ public class Employer implements Serializable {
 		this.vacancyName = vacancyName;
 	}
 
-	public List<Company> getCompanies() {
-		return this.companies;
-	}
+//	public List<Company> getCompanies() {
+//		return this.companies;
+//	}
+//
+//	public void setCompanies(List<Company> companies) {
+//		this.companies = companies;
+//	}
+//
+//	public Company addCompany(Company company) {
+//		getCompanies().add(company);
+//		company.setEmployer(this);
+//
+//		return company;
+//	}
+//
+//	public Company removeCompany(Company company) {
+//		getCompanies().remove(company);
+//		company.setEmployer(null);
+//
+//		return company;
+//	}
+//
+//	public Joblevel getJoblevel() {
+//		return this.joblevel;
+//	}
+//
+//	public void setJoblevel(Joblevel joblevel) {
+//		this.joblevel = joblevel;
+//	}
+//
+//	public Account getAccount() {
+//		return this.account;
+//	}
+//
+//	public void setAccount(Account account) {
+//		this.account = account;
+//	}
+//
+//	public City getCity() {
+//		return this.city;
+//	}
+//
+//	public void setCity(City city) {
+//		this.city = city;
+//	}
+//
+//	public List<Employerlikecv> getEmployerlikecvs() {
+//		return this.employerlikecvs;
+//	}
+//
+//	public void setEmployerlikecvs(List<Employerlikecv> employerlikecvs) {
+//		this.employerlikecvs = employerlikecvs;
+//	}
+//
+//	public Employerlikecv addEmployerlikecv(Employerlikecv employerlikecv) {
+//		getEmployerlikecvs().add(employerlikecv);
+//		employerlikecv.setEmployer(this);
+//
+//		return employerlikecv;
+//	}
+//
+//	public Employerlikecv removeEmployerlikecv(Employerlikecv employerlikecv) {
+//		getEmployerlikecvs().remove(employerlikecv);
+//		employerlikecv.setEmployer(null);
+//
+//		return employerlikecv;
+//	}
 
-	public void setCompanies(List<Company> companies) {
-		this.companies = companies;
-	}
-
-	public Company addCompany(Company company) {
-		getCompanies().add(company);
-		company.setEmployer(this);
-
-		return company;
-	}
-
-	public Company removeCompany(Company company) {
-		getCompanies().remove(company);
-		company.setEmployer(null);
-
-		return company;
-	}
-
-	public Joblevel getJoblevel() {
-		return this.joblevel;
-	}
-
-	public void setJoblevel(Joblevel joblevel) {
-		this.joblevel = joblevel;
-	}
-
-	public Account getAccount() {
-		return this.account;
-	}
-
-	public void setAccount(Account account) {
-		this.account = account;
-	}
-
-	public City getCity() {
-		return this.city;
-	}
-
-	public void setCity(City city) {
-		this.city = city;
-	}
-
-	public List<Employerlikecv> getEmployerlikecvs() {
-		return this.employerlikecvs;
-	}
-
-	public void setEmployerlikecvs(List<Employerlikecv> employerlikecvs) {
-		this.employerlikecvs = employerlikecvs;
-	}
-
-	public Employerlikecv addEmployerlikecv(Employerlikecv employerlikecv) {
-		getEmployerlikecvs().add(employerlikecv);
-		employerlikecv.setEmployer(this);
-
-		return employerlikecv;
-	}
-
-	public Employerlikecv removeEmployerlikecv(Employerlikecv employerlikecv) {
-		getEmployerlikecvs().remove(employerlikecv);
-		employerlikecv.setEmployer(null);
-
-		return employerlikecv;
-	}
-
-	public List<Job> getJobs() {
-		return this.jobs;
-	}
-
-	public void setJobs(List<Job> jobs) {
-		this.jobs = jobs;
-	}
-
-	public Job addJob(Job job) {
-		getJobs().add(job);
-		job.setEmployer(this);
-
-		return job;
-	}
-
-	public Job removeJob(Job job) {
-		getJobs().remove(job);
-		job.setEmployer(null);
-
-		return job;
-	}
-
-	public List<Logemployer> getLogemployers() {
-		return this.logemployers;
-	}
-
-	public void setLogemployers(List<Logemployer> logemployers) {
-		this.logemployers = logemployers;
-	}
-
-	public Logemployer addLogemployer(Logemployer logemployer) {
-		getLogemployers().add(logemployer);
-		logemployer.setEmployer(this);
-
-		return logemployer;
-	}
-
-	public Logemployer removeLogemployer(Logemployer logemployer) {
-		getLogemployers().remove(logemployer);
-		logemployer.setEmployer(null);
-
-		return logemployer;
-	}
-
-	public List<Receipt> getReceipts() {
-		return this.receipts;
-	}
-
-	public void setReceipts(List<Receipt> receipts) {
-		this.receipts = receipts;
-	}
-
-	public Receipt addReceipt(Receipt receipt) {
-		getReceipts().add(receipt);
-		receipt.setEmployer(this);
-
-		return receipt;
-	}
-
-	public Receipt removeReceipt(Receipt receipt) {
-		getReceipts().remove(receipt);
-		receipt.setEmployer(null);
-
-		return receipt;
-	}
+//	public List<Job> getJobs() {
+//		return this.jobs;
+//	}
+//
+//	public void setJobs(List<Job> jobs) {
+//		this.jobs = jobs;
+//	}
+//
+//	public Job addJob(Job job) {
+//		getJobs().add(job);
+//		job.setEmployer(this);
+//
+//		return job;
+//	}
+//
+//	public Job removeJob(Job job) {
+//		getJobs().remove(job);
+//		job.setEmployer(null);
+//
+//		return job;
+//	}
+//
+//	public List<Logemployer> getLogemployers() {
+//		return this.logemployers;
+//	}
+//
+//	public void setLogemployers(List<Logemployer> logemployers) {
+//		this.logemployers = logemployers;
+//	}
+//
+//	public Logemployer addLogemployer(Logemployer logemployer) {
+//		getLogemployers().add(logemployer);
+//		logemployer.setEmployer(this);
+//
+//		return logemployer;
+//	}
+//
+//	public Logemployer removeLogemployer(Logemployer logemployer) {
+//		getLogemployers().remove(logemployer);
+//		logemployer.setEmployer(null);
+//
+//		return logemployer;
+//	}
+//
+//	public List<Receipt> getReceipts() {
+//		return this.receipts;
+//	}
+//
+//	public void setReceipts(List<Receipt> receipts) {
+//		this.receipts = receipts;
+//	}
+//
+//	public Receipt addReceipt(Receipt receipt) {
+//		getReceipts().add(receipt);
+//		receipt.setEmployer(this);
+//
+//		return receipt;
+//	}
+//
+//	public Receipt removeReceipt(Receipt receipt) {
+//		getReceipts().remove(receipt);
+//		receipt.setEmployer(null);
+//
+//		return receipt;
+//	}
 
 }

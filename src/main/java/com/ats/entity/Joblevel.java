@@ -1,5 +1,7 @@
 package com.ats.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
@@ -46,48 +48,48 @@ public class Joblevel implements Serializable {
 		this.jobLevelName = jobLevelName;
 	}
 
-	public List<Employer> getEmployers() {
-		return this.employers;
-	}
-
-	public void setEmployers(List<Employer> employers) {
-		this.employers = employers;
-	}
-
-	public Employer addEmployer(Employer employer) {
-		getEmployers().add(employer);
-		employer.setJoblevel(this);
-
-		return employer;
-	}
-
-	public Employer removeEmployer(Employer employer) {
-		getEmployers().remove(employer);
-		employer.setJoblevel(null);
-
-		return employer;
-	}
-
-	public List<Job> getJobs() {
-		return this.jobs;
-	}
-
-	public void setJobs(List<Job> jobs) {
-		this.jobs = jobs;
-	}
-
-	public Job addJob(Job job) {
-		getJobs().add(job);
-		job.setJoblevel(this);
-
-		return job;
-	}
-
-	public Job removeJob(Job job) {
-		getJobs().remove(job);
-		job.setJoblevel(null);
-
-		return job;
-	}
+//	public List<Employer> getEmployers() {
+//		return this.employers;
+//	}
+//
+//	public void setEmployers(List<Employer> employers) {
+//		this.employers = employers;
+//	}
+//
+//	public Employer addEmployer(Employer employer) {
+//		getEmployers().add(employer);
+//		employer.setJoblevel(this);
+//
+//		return employer;
+//	}
+//
+//	public Employer removeEmployer(Employer employer) {
+//		getEmployers().remove(employer);
+//		employer.setJoblevel(null);
+//
+//		return employer;
+//	}
+//
+//	public List<Job> getJobs() {
+//		return this.jobs;
+//	}
+//
+//	public void setJobs(List<Job> jobs) {
+//		this.jobs = jobs;
+//	}
+//
+//	public Job addJob(Job job) {
+//		getJobs().add(job);
+//		job.setJoblevel(this);
+//
+//		return job;
+//	}
+//
+//	public Job removeJob(Job job) {
+//		getJobs().remove(job);
+//		job.setJoblevel(null);
+//
+//		return job;
+//	}
 
 }
