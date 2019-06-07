@@ -1,75 +1,37 @@
 package com.ats.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.Data;
 
-
-/**
- * The persistent class for the logaccount database table.
- * 
- */
+@Table(name = "logaccount")
 @Entity
-@NamedQuery(name="Logaccount.findAll", query="SELECT l FROM Logaccount l")
+@Data
 public class Logaccount implements Serializable {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@Id
-	private int id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "ID", insertable = false, nullable = false)
+  private Integer ID;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createDate;
+  @Column(name = "CVID")
+  private Integer CVID;
 
-	private String logTypeID;
+  @Column(name = "LogTypeID")
+  private String LogTypeID;
 
-	private String note;
+  @Column(name = "CreateDate")
+  private Date CreateDate;
 
-	//bi-directional many-to-one association to Cv
-	@ManyToOne
-	@JoinColumn(name="CVID")
-	private Cv cv;
+  @Column(name = "Note")
+  private String Note;
 
-	public Logaccount() {
-	}
-
-	public int getId() {
-		return this.id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public Date getCreateDate() {
-		return this.createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
-	public String getLogTypeID() {
-		return this.logTypeID;
-	}
-
-	public void setLogTypeID(String logTypeID) {
-		this.logTypeID = logTypeID;
-	}
-
-	public String getNote() {
-		return this.note;
-	}
-
-	public void setNote(String note) {
-		this.note = note;
-	}
-
-	public Cv getCv() {
-		return this.cv;
-	}
-
-	public void setCv(Cv cv) {
-		this.cv = cv;
-	}
-
+  
 }

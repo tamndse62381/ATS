@@ -1,6 +1,7 @@
 package com.ats.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,10 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
 
-@Table(name = "skill")
+@Table(name = "receipts")
 @Data
 @Entity
-public class Skill implements Serializable {
+public class Receipts implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
@@ -20,11 +21,14 @@ public class Skill implements Serializable {
   @Column(name = "ID", insertable = false, nullable = false)
   private Integer ID;
 
-  @Column(name = "SkillMasterID")
-  private Integer SkillMasterID;
+  @Column(name = "ServicePackageID")
+  private Integer ServicePackageID;
 
-  @Column(name = "SkillLevelID")
-  private Integer SkillLevelID;
+  @Column(name = "HRID")
+  private Integer HRID;
+
+  @Column(name = "PaiedDay")
+  private Date PaiedDay;
 
   
 }

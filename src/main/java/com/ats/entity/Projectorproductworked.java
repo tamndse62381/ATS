@@ -1,96 +1,43 @@
 package com.ats.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.Data;
 
-
-/**
- * The persistent class for the projectorproductworked database table.
- * 
- */
 @Entity
-@NamedQuery(name="Projectorproductworked.findAll", query="SELECT p FROM Projectorproductworked p")
+@Data
+@Table(name = "projectorproductworked")
 public class Projectorproductworked implements Serializable {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@Id
-	private int id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "ID", insertable = false, nullable = false)
+  private Integer ID;
 
-	private String description;
+  @Column(name = "CVID")
+  private Integer CVID;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date endTime;
+  @Column(name = "VacancyName")
+  private String VacancyName;
 
-	private String skillUsed;
+  @Column(name = "StartTime")
+  private Date StartTime;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date startTime;
+  @Column(name = "EndTime")
+  private Date EndTime;
 
-	private String vacancyName;
+  @Column(name = "SkillUsed")
+  private String SkillUsed;
 
-	//bi-directional many-to-one association to Cv
-	@ManyToOne
-	@JoinColumn(name="CVID")
-	private Cv cv;
+  @Column(name = "Description")
+  private String Description;
 
-	public Projectorproductworked() {
-	}
-
-	public int getId() {
-		return this.id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getDescription() {
-		return this.description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Date getEndTime() {
-		return this.endTime;
-	}
-
-	public void setEndTime(Date endTime) {
-		this.endTime = endTime;
-	}
-
-	public String getSkillUsed() {
-		return this.skillUsed;
-	}
-
-	public void setSkillUsed(String skillUsed) {
-		this.skillUsed = skillUsed;
-	}
-
-	public Date getStartTime() {
-		return this.startTime;
-	}
-
-	public void setStartTime(Date startTime) {
-		this.startTime = startTime;
-	}
-
-	public String getVacancyName() {
-		return this.vacancyName;
-	}
-
-	public void setVacancyName(String vacancyName) {
-		this.vacancyName = vacancyName;
-	}
-
-	public Cv getCv() {
-		return this.cv;
-	}
-
-	public void setCv(Cv cv) {
-		this.cv = cv;
-	}
-
+  
 }

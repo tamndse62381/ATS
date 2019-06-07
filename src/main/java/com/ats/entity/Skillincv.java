@@ -1,56 +1,30 @@
 package com.ats.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.Data;
 
-
-/**
- * The persistent class for the skillincv database table.
- * 
- */
 @Entity
-@NamedQuery(name="Skillincv.findAll", query="SELECT s FROM Skillincv s")
+@Data
+@Table(name = "skillincv")
 public class Skillincv implements Serializable {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@Id
-	private int id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "ID", insertable = false, nullable = false)
+  private Integer ID;
 
-	//bi-directional many-to-one association to Cv
-	@ManyToOne
-	@JoinColumn(name="CVID")
-	private Cv cv;
+  @Column(name = "CVID")
+  private Integer CVID;
 
-	//bi-directional many-to-one association to Skill
-	@ManyToOne
-	@JoinColumn(name="SkillID")
-	private Skill skill;
+  @Column(name = "SkillID")
+  private Integer SkillID;
 
-	public Skillincv() {
-	}
-
-	public int getId() {
-		return this.id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public Cv getCv() {
-		return this.cv;
-	}
-
-	public void setCv(Cv cv) {
-		this.cv = cv;
-	}
-
-	public Skill getSkill() {
-		return this.skill;
-	}
-
-	public void setSkill(Skill skill) {
-		this.skill = skill;
-	}
-
+  
 }

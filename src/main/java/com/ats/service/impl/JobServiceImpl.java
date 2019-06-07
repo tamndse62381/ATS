@@ -1,13 +1,13 @@
 package com.ats.service.impl;
 
+import com.ats.entity.Job;
+import com.ats.repository.JobDao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ats.entity.Job;
-import com.ats.repository.JobDao;
 import com.ats.service.JobService;
 
 @Service
@@ -23,10 +23,11 @@ public class JobServiceImpl implements JobService {
 	public int createJob(Job job) {
 		LOGGER.info("Begin createJob in Job Service with job name : {}", job.getTitle());
 		int result = 0;
-		Job newJob = new Job();
+		Job newJob ;
 		try {
 			newJob = jobDao.save(job);
 			result = newJob.getId();
+			System.out.println("KQ : " + result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

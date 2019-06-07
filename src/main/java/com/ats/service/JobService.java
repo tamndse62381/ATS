@@ -1,12 +1,10 @@
 package com.ats.service;
 
-import org.springframework.stereotype.Service;
-
 import com.ats.entity.Job;
-
+import org.springframework.stereotype.Service;
 
 
 @Service
 public interface JobService {
-	public int createJob(Job job);
+	int createJob(Job job);
 }

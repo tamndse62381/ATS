@@ -1,75 +1,37 @@
 package com.ats.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.Data;
 
-
-/**
- * The persistent class for the logemployer database table.
- * 
- */
+@Data
+@Table(name = "logemployer")
 @Entity
-@NamedQuery(name="Logemployer.findAll", query="SELECT l FROM Logemployer l")
 public class Logemployer implements Serializable {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@Id
-	private int id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "ID", insertable = false, nullable = false)
+  private Integer ID;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createDate;
+  @Column(name = "EmployerID")
+  private Integer EmployerID;
 
-	private String logType;
+  @Column(name = "LogType")
+  private String LogType;
 
-	private String note;
+  @Column(name = "CreateDate")
+  private Date CreateDate;
 
-	//bi-directional many-to-one association to Employer
-	@ManyToOne
-	@JoinColumn(name="EmployerID")
-	private Employer employer;
+  @Column(name = "Note")
+  private String Note;
 
-	public Logemployer() {
-	}
-
-	public int getId() {
-		return this.id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public Date getCreateDate() {
-		return this.createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
-	public String getLogType() {
-		return this.logType;
-	}
-
-	public void setLogType(String logType) {
-		this.logType = logType;
-	}
-
-	public String getNote() {
-		return this.note;
-	}
-
-	public void setNote(String note) {
-		this.note = note;
-	}
-
-	public Employer getEmployer() {
-		return this.employer;
-	}
-
-	public void setEmployer(Employer employer) {
-		this.employer = employer;
-	}
-
+  
 }

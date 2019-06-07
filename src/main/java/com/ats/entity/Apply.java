@@ -1,78 +1,37 @@
 package com.ats.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.Data;
 
-
-/**
- * The persistent class for the apply database table.
- * 
- */
 @Entity
-@NamedQuery(name="Apply.findAll", query="SELECT a FROM Apply a")
+@Data
+@Table(name = "apply")
 public class Apply implements Serializable {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@Id
-	private int id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "ID", insertable = false, nullable = false)
+  private Integer ID;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dayApply;
+  @Column(name = "JobSeekerID")
+  private Integer JobSeekerID;
 
-	private String status;
+  @Column(name = "JobID")
+  private Integer JobID;
 
-	//bi-directional many-to-one association to Cv
-	@ManyToOne
-	@JoinColumn(name="JobSeekerID")
-	private Cv cv;
+  @Column(name = "DayApply")
+  private Date DayApply;
 
-	//bi-directional many-to-one association to Job
-	@ManyToOne
-	@JoinColumn(name="JobID")
-	private Job job;
+  @Column(name = "Status")
+  private String Status;
 
-	public Apply() {
-	}
-
-	public int getId() {
-		return this.id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public Date getDayApply() {
-		return this.dayApply;
-	}
-
-	public void setDayApply(Date dayApply) {
-		this.dayApply = dayApply;
-	}
-
-	public String getStatus() {
-		return this.status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public Cv getCv() {
-		return this.cv;
-	}
-
-	public void setCv(Cv cv) {
-		this.cv = cv;
-	}
-
-	public Job getJob() {
-		return this.job;
-	}
-
-	public void setJob(Job job) {
-		this.job = job;
-	}
-
+  
 }
