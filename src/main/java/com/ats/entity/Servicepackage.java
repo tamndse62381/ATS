@@ -1,88 +1,34 @@
 package com.ats.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.sql.Time;
-import java.util.List;
+import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.Data;
 
-
-/**
- * The persistent class for the servicepackage database table.
- * 
- */
 @Entity
-@NamedQuery(name="Servicepackage.findAll", query="SELECT s FROM Servicepackage s")
+@Table(name = "servicepackage")
+@Data
 public class Servicepackage implements Serializable {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@Id
-	private int id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "ID", insertable = false, nullable = false)
+  private Integer ID;
 
-	private Time duration;
+  @Column(name = "Name")
+  private String Name;
 
-	private String name;
+  @Column(name = "Status")
+  private String Status;
 
-	private String status;
+  @Column(name = "Duration")
+  private Date Duration;
 
-	//bi-directional many-to-one association to Receipt
-	@OneToMany(mappedBy="servicepackage")
-	private List<Receipt> receipts;
-
-	public Servicepackage() {
-	}
-
-	public int getId() {
-		return this.id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public Time getDuration() {
-		return this.duration;
-	}
-
-	public void setDuration(Time duration) {
-		this.duration = duration;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getStatus() {
-		return this.status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public List<Receipt> getReceipts() {
-		return this.receipts;
-	}
-
-	public void setReceipts(List<Receipt> receipts) {
-		this.receipts = receipts;
-	}
-
-	public Receipt addReceipt(Receipt receipt) {
-		getReceipts().add(receipt);
-		receipt.setServicepackage(this);
-
-		return receipt;
-	}
-
-	public Receipt removeReceipt(Receipt receipt) {
-		getReceipts().remove(receipt);
-		receipt.setServicepackage(null);
-
-		return receipt;
-	}
-
+  
 }
