@@ -8,10 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-
 
 @Data
 @Entity
@@ -21,57 +18,56 @@ public class Job implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-//  @Column(name = "ID", insertable = false, nullable = false)
-  @JsonProperty("ID")
-  private Integer ID;
+  @Column(name = "ID", insertable = false, nullable = false)
+  private Integer id;
 
-  @JsonProperty("EmployerID")
-  private Integer EmployerID;
+  @Column(name = "EmployerID")
+  private Integer employerID;
 
-  @JsonProperty("CompanyID")
-  private Integer CompanyID;
+  @Column(name = "CompanyID")
+  private Integer companyID;
 
-  @JsonProperty("Title")
-  private String Title;
+  @Column(name = "Title")
+  private String title;
 
-  @JsonProperty("CityID")
-  private Integer CityID;
+  @Column(name = "CityID")
+  private Integer cityID;
 
-  @JsonProperty("Address")
-  private String Address;
+  @Column(name = "Address")
+  private String address;
 
-  @JsonProperty("JobLevelID")
-  private Integer JobLevelID;
+  @Column(name = "JobLevelID")
+  private Integer jobLevelID;
 
-  @JsonProperty("VacancyName")
-  private String VacancyName;
+  @Column(name = "VacancyName")
+  private String vacancyName;
 
-  @JsonProperty("SalaryFrom")
-  private Double SalaryFrom;
+  @Column(name = "SalaryFrom")
+  private Double salaryFrom;
 
-  @JsonProperty("SalaryTo")
-  private Double SalaryTo;
+  @Column(name = "SalaryTo")
+  private Double salaryTo;
 
-  @JsonProperty("YearExperience")
-  private Integer YearExperience;
+  @Column(name = "YearExperience")
+  private Integer yearExperience;
 
-  @JsonProperty("CreatedDate")
-  private Date CreatedDate;
+  @Column(name = "CreatedDate")
+  private Date createdDate;
 
-  @JsonProperty("EndDateForApply")
-  private Date EndDateForApply;
+  @Column(name = "EndDateForApply")
+  private Date endDateForApply;
 
-  @JsonProperty("JobDescription")
-  private String JobDescription;
+  @Column(name = "JobDescription")
+  private String jobDescription;
 
-  @JsonProperty("AdditionalRequest")
-  private String AdditionalRequest;
+  @Column(name = "AdditionalRequest")
+  private String additionalRequest;
 
-  @JsonProperty("CandidateBenefits")
-  private String CandidateBenefits;
+  @Column(name = "CandidateBenefits")
+  private String candidateBenefits;
 
-  @JsonProperty("Status")
-  private String Status;
+  @Column(name = "Status")
+  private String status;
 
   
 }

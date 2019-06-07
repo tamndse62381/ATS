@@ -26,7 +26,8 @@ public class JobServiceImpl implements JobService {
 		Job newJob ;
 		try {
 			newJob = jobDao.save(job);
-			result = newJob.getID();
+			result = newJob.getId();
+			System.out.println("KQ : " + result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
