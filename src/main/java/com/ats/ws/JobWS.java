@@ -24,9 +24,8 @@ public class JobWS {
 
 	@ResponseBody
 	@CrossOrigin(origins = "http://127.0.0.1:5500")
-	@PostMapping(value = "/create", produces = {MediaType.APPLICATION_JSON_VALUE}
-			, consumes = {MediaType.APPLICATION_JSON_VALUE})
-	public RestResponse createJob(@Valid @RequestBody Job job) {
+	@PostMapping(value = "/create")
+	public RestResponse createJob(@RequestBody Job job) {
 		LOGGER.info("Begin createJob in JobWS with Job title : {}" + job.getTitle());
 		int result = 0;
 		try {
