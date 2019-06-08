@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.ats.dto.AccountDTO;
+import com.ats.dto.UsersDTO;
 
 import com.ats.service.AccountService;
 import com.ats.token.TokenAuthenticationService;
@@ -29,24 +29,24 @@ public class AccountWS {
     @ResponseBody
     public RestResponse login(@RequestParam("email") String email, @RequestParam("password") String password) {
         LOGGER.info("Begin login in Account WS with username - password: {}", email + " - " + password);
-        AccountDTO accountDTO = new AccountDTO();
+        UsersDTO usersDTO = new UsersDTO();
         try {
-            accountDTO = accountService.login(email, password);
+            usersDTO = accountService.login(email, password);
             LOGGER.info("End login in Account WS with username - password : {}", email + " - " + password);
-            if (accountDTO != null && accountDTO.getId() != 0) {
-                return new RestResponse(true, "Login Successful", accountDTO);
+            if (usersDTO != null && usersDTO.getId() != 0) {
+                return new RestResponse(true, "Login Successful", usersDTO);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new RestResponse(false, "Login Fail Because " + accountDTO.getEmail(), null);
+        return new RestResponse(false, "Login Fail Because " + usersDTO.getEmail(), null);
     }
 
 
     @CrossOrigin(origins = "http://127.0.0.1:5500")
     @PostMapping(value = "/registration", produces = "application/json;charset=UTF-8")
     public RestResponse registration(@RequestParam("email") String email, @RequestParam("password") String password,
-                                     @RequestParam("fullname") String fullname) {
+                                     @RequestParam("fullname") String fullname, @RequestParam("roleId") int roleId) {
         LOGGER.info("Begin Registration in AccountWS with email - password - fullname: {}",
                 email + " - " + password + " - " + fullname);
         int result;
@@ -54,12 +54,16 @@ public class AccountWS {
             String status = "new";
             Date createdDate = new Date();
             String tokenString = tokenService.addAuthentication(email);
-            AccountDTO accountDTO = new AccountDTO(0, email, password, fullname, status, createdDate, createdDate, null,
-                    1, tokenString);
-            result = accountService.registration(accountDTO);
+            UsersDTO usersDTO = new UsersDTO(0, email, password, fullname, status,
+                    createdDate, createdDate, null, roleId, tokenString);
+            result = accountService.registration(usersDTO);
             LOGGER.info("End Registration in AccountWS with email - password - fullname: {}",
                     email + " - " + password + " - " + fullname);
+
             if (result > -1) {
+                if(roleId == 2){
+
+                }
                 return new RestResponse(true, "Create To Successful", null);
             }
         } catch (Exception e) {
@@ -72,13 +76,13 @@ public class AccountWS {
     @PostMapping(value = "/checkLogin", produces = "application/json;charset=UTF-8")
     public RestResponse checkLogin(@RequestParam("accessToken") String accessToken) {
         LOGGER.info("Begin login in Account WS with Token : {}", accessToken);
-        AccountDTO accountDTO;
+        UsersDTO usersDTO;
 
         try {
-            accountDTO = accountService.findAccountByToken(accessToken);
+            usersDTO = accountService.findAccountByToken(accessToken);
             LOGGER.info("End login in Account WS with Token : ", accessToken);
-            if (accountDTO != null) {
-                return new RestResponse(true, "CheckLogin To Successful", accountDTO);
+            if (usersDTO != null) {
+                return new RestResponse(true, "CheckLogin To Successful", usersDTO);
             }
 
         } catch (Exception e) {

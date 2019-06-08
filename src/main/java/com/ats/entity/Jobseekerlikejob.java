@@ -10,28 +10,28 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
 
-@Data
 @Entity
+@Data
 @Table(name = "jobseekerlikejob")
 public class Jobseekerlikejob implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  @Column(name = "id", insertable = false, nullable = false)
+  private Integer id;
 
-  @Column(name = "AccountID")
-  private Integer AccountID;
+  @Column(name = "userid")
+  private Integer userid;
 
-  @Column(name = "JobID")
-  private Integer JobID;
+  @Column(name = "jobid")
+  private Integer jobid;
 
-  @Column(name = "CreatedDate")
-  private Date CreatedDate;
+  @Column(name = "createdDate")
+  private Date createdDate;
 
-  @Column(name = "LastModifyDate")
-  private Date LastModifyDate;
+  @Column(name = "lastModifyDate")
+  private Date lastModifyDate;
 
   @Column(name = "isActive")
   private Integer isActive;

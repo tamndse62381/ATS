@@ -9,22 +9,22 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
 
-@Entity
-@Table(name = "city")
 @Data
+@Table(name = "city")
+@Entity
 public class City implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  @Column(name = "id", insertable = false, nullable = false)
+  private Integer id;
 
-  @Column(name = "ShortName")
-  private String ShortName;
+  @Column(name = "shortName")
+  private String shortName;
 
-  @Column(name = "FullName")
-  private String FullName;
+  @Column(name = "fullName")
+  private String fullName;
 
   
 }

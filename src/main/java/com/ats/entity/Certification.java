@@ -10,21 +10,21 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Table(name = "certification")
-@Data
 @Entity
+@Data
 public class Certification implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  @Column(name = "id", insertable = false, nullable = false)
+  private Integer id;
 
-  @Column(name = "CVID")
-  private Integer CVID;
+  @Column(name = "cvid")
+  private Integer cvid;
 
-  @Column(name = "CertificationName")
-  private String CertificationName;
+  @Column(name = "certificationName")
+  private String certificationName;
 
   
 }

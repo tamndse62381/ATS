@@ -10,49 +10,49 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
 
-@Data
 @Entity
 @Table(name = "company")
+@Data
 public class Company implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  @Column(name = "id", insertable = false, nullable = false)
+  private Integer id;
 
-  @Column(name = "NameCompany")
-  private String NameCompany;
+  @Column(name = "nameCompany")
+  private String nameCompany;
 
-  @Column(name = "EmployerID")
-  private Integer EmployerID;
+  @Column(name = "userid")
+  private Integer userid;
 
-  @Column(name = "CityID")
-  private Integer CityID;
+  @Column(name = "cityid")
+  private Integer cityid;
 
-  @Column(name = "Address")
-  private String Address;
+  @Column(name = "address")
+  private String address;
 
-  @Column(name = "TelephoneNumber")
-  private String TelephoneNumber;
+  @Column(name = "telephoneNumber")
+  private String telephoneNumber;
 
-  @Column(name = "Email")
-  private String Email;
+  @Column(name = "email")
+  private String email;
 
-  @Column(name = "LogoImg")
-  private String LogoImg;
+  @Column(name = "logoImg")
+  private String logoImg;
 
-  @Column(name = "Description")
-  private String Description;
+  @Column(name = "description")
+  private String description;
 
-  @Column(name = "CreatedDate")
-  private Date CreatedDate;
+  @Column(name = "createdDate")
+  private Date createdDate;
 
-  @Column(name = "LastModify")
-  private Date LastModify;
+  @Column(name = "lastModify")
+  private Date lastModify;
 
-  @Column(name = "Status")
-  private String Status;
+  @Column(name = "status")
+  private String status;
 
   
 }

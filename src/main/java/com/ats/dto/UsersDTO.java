@@ -3,7 +3,7 @@ package com.ats.dto;
 import java.io.Serializable;
 import java.util.Date;
 
-public class AccountDTO implements Serializable{
+public class UsersDTO implements Serializable{
 	/**
 	 * 
 	 */
@@ -19,13 +19,13 @@ public class AccountDTO implements Serializable{
 	int roleId;
 	String accessToken;
 
-	public AccountDTO() {
+	public UsersDTO() {
 		super();
 	}
 
 
 	
-	public AccountDTO(int id, String fullname, String email,int roleId, String accessToken) {
+	public UsersDTO(int id, String fullname, String email, int roleId, String accessToken) {
 		super();
 		this.id = id;
 		this.fullname = fullname;
@@ -36,8 +36,8 @@ public class AccountDTO implements Serializable{
 
 
 
-	public AccountDTO(int id,String email, String password, String fullname, String status, Date createdDate, Date lastLogin,
-			Date lastModify, int roleId, String accessToken) {
+	public UsersDTO(int id, String email, String password, String fullname, String status, Date createdDate, Date lastLogin,
+					Date lastModify, int roleId, String accessToken) {
 		super();
 		this.id = id;
 		this.email = email;

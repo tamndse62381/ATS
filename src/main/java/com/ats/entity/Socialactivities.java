@@ -9,25 +9,25 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
 
-@Data
 @Entity
 @Table(name = "socialactivities")
+@Data
 public class Socialactivities implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  @Column(name = "id", insertable = false, nullable = false)
+  private Integer id;
 
-  @Column(name = "CVID")
-  private Integer CVID;
+  @Column(name = "cvid")
+  private Integer cvid;
 
-  @Column(name = "Name")
-  private String Name;
+  @Column(name = "name")
+  private String name;
 
-  @Column(name = "Description")
-  private String Description;
+  @Column(name = "description")
+  private String description;
 
   
 }
