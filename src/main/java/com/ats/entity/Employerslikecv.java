@@ -11,27 +11,27 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "employerlikecv")
+@Table(name = "employerslikecv")
 @Data
-public class Employerlikecv implements Serializable {
+public class Employerslikecv implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  @Column(name = "id", insertable = false, nullable = false)
+  private Integer id;
 
-  @Column(name = "EmployerID")
-  private Integer EmployerID;
+  @Column(name = "userid")
+  private Integer userid;
 
-  @Column(name = "CVID")
-  private Integer CVID;
+  @Column(name = "cvid")
+  private Integer cvid;
 
-  @Column(name = "CreatedDate")
-  private Date CreatedDate;
+  @Column(name = "createdDate")
+  private Date createdDate;
 
-  @Column(name = "LastModifyDate")
-  private Date LastModifyDate;
+  @Column(name = "lastModifyDate")
+  private Date lastModifyDate;
 
   @Column(name = "isActive")
   private Integer isActive;

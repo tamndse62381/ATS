@@ -10,28 +10,28 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
 
-@Table(name = "logaccount")
+@Table(name = "logusers")
 @Entity
 @Data
-public class Logaccount implements Serializable {
+public class Logusers implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  @Column(name = "id", insertable = false, nullable = false)
+  private Integer id;
 
-  @Column(name = "CVID")
-  private Integer CVID;
+  @Column(name = "cvid")
+  private Integer cvid;
 
-  @Column(name = "LogTypeID")
-  private String LogTypeID;
+  @Column(name = "logtypeid")
+  private String logtypeid;
 
-  @Column(name = "CreateDate")
-  private Date CreateDate;
+  @Column(name = "createDate")
+  private Date createDate;
 
-  @Column(name = "Note")
-  private String Note;
+  @Column(name = "note")
+  private String note;
 
   
 }

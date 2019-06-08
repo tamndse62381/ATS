@@ -10,70 +10,70 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
 
-@Table(name = "cv")
 @Entity
+@Table(name = "cv")
 @Data
 public class Cv implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  @Column(name = "id", insertable = false, nullable = false)
+  private Integer id;
 
-  @Column(name = "Title")
-  private String Title;
+  @Column(name = "title")
+  private String title;
 
-  @Column(name = "AccountID")
-  private Integer AccountID;
+  @Column(name = "userid")
+  private Integer userid;
 
-  @Column(name = "Img")
-  private String Img;
+  @Column(name = "img")
+  private String img;
 
-  @Column(name = "Email")
-  private String Email;
+  @Column(name = "email")
+  private String email;
 
-  @Column(name = "FirstName")
-  private String FirstName;
+  @Column(name = "firstName")
+  private String firstName;
 
-  @Column(name = "LastName")
-  private String LastName;
+  @Column(name = "lastName")
+  private String lastName;
 
-  @Column(name = "Gender")
-  private String Gender;
+  @Column(name = "gender")
+  private String gender;
 
-  @Column(name = "DOB")
-  private Date DOB;
+  @Column(name = "dob")
+  private Date dob;
 
-  @Column(name = "CityID")
-  private Integer CityID;
+  @Column(name = "cityid")
+  private Integer cityid;
 
-  @Column(name = "Address")
-  private String Address;
+  @Column(name = "address")
+  private String address;
 
-  @Column(name = "IndustryID")
-  private Integer IndustryID;
+  @Column(name = "industryid")
+  private Integer industryid;
 
-  @Column(name = "Description")
-  private String Description;
+  @Column(name = "description")
+  private String description;
 
-  @Column(name = "YearExperience")
-  private Integer YearExperience;
+  @Column(name = "yearExperience")
+  private Integer yearExperience;
 
-  @Column(name = "SalaryFrom")
-  private Double SalaryFrom;
+  @Column(name = "salaryFrom")
+  private Double salaryFrom;
 
-  @Column(name = "SalaryTo")
-  private Double SalaryTo;
+  @Column(name = "salaryTo")
+  private Double salaryTo;
 
-  @Column(name = "Status")
-  private String Status;
+  @Column(name = "status")
+  private String status;
 
-  @Column(name = "CreatedDate")
-  private Date CreatedDate;
+  @Column(name = "createdDate")
+  private Date createdDate;
 
-  @Column(name = "LastModify")
-  private Date LastModify;
+  @Column(name = "lastModify")
+  private Date lastModify;
 
   @Column(name = "isActive")
   private Integer isActive;

@@ -9,19 +9,19 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
 
+@Table(name = "industry")
 @Data
 @Entity
-@Table(name = "industry")
 public class Industry implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  @Column(name = "id", insertable = false, nullable = false)
+  private Integer id;
 
-  @Column(name = "Name")
-  private String Name;
+  @Column(name = "name")
+  private String name;
 
   
 }

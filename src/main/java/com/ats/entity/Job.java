@@ -11,62 +11,68 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Data
-@Entity
 @Table(name = "job")
+@Entity
 public class Job implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID", insertable = false, nullable = false)
+  @Column(name = "id", insertable = false, nullable = false)
   private Integer id;
 
-  @Column(name = "EmployerID")
-  private Integer employerID;
+  @Column(name = "userid")
+  private Integer userid;
 
-  @Column(name = "CompanyID")
-  private Integer companyID;
+  @Column(name = "companyid")
+  private Integer companyid;
 
-  @Column(name = "Title")
+  @Column(name = "title")
   private String title;
 
-  @Column(name = "CityID")
-  private Integer cityID;
+  @Column(name = "cityid")
+  private Integer cityid;
 
-  @Column(name = "Address")
+  @Column(name = "address")
   private String address;
 
-  @Column(name = "JobLevelID")
-  private Integer jobLevelID;
+  @Column(name = "joblevelid")
+  private Integer joblevelid;
 
-  @Column(name = "VacancyName")
+  @Column(name = "vacancyName")
   private String vacancyName;
 
-  @Column(name = "SalaryFrom")
+  @Column(name = "workingType")
+  private String workingType;
+
+  @Column(name = "numbeOfRecruitment")
+  private Integer numbeOfRecruitment;
+
+  @Column(name = "salaryFrom")
   private Double salaryFrom;
 
-  @Column(name = "SalaryTo")
+  @Column(name = "salaryTo")
   private Double salaryTo;
 
-  @Column(name = "YearExperience")
+  @Column(name = "yearExperience")
   private Integer yearExperience;
 
-  @Column(name = "CreatedDate")
+  @Column(name = "createdDate")
   private Date createdDate;
 
-  @Column(name = "EndDateForApply")
+  @Column(name = "endDateForApply")
   private Date endDateForApply;
 
-  @Column(name = "JobDescription")
+  @Column(name = "jobDescription")
   private String jobDescription;
 
-  @Column(name = "AdditionalRequest")
+  @Column(name = "additionalRequest")
   private String additionalRequest;
 
-  @Column(name = "CandidateBenefits")
+  @Column(name = "candidateBenefits")
   private String candidateBenefits;
 
-  @Column(name = "Status")
+  @Column(name = "status")
   private String status;
 
   

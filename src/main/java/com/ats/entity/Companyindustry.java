@@ -9,22 +9,22 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "companyindustry")
-@Data
 public class Companyindustry implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  @Column(name = "id", insertable = false, nullable = false)
+  private Integer id;
 
-  @Column(name = "CompanyID")
-  private Integer CompanyID;
+  @Column(name = "companyid")
+  private Integer companyid;
 
-  @Column(name = "IndustryID")
-  private Integer IndustryID;
+  @Column(name = "industryid")
+  private Integer industryid;
 
   
 }

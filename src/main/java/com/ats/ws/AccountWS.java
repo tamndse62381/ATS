@@ -46,7 +46,7 @@ public class AccountWS {
     @CrossOrigin(origins = "http://127.0.0.1:5500")
     @PostMapping(value = "/registration", produces = "application/json;charset=UTF-8")
     public RestResponse registration(@RequestParam("email") String email, @RequestParam("password") String password,
-                                     @RequestParam("fullname") String fullname) {
+                                     @RequestParam("fullname") String fullname, @RequestParam("roleId") int roleId) {
         LOGGER.info("Begin Registration in AccountWS with email - password - fullname: {}",
                 email + " - " + password + " - " + fullname);
         int result;
@@ -54,12 +54,16 @@ public class AccountWS {
             String status = "new";
             Date createdDate = new Date();
             String tokenString = tokenService.addAuthentication(email);
-            AccountDTO accountDTO = new AccountDTO(0, email, password, fullname, status, createdDate, createdDate, null,
-                    1, tokenString);
+            AccountDTO accountDTO = new AccountDTO(0, email, password, fullname, status,
+                    createdDate, createdDate, null, roleId, tokenString);
             result = accountService.registration(accountDTO);
             LOGGER.info("End Registration in AccountWS with email - password - fullname: {}",
                     email + " - " + password + " - " + fullname);
+
             if (result > -1) {
+                if(roleId == 2){
+
+                }
                 return new RestResponse(true, "Create To Successful", null);
             }
         } catch (Exception e) {
