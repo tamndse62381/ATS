@@ -1,7 +1,7 @@
 package com.ats.service.impl;
 
 import com.ats.entity.Job;
-import com.ats.repository.JobDao;
+import com.ats.repository.JobRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import com.ats.service.JobService;
 public class JobServiceImpl implements JobService {
 
 	@Autowired
-	JobDao jobDao;
+    JobRepository jobRepository;
 
 	private static final Logger LOGGER = LogManager.getLogger(JobServiceImpl.class);
 
@@ -25,7 +25,7 @@ public class JobServiceImpl implements JobService {
 		int result = 0;
 		Job newJob ;
 		try {
-			newJob = jobDao.save(job);
+			newJob = jobRepository.save(job);
 			result = newJob.getId();
 			System.out.println("KQ : " + result);
 		} catch (Exception e) {

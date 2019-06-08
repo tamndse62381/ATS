@@ -1,7 +1,7 @@
 package com.ats.service.impl;
 
 import com.ats.entity.Role;
-import com.ats.repository.RoleDao;
+import com.ats.repository.RoleRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
@@ -17,7 +17,7 @@ import com.ats.dto.RoleDTO;
 public class RoleServiceImpl implements RoleService {
 
     @Autowired
-    private RoleDao roleDao;
+    private RoleRepository roleRepository;
     ModelMapper modelMapper;
     private static final Logger LOGGER = LogManager.getLogger(RoleServiceImpl.class);
 
@@ -27,7 +27,7 @@ public class RoleServiceImpl implements RoleService {
         RoleDTO roleDTO = new RoleDTO();
         modelMapper = new ModelMapper();
         try {
-            Role role = roleDao.findOne(roleId);
+            Role role = roleRepository.findOne(roleId);
             if (role != null) {
                 roleDTO = modelMapper.map(role,RoleDTO.class);
             }
