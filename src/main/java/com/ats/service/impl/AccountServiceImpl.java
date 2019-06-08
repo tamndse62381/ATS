@@ -4,7 +4,7 @@ import java.util.Date;
 //import java.util.HashMap;
 
 import com.ats.entity.Account;
-import com.ats.repository.AccountDao;
+import com.ats.repository.AccountRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
@@ -23,7 +23,7 @@ import com.ats.util.EncrytedPasswordUtils;
 public class AccountServiceImpl implements AccountService {
 
     @Autowired
-    private AccountDao accountDao;
+    private AccountRepository accountRepository;
     @Autowired
     TokenAuthenticationService tokenService;
 
@@ -38,19 +38,20 @@ public class AccountServiceImpl implements AccountService {
     public AccountDTO login(String email, String password) {
         LOGGER.info("Begin login in Account Service with email - password: {}", email + " - " + password);
         AccountDTO accountDTO;
-        AccountDTO reTurnAccountDTO = null;
+        AccountDTO reTurnAccountDTO = new AccountDTO();
         passwordUtil = new EncrytedPasswordUtils();
         if (email != null) {
             accountDTO = findAccountByEmail(email);
+            reTurnAccountDTO.setEmail("Account not Existed !! ");
             if (accountDTO != null) {
+                reTurnAccountDTO.setEmail("Wrong password !! ");
                 if (passwordUtil.compare(password, accountDTO.getPassword())) {
                     if (accountDTO.getStatus().matches("new")) {
                         Date lastLoginDate = new Date();
-                        accountDao.editAccountLastLogin(lastLoginDate, accountDTO.getEmail(), accountDTO.getAccessToken());
+                        accountRepository.editAccountLastLogin(lastLoginDate, accountDTO.getEmail(), accountDTO.getAccessToken());
                         reTurnAccountDTO = new AccountDTO(accountDTO.getId(), accountDTO.getFullname(),
                                 accountDTO.getEmail(), accountDTO.getRoleId(), accountDTO.getAccessToken());
-                    } else {
-                        return null;
+                        return reTurnAccountDTO;
                     }
                 }
             }
@@ -74,7 +75,7 @@ public class AccountServiceImpl implements AccountService {
         if (existedAccount == null) {
             if (account != null) {
                 try {
-                    newAccount = accountDao.save(account);
+                    newAccount = accountRepository.save(account);
                     System.out.println("NEW ID  " + newAccount.getID());
                     LOGGER.info("End registration in Account Service with result: {}", newAccount.toString());
                 } catch (Exception e) {
@@ -90,7 +91,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public boolean checkAccountValidation(String email) {
         boolean valid = true;
-        if (accountDao.findAccountByEmail(email) != null) {
+        if (accountRepository.findAccountByEmail(email) != null) {
             valid = false;
         }
         return valid;
@@ -100,7 +101,7 @@ public class AccountServiceImpl implements AccountService {
     public boolean checkPassword(String password, int id) {
         boolean same = true;
         passwordUtil = new EncrytedPasswordUtils();
-        if (passwordUtil.compare(password, accountDao.getOne(id).getPassword())) {
+        if (passwordUtil.compare(password, accountRepository.getOne(id).getPassword())) {
             same = false;
         }
         return same;
@@ -113,7 +114,7 @@ public class AccountServiceImpl implements AccountService {
         AccountDTO accountDTO = null;
         Account account;
         if (email != null) {
-            account = accountDao.findAccountByEmail(email);
+            account = accountRepository.findAccountByEmail(email);
             if (account != null) {
                 accountDTO = modelMapper.map(account, AccountDTO.class);
             }
@@ -133,7 +134,7 @@ public class AccountServiceImpl implements AccountService {
         int i;
 
         if (token != null) {
-            account = accountDao.findAccountByToken(token);
+            account = accountRepository.findAccountByToken(token);
             if (account != null) {
                 Date nowDate = new Date();
                 i = nowDate.compareTo(account.getLastLogin());
@@ -157,7 +158,7 @@ public class AccountServiceImpl implements AccountService {
     public int changeStatus(int id, String newStatus) {
         LOGGER.info("Begin changeStatus in Account Service with Account id - newStatus : {}", id + newStatus);
         int success;
-        success = accountDao.changeStatus(id, newStatus);
+        success = accountRepository.changeStatus(id, newStatus);
         LOGGER.info("End changeStatus in Account Service with result: {}", success);
         return success;
     }
@@ -170,10 +171,16 @@ public class AccountServiceImpl implements AccountService {
         if (existedPassword) {
             return success;
         } else {
-            EncrytedPasswordUtils passwordUtil = new EncrytedPasswordUtils();
-            newPassword = passwordUtil.encrytePassword(newPassword);
-            success = accountDao.changePassword(id, newPassword);
-            LOGGER.info("End changePassword in Account Service with result: {}", success);
+            ModelMapper modelMapper = new ModelMapper();
+            Account account = accountRepository.getOne(id);
+            System.out.println("Account id : " + account.getID());
+            AccountDTO accountDTO = modelMapper.map(account, AccountDTO.class);
+            if (accountDTO.getStatus().matches("new")) {
+                EncrytedPasswordUtils passwordUtil = new EncrytedPasswordUtils();
+                newPassword = passwordUtil.encrytePassword(newPassword);
+                success = accountRepository.changePassword(id, newPassword);
+                LOGGER.info("End changePassword in Account Service with result: {}", success);
+            }
         }
         return success;
     }

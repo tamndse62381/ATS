@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ats.entity.Account;
 
 @Repository
-public interface AccountDao extends JpaRepository<Account, Integer> {
+public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     @Query("Select b from Account b where b.Email = :email")
     Account findAccountByEmail(@Param("email") String email);
