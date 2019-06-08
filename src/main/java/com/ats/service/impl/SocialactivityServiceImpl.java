@@ -1,6 +1,7 @@
 package com.ats.service.impl;
 
-import com.ats.entity.Socialactivity;
+import com.ats.entity.Socialactivities;
+
 import com.ats.repository.SocialactivityRepository;
 import com.ats.service.SocialactivityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +15,13 @@ public class SocialactivityServiceImpl implements SocialactivityService {
     private SocialactivityRepository socialactivityRepository;
 
     @Override
-    public List<Socialactivity> findAllSocialactivityByCVID(int id) {
+    public List<Socialactivities> findAllSocialactivityByCVID(int id) {
         return socialactivityRepository.findAllSocialactivityByCVID(id);
     }
 
     @Override
-    public boolean editASocialactivity(Socialactivity editedSocialactivity ,int id) {
-        Socialactivity  soc = socialactivityRepository.findOne(id);
+    public boolean editASocialactivity(Socialactivities editedSocialactivity ,int id) {
+        Socialactivities  soc = socialactivityRepository.findOne(id);
         if (soc != null){
             soc.setName(editedSocialactivity.getName());
             soc.setDescription(editedSocialactivity.getDescription());
@@ -31,7 +32,7 @@ public class SocialactivityServiceImpl implements SocialactivityService {
     }
 
     @Override
-    public Socialactivity createANewSocialactivity(Socialactivity newSocialactivity) {
+    public Socialactivities createANewSocialactivity(Socialactivities newSocialactivity) {
         try {
             socialactivityRepository.save(newSocialactivity);
             return newSocialactivity;
@@ -42,7 +43,7 @@ public class SocialactivityServiceImpl implements SocialactivityService {
     }
 
     @Override
-    public Socialactivity findOneByID(int id) {
+    public Socialactivities findOneByID(int id) {
         return socialactivityRepository.findOne(id);
     }
 }

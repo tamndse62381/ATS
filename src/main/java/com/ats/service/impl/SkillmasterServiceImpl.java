@@ -36,7 +36,7 @@ public class SkillmasterServiceImpl implements SkillmasterService {
             Skillmaster skillmaster = skillmasterRepository.findOne(id);
             if (skillmaster != null){
                 skillmaster.setSkillName(editedSkillmaster.getSkillName());
-                skillmaster.setSkilltype(editedSkillmaster.getSkilltype());
+                skillmaster.setSkilltypeid(editedSkillmaster.getSkilltypeid());
                 skillmasterRepository.save(skillmaster);
                 return true;
             }

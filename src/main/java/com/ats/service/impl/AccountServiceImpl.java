@@ -4,7 +4,7 @@ import java.util.Date;
 //import java.util.HashMap;
 
 import com.ats.dto.UsersDTO;
-import com.ats.entity.Account;
+import com.ats.entity.Users;
 import com.ats.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -63,21 +63,21 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public int registration(UsersDTO dto) {
         LOGGER.info("Begin registration in Account Service with Account DTO Email : {}", dto.getEmail());
-        Account newAccount = null;
+        Users newUsers = null;
         modelMapper = new ModelMapper();
         EncrytedPasswordUtils passwordUtil = new EncrytedPasswordUtils();
         String newPassword = passwordUtil.encrytePassword(dto.getPassword());
         dto.setPassword(newPassword);
-        Account account = modelMapper.map(dto, Account.class);
-        UsersDTO existedAccount;
-        existedAccount = findAccountByEmail(dto.getEmail());
+        Users users = modelMapper.map(dto, Users.class);
+        UsersDTO existedUsers;
+        existedUsers = findAccountByEmail(dto.getEmail());
 
-        if (existedAccount == null) {
-            if (account != null) {
+        if (existedUsers == null) {
+            if (users != null) {
                 try {
-                    newAccount = userRepository.save(account);
-                    System.out.println("NEW ID  " + newAccount.getID());
-                    LOGGER.info("End registration in Account Service with result: {}", newAccount.toString());
+                    newUsers = userRepository.save(users);
+                    System.out.println("NEW ID  " + newUsers.getId());
+                    LOGGER.info("End registration in Account Service with result: {}", newUsers.toString());
                 } catch (Exception e) {
                     System.out.println(e);
                 }
@@ -85,7 +85,7 @@ public class AccountServiceImpl implements AccountService {
         } else {
             return -1;
         }
-        return newAccount.getID();
+        return newUsers.getId();
     }
 
     @Override
@@ -112,11 +112,11 @@ public class AccountServiceImpl implements AccountService {
         LOGGER.info("Begin findAccountByEmail in Account Service with email {}", email);
         modelMapper = new ModelMapper();
         UsersDTO usersDTO = null;
-        Account account;
+        Users users;
         if (email != null) {
-            account = userRepository.findAccountByEmail(email);
-            if (account != null) {
-                usersDTO = modelMapper.map(account, UsersDTO.class);
+            users = userRepository.findAccountByEmail(email);
+            if (users != null) {
+                usersDTO = modelMapper.map(users, UsersDTO.class);
             }
         }
         LOGGER.info("End findAccountByEmail in Account Service with result: {}", usersDTO);
@@ -129,19 +129,19 @@ public class AccountServiceImpl implements AccountService {
         LOGGER.info("Begin findAccountByToken in Account Service with token {}", token);
         UsersDTO usersDTO;
         modelMapper = new ModelMapper();
-        Account account;
+        Users users;
         UsersDTO reTurnUsersDTO = null;
         int i;
 
         if (token != null) {
-            account = userRepository.findAccountByToken(token);
-            if (account != null) {
+            users = userRepository.findAccountByToken(token);
+            if (users != null) {
                 Date nowDate = new Date();
-                i = nowDate.compareTo(account.getLastLogin());
+                i = nowDate.compareTo(users.getLastLogin());
                 if (i > 10) {
                     return null;
                 } else {
-                    usersDTO = modelMapper.map(account, UsersDTO.class);
+                    usersDTO = modelMapper.map(users, UsersDTO.class);
                     reTurnUsersDTO = new UsersDTO(usersDTO.getId(), usersDTO.getFullname(),
                             usersDTO.getEmail(), usersDTO.getRoleId(), usersDTO.getAccessToken());
                     LOGGER.info("End findAccountByToken in Account Service with token: {}",
@@ -172,9 +172,9 @@ public class AccountServiceImpl implements AccountService {
             return success;
         } else {
             ModelMapper modelMapper = new ModelMapper();
-            Account account = userRepository.getOne(id);
-            System.out.println("Account id : " + account.getID());
-            UsersDTO usersDTO = modelMapper.map(account, UsersDTO.class);
+            Users users = userRepository.getOne(id);
+            System.out.println("Account id : " + users.getId());
+            UsersDTO usersDTO = modelMapper.map(users, UsersDTO.class);
             if (usersDTO.getStatus().matches("new")) {
                 EncrytedPasswordUtils passwordUtil = new EncrytedPasswordUtils();
                 newPassword = passwordUtil.encrytePassword(newPassword);
