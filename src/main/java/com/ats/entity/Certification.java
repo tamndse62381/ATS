@@ -1,53 +1,30 @@
 package com.ats.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.Data;
 
-
-/**
- * The persistent class for the certification database table.
- * 
- */
+@Table(name = "certification")
+@Data
 @Entity
-@NamedQuery(name="Certification.findAll", query="SELECT c FROM Certification c")
 public class Certification implements Serializable {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@Id
-	private int id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "ID", insertable = false, nullable = false)
+  private Integer ID;
 
-	private String certificationName;
+  @Column(name = "CVID")
+  private Integer CVID;
 
-	//bi-directional many-to-one association to Cv
-	@ManyToOne
-	@JoinColumn(name="CVID")
-	private Cv cv;
+  @Column(name = "CertificationName")
+  private String CertificationName;
 
-	public Certification() {
-	}
-
-	public int getId() {
-		return this.id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getCertificationName() {
-		return this.certificationName;
-	}
-
-	public void setCertificationName(String certificationName) {
-		this.certificationName = certificationName;
-	}
-
-	public Cv getCv() {
-		return this.cv;
-	}
-
-	public void setCv(Cv cv) {
-		this.cv = cv;
-	}
-
+  
 }

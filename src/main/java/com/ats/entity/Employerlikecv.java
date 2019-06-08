@@ -1,89 +1,40 @@
 package com.ats.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.Data;
 
-
-/**
- * The persistent class for the employerlikecv database table.
- * 
- */
 @Entity
-@NamedQuery(name="Employerlikecv.findAll", query="SELECT e FROM Employerlikecv e")
+@Table(name = "employerlikecv")
+@Data
 public class Employerlikecv implements Serializable {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@Id
-	private int id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "ID", insertable = false, nullable = false)
+  private Integer ID;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdDate;
+  @Column(name = "EmployerID")
+  private Integer EmployerID;
 
-	private int isActive;
+  @Column(name = "CVID")
+  private Integer CVID;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date lastModifyDate;
+  @Column(name = "CreatedDate")
+  private Date CreatedDate;
 
-	//bi-directional many-to-one association to Cv
-	@ManyToOne
-	@JoinColumn(name="CVID")
-	private Cv cv;
+  @Column(name = "LastModifyDate")
+  private Date LastModifyDate;
 
-	//bi-directional many-to-one association to Employer
-	@ManyToOne
-	@JoinColumn(name="EmployerID")
-	private Employer employer;
+  @Column(name = "isActive")
+  private Integer isActive;
 
-	public Employerlikecv() {
-	}
-
-	public int getId() {
-		return this.id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public Date getCreatedDate() {
-		return this.createdDate;
-	}
-
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	public int getIsActive() {
-		return this.isActive;
-	}
-
-	public void setIsActive(int isActive) {
-		this.isActive = isActive;
-	}
-
-	public Date getLastModifyDate() {
-		return this.lastModifyDate;
-	}
-
-	public void setLastModifyDate(Date lastModifyDate) {
-		this.lastModifyDate = lastModifyDate;
-	}
-
-	public Cv getCv() {
-		return this.cv;
-	}
-
-	public void setCv(Cv cv) {
-		this.cv = cv;
-	}
-
-	public Employer getEmployer() {
-		return this.employer;
-	}
-
-	public void setEmployer(Employer employer) {
-		this.employer = employer;
-	}
-
+  
 }

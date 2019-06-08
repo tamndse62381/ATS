@@ -1,7 +1,10 @@
 package com.ats.service;
 
+import com.ats.entity.Job;
 import org.springframework.stereotype.Service;
 
+
 @Service
-public class CVService {
+public interface JobService {
+	int createJob(Job job);
 }

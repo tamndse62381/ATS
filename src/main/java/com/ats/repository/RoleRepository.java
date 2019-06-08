@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.ats.entity.Role;
 
 @Repository
-public interface RoleDao extends JpaRepository<Role, Integer> {
-	Role findRoleById(int id);
+public interface RoleRepository extends JpaRepository<Role, Integer> {
 
 }

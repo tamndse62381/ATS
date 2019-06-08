@@ -1,9 +1,11 @@
 package com.ats.repository;
 
-import com.ats.entity.City;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.ats.entity.Job;
+
 @Repository
-public interface CityRepository extends JpaRepository<City, Integer> {
+public interface JobRepository extends JpaRepository<Job, Integer>{
+	
 }

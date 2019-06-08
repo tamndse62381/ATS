@@ -1,37 +1,43 @@
 package com.ats.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.Data;
 
-
-/**
- * The persistent class for the education database table.
- * 
- */
+@Table(name = "education")
 @Entity
-@NamedQuery(name="Education.findAll", query="SELECT e FROM Education e")
+@Data
 public class Education implements Serializable {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@Id
-	private int id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "ID", insertable = false, nullable = false)
+  private Integer ID;
 
-	private String description;
+  @Column(name = "CVID")
+  private Integer CVID;
 
-//	@Temporal(TemporalType.DATE)
-//	private LocalDateTime endtime;
+  @Column(name = "SchoolType")
+  private String SchoolType;
 
-	private String major;
+  @Column(name = "Major")
+  private String Major;
 
-	private String schoolType;
+  @Column(name = "StartTime")
+  private Date StartTime;
 
-//	@Temporal(TemporalType.DATE)
-//	private LocalDateTime startTime;
+  @Column(name = "Endtime")
+  private Date Endtime;
 
-	//bi-directional many-to-one association to Cv
-	@ManyToOne
-	@JoinColumn(name="CVID")
-	private Cv cv;
+  @Column(name = "Description")
+  private String Description;
+
+  
 }
