@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/education")
-public class EducationController {
+public class EducationWS {
     @Autowired
     private EducationRepository educationRepository;
 

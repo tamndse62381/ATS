@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/industry")
-public class IndustryController {
+public class IndustryWS {
     @Autowired
     private IndustryRepository industryRepository;
 
