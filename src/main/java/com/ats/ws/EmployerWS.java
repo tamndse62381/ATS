@@ -1,15 +1,10 @@
 package com.ats.ws;
 
-import javax.ws.rs.POST;
-
-import com.ats.dto.AccountDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.*;
 
 import com.ats.util.RestResponse;
-
-import java.util.Date;
 
 @RestController
 @RequestMapping("/employer")

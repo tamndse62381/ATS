@@ -1,6 +1,6 @@
 package com.ats.ws;
 
-import com.ats.entity.Socialactivity;
+import com.ats.entity.Socialactivities;
 import com.ats.service.SocialactivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +18,14 @@ public class SocialactivityWS {
     // find list socialactivity of one CV
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @CrossOrigin(origins = "")
-    public ResponseEntity<List<Socialactivity>> findByCVID (@PathVariable int id){
+    public ResponseEntity<List<Socialactivities>> findByCVID (@PathVariable int id){
         return  ResponseEntity.ok().body(socialactivityService.findAllSocialactivityByCVID(id));
     }
 
     // edit one social activity
     @RequestMapping(value = "/{id}",method = RequestMethod.PUT)
     @CrossOrigin(origins = "")
-    public boolean editASocialactivity(@RequestBody Socialactivity editedSocialactivity, @PathVariable int id){
+    public boolean editASocialactivity(@RequestBody Socialactivities editedSocialactivity, @PathVariable int id){
         if (socialactivityService.editASocialactivity(editedSocialactivity, id))
             return true;
         return false;
@@ -34,7 +34,7 @@ public class SocialactivityWS {
     // Create a new SocialActivity
     @RequestMapping(value = "", method = RequestMethod.POST)
     @CrossOrigin (origins = "")
-    public ResponseEntity<Socialactivity> creaete(@RequestBody Socialactivity newSocialactivity){
+    public ResponseEntity<Socialactivities> creaete(@RequestBody Socialactivities newSocialactivity){
         if (socialactivityService.createANewSocialactivity(newSocialactivity) != null)
             return ResponseEntity.ok().body(newSocialactivity);
         return ResponseEntity.badRequest().body(null);
@@ -45,7 +45,7 @@ public class SocialactivityWS {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @CrossOrigin(origins = "")
     public ResponseEntity findOneByID(@PathVariable int id){
-        Socialactivity soc = socialactivityService.findOneByID(id);
+        Socialactivities soc = socialactivityService.findOneByID(id);
         if(soc != null)
             return ResponseEntity.ok().body(soc);
         return ResponseEntity.badRequest().body(null);
