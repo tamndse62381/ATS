@@ -25,7 +25,7 @@ public class AccountWS {
     private static final Logger LOGGER = LogManager.getLogger(AccountWS.class);
 
     @CrossOrigin(origins = "http://127.0.0.1:5500")
-    @PostMapping(value = "/login")
+    @GetMapping(value = "/login")
     @ResponseBody
     public RestResponse login(@RequestParam("email") String email, @RequestParam("password") String password) {
         LOGGER.info("Begin login in Account WS with username - password: {}", email + " - " + password);
@@ -73,7 +73,7 @@ public class AccountWS {
     }
 
     @CrossOrigin(origins = "http://127.0.0.1:5500")
-    @PostMapping(value = "/checkLogin", produces = "application/json;charset=UTF-8")
+    @GetMapping(value = "/checkLogin", produces = "application/json;charset=UTF-8")
     public RestResponse checkLogin(@RequestParam("accessToken") String accessToken) {
         LOGGER.info("Begin login in Account WS with Token : {}", accessToken);
         UsersDTO usersDTO;
@@ -92,7 +92,7 @@ public class AccountWS {
     }
 
     @CrossOrigin(origins = "http://127.0.0.1:5500")
-    @PostMapping(value = "/changePassword", produces = "application/json;charset=UTF-8")
+    @GetMapping(value = "/changePassword", produces = "application/json;charset=UTF-8")
     public RestResponse changePassword(@RequestParam("id") int id, @RequestParam("oldPassword") String oldPassword,
                                        @RequestParam("newPassword") String newPassword) {
         LOGGER.info("Begin changePassword in AccountWS with Account id {}" + id);
@@ -110,7 +110,7 @@ public class AccountWS {
     }
 
     @CrossOrigin(origins = "http://127.0.0.1:5500")
-    @PostMapping(value = "/changeStatus", produces = "application/json;charset=UTF-8")
+    @GetMapping(value = "/changeStatus", produces = "application/json;charset=UTF-8")
     public RestResponse changeStatus(@RequestParam("id") int id, @RequestParam("newStatus") String newStatus) {
         LOGGER.info("Begin changeStatus in AccountWS with Account id : {}" + id);
         int success;
