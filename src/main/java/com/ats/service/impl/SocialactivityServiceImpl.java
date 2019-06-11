@@ -46,5 +46,10 @@ public class SocialactivityServiceImpl implements SocialactivityService {
     public Socialactivities findOneByID(int id) {
         return socialactivityRepository.findOne(id);
     }
+
+    @Override
+    public void deleteOneByID(int id) {
+        socialactivityRepository.delete(id);
+    }
 }
 

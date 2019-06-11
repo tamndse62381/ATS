@@ -16,7 +16,6 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/job")
 public class JobWS {
-
 	@Autowired
 	JobService jobService;
 

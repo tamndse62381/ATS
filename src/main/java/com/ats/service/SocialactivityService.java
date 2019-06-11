@@ -15,5 +15,5 @@ public interface SocialactivityService {
 
     public Socialactivities findOneByID(int id);
 
-    
+    public void deleteOneByID(int id);
 }
