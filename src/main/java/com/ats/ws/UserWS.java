@@ -1,16 +1,23 @@
 package com.ats.ws;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import com.ats.entity.Users;
+//import com.ats.specification.UserSpecificationsBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
 import com.ats.dto.UsersDTO;
 
-import com.ats.service.UserService;
+import com.ats.service.UsersService;
 import com.ats.token.TokenAuthenticationService;
 import com.ats.util.RestResponse;
 
@@ -19,20 +26,20 @@ import com.ats.util.RestResponse;
 public class UserWS {
 
     @Autowired
-    UserService userService;
+    UsersService usersService;
     @Autowired
     TokenAuthenticationService tokenService;
     private static final Logger LOGGER = LogManager.getLogger(UserWS.class);
 
-    @CrossOrigin(origins = "http://127.0.0.1:5500")
-    @GetMapping(value = "/login")
+    @CrossOrigin(origins = "localhost:8090")
+    @PostMapping(value = "/login")
     @ResponseBody
-    public RestResponse login(@RequestParam("email") String email, @RequestParam("password") String password) {
-        LOGGER.info("Begin login in Account WS with username - password: {}", email + " - " + password);
-        UsersDTO usersDTO = new UsersDTO();
+    public RestResponse login(@RequestBody UsersDTO usersDTO) {
+        LOGGER.info("Begin login inUserWS with username - password: {}", usersDTO.getEmail() + " - " + usersDTO.getPassword());
+
         try {
-            usersDTO = userService.login(email, password);
-            LOGGER.info("End login in Account WS with username - password : {}", email + " - " + password);
+            usersDTO = usersService.login(usersDTO.getEmail(), usersDTO.getPassword());
+            LOGGER.info("End login in UserWS with username - password : {}", usersDTO.getEmail() + " - " + usersDTO.getPassword());
             if (usersDTO != null && usersDTO.getId() != 0) {
                 return new RestResponse(true, "Login Successful", usersDTO);
             }
@@ -42,28 +49,21 @@ public class UserWS {
         return new RestResponse(false, "Login Fail Because " + usersDTO.getEmail(), null);
     }
 
-
-    @CrossOrigin(origins = "http://127.0.0.1:5500")
+    @ResponseBody
+    @CrossOrigin(origins = "localhost:8090")
     @PostMapping(value = "/registration", produces = "application/json;charset=UTF-8")
-    public RestResponse registration(@RequestParam("email") String email, @RequestParam("password") String password,
-                                     @RequestParam("fullname") String fullname, @RequestParam("roleId") int roleId) {
-        LOGGER.info("Begin Registration in AccountWS with email - password - fullname: {}",
-                email + " - " + password + " - " + fullname);
+    public RestResponse registration(@RequestBody UsersDTO usersDTO) {
+        LOGGER.info("Begin Registration in UserWS with email - password - fullname: {}",
+                usersDTO.getEmail() + " - " + usersDTO.getPassword() + " - " + usersDTO.getFullname());
         int result;
         try {
-            String status = "new";
-            Date createdDate = new Date();
-            String tokenString = tokenService.addAuthentication(email);
-            UsersDTO usersDTO = new UsersDTO(0, email, password, fullname, status,
-                    createdDate, createdDate, null, roleId, tokenString);
-            result = userService.registration(usersDTO);
-            LOGGER.info("End Registration in AccountWS with email - password - fullname: {}",
-                    email + " - " + password + " - " + fullname);
+            String tokenString = tokenService.addAuthentication(usersDTO.getEmail());
+            usersDTO.setAccessToken(tokenString);
+            result = usersService.registration(usersDTO);
+            LOGGER.info("End Registration in UserWS with email - password - fullname: {}",
+                    usersDTO.getEmail() + " - " + usersDTO.getPassword() + " - " + usersDTO.getFullname());
 
             if (result > -1) {
-                if(roleId == 2){
-
-                }
                 return new RestResponse(true, "Create To Successful", null);
             }
         } catch (Exception e) {
@@ -72,15 +72,15 @@ public class UserWS {
         return new RestResponse(false, "Fail Create To Account", null);
     }
 
-    @CrossOrigin(origins = "http://127.0.0.1:5500")
-    @GetMapping(value = "/checkLogin", produces = "application/json;charset=UTF-8")
-    public RestResponse checkLogin(@RequestParam("accessToken") String accessToken) {
-        LOGGER.info("Begin login in Account WS with Token : {}", accessToken);
+    @ResponseBody
+    @CrossOrigin(origins = "localhost:8090")
+    @PostMapping(value = "/checkLogin", produces = "application/json;charset=UTF-8")
+    public RestResponse checkLogin(@RequestHeader(value = "accessToken") String accessToken) {
+        LOGGER.info("Begin login in UserWS with Token : {}", accessToken);
         UsersDTO usersDTO;
-
         try {
-            usersDTO = userService.findAccountByToken(accessToken);
-            LOGGER.info("End login in Account WS with Token : ", accessToken);
+            usersDTO = usersService.findAccountByToken(accessToken);
+            LOGGER.info("End login in UserWS with Token : {}", accessToken);
             if (usersDTO != null) {
                 return new RestResponse(true, "CheckLogin To Successful", usersDTO);
             }
@@ -91,40 +91,56 @@ public class UserWS {
         return new RestResponse(false, "CheckLogin To Fail", null);
     }
 
-    @CrossOrigin(origins = "http://127.0.0.1:5500")
-    @GetMapping(value = "/changePassword", produces = "application/json;charset=UTF-8")
-    public RestResponse changePassword(@RequestParam("id") int id, @RequestParam("oldPassword") String oldPassword,
-                                       @RequestParam("newPassword") String newPassword) {
-        LOGGER.info("Begin changePassword in AccountWS with Account id {}" + id);
+    @ResponseBody
+    @CrossOrigin(origins = "localhost:8090")
+    @PostMapping(value = "/changePassword", produces = "application/json;charset=UTF-8")
+    public RestResponse changePassword(@RequestBody UsersDTO usersDTO) {
+        LOGGER.info("Begin changePassword in UserWS with Account id {}" + usersDTO.getId());
         int success;
         try {
-            success = userService.changePassword(id, newPassword, oldPassword);
+            success = usersService.changePassword(usersDTO.getId(), usersDTO.getNewPassword(), usersDTO.getPassword());
             if (success > 0) {
-                return new RestResponse(true, "changePassword Successful with new password is " + newPassword, null);
+                return new RestResponse(true, "changePassword Successful with new password is " + usersDTO.getNewPassword(), null);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOGGER.info("End changePassword in AccountWS with Account id {}" + id);
+        LOGGER.info("End changePassword in UserWS with Account id {}" + usersDTO.getId());
         return new RestResponse(false, "changePassword Fail", null);
     }
 
-    @CrossOrigin(origins = "http://127.0.0.1:5500")
-    @GetMapping(value = "/changeStatus", produces = "application/json;charset=UTF-8")
-    public RestResponse changeStatus(@RequestParam("id") int id, @RequestParam("newStatus") String newStatus) {
-        LOGGER.info("Begin changeStatus in AccountWS with Account id : {}" + id);
+    @ResponseBody
+    @CrossOrigin(origins = "localhost:8090")
+    @PostMapping(value = "/changeStatus", produces = "application/json;charset=UTF-8")
+    public RestResponse changeStatus(@RequestBody UsersDTO usersDTO) {
+        LOGGER.info("Begin changeStatus in UserWS with Account id : {}" + usersDTO.getId());
         int success;
         try {
-            success = userService.changeStatus(id, newStatus);
+            success = usersService.changeStatus(usersDTO.getId(), usersDTO.getStatus());
             if (success > 0) {
-                return new RestResponse(true, "changeStatus Successful with status " + newStatus, null);
+                return new RestResponse(true, "changeStatus Successful with status " + usersDTO.getStatus(), null);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOGGER.info("Begin changeStatus in AccountWS with Account id : {}" + id);
+        LOGGER.info("Begin changeStatus in UserWS with Account id : {}" + usersDTO.getId());
         return new RestResponse(false, "changeStatus Fail", null);
     }
+
+//    @CrossOrigin(origins = "localhost:8090")
+//    @GetMapping(value = "/search")
+//    @ResponseBody
+//    public List<UsersDTO> searchUser(@RequestParam(value = "search") String search) {
+//        LOGGER.info("Begin searchUser in AccountWS with Search value : {}" + search);
+//        List<UsersDTO> listUser = new ArrayList<>();
+//        try {
+//            listUser = usersService.searchUser(search);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//        LOGGER.info("End searchUser in AccountWS with Search value : {}" + search);
+//        return listUser;
+//    }
 
 }

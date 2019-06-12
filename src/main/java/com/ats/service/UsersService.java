@@ -5,8 +5,10 @@ package com.ats.service;
 import com.ats.dto.UsersDTO;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public interface UserService {
+public interface UsersService {
 	 UsersDTO login(String email, String password);
 
 	 int registration(UsersDTO dto);
@@ -24,4 +26,6 @@ public interface UserService {
 	 UsersDTO findAccountByToken(String token);
 
 //	 UsersDTO findAccountById(int id);
+
+//	List<UsersDTO> searchUser(String search);
 }
