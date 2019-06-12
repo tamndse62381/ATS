@@ -15,7 +15,7 @@ import com.ats.service.JobService;
 public class JobServiceImpl implements JobService {
 
 	@Autowired
-    JobRepository jobRepository;
+	JobRepository jobRepository;
 
 	private static final Logger LOGGER = LogManager.getLogger(JobServiceImpl.class);
 
@@ -23,7 +23,7 @@ public class JobServiceImpl implements JobService {
 	public int createJob(Job job) {
 		LOGGER.info("Begin createJob in Job Service with job name : {}", job.getTitle());
 		int result = 0;
-		Job newJob ;
+		Job newJob;
 		try {
 			newJob = jobRepository.save(job);
 			result = newJob.getId();
@@ -31,7 +31,7 @@ public class JobServiceImpl implements JobService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		LOGGER.info("Begin createJob in Job Service with job name : {}", job.getTitle());
+		LOGGER.info("End createJob in Job Service with job name : {}", job.getTitle());
 		return result;
 	}
 

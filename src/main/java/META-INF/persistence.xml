@@ -9,7 +9,6 @@
 		<class>com.ats.entity.Companyindustry</class>
 		<class>com.ats.entity.Cv</class>
 		<class>com.ats.entity.Education</class>
-		<class>com.ats.entity.</class>
 		<class>com.ats.entity.Employerslikecv</class>
 		<class>com.ats.entity.Industry</class>
 		<class>com.ats.entity.Job</class>
