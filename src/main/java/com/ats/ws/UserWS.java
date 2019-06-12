@@ -57,8 +57,11 @@ public class UserWS {
                 usersDTO.getEmail() + " - " + usersDTO.getPassword() + " - " + usersDTO.getFullname());
         int result;
         try {
+            java.util.Date date = new java.util.Date();
             String tokenString = tokenService.addAuthentication(usersDTO.getEmail());
             usersDTO.setAccessToken(tokenString);
+            usersDTO.setLastLogin(date);
+            usersDTO.setCreatedDate(date);
             result = usersService.registration(usersDTO);
             LOGGER.info("End Registration in UserWS with email - password - fullname: {}",
                     usersDTO.getEmail() + " - " + usersDTO.getPassword() + " - " + usersDTO.getFullname());
