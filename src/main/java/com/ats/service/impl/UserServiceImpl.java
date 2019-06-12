@@ -13,14 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ats.service.AccountService;
+import com.ats.service.UserService;
 
 import com.ats.token.TokenAuthenticationService;
 import com.ats.util.EncrytedPasswordUtils;
 
 @Service
 @Transactional
-public class AccountServiceImpl implements AccountService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -30,7 +30,7 @@ public class AccountServiceImpl implements AccountService {
     ModelMapper modelMapper;
 
 
-    private static final Logger LOGGER = LogManager.getLogger(AccountServiceImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
 
     private EncrytedPasswordUtils passwordUtil;
 

@@ -6,7 +6,7 @@ import com.ats.dto.UsersDTO;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface AccountService {
+public interface UserService {
 	 UsersDTO login(String email, String password);
 
 	 int registration(UsersDTO dto);

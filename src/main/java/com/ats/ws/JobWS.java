@@ -1,17 +1,13 @@
 package com.ats.ws;
 
 import com.ats.entity.Job;
-import com.ats.ws.AccountWS;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ats.service.JobService;
 import com.ats.util.RestResponse;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/job")
@@ -20,7 +16,7 @@ public class JobWS {
 	@Autowired
 	JobService jobService;
 
-	private static final Logger LOGGER = LogManager.getLogger(AccountWS.class);
+	private static final Logger LOGGER = LogManager.getLogger(UserWS.class);
 
 	@ResponseBody
 	@CrossOrigin(origins = "http://127.0.0.1:5500")

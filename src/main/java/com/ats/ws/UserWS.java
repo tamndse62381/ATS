@@ -10,19 +10,19 @@ import org.springframework.web.bind.annotation.*;
 
 import com.ats.dto.UsersDTO;
 
-import com.ats.service.AccountService;
+import com.ats.service.UserService;
 import com.ats.token.TokenAuthenticationService;
 import com.ats.util.RestResponse;
 
 @RestController
-@RequestMapping("/account")
-public class AccountWS {
+@RequestMapping("/user")
+public class UserWS {
 
     @Autowired
-    AccountService accountService;
+    UserService userService;
     @Autowired
     TokenAuthenticationService tokenService;
-    private static final Logger LOGGER = LogManager.getLogger(AccountWS.class);
+    private static final Logger LOGGER = LogManager.getLogger(UserWS.class);
 
     @CrossOrigin(origins = "http://127.0.0.1:5500")
     @GetMapping(value = "/login")
@@ -31,7 +31,7 @@ public class AccountWS {
         LOGGER.info("Begin login in Account WS with username - password: {}", email + " - " + password);
         UsersDTO usersDTO = new UsersDTO();
         try {
-            usersDTO = accountService.login(email, password);
+            usersDTO = userService.login(email, password);
             LOGGER.info("End login in Account WS with username - password : {}", email + " - " + password);
             if (usersDTO != null && usersDTO.getId() != 0) {
                 return new RestResponse(true, "Login Successful", usersDTO);
@@ -56,7 +56,7 @@ public class AccountWS {
             String tokenString = tokenService.addAuthentication(email);
             UsersDTO usersDTO = new UsersDTO(0, email, password, fullname, status,
                     createdDate, createdDate, null, roleId, tokenString);
-            result = accountService.registration(usersDTO);
+            result = userService.registration(usersDTO);
             LOGGER.info("End Registration in AccountWS with email - password - fullname: {}",
                     email + " - " + password + " - " + fullname);
 
@@ -79,7 +79,7 @@ public class AccountWS {
         UsersDTO usersDTO;
 
         try {
-            usersDTO = accountService.findAccountByToken(accessToken);
+            usersDTO = userService.findAccountByToken(accessToken);
             LOGGER.info("End login in Account WS with Token : ", accessToken);
             if (usersDTO != null) {
                 return new RestResponse(true, "CheckLogin To Successful", usersDTO);
@@ -98,7 +98,7 @@ public class AccountWS {
         LOGGER.info("Begin changePassword in AccountWS with Account id {}" + id);
         int success;
         try {
-            success = accountService.changePassword(id, newPassword, oldPassword);
+            success = userService.changePassword(id, newPassword, oldPassword);
             if (success > 0) {
                 return new RestResponse(true, "changePassword Successful with new password is " + newPassword, null);
             }
@@ -115,7 +115,7 @@ public class AccountWS {
         LOGGER.info("Begin changeStatus in AccountWS with Account id : {}" + id);
         int success;
         try {
-            success = accountService.changeStatus(id, newStatus);
+            success = userService.changeStatus(id, newStatus);
             if (success > 0) {
                 return new RestResponse(true, "changeStatus Successful with status " + newStatus, null);
             }
