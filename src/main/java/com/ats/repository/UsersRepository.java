@@ -13,8 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Repository
-public interface UsersRepository extends JpaRepository<Users, Integer>
-        , JpaSpecificationExecutor<Users> {
+public interface UsersRepository extends JpaRepository<Users, Integer> {
 
     @Query("Select b from Users b where b.email = :email")
     Users findAccountByEmail(@Param("email") String email);

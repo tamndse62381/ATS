@@ -1,22 +1,13 @@
 package com.ats.ws;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import com.ats.entity.Users;
-//import com.ats.specification.UserSpecificationsBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
-
 import com.ats.dto.UsersDTO;
-
 import com.ats.service.UsersService;
 import com.ats.token.TokenAuthenticationService;
 import com.ats.util.RestResponse;
@@ -123,7 +114,6 @@ public class UserWS {
             if (success > 0) {
                 return new RestResponse(true, "changeStatus Successful with status " + usersDTO.getStatus(), null);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -131,19 +121,6 @@ public class UserWS {
         return new RestResponse(false, "changeStatus Fail", null);
     }
 
-//    @CrossOrigin(origins = "localhost:8090")
-//    @GetMapping(value = "/search")
-//    @ResponseBody
-//    public List<UsersDTO> searchUser(@RequestParam(value = "search") String search) {
-//        LOGGER.info("Begin searchUser in AccountWS with Search value : {}" + search);
-//        List<UsersDTO> listUser = new ArrayList<>();
-//        try {
-//            listUser = usersService.searchUser(search);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-//        LOGGER.info("End searchUser in AccountWS with Search value : {}" + search);
-//        return listUser;
-//    }
+
 
 }

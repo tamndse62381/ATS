@@ -34,7 +34,7 @@ public class CompanyWS {
         return ResponseEntity.badRequest().body(null);
     }
 
-    // edit info's compnay
+    // edit info's company
     @PutMapping("")
     public ResponseEntity<Company> edit(@RequestBody Company editedCompany){
         try {

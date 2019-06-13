@@ -1,21 +1,14 @@
 package com.ats.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-//import java.util.HashMap;
 
 import com.ats.dto.UsersDTO;
 import com.ats.entity.Users;
 import com.ats.repository.UsersRepository;
-//import com.ats.specification.UserSpecificationsBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -162,30 +155,6 @@ public class UsersServiceImpl implements UsersService {
         }
         return reTurnUsersDTO;
     }
-
-//    @Override
-//    public List<UsersDTO> searchUser(String search) {
-//        LOGGER.info("Begin searchUser in Account Service with Search value : {}" + search);
-//        List<Users> listEntity = new ArrayList<>();
-//        List<UsersDTO> listDTO = new ArrayList<>();
-//        ModelMapper modelMapper = new ModelMapper();
-//        UserSpecificationsBuilder builder = new UserSpecificationsBuilder();
-//        Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
-//        Matcher matcher = pattern.matcher(search + ",");
-//        while (matcher.find()) {
-//            builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
-//        }
-//
-//        Specification<Users> spec = builder.build();
-//        listEntity = usersRepository.findAll(spec);
-//        for (int i = 0; i < listEntity.size(); i++) {
-//            listDTO.add( modelMapper.map(listEntity.get(i),UsersDTO.class));
-//        }
-//
-//        LOGGER.info("End searchUser in Account Service with Search value : {}" + search);
-//
-//        return listDTO;
-//    }
 
     @Override
     public int changeStatus(int id, String newStatus) {

@@ -10,6 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ats.service.JobService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Transactional
 public class JobServiceImpl implements JobService {
@@ -33,6 +36,21 @@ public class JobServiceImpl implements JobService {
 		}
 		LOGGER.info("End createJob in Job Service with job name : {}", job.getTitle());
 		return result;
+	}
+
+	@Override
+	public List<Job> searchJob(String job) {
+		LOGGER.info("Begin searchJob in Job Service with job name : {}", job);
+		int result = 0;
+		List<Job> listofJob = new ArrayList<>();
+		try {
+			listofJob = jobRepository.searchJob(job);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		LOGGER.info("End searchJob in Job Service with job name : {}", job);
+		return listofJob;
 	}
 
 }

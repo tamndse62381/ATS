@@ -27,5 +27,4 @@ public interface UsersService {
 
 //	 UsersDTO findAccountById(int id);
 
-//	List<UsersDTO> searchUser(String search);
 }
