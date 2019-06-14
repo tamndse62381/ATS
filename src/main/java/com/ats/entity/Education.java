@@ -38,6 +38,4 @@ public class Education implements Serializable {
 
   @Column(name = "description")
   private String description;
-
-  
 }

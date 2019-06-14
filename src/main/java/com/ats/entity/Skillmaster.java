@@ -25,6 +25,4 @@ public class Skillmaster implements Serializable {
 
   @Column(name = "skillName")
   private String skillName;
-
-  
 }

@@ -68,6 +68,5 @@ public class Users implements Serializable {
 
   @Column(name = "Status")
   private String Status;
-
   
 }
