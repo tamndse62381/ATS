@@ -21,7 +21,7 @@ public class SocialactivityServiceImpl implements SocialactivityService {
 
     @Override
     public boolean editASocialactivity(Socialactivities editedSocialactivity ,int id) {
-        Socialactivities  soc = socialactivityRepository.findOne(id);
+        Socialactivities  soc = socialactivityRepository.getOne(id);
         if (soc != null){
             soc.setName(editedSocialactivity.getName());
             soc.setDescription(editedSocialactivity.getDescription());
@@ -44,7 +44,7 @@ public class SocialactivityServiceImpl implements SocialactivityService {
 
     @Override
     public Socialactivities findOneByID(int id) {
-        return socialactivityRepository.findOne(id);
+        return socialactivityRepository.getOne(id);
     }
 }
 

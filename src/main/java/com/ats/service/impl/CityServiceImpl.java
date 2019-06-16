@@ -26,4 +26,12 @@ public class CityServiceImpl implements CityService {
         LOGGER.info("End getAllCity in City Service with Numer of City: {}", cityList.size());
         return cityList;
     }
+
+    @Override
+    public City getCityById(int id) {
+        LOGGER.info("Begin getCityById in City Service with id : {} " + id);
+        City city = cityRepository.getCityNameById(id);
+        LOGGER.info("End getCityById in City Service with id : {} " + id);
+        return city;
+    }
 }

@@ -1,5 +1,6 @@
 package com.ats.ws;
 
+import com.ats.dto.JobDTO;
 import com.ats.entity.Job;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,7 +23,7 @@ public class JobWS {
 	private static final Logger LOGGER = LogManager.getLogger(UserWS.class);
 
 	@ResponseBody
-	@CrossOrigin(origins = "localhost:8090")
+	@CrossOrigin(origins = "*")
 	@PostMapping(value = "/create")
 	public RestResponse createJob(@RequestBody Job job) {
 		LOGGER.info("Begin createJob in JobWS with Job title : {}" + job.getTitle());
@@ -42,12 +43,12 @@ public class JobWS {
 		return new RestResponse(false, "Fail To Create New Job ", null);
 
 	}
-	@CrossOrigin(origins = "localhost:8090")
+	@CrossOrigin(origins = "*")
 	@GetMapping(value = "/search")
 	@ResponseBody
-	public List<Job> searchJob(@RequestParam(value = "search") String search) {
+	public List<JobDTO> searchJob(@RequestParam(value = "search") String search) {
 		LOGGER.info("Begin searchJob in JobWS  with Search value : {}" + search);
-		List<Job> listJob = new ArrayList<>();
+		List<JobDTO> listJob = new ArrayList<>();
 		try {
             listJob = jobService.searchJob(search);
 		}catch (Exception e){
@@ -57,19 +58,34 @@ public class JobWS {
 		return listJob;
 	}
 
-    @CrossOrigin(origins = "localhost:8090")
+	@CrossOrigin(origins = "*")
     @GetMapping(value = "/changeJobStatus")
     @ResponseBody
     public List<Job> changeJobStatus(@RequestParam(value = "search") String search) {
         LOGGER.info("Begin changeJobStatus in JobWS with Search value : {}" + search);
         List<Job> listUser = new ArrayList<>();
         try {
-            listUser = jobService.searchJob(search);
+//            listUser = jobService.searchJob(search);
         }catch (Exception e){
             e.printStackTrace();
         }
         LOGGER.info("End changeJobStatus in JobWS with Search value : {}" + search);
         return listUser;
     }
+
+	@CrossOrigin(origins = "*")
+	@GetMapping(value = "/getTop8")
+	@ResponseBody
+	public List<JobDTO> getTop8() {
+		LOGGER.info("Begin getTop8 in JobWS ");
+		List<JobDTO> listJobs = new ArrayList<>();
+		try {
+			listJobs = jobService.getTop8();
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		LOGGER.info("End getTop8 in JobWS ");
+		return listJobs;
+	}
 
 }

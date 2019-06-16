@@ -73,7 +73,7 @@ public class UserWS {
         LOGGER.info("Begin login in UserWS with Token : {}", accessToken);
         UsersDTO usersDTO;
         try {
-            usersDTO = usersService.findAccountByToken(accessToken);
+            usersDTO = usersService.findUserByToken(accessToken);
             LOGGER.info("End login in UserWS with Token : {}", accessToken);
             if (usersDTO != null) {
                 return new RestResponse(true, "CheckLogin To Successful", usersDTO);

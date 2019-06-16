@@ -27,7 +27,7 @@ public class RoleServiceImpl implements RoleService {
         RoleDTO roleDTO = new RoleDTO();
         modelMapper = new ModelMapper();
         try {
-            Role role = roleRepository.findOne(roleId);
+            Role role = roleRepository.getOne(roleId);
             if (role != null) {
                 roleDTO = modelMapper.map(role,RoleDTO.class);
             }
