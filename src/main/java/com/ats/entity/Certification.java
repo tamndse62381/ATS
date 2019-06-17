@@ -25,6 +25,4 @@ public class Certification implements Serializable {
 
   @Column(name = "certificationName")
   private String certificationName;
-
-  
 }

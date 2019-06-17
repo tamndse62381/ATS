@@ -1,5 +1,6 @@
 package com.ats.ws;
 
+import com.ats.entity.Skill;
 import com.ats.entity.Skillmaster;
 import com.ats.service.SkillmasterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +31,19 @@ public class SkillmasterWS {
         return false;
     }
 
-    // EDIT MOT CAI SKILL
+    // EDIT MOT SKILL IN ONE CV
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @CrossOrigin(origins = "")
     public boolean editASkillmaster(@RequestBody Skillmaster editedSkillmaster, @PathVariable int id){
            if (skillmasterService.editASkillmaster(editedSkillmaster, id))
                return true;
            return false;
+    }
+
+    // GET All LANGUAGE SKILL
+    @RequestMapping(value = "/language/{id}", method = RequestMethod.GET)
+    @CrossOrigin(origins = "")
+    public ResponseEntity<List<Skillmaster>> findAllLanguageskill(@PathVariable int id){
+        return ResponseEntity.ok().body(skillmasterService.findAllLanguageskill(id));
     }
 }

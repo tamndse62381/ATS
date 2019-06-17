@@ -16,7 +16,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/job")
 public class JobWS {
-
 	@Autowired
 	JobService jobService;
 

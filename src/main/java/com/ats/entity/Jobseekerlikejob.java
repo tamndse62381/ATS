@@ -35,6 +35,5 @@ public class Jobseekerlikejob implements Serializable {
 
   @Column(name = "isActive")
   private Integer isActive;
-
   
 }

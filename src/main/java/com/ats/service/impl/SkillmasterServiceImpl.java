@@ -45,4 +45,14 @@ public class SkillmasterServiceImpl implements SkillmasterService {
         }
         return false;
     }
+
+    @Override
+    public List<Skillmaster> findAllLanguageskill(int id) {
+        try {
+            return skillmasterRepository.findAllLanguageSkill(id);
+        } catch (Exception e){
+            System.out.println(e);
+        }
+        return null;
+    }
 }

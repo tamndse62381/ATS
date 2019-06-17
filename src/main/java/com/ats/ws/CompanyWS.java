@@ -11,7 +11,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Calendar;
-import java.util.List;
 
 @RestController
 @RequestMapping("/company")
@@ -55,11 +54,6 @@ public class CompanyWS {
     // Get one company by Employerid
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     ResponseEntity<Company> getByEmployerId(@Param("id") int id){
-        try {
-
-        } catch (RuntimeException e){
-
-        }
         return null;
     }
 }

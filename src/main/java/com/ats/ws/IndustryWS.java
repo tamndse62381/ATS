@@ -2,6 +2,7 @@ package com.ats.ws;
 
 import com.ats.entity.Industry;
 import com.ats.repository.IndustryRepository;
+import com.ats.service.IndustryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,15 +14,12 @@ import java.util.List;
 public class IndustryWS {
     @Autowired
     private IndustryRepository industryRepository;
+    @Autowired
+    private IndustryService industryService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Industry>> getAll(){
-        try {
-            return ResponseEntity.ok().body(industryRepository.findAll());
-        } catch (RuntimeException e){
-            System.out.println(e);
-        }
-        return ResponseEntity.badRequest().body(null);
+        return industryService.getAll();
     }
 
     @RequestMapping(value = "/getOne", method = RequestMethod.GET)
