@@ -49,7 +49,7 @@ public class SocialactivityServiceImpl implements SocialactivityService {
 
     @Override
     public void deleteOneByID(int id) {
-        socialactivityRepository.delete(id);
+        socialactivityRepository.deleteById(id);
     }
 }
 
