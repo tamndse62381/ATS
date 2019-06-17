@@ -6,7 +6,6 @@ import com.ats.repository.CVRepository;
 import com.ats.service.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Calendar;
@@ -28,7 +27,7 @@ public class CVWS {
     @Autowired
     private ProjectorproductworkedService projectorproductworkedService;
     ModelMapper modelMapper = new ModelMapper();
-    // Constant
+    // Conts
     private static String EMAIL = "1101010001001101000000000000";
 
     // Get CV By CVID
@@ -37,20 +36,19 @@ public class CVWS {
     public ResponseEntity<CVDTO> getCV(@RequestParam("id") int CVID){
         Cv cv = cvRepository.findOne(CVID);
         if (cv != null) {
-            if(!cv.getStatus().equals("2")) {
-                List<Certification> listCer = certificationService.getListCertificationByCVID(CVID);
-                List<Education> listEdu = educationService.getListEduByCVId(CVID);
-                List<Workexperience> listWork = workexperienceService.getByCVID(CVID);
-                List<Socialactivities> listSoc = socialactivityService.findListSocialactivityByCVID(CVID);
-                List<Projectorproductworked> listPro = projectorproductworkedService.getListProjectByCVID(CVID);
-                CVDTO returnCVDTO = modelMapper.map(cv, CVDTO.class);
-                returnCVDTO.setCertifications(listCer);
-                returnCVDTO.setSocialactivities(listSoc);
-                returnCVDTO.setWorkexperiences(listWork);
-                returnCVDTO.setProjectorproductworkeds(listPro);
-                returnCVDTO.setEducations(listEdu);
-                return ResponseEntity.ok().body(returnCVDTO);
-            }
+            List<Certification> listCer = certificationService.getListCertificationByCVID(CVID);
+            List<Education> listEdu = educationService.getListEduByCVId(CVID);
+            List<Workexperience> listWork = workexperienceService.getByCVID(CVID);
+            List<Socialactivities> listSoc = socialactivityService.findListSocialactivityByCVID(CVID);
+            List<Projectorproductworked> listPro = projectorproductworkedService.getListProjectByCVID(CVID);
+
+            CVDTO returnCVDTO = modelMapper.map(cv, CVDTO.class);
+            returnCVDTO.setCertifications(listCer);
+            returnCVDTO.setSocialactivities(listSoc);
+            returnCVDTO.setWorkexperiences(listWork);
+            returnCVDTO.setProjectorproductworkeds(listPro);
+            returnCVDTO.setEducations(listEdu);
+            return ResponseEntity.ok().body(returnCVDTO);
         }
         return ResponseEntity.badRequest().body(null);
     }
@@ -63,10 +61,11 @@ public class CVWS {
         cv.setEmail(EMAIL);
         cvRepository.save(cv);
         cv = cvRepository.findCVByCVID(EMAIL);
+
         // mapping CV
         cv.setTitle(newCV.getTitle());
         cv.setUserid(newCV.getUserid());
-        //cv.setImg(newCV.getImg());
+        cv.setImg(newCV.getImg());
         cv.setEmail(newCV.getEmail());
         cv.setFirstName(newCV.getFirstName());
         cv.setLastName(newCV.getLastName());
@@ -138,15 +137,10 @@ public class CVWS {
     }
 
     // Delete One CV
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     @CrossOrigin(origins = "")
-    public boolean deleteACV(@Param("id") int id){
-        Cv cv = cvRepository.findOne(id);
-        if (cv != null){
-            cv.setStatus("2");
-            return true;
-        }
-        return false;
+    public ResponseEntity<CVDTO> deleteACV(@RequestBody CVDTO deletedCVDTO){
+        return null;
     }
 
 }

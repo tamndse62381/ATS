@@ -78,5 +78,5 @@ public class Cv implements Serializable {
   @Column(name = "isActive")
   private Integer isActive;
 
-
+  
 }
