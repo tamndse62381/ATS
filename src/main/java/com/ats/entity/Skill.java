@@ -1,12 +1,8 @@
 package com.ats.entity;
 
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.Data;
 
 @Entity
@@ -25,6 +21,4 @@ public class Skill implements Serializable {
 
   @Column(name = "skilllevelid")
   private Integer skilllevelid;
-
-  
 }

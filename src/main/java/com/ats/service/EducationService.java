@@ -8,7 +8,7 @@ import java.util.List;
 
 @Service
 public interface EducationService {
-    public ResponseEntity<List<Education>> getAllByCVId(int id);
+    public List<Education> getListEduByCVId(int id);
 
     public Education createANewEducation(Education newEducation);
 

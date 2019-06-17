@@ -14,13 +14,9 @@ public class EducationServiceImpl implements EducationService {
     @Autowired
     private EducationRepository educationRepository;
 
-
     @Override
-    public ResponseEntity<List<Education>> getAllByCVId(int id) {
-        List<Education> list = educationRepository.findAllEduByCVID(id);
-        if (!list.isEmpty())
-            return ResponseEntity.ok().body(list);
-        return ResponseEntity.badRequest().body(null);
+    public List<Education> getListEduByCVId(int id) {
+        return educationRepository.findAllEduByCVID(id);
     }
 
     @Override
