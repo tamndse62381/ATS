@@ -12,7 +12,6 @@ import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,7 +52,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public List<JobDTO> searchJob(String job) {
+    public List<JobDTO> searchJob(String job, Pageable pageable) {
         LOGGER.info("Begin searchJob in Job Service with job name : {} ", job);
         List<Job> listofJob = new ArrayList<>();
         List<JobDTO> listofDTO = new ArrayList<>();
