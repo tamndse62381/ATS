@@ -32,7 +32,7 @@ public class EducationServiceImpl implements EducationService {
 
     @Override
     public Education editAEducation(Education editedEducation, int id) {
-        Education edu = educationRepository.findOne(id);
+        Education edu = educationRepository.getOne(id);
         if (edu != null){
             // get set bi loi nha
         }
@@ -41,7 +41,7 @@ public class EducationServiceImpl implements EducationService {
 
     @Override
     public boolean deleteAEducation(int id) {
-        Education edu = educationRepository.findOne(id);
+        Education edu = educationRepository.getOne(id);
         if (edu != null){
             educationRepository.delete(edu);
             return true;

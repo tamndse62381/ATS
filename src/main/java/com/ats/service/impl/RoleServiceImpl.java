@@ -8,7 +8,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.ats.service.RoleService;
 import com.ats.dto.RoleDTO;
 
@@ -18,6 +17,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Autowired
     private RoleRepository roleRepository;
+
     ModelMapper modelMapper;
     private static final Logger LOGGER = LogManager.getLogger(RoleServiceImpl.class);
 
@@ -27,7 +27,7 @@ public class RoleServiceImpl implements RoleService {
         RoleDTO roleDTO = new RoleDTO();
         modelMapper = new ModelMapper();
         try {
-            Role role = roleRepository.findOne(roleId);
+            Role role = roleRepository.getOne(roleId);
             if (role != null) {
                 roleDTO = modelMapper.map(role,RoleDTO.class);
             }

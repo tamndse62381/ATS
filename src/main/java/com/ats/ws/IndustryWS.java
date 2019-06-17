@@ -25,7 +25,7 @@ public class IndustryWS {
     @RequestMapping(value = "/getOne", method = RequestMethod.GET)
     public ResponseEntity<Industry> getById(@RequestParam("id") int id){
         try {
-            return ResponseEntity.ok().body(industryRepository.findOne(id));
+            return ResponseEntity.ok().body(industryRepository.getOne(id));
         } catch (RuntimeException e){
             System.out.println(e);
         }
@@ -42,7 +42,7 @@ public class IndustryWS {
     // put edit item
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<Industry> update(@RequestBody Industry editedIndustry) {
-        if (industryRepository.findOne(editedIndustry.getId()) != null) {
+        if (industryRepository.getOne(editedIndustry.getId()) != null) {
             return ResponseEntity.ok().body(industryRepository.save(editedIndustry));
         }
         return ResponseEntity.badRequest().body(null);

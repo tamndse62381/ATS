@@ -37,7 +37,7 @@ public class WorkexperienceServiceImpl implements WorkexperienceService {
 
     @Override
     public ResponseEntity<Workexperience> editByID(Workexperience editedWorkexperience, int id) {
-        Workexperience work = workexperienceRepository.findOne(id);
+        Workexperience work = workexperienceRepository.getOne(id);
         if (work != null){
             work.setCompanyName(editedWorkexperience.getCompanyName());
             work.setDescription(editedWorkexperience.getDescription());
@@ -52,7 +52,7 @@ public class WorkexperienceServiceImpl implements WorkexperienceService {
 
     @Override
     public ResponseEntity<Workexperience> deleteByID(Workexperience deletedWorkexperience, int id) {
-        Workexperience work = workexperienceRepository.findOne(id);
+        Workexperience work = workexperienceRepository.getOne(id);
         if (work != null){
             workexperienceRepository.delete(work);
             return ResponseEntity.ok().body(work);

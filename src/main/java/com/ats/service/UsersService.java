@@ -5,8 +5,10 @@ package com.ats.service;
 import com.ats.dto.UsersDTO;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public interface AccountService {
+public interface UsersService {
 	 UsersDTO login(String email, String password);
 
 	 int registration(UsersDTO dto);
@@ -19,9 +21,10 @@ public interface AccountService {
 	
 	boolean checkPassword(String password,int id);
 
-	 UsersDTO findAccountByEmail(String email);
+	 UsersDTO findUserByEmail(String email);
 	
-	 UsersDTO findAccountByToken(String token);
+	 UsersDTO findUserByToken(String token);
 
 //	 UsersDTO findAccountById(int id);
+
 }
