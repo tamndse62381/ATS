@@ -23,7 +23,7 @@ public interface UsersRepository extends JpaRepository<Users, Integer> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE Users b SET b.LastLogin = :lastDate WHERE b.email = :email and  b.accessToken = :accessToken")
+    @Query("UPDATE Users b SET b.lastLogin = :lastDate WHERE b.email = :email and  b.accessToken = :accessToken")
     void editAccountLastLogin(@Param("lastDate") Date date, @Param("email") String email,
                               @Param("accessToken") String accessToken);
 
@@ -34,6 +34,6 @@ public interface UsersRepository extends JpaRepository<Users, Integer> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE Users b SET b.Status = :newStatus WHERE b.id = :id")
+    @Query("UPDATE Users b SET b.status = :newStatus WHERE b.id = :id")
     int changeStatus(@Param("id") int id, @Param("newStatus") String newStatus);
 }

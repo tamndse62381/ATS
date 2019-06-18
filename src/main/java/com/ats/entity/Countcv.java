@@ -5,13 +5,13 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-public class Logusers {
+public class Countcv {
     private int id;
     private int userId;
-    private int curatorId;
-    private int logType;
-    private Timestamp createDate;
+    private int cvid;
+    private Timestamp createdDate;
     private Users usersByUserId;
+    private Cv cvByCvid;
 
     @Id
     @Column(name = "ID", nullable = false)
@@ -34,50 +34,39 @@ public class Logusers {
     }
 
     @Basic
-    @Column(name = "CuratorID", nullable = false)
-    public int getCuratorId() {
-        return curatorId;
+    @Column(name = "CVID", nullable = false , insertable = false , updatable = false)
+    public int getCvid() {
+        return cvid;
     }
 
-    public void setCuratorId(int curatorId) {
-        this.curatorId = curatorId;
-    }
-
-    @Basic
-    @Column(name = "LogType", nullable = false)
-    public int getLogType() {
-        return logType;
-    }
-
-    public void setLogType(int logType) {
-        this.logType = logType;
+    public void setCvid(int cvid) {
+        this.cvid = cvid;
     }
 
     @Basic
-    @Column(name = "CreateDate", nullable = true)
-    public Timestamp getCreateDate() {
-        return createDate;
+    @Column(name = "CreatedDate", nullable = true)
+    public Timestamp getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreateDate(Timestamp createDate) {
-        this.createDate = createDate;
+    public void setCreatedDate(Timestamp createdDate) {
+        this.createdDate = createdDate;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Logusers logusers = (Logusers) o;
-        return id == logusers.id &&
-                userId == logusers.userId &&
-                curatorId == logusers.curatorId &&
-                logType == logusers.logType &&
-                Objects.equals(createDate, logusers.createDate);
+        Countcv countcv = (Countcv) o;
+        return id == countcv.id &&
+                userId == countcv.userId &&
+                cvid == countcv.cvid &&
+                Objects.equals(createdDate, countcv.createdDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, curatorId, logType, createDate);
+        return Objects.hash(id, userId, cvid, createdDate);
     }
 
     @ManyToOne
@@ -88,5 +77,15 @@ public class Logusers {
 
     public void setUsersByUserId(Users usersByUserId) {
         this.usersByUserId = usersByUserId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "CVID", referencedColumnName = "ID", nullable = false)
+    public Cv getCvByCvid() {
+        return cvByCvid;
+    }
+
+    public void setCvByCvid(Cv cvByCvid) {
+        this.cvByCvid = cvByCvid;
     }
 }

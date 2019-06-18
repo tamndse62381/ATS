@@ -5,15 +5,13 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-public class Jobseekerlikejob {
+public class Employercompany {
     private int id;
     private int userId;
-    private int jobId;
+    private int companyId;
     private Timestamp createdDate;
-    private Timestamp lastModifyDate;
-    private Integer isActive;
     private Users usersByUserId;
-    private Job jobByJobId;
+    private Company companyByCompanyId;
 
     @Id
     @Column(name = "ID", nullable = false)
@@ -36,13 +34,13 @@ public class Jobseekerlikejob {
     }
 
     @Basic
-    @Column(name = "JobID", nullable = false , insertable = false , updatable = false)
-    public int getJobId() {
-        return jobId;
+    @Column(name = "CompanyID", nullable = false , insertable = false , updatable = false)
+    public int getCompanyId() {
+        return companyId;
     }
 
-    public void setJobId(int jobId) {
-        this.jobId = jobId;
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
     }
 
     @Basic
@@ -55,42 +53,20 @@ public class Jobseekerlikejob {
         this.createdDate = createdDate;
     }
 
-    @Basic
-    @Column(name = "LastModifyDate", nullable = true)
-    public Timestamp getLastModifyDate() {
-        return lastModifyDate;
-    }
-
-    public void setLastModifyDate(Timestamp lastModifyDate) {
-        this.lastModifyDate = lastModifyDate;
-    }
-
-    @Basic
-    @Column(name = "isActive", nullable = true)
-    public Integer getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Integer isActive) {
-        this.isActive = isActive;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Jobseekerlikejob that = (Jobseekerlikejob) o;
+        Employercompany that = (Employercompany) o;
         return id == that.id &&
                 userId == that.userId &&
-                jobId == that.jobId &&
-                Objects.equals(createdDate, that.createdDate) &&
-                Objects.equals(lastModifyDate, that.lastModifyDate) &&
-                Objects.equals(isActive, that.isActive);
+                companyId == that.companyId &&
+                Objects.equals(createdDate, that.createdDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, jobId, createdDate, lastModifyDate, isActive);
+        return Objects.hash(id, userId, companyId, createdDate);
     }
 
     @ManyToOne
@@ -104,12 +80,12 @@ public class Jobseekerlikejob {
     }
 
     @ManyToOne
-    @JoinColumn(name = "JobID", referencedColumnName = "ID", nullable = false)
-    public Job getJobByJobId() {
-        return jobByJobId;
+    @JoinColumn(name = "CompanyID", referencedColumnName = "ID", nullable = false)
+    public Company getCompanyByCompanyId() {
+        return companyByCompanyId;
     }
 
-    public void setJobByJobId(Job jobByJobId) {
-        this.jobByJobId = jobByJobId;
+    public void setCompanyByCompanyId(Company companyByCompanyId) {
+        this.companyByCompanyId = companyByCompanyId;
     }
 }

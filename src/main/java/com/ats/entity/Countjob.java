@@ -5,13 +5,13 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-public class Logusers {
+public class Countjob {
     private int id;
     private int userId;
-    private int curatorId;
-    private int logType;
-    private Timestamp createDate;
+    private int jobId;
+    private Timestamp createdDate;
     private Users usersByUserId;
+    private Job jobByJobId;
 
     @Id
     @Column(name = "ID", nullable = false)
@@ -34,50 +34,39 @@ public class Logusers {
     }
 
     @Basic
-    @Column(name = "CuratorID", nullable = false)
-    public int getCuratorId() {
-        return curatorId;
+    @Column(name = "JobID", nullable = false , insertable = false , updatable = false)
+    public int getJobId() {
+        return jobId;
     }
 
-    public void setCuratorId(int curatorId) {
-        this.curatorId = curatorId;
-    }
-
-    @Basic
-    @Column(name = "LogType", nullable = false)
-    public int getLogType() {
-        return logType;
-    }
-
-    public void setLogType(int logType) {
-        this.logType = logType;
+    public void setJobId(int jobId) {
+        this.jobId = jobId;
     }
 
     @Basic
-    @Column(name = "CreateDate", nullable = true)
-    public Timestamp getCreateDate() {
-        return createDate;
+    @Column(name = "CreatedDate", nullable = true)
+    public Timestamp getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreateDate(Timestamp createDate) {
-        this.createDate = createDate;
+    public void setCreatedDate(Timestamp createdDate) {
+        this.createdDate = createdDate;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Logusers logusers = (Logusers) o;
-        return id == logusers.id &&
-                userId == logusers.userId &&
-                curatorId == logusers.curatorId &&
-                logType == logusers.logType &&
-                Objects.equals(createDate, logusers.createDate);
+        Countjob countjob = (Countjob) o;
+        return id == countjob.id &&
+                userId == countjob.userId &&
+                jobId == countjob.jobId &&
+                Objects.equals(createdDate, countjob.createdDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, curatorId, logType, createDate);
+        return Objects.hash(id, userId, jobId, createdDate);
     }
 
     @ManyToOne
@@ -88,5 +77,15 @@ public class Logusers {
 
     public void setUsersByUserId(Users usersByUserId) {
         this.usersByUserId = usersByUserId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "JobID", referencedColumnName = "ID", nullable = false)
+    public Job getJobByJobId() {
+        return jobByJobId;
+    }
+
+    public void setJobByJobId(Job jobByJobId) {
+        this.jobByJobId = jobByJobId;
     }
 }

@@ -1,34 +1,91 @@
 package com.ats.entity;
 
-import java.io.Serializable;
-import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import lombok.Data;
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Objects;
 
-@Data
-@Table(name = "receipts")
 @Entity
-public class Receipts implements Serializable {
-  private static final long serialVersionUID = 1L;
+public class Receipts {
+    private int id;
+    private int servicePackageId;
+    private Integer employerId;
+    private Timestamp paiedDay;
+    private Servicepackage servicepackageByServicePackageId;
+    private Users usersByEmployerId;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", insertable = false, nullable = false)
-  private Integer id;
+    @Id
+    @Column(name = "ID", nullable = false)
+    public int getId() {
+        return id;
+    }
 
-  @Column(name = "servicepackageid")
-  private Integer servicepackageid;
+    public void setId(int id) {
+        this.id = id;
+    }
 
-  @Column(name = "hrid")
-  private Integer hrid;
+    @Basic
+    @Column(name = "ServicePackageID", nullable = false , insertable = false , updatable = false)
+    public int getServicePackageId() {
+        return servicePackageId;
+    }
 
-  @Column(name = "paiedDay")
-  private Date paiedDay;
+    public void setServicePackageId(int servicePackageId) {
+        this.servicePackageId = servicePackageId;
+    }
 
-  
+    @Basic
+    @Column(name = "EmployerID", nullable = true , insertable = false , updatable = false)
+    public Integer getEmployerId() {
+        return employerId;
+    }
+
+    public void setEmployerId(Integer employerId) {
+        this.employerId = employerId;
+    }
+
+    @Basic
+    @Column(name = "PaiedDay", nullable = true)
+    public Timestamp getPaiedDay() {
+        return paiedDay;
+    }
+
+    public void setPaiedDay(Timestamp paiedDay) {
+        this.paiedDay = paiedDay;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Receipts receipts = (Receipts) o;
+        return id == receipts.id &&
+                servicePackageId == receipts.servicePackageId &&
+                Objects.equals(employerId, receipts.employerId) &&
+                Objects.equals(paiedDay, receipts.paiedDay);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, servicePackageId, employerId, paiedDay);
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "ServicePackageID", referencedColumnName = "ID", nullable = false)
+    public Servicepackage getServicepackageByServicePackageId() {
+        return servicepackageByServicePackageId;
+    }
+
+    public void setServicepackageByServicePackageId(Servicepackage servicepackageByServicePackageId) {
+        this.servicepackageByServicePackageId = servicepackageByServicePackageId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "EmployerID", referencedColumnName = "ID")
+    public Users getUsersByEmployerId() {
+        return usersByEmployerId;
+    }
+
+    public void setUsersByEmployerId(Users usersByEmployerId) {
+        this.usersByEmployerId = usersByEmployerId;
+    }
 }

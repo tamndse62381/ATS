@@ -12,7 +12,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -30,8 +32,10 @@ public class JobWS {
         LOGGER.info("Begin createJob in JobWS with Job title : {}" + job.getTitle());
         int result = 0;
         try {
-            java.util.Date date = new java.util.Date();
-            job.setCreatedDate(date);
+            Date date = new Date();
+            Timestamp ts=new Timestamp(date.getTime());
+            System.out.println(ts);
+            job.setCreatedDate(ts);
             job.setStatus("new");
             result = jobService.createJob(job);
             if (result > 0) {

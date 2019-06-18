@@ -5,15 +5,15 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-public class Jobseekerlikejob {
+public class Userslikecv {
     private int id;
     private int userId;
-    private int jobId;
+    private int cvid;
     private Timestamp createdDate;
     private Timestamp lastModifyDate;
     private Integer isActive;
     private Users usersByUserId;
-    private Job jobByJobId;
+    private Cv cvByCvid;
 
     @Id
     @Column(name = "ID", nullable = false)
@@ -36,13 +36,13 @@ public class Jobseekerlikejob {
     }
 
     @Basic
-    @Column(name = "JobID", nullable = false , insertable = false , updatable = false)
-    public int getJobId() {
-        return jobId;
+    @Column(name = "CVID", nullable = false , insertable = false , updatable = false)
+    public int getCvid() {
+        return cvid;
     }
 
-    public void setJobId(int jobId) {
-        this.jobId = jobId;
+    public void setCvid(int cvid) {
+        this.cvid = cvid;
     }
 
     @Basic
@@ -79,10 +79,10 @@ public class Jobseekerlikejob {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Jobseekerlikejob that = (Jobseekerlikejob) o;
+        Userslikecv that = (Userslikecv) o;
         return id == that.id &&
                 userId == that.userId &&
-                jobId == that.jobId &&
+                cvid == that.cvid &&
                 Objects.equals(createdDate, that.createdDate) &&
                 Objects.equals(lastModifyDate, that.lastModifyDate) &&
                 Objects.equals(isActive, that.isActive);
@@ -90,7 +90,7 @@ public class Jobseekerlikejob {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, jobId, createdDate, lastModifyDate, isActive);
+        return Objects.hash(id, userId, cvid, createdDate, lastModifyDate, isActive);
     }
 
     @ManyToOne
@@ -104,12 +104,12 @@ public class Jobseekerlikejob {
     }
 
     @ManyToOne
-    @JoinColumn(name = "JobID", referencedColumnName = "ID", nullable = false)
-    public Job getJobByJobId() {
-        return jobByJobId;
+    @JoinColumn(name = "CVID", referencedColumnName = "ID", nullable = false)
+    public Cv getCvByCvid() {
+        return cvByCvid;
     }
 
-    public void setJobByJobId(Job jobByJobId) {
-        this.jobByJobId = jobByJobId;
+    public void setCvByCvid(Cv cvByCvid) {
+        this.cvByCvid = cvByCvid;
     }
 }

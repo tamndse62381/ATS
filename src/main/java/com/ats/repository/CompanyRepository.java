@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Integer> {
-    @Query("Select c from Company c where c.userid = :id")
+    @Query("Select c from Company c where c.userId = :id")
     public Company findComanyByEmployerID(@Param("id") int id);
 
     @Query("Select c from Company c")
