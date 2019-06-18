@@ -2,6 +2,7 @@ package com.ats.dto;
 
 import com.ats.entity.*;
 
+import javax.mail.Multipart;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +11,7 @@ public class CVDTO implements Serializable {
     private Integer id;
     private String title;
     private Integer userid;
-    private String img;
+    private Multipart img;
     private String email;
     private String firstName;
     private String lastName;
@@ -37,7 +38,7 @@ public class CVDTO implements Serializable {
     public CVDTO() {
     }
 
-    public CVDTO(Integer id, String title, Integer userid, String img, String email, String firstName, String lastName, String gender, Date dob, Integer cityid, String address, Integer industryid, String description, Integer yearExperience, Double salaryFrom, Double salaryTo, String status, Date createdDate, Date lastModify, Integer isActive, List<Certification> certifications, List<Education> educations, List<Socialactivities> socialactivities, List<Workexperience> workexperiences, List<Projectorproductworked> projectorproductworkeds, List<Skillincv> skillincvs) {
+    public CVDTO(Integer id, String title, Integer userid, Multipart img, String email, String firstName, String lastName, String gender, Date dob, Integer cityid, String address, Integer industryid, String description, Integer yearExperience, Double salaryFrom, Double salaryTo, String status, Date createdDate, Date lastModify, Integer isActive, List<Certification> certifications, List<Education> educations, List<Socialactivities> socialactivities, List<Workexperience> workexperiences, List<Projectorproductworked> projectorproductworkeds, List<Skillincv> skillincvs) {
         this.id = id;
         this.title = title;
         this.userid = userid;
@@ -90,11 +91,11 @@ public class CVDTO implements Serializable {
         this.userid = userid;
     }
 
-    public String getImg() {
+    public Multipart getImg() {
         return img;
     }
 
-    public void setImg(String img) {
+    public void setImg(Multipart img) {
         this.img = img;
     }
 
