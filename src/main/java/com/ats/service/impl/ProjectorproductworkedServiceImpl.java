@@ -14,11 +14,9 @@ public class ProjectorproductworkedServiceImpl implements Projectorproductworked
     private ProjectorproductworkedRepository projectorproductworkedRepository;
 
     @Override
-    public ResponseEntity<List<Projectorproductworked>> getAllByCVID(int id) {
+    public List<Projectorproductworked> getListProjectByCVID(int id) {
         List<Projectorproductworked> list = projectorproductworkedRepository.findByCVID(id);
-        if (list != null)
-            return ResponseEntity.ok().body(list);
-        return ResponseEntity.badRequest().body(null);
+        return list;
     }
 
     @Override

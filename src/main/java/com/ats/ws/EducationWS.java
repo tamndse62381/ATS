@@ -15,11 +15,11 @@ public class EducationWS {
     @Autowired
     private EducationService educationService;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @CrossOrigin(origins = "")
-    public ResponseEntity<List<Education>> getALLByCVID(@PathVariable int id){
-        return educationService.getAllByCVId(id);
-    }
+//    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+//    @CrossOrigin(origins = "")
+//    public ResponseEntity<List<Education>> getALLByCVID(@PathVariable int id){
+//        return educationService.getListEduByCVId(id);
+//    }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     @CrossOrigin(origins = "")

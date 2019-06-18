@@ -15,7 +15,7 @@ public class SocialactivityServiceImpl implements SocialactivityService {
     private SocialactivityRepository socialactivityRepository;
 
     @Override
-    public List<Socialactivities> findAllSocialactivityByCVID(int id) {
+    public List<Socialactivities> findListSocialactivityByCVID(int id) {
         return socialactivityRepository.findAllSocialactivityByCVID(id);
     }
 

@@ -77,7 +77,7 @@
 		</dependency>
 
 		<!-- Spring Security OAuth2 -->
-		<!-- <dependency> <groupId>org.springframework.security.oauth</groupId> 
+		<!-- <dependency> <groupId>org.springframework.security.oauth</groupId>
 			<artifactId>spring-security-oauth2</artifactId> </dependency> -->
 
 		<dependency>

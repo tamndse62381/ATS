@@ -1,8 +1,13 @@
 package com.ats.entity;
 
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
+import java.io.Serializable;
+import javax.persistence.*;
+import lombok.Data;
+
 
 @Entity
 public class Skill {
