@@ -5,6 +5,7 @@ import java.util.Date;
 import com.ats.dto.UsersDTO;
 import com.ats.entity.Users;
 import com.ats.repository.UsersRepository;
+import com.ats.service.RoleService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.Conditions;
@@ -24,6 +25,8 @@ public class UsersServiceImpl implements UsersService {
 
     @Autowired
     private UsersRepository usersRepository;
+    @Autowired
+    private RoleService roleService;
     @Autowired
     TokenAuthenticationService tokenService;
 
@@ -83,6 +86,7 @@ public class UsersServiceImpl implements UsersService {
         if (existedUsers == null) {
             if (users != null) {
                 try {
+                    users.setRoleByRoleId(roleService.findRoleById(users.getRoleId()));
                     newUsers = usersRepository.save(users);
                     LOGGER.info("End registration in Account Service with result: {}", newUsers.toString());
                 } catch (Exception e) {
