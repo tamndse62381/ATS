@@ -8,7 +8,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -64,22 +67,22 @@ public class CVWS {
 
         // mapping CV
         cv.setTitle(newCV.getTitle());
-        cv.setUserid(newCV.getUserid());
+        cv.setUserId(newCV.getUserid());
         cv.setImg(newCV.getImg());
         cv.setEmail(newCV.getEmail());
         cv.setFirstName(newCV.getFirstName());
         cv.setLastName(newCV.getLastName());
         cv.setGender(newCV.getGender());
-        cv.setDob(newCV.getDob());
-        cv.setCityid(newCV.getCityid());
+        cv.setDob(new Timestamp(newCV.getDob().getTime()));
+        cv.setCityId(newCV.getCityid());
         cv.setAddress(newCV.getAddress());
-        cv.setIndustryid(newCV.getIndustryid());
+        cv.setIndustryId(newCV.getIndustryid());
         cv.setDescription(newCV.getDescription());
         cv.setYearExperience(newCV.getYearExperience());
         cv.setSalaryFrom(newCV.getSalaryFrom());
         cv.setSalaryTo(newCV.getSalaryTo());
         cv.setStatus(newCV.getStatus());
-        cv.setCreatedDate(Calendar.getInstance().getTime());
+        cv.setCreatedDate(new Timestamp(new Date().getTime()));
         cv.setIsActive(1);
 
         // get CVID
