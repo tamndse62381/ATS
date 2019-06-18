@@ -19,7 +19,7 @@ public class JobWS {
 	private static final Logger LOGGER = LogManager.getLogger(UserWS.class);
 
 	@ResponseBody
-	@CrossOrigin(origins = "http://127.0.0.1:5500")
+	@CrossOrigin(origins = "http://localhost:8090")
 	@PostMapping(value = "/create")
 	public RestResponse createJob(@RequestBody Job job) {
 		LOGGER.info("Begin createJob in JobWS with Job title : {}" + job.getTitle());

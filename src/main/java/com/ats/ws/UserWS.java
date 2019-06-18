@@ -31,7 +31,7 @@ public class UserWS {
     TokenAuthenticationService tokenService;
     private static final Logger LOGGER = LogManager.getLogger(UserWS.class);
 
-    @CrossOrigin(origins = "localhost:8090")
+    @CrossOrigin(origins = "http://localhost:8090")
     @PostMapping(value = "/login")
     @ResponseBody
     public RestResponse login(@RequestBody UsersDTO usersDTO) {
@@ -50,8 +50,8 @@ public class UserWS {
     }
 
     @ResponseBody
-    @CrossOrigin(origins = "localhost:8090")
-    @PostMapping(value = "/registration", produces = "application/json;charset=UTF-8")
+    @CrossOrigin(origins = "http://localhost:8090")
+    @PostMapping(value = "/registration")
     public RestResponse registration(@RequestBody UsersDTO usersDTO) {
         LOGGER.info("Begin Registration in UserWS with email - password - fullname: {}",
                 usersDTO.getEmail() + " - " + usersDTO.getPassword() + " - " + usersDTO.getFullname());
@@ -73,7 +73,7 @@ public class UserWS {
     }
 
     @ResponseBody
-    @CrossOrigin(origins = "localhost:8090")
+    @CrossOrigin(origins = "http://localhost:8090")
     @PostMapping(value = "/checkLogin", produces = "application/json;charset=UTF-8")
     public RestResponse checkLogin(@RequestHeader(value = "accessToken") String accessToken) {
         LOGGER.info("Begin login in UserWS with Token : {}", accessToken);

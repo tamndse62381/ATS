@@ -75,5 +75,5 @@ public class Job implements Serializable {
   @Column(name = "status")
   private String status;
 
-  
+
 }
