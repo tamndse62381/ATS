@@ -19,7 +19,7 @@ public class ProjectorproductworkedWS {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @CrossOrigin(origins = "")
     public ResponseEntity<List<Projectorproductworked>> getByCVID(@PathVariable int id){
-        return projectorproductworkedService.getAllByCVID(id);
+        return ResponseEntity.ok().body(projectorproductworkedService.getListProjectByCVID(id));
     }
 
     // Create New ProjectorProduct
