@@ -146,4 +146,10 @@ public class CVWS {
         return null;
     }
 
+
+
+    // Test ham get moi
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    @CrossOrigin(origins = "")
+    public Cv
 }

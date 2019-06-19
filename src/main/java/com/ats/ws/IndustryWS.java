@@ -33,7 +33,7 @@ public class IndustryWS {
     }
 
     // create new Industry
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "create", method = RequestMethod.POST)
     public ResponseEntity<Industry> create(@RequestBody Industry newIndustry){
         industryRepository.save(newIndustry);
         return ResponseEntity.ok().body(null);

@@ -1,5 +1,7 @@
 package com.ats.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -10,7 +12,9 @@ public class Countcv {
     private int userId;
     private int cvid;
     private Timestamp createdDate;
+    @JsonIgnore
     private Users usersByUserId;
+    @JsonIgnore
     private Cv cvByCvid;
 
     @Id

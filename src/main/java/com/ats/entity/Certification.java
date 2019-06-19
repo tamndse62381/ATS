@@ -1,5 +1,7 @@
 package com.ats.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -8,6 +10,7 @@ public class Certification {
     private int id;
     private int cvid;
     private String certificationName;
+    @JsonIgnore
     private Cv cvByCvid;
 
     @Id

@@ -1,5 +1,7 @@
 package com.ats.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
@@ -28,19 +30,33 @@ public class Cv {
     private Timestamp createdDate;
     private Timestamp lastModify;
     private Integer isActive;
+    @JsonIgnore
     private List<Apply> appliesById;
+    @JsonIgnore
     private List<Certification> certificationsById;
+    @JsonIgnore
     private List<Countcv> countcvsById;
+    @JsonIgnore
     private Users usersByUserId;
+    @JsonIgnore
     private City cityByCityId;
+    @JsonIgnore
     private Industry industryByIndustryId;
+    @JsonIgnore
     private List<Education> educationsById;
+    @JsonIgnore
     private List<Logcv> logcvsById;
+    @JsonIgnore
     private List<Projectorproductworked> projectorproductworkedsById;
+    @JsonIgnore
     private List<Skillincv> skillincvsById;
+    @JsonIgnore
     private List<Socialactivities> socialactivitiesById;
+    @JsonIgnore
     private List<Userslikecv> userslikecvsById;
+    @JsonIgnore
     private List<Workexperience> workexperiencesById;
+
 
     @Id
     @Column(name = "ID", nullable = false)

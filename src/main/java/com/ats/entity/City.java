@@ -1,5 +1,6 @@
 package com.ats.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -8,9 +9,13 @@ import java.util.Objects;
 public class City {
     private int id;
     private String fullName;
+    @JsonIgnore
     private List<Company> companiesById;
+    @JsonIgnore
     private List<Cv> cvsById;
+    @JsonIgnore
     private List<Job> jobsById;
+    @JsonIgnore
     private List<Users> usersById;
 
     @Id

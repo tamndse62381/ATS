@@ -1,5 +1,7 @@
 package com.ats.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
@@ -19,10 +21,15 @@ public class Company {
     private Timestamp createdDate;
     private Timestamp lastModify;
     private String status;
+    @JsonIgnore
     private Users usersByUserId;
+    @JsonIgnore
     private City cityByCityId;
+    @JsonIgnore
     private List<Companyindustry> companyindustriesById;
+    @JsonIgnore
     private List<Employercompany> employercompaniesById;
+    @JsonIgnore
     private List<Job> jobsById;
 
     @Id

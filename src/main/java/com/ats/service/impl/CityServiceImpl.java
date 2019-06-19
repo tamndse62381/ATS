@@ -1,5 +1,6 @@
 package com.ats.service.impl;
 
+import com.ats.dto.CitySummary;
 import com.ats.entity.City;
 import com.ats.repository.CityRepository;
 import com.ats.service.CityService;
@@ -22,15 +23,15 @@ public class CityServiceImpl implements CityService {
     public List<City> getAllCity() {
         LOGGER.info("Begin getAllCity in City Service ");
         List<City> cityList = null;
-        cityList = cityRepository.findAll();
-        LOGGER.info("End getAllCity in City Service with Numer of City: {}", cityList.size());
+        cityList = cityRepository.findAllBy();
+            LOGGER.info("End getAllCity in City Service with Numer of City: {}", cityList.size());
         return cityList;
     }
 
     @Override
-    public City getCityById(int id) {
+    public CitySummary getCityById(int id) {
         LOGGER.info("Begin getCityById in City Service with id : {} " + id);
-        City city = cityRepository.getCityNameById(id);
+        CitySummary city = cityRepository.getCityNameById(id);
         LOGGER.info("End getCityById in City Service with id : {} " + id);
         return city;
     }

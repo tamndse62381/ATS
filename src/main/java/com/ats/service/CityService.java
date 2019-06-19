@@ -1,5 +1,6 @@
 package com.ats.service;
 
+import com.ats.dto.CitySummary;
 import com.ats.entity.City;
 import org.springframework.stereotype.Service;
 
@@ -10,5 +11,5 @@ public interface CityService {
 
     List<City> getAllCity();
 
-    City getCityById(int id);
+    CitySummary getCityById(int id);
 }

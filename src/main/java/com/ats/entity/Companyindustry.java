@@ -1,5 +1,7 @@
 package com.ats.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -8,7 +10,9 @@ public class Companyindustry {
     private int id;
     private int companyId;
     private int industryId;
+    @JsonIgnore
     private Company companyByCompanyId;
+    @JsonIgnore
     private Industry industryByIndustryId;
 
     @Id

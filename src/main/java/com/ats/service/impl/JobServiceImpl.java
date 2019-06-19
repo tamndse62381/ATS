@@ -1,5 +1,6 @@
 package com.ats.service.impl;
 
+import com.ats.dto.CitySummary;
 import com.ats.dto.JobDTO;
 import com.ats.entity.City;
 import com.ats.entity.Company;
@@ -76,7 +77,7 @@ public class JobServiceImpl implements JobService {
         LOGGER.info("Begin getTop8 in Job Service with job name : {}");
         List<Job> listofJob;
         Company company;
-        City city;
+        CitySummary city;
         List<JobDTO> listofDTO = new ArrayList<>();
 //        Pageable firstPageWithTwoElements = new PageRequest.of(0,2);
         try {
