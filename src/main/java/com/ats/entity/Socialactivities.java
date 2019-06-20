@@ -18,16 +18,16 @@ public class Socialactivities implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  private Integer id;
 
   @Column(name = "CVID", nullable = false)
-  private Integer CVID;
+  private Integer cvid;
 
   @Column(name = "Name")
-  private String Name;
+  private String name;
 
   @Column(name = "Description")
-  private String Description;
+  private String description;
 
   
 }

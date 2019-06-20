@@ -18,13 +18,13 @@ public class Skillincv implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  private Integer id;
 
   @Column(name = "CVID", nullable = false)
-  private Integer CVID;
+  private Integer cvid;
 
   @Column(name = "SkillID", nullable = false)
-  private Integer SkillID;
+  private Integer skillid;
 
   
 }

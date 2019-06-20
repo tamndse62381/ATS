@@ -18,10 +18,10 @@ public class Role implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  private Integer id;
 
   @Column(name = "RoleName")
-  private String RoleName;
+  private String roleName;
 
   
 }

@@ -18,13 +18,13 @@ public class Skillmaster implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  private Integer id;
 
   @Column(name = "SkillTypeID", nullable = false)
-  private Integer SkillTypeID;
+  private Integer skilltypeid;
 
   @Column(name = "SkillName")
-  private String SkillName;
+  private String skillName;
 
   
 }

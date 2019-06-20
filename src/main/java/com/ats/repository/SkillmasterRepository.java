@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface SkillmasterRepository extends JpaRepository<Skillmaster, Integer>{
-    @Query("Select s from Skillmaster s where s.SkillTypeID = :id")
+    @Query("Select s from Skillmaster s where s.skilltypeid = :id")
     public List<Skillmaster> findAllLanguageSkill (@Param("id") int id);
 }

@@ -15,25 +15,25 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Integer> {
 
-    @Query("Select b from Users b where b.Email = :email")
+    @Query("Select b from Users b where b.email = :email")
     Users findAccountByEmail(@Param("email") String email);
 
-    @Query("Select b from Users b where b.AccessToken = :accessToken")
+    @Query("Select b from Users b where b.accessToken = :accessToken")
     Users findAccountByToken(@Param("accessToken") String token);
 
     @Transactional
     @Modifying
-    @Query("UPDATE Users b SET b.LastLogin = :lastDate WHERE b.Email = :email and  b.AccessToken = :accessToken")
+    @Query("UPDATE Users b SET b.lastLogin = :lastDate WHERE b.email = :email and  b.accessToken = :accessToken")
     void editAccountLastLogin(@Param("lastDate") Date date, @Param("email") String email,
                               @Param("accessToken") String accessToken);
 
     @Transactional
     @Modifying
-    @Query("UPDATE Users b SET b.Password = :newPassword WHERE b.id = :id")
+    @Query("UPDATE Users b SET b.password = :newPassword WHERE b.id = :id")
     int changePassword(@Param("id") int id, @Param("newPassword") String newPassword);
 
     @Transactional
     @Modifying
-    @Query("UPDATE Users b SET b.Status = :newStatus WHERE b.ID = :id")
+    @Query("UPDATE Users b SET b.status = :newStatus WHERE b.id = :id")
     int changeStatus(@Param("id") int id, @Param("newStatus") String newStatus);
 }

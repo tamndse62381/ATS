@@ -19,28 +19,28 @@ public class Projectorproductworked implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  private Integer id;
 
   @Column(name = "CVID", nullable = false)
-  private Integer CVID;
+  private Integer cvid;
 
   @Column(name = "ProjetName")
-  private String ProjetName;
+  private String projectName;
 
   @Column(name = "VacancyName")
-  private String VacancyName;
+  private String vacancyName;
 
   @Column(name = "StartTime")
-  private Date StartTime;
+  private Date startTime;
 
   @Column(name = "EndTime")
-  private Date EndTime;
+  private Date endTime;
 
   @Column(name = "SkillUsed")
-  private String SkillUsed;
+  private String skillUsed;
 
   @Column(name = "Description")
-  private String Description;
+  private String description;
 
   
 }

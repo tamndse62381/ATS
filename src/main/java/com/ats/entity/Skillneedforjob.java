@@ -18,13 +18,13 @@ public class Skillneedforjob implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  private Integer id;
 
   @Column(name = "JobID", nullable = false)
-  private Integer JobID;
+  private Integer jobid;
 
   @Column(name = "SkillID", nullable = false)
-  private Integer SkillID;
+  private Integer skillid;
 
   
 }

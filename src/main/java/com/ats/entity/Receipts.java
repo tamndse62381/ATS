@@ -19,16 +19,16 @@ public class Receipts implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  private Integer id;
 
   @Column(name = "ServicePackageID", nullable = false)
-  private Integer ServicePackageID;
+  private Integer servicepackageid;
 
   @Column(name = "EmployerID")
-  private Integer EmployerID;
+  private Integer employerid;
 
   @Column(name = "PaiedDay")
-  private Date PaiedDay;
+  private Date paiedDay;
 
   
 }

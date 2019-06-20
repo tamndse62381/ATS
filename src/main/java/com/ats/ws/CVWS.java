@@ -86,7 +86,7 @@ public class CVWS {
         cv.setIsActive(1);
 
         // get CVID
-        int CVID = cv.getID();
+        int CVID = cv.getId();
 
         // mapping Certification
         List<Certification> listCer = newCV.getCertifications();
@@ -111,7 +111,7 @@ public class CVWS {
         List<Socialactivities> listAct = newCV.getSocialactivities();
         if (listAct != null){
             for (Socialactivities socialactivities : listAct) {
-                socialactivities.setCVID(CVID);
+                socialactivities.setCvid(CVID);
                 socialactivityService.createANewSocialactivity(socialactivities);
             }
         }
@@ -120,7 +120,7 @@ public class CVWS {
         List<Workexperience> listWor = newCV.getWorkexperiences();
         if (listWor != null){
             for (Workexperience workexperience : listWor) {
-                workexperience.setCVID(CVID);
+                workexperience.setCvid(CVID);
                 workexperienceService.createANewWorkExperience(workexperience);
             }
         }
@@ -129,7 +129,7 @@ public class CVWS {
         List<Projectorproductworked> listPro = newCV.getProjectorproductworkeds();
         if (listPro != null){
             for (Projectorproductworked projectorproductworked : listPro) {
-                projectorproductworked.setCVID(CVID);
+                projectorproductworked.setCvid(CVID);
                 projectorproductworkedService.createANewProjectorProduct(projectorproductworked);
             }
         }

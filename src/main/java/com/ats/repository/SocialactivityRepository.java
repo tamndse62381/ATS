@@ -11,6 +11,6 @@ import java.util.List;
 
 @Repository
 public interface SocialactivityRepository extends JpaRepository<Socialactivities, Integer> {
-    @Query("Select s from Socialactivities s where s.CVID = :id")
+    @Query("Select s from Socialactivities s where s.cvid = :id")
     public List<Socialactivities> findAllSocialactivityByCVID (@Param("id") int id);
 }

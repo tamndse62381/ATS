@@ -95,7 +95,7 @@ public class UsersServiceImpl implements UsersService {
         } else {
             return -1;
         }
-        return newUsers.getID();
+        return newUsers.getId();
     }
 
     @Override
@@ -186,7 +186,7 @@ public class UsersServiceImpl implements UsersService {
         } else {
             ModelMapper modelMapper = new ModelMapper();
             Users users = usersRepository.getOne(id);
-            System.out.println("Account id : " + users.getID());
+            System.out.println("Account id : " + users.getId());
             UsersDTO usersDTO = modelMapper.map(users, UsersDTO.class);
             if (usersDTO.getStatus().matches("new")) {
                 EncrytedPasswordUtils passwordUtil = new EncrytedPasswordUtils();

@@ -19,55 +19,55 @@ public class Users implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  private Integer id;
 
   @Column(name = "Email")
-  private String Email;
+  private String email;
 
   @Column(name = "FullName")
-  private String FullName;
+  private String fullName;
 
   @Column(name = "Password")
-  private String Password;
+  private String password;
 
   @Column(name = "AccessToken")
-  private String AccessToken;
+  private String accessToken;
 
   @Column(name = "RoleId", nullable = false)
-  private Integer RoleId;
+  private Integer roleid;
 
   @Column(name = "TelephoneNumber")
-  private String TelephoneNumber;
+  private String telephoneNumber;
 
   @Column(name = "Gender")
-  private String Gender;
+  private String gender;
 
   @Column(name = "JobLevelID")
-  private Integer JobLevelID;
+  private Integer joblevelid;
 
   @Column(name = "VacancyName")
-  private String VacancyName;
+  private String vacancyName;
 
   @Column(name = "CityID")
-  private Integer CityID;
+  private Integer cityid;
 
   @Column(name = "Address")
-  private String Address;
+  private String address;
 
   @Column(name = "Description")
-  private String Description;
+  private String description;
 
   @Column(name = "CreatedDate")
-  private Date CreatedDate;
+  private Date createdDate;
 
   @Column(name = "LastLogin")
-  private Date LastLogin;
+  private Date lastLogin;
 
   @Column(name = "LastModify")
-  private Date LastModify;
+  private Date lastModify;
 
   @Column(name = "Status")
-  private String Status;
+  private String status;
 
   
 }

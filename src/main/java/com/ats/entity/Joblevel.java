@@ -18,10 +18,10 @@ public class Joblevel implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  private Integer id;
 
   @Column(name = "JobLevelName")
-  private String JobLevelName;
+  private String joblevelName;
 
   
 }

@@ -19,19 +19,19 @@ public class Logjob implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  private Integer id;
 
   @Column(name = "JobID", nullable = false)
-  private Integer JobID;
+  private Integer jobid;
 
   @Column(name = "CuratorID", nullable = false)
-  private Integer CuratorID;
+  private Integer curatorid;
 
   @Column(name = "LogType", nullable = false)
-  private Integer LogType;
+  private Integer logType;
 
   @Column(name = "CreatedDate")
-  private Date CreatedDate;
+  private Date createdDate;
 
   
 }

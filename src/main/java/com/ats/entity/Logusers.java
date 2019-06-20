@@ -19,19 +19,19 @@ public class Logusers implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  private Integer id;
 
   @Column(name = "UserID", nullable = false)
-  private Integer UserID;
+  private Integer userid;
 
   @Column(name = "CuratorID", nullable = false)
-  private Integer CuratorID;
+  private Integer curatorid;
 
   @Column(name = "LogType", nullable = false)
-  private Integer LogType;
+  private Integer logType;
 
   @Column(name = "CreateDate")
-  private Date CreateDate;
+  private Date createDate;
 
   
 }

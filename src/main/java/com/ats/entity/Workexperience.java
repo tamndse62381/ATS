@@ -19,25 +19,25 @@ public class Workexperience implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  private Integer id;
 
   @Column(name = "CVID", nullable = false)
-  private Integer CVID;
+  private Integer cvid;
 
   @Column(name = "CompanyName")
-  private String CompanyName;
+  private String companyName;
 
   @Column(name = "VacancyName")
-  private String VacancyName;
+  private String vacancyName;
 
   @Column(name = "StartTime")
-  private Date StartTime;
+  private Date startTime;
 
   @Column(name = "EndTime")
-  private Date EndTime;
+  private Date endTime;
 
   @Column(name = "Description")
-  private String Description;
+  private String description;
 
   
 }

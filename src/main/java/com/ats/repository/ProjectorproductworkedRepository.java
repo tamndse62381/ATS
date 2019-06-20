@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface ProjectorproductworkedRepository extends JpaRepository<Projectorproductworked,Integer> {
-    @Query("Select p from Projectorproductworked p where p.CVID = :id")
+    @Query("Select p from Projectorproductworked p where p.cvid = :id")
     List<Projectorproductworked> findByCVID(@Param("id") int id);
 }
