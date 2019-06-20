@@ -19,7 +19,7 @@ public class SocialactivityWS {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @CrossOrigin(origins = "")
     public ResponseEntity<List<Socialactivities>> findByCVID (@PathVariable int id){
-        return  ResponseEntity.ok().body(socialactivityService.findAllSocialactivityByCVID(id));
+        return  ResponseEntity.ok().body(socialactivityService.findListSocialactivityByCVID(id));
     }
 
     // edit one social activity

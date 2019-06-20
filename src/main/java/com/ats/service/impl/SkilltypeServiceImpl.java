@@ -26,7 +26,7 @@ public class SkilltypeServiceImpl implements SkilltypeService  {
     @Override
     public boolean editASkilltype(Skilltype editedSkilltype, int id) {
         try {
-            Skilltype skilltype = skilltypeRepository.findOne(id);
+            Skilltype skilltype = skilltypeRepository.getOne(id);
             if (skilltype != null){
                 skilltype.setTypeName(editedSkilltype.getTypeName());
                 skilltypeRepository.save(skilltype);

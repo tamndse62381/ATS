@@ -7,7 +7,7 @@ import java.util.List;
 
 @Service
 public interface SocialactivityService {
-    public List<Socialactivities> findAllSocialactivityByCVID(int id);
+    public List<Socialactivities> findListSocialactivityByCVID(int id);
 
     public boolean editASocialactivity(Socialactivities editedSocialactivity,int id);
 
@@ -15,5 +15,5 @@ public interface SocialactivityService {
 
     public Socialactivities findOneByID(int id);
 
-    
+    public void deleteOneByID(int id);
 }

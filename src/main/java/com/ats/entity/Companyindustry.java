@@ -1,30 +1,78 @@
 package com.ats.entity;
 
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import lombok.Data;
+import javax.persistence.*;
+import java.util.Objects;
 
-@Data
 @Entity
-@Table(name = "companyindustry")
-public class Companyindustry implements Serializable {
-  private static final long serialVersionUID = 1L;
+public class Companyindustry {
+    private int id;
+    private int companyId;
+    private int industryId;
+    private Company companyByCompanyId;
+    private Industry industryByIndustryId;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", insertable = false, nullable = false)
-  private Integer id;
+    @Id
+    @Column(name = "ID", nullable = false)
+    public int getId() {
+        return id;
+    }
 
-  @Column(name = "companyid")
-  private Integer companyid;
+    public void setId(int id) {
+        this.id = id;
+    }
 
-  @Column(name = "industryid")
-  private Integer industryid;
+    @Basic
+    @Column(name = "CompanyID", nullable = false , insertable = false , updatable = false)
+    public int getCompanyId() {
+        return companyId;
+    }
 
-  
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
+    }
+
+    @Basic
+    @Column(name = "IndustryID", nullable = false , insertable = false , updatable = false)
+    public int getIndustryId() {
+        return industryId;
+    }
+
+    public void setIndustryId(int industryId) {
+        this.industryId = industryId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Companyindustry that = (Companyindustry) o;
+        return id == that.id &&
+                companyId == that.companyId &&
+                industryId == that.industryId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, companyId, industryId);
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "CompanyID", referencedColumnName = "ID", nullable = false)
+    public Company getCompanyByCompanyId() {
+        return companyByCompanyId;
+    }
+
+    public void setCompanyByCompanyId(Company companyByCompanyId) {
+        this.companyByCompanyId = companyByCompanyId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "IndustryID", referencedColumnName = "ID", nullable = false)
+    public Industry getIndustryByIndustryId() {
+        return industryByIndustryId;
+    }
+
+    public void setIndustryByIndustryId(Industry industryByIndustryId) {
+        this.industryByIndustryId = industryByIndustryId;
+    }
 }

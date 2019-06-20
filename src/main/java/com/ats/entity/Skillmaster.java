@@ -1,30 +1,78 @@
 package com.ats.entity;
 
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import lombok.Data;
+import javax.persistence.*;
+import java.util.List;
+import java.util.Objects;
 
-@Table(name = "skillmaster")
-@Data
 @Entity
-public class Skillmaster implements Serializable {
-  private static final long serialVersionUID = 1L;
+public class Skillmaster {
+    private int id;
+    private int skillTypeId;
+    private String skillName;
+    private List<Skill> skillsById;
+    private Skilltype skilltypeBySkillTypeId;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", insertable = false, nullable = false)
-  private Integer id;
+    @Id
+    @Column(name = "ID", nullable = false)
+    public int getId() {
+        return id;
+    }
 
-  @Column(name = "skilltypeid")
-  private Integer skilltypeid;
+    public void setId(int id) {
+        this.id = id;
+    }
 
-  @Column(name = "skillName")
-  private String skillName;
+    @Basic
+    @Column(name = "SkillTypeID", nullable = false , insertable = false , updatable = false)
+    public int getSkillTypeId() {
+        return skillTypeId;
+    }
 
-  
+    public void setSkillTypeId(int skillTypeId) {
+        this.skillTypeId = skillTypeId;
+    }
+
+    @Basic
+    @Column(name = "SkillName", nullable = true, length = 100)
+    public String getSkillName() {
+        return skillName;
+    }
+
+    public void setSkillName(String skillName) {
+        this.skillName = skillName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Skillmaster that = (Skillmaster) o;
+        return id == that.id &&
+                skillTypeId == that.skillTypeId &&
+                Objects.equals(skillName, that.skillName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, skillTypeId, skillName);
+    }
+
+    @OneToMany(mappedBy = "skillmasterBySkillMasterId")
+    public List<Skill> getSkillsById() {
+        return skillsById;
+    }
+
+    public void setSkillsById(List<Skill> skillsById) {
+        this.skillsById = skillsById;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "SkillTypeID", referencedColumnName = "ID", nullable = false)
+    public Skilltype getSkilltypeBySkillTypeId() {
+        return skilltypeBySkillTypeId;
+    }
+
+    public void setSkilltypeBySkillTypeId(Skilltype skilltypeBySkillTypeId) {
+        this.skilltypeBySkillTypeId = skilltypeBySkillTypeId;
+    }
 }

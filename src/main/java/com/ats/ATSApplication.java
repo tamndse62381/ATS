@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
 import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class,
-		DataSourceTransactionManagerAutoConfiguration.class, SecurityAutoConfiguration.class}, 
+		DataSourceTransactionManagerAutoConfiguration.class, SecurityAutoConfiguration.class},
 scanBasePackages = "com.ats")
 @PropertySource(value = { "classpath:application.properties"})
 public class ATSApplication {

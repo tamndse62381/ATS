@@ -1,33 +1,79 @@
 package com.ats.entity;
 
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import lombok.Data;
+import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
-@Table(name = "socialactivities")
-@Data
-public class Socialactivities implements Serializable {
-  private static final long serialVersionUID = 1L;
+public class Socialactivities {
+    private int id;
+    private int cvid;
+    private String name;
+    private String description;
+    private Cv cvByCvid;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", insertable = false, nullable = false)
-  private Integer id;
+    @Id
+    @Column(name = "ID", nullable = false)
+    public int getId() {
+        return id;
+    }
 
-  @Column(name = "cvid")
-  private Integer cvid;
+    public void setId(int id) {
+        this.id = id;
+    }
 
-  @Column(name = "name")
-  private String name;
+    @Basic
+    @Column(name = "CVID", nullable = false , insertable = false , updatable = false)
+    public int getCvid() {
+        return cvid;
+    }
 
-  @Column(name = "description")
-  private String description;
+    public void setCvid(int cvid) {
+        this.cvid = cvid;
+    }
 
-  
+    @Basic
+    @Column(name = "Name", nullable = true, length = 50)
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Basic
+    @Column(name = "Description", nullable = true, length = 50)
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Socialactivities that = (Socialactivities) o;
+        return id == that.id &&
+                cvid == that.cvid &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(description, that.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, cvid, name, description);
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "CVID", referencedColumnName = "ID", nullable = false)
+    public Cv getCvByCvid() {
+        return cvByCvid;
+    }
+
+    public void setCvByCvid(Cv cvByCvid) {
+        this.cvByCvid = cvByCvid;
+    }
 }

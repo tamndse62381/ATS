@@ -22,20 +22,18 @@ public class RoleServiceImpl implements RoleService {
     private static final Logger LOGGER = LogManager.getLogger(RoleServiceImpl.class);
 
     @Override
-    public RoleDTO findRoleById(int roleId) {
+    public Role findRoleById(int roleId) {
         LOGGER.info("Begin findRoleById in RoleService with Role id : " + roleId);
-        RoleDTO roleDTO = new RoleDTO();
+        Role role = new Role();
         modelMapper = new ModelMapper();
         try {
-            Role role = roleRepository.findOne(roleId);
-            if (role != null) {
-                roleDTO = modelMapper.map(role,RoleDTO.class);
-            }
+             role = roleRepository.getOne(roleId);
+
         } catch (Exception e) {
             LOGGER.info(e);
         }
         LOGGER.info("End findRoleById in RoleService with Role id : " + roleId);
-        return roleDTO;
+        return role;
     }
 
 }

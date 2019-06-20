@@ -1,13 +1,12 @@
 package com.ats.dto;
 
-import java.io.Serializable;
+import lombok.Data;
+
 import java.util.Date;
 
-public class UsersDTO implements Serializable {
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
+
+@Data
+public class UsersDTO{
     int id;
     String email;
     String password;
@@ -149,9 +148,7 @@ public class UsersDTO implements Serializable {
         this.accessToken = accessToken;
     }
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
+
 
     public String getTelephoneNumber() {
         return telephoneNumber;

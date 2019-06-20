@@ -15,13 +15,13 @@ public class SocialactivityServiceImpl implements SocialactivityService {
     private SocialactivityRepository socialactivityRepository;
 
     @Override
-    public List<Socialactivities> findAllSocialactivityByCVID(int id) {
+    public List<Socialactivities> findListSocialactivityByCVID(int id) {
         return socialactivityRepository.findAllSocialactivityByCVID(id);
     }
 
     @Override
     public boolean editASocialactivity(Socialactivities editedSocialactivity ,int id) {
-        Socialactivities  soc = socialactivityRepository.findOne(id);
+        Socialactivities  soc = socialactivityRepository.getOne(id);
         if (soc != null){
             soc.setName(editedSocialactivity.getName());
             soc.setDescription(editedSocialactivity.getDescription());
@@ -44,7 +44,12 @@ public class SocialactivityServiceImpl implements SocialactivityService {
 
     @Override
     public Socialactivities findOneByID(int id) {
-        return socialactivityRepository.findOne(id);
+        return socialactivityRepository.getOne(id);
+    }
+
+    @Override
+    public void deleteOneByID(int id) {
+        socialactivityRepository.delete(id);
     }
 }
 

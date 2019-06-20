@@ -21,11 +21,10 @@ public interface UsersService {
 	
 	boolean checkPassword(String password,int id);
 
-	 UsersDTO findAccountByEmail(String email);
+	 UsersDTO findUserByEmail(String email);
 	
-	 UsersDTO findAccountByToken(String token);
+	 UsersDTO findUserByToken(String token);
 
 //	 UsersDTO findAccountById(int id);
 
-//	List<UsersDTO> searchUser(String search);
 }
