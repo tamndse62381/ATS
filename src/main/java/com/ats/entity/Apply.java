@@ -22,10 +22,10 @@ public class Apply implements Serializable {
   private Integer id;
 
   @Column(name = "JobSeekerID", nullable = false)
-  private Integer jobSeekerID;
+  private Integer jobseekerid;
 
   @Column(name = "JobID", nullable = false)
-  private Integer jobID;
+  private Integer jobid;
 
   @Column(name = "DayApply")
   private Date dayApply;

@@ -22,7 +22,7 @@ public class Education implements Serializable {
   private Integer id;
 
   @Column(name = "CVID", nullable = false)
-  private Integer cVID;
+  private Integer cvid;
 
   @Column(name = "SchoolType")
   private String schoolType;

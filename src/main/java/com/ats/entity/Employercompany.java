@@ -22,10 +22,10 @@ public class Employercompany implements Serializable {
   private Integer id;
 
   @Column(name = "UserID", nullable = false)
-  private Integer userID;
+  private Integer userid;
 
   @Column(name = "CompanyID", nullable = false)
-  private Integer companyID;
+  private Integer companyid;
 
   @Column(name = "CreatedDate")
   private Date createdDate;

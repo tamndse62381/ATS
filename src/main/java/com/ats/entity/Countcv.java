@@ -22,10 +22,10 @@ public class Countcv implements Serializable {
   private Integer id;
 
   @Column(name = "UserID", nullable = false)
-  private Integer userID;
+  private Integer userid;
 
   @Column(name = "CVID", nullable = false)
-  private Integer cVID;
+  private Integer cvid;
 
   @Column(name = "CreatedDate")
   private Date createdDate;

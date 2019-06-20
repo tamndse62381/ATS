@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Integer> {
-    @Query("Select c from Company c where c.UserID = :id")
+    @Query("Select c from Company c where c.userid = :id")
      Company findComanyByEmployerID(@Param("id") int id);
 
     @Query("Select c from Company c")

@@ -25,7 +25,7 @@ public class Cv implements Serializable {
   private String title;
 
   @Column(name = "UserID", nullable = false)
-  private Integer userID;
+  private Integer userid;
 
   @Column(name = "Img")
   private String img;
@@ -55,7 +55,7 @@ public class Cv implements Serializable {
   private String address;
 
   @Column(name = "IndustryID", nullable = false)
-  private Integer industryID;
+  private Integer industryid;
 
   @Column(name = "Description")
   private String description;

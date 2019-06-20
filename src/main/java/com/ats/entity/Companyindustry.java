@@ -21,10 +21,10 @@ public class Companyindustry implements Serializable {
   private Integer id;
 
   @Column(name = "CompanyID", nullable = false)
-  private Integer companyID;
+  private Integer companyid;
 
   @Column(name = "IndustryID", nullable = false)
-  private Integer industryID;
+  private Integer industryid;
 
 
 }

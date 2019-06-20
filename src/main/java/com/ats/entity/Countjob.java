@@ -22,10 +22,10 @@ public class Countjob implements Serializable {
   private Integer id;
 
   @Column(name = "UserID", nullable = false)
-  private Integer userID;
+  private Integer userid;
 
   @Column(name = "JobID", nullable = false)
-  private Integer jobID;
+  private Integer jobid;
 
   @Column(name = "CreatedDate")
   private Date createdDate;

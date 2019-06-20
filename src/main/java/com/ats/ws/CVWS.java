@@ -67,7 +67,7 @@ public class CVWS {
 
         // mapping CV
         cv.setTitle(newCV.getTitle());
-        cv.setUserID(newCV.getUserid());
+        cv.setUserid(newCV.getUserid());
         cv.setImg(newCV.getImg());
         cv.setEmail(newCV.getEmail());
         cv.setFirstName(newCV.getFirstName());
@@ -76,7 +76,7 @@ public class CVWS {
         cv.setDob(new Timestamp(newCV.getDob().getTime()));
         cv.setCityID(newCV.getCityid());
         cv.setAddress(newCV.getAddress());
-        cv.setIndustryID(newCV.getIndustryid());
+        cv.setIndustryid(newCV.getIndustryid());
         cv.setDescription(newCV.getDescription());
         cv.setYearExperience(newCV.getYearExperience());
         cv.setSalaryFrom(newCV.getSalaryFrom());
@@ -92,7 +92,7 @@ public class CVWS {
         List<Certification> listCer = newCV.getCertifications();
         if (listCer != null){
             for (Certification certification : listCer) {
-                certification.setCVID(CVID);
+                certification.setCvid(CVID);
                 certificationService.createANewCertification(certification);
             }
         }
@@ -102,7 +102,7 @@ public class CVWS {
         List<Education> listEdu = newCV.getEducations();
         if (listEdu != null){
             for (Education education : listEdu) {
-                education.setCVID(CVID);
+                education.setCvid(CVID);
                 educationService.createANewEducation(education);
             }
         }

@@ -25,10 +25,10 @@ public class Company implements Serializable {
   private String nameCompany;
 
   @Column(name = "UserID", nullable = false)
-  private Integer userID;
+  private Integer userid;
 
   @Column(name = "CityID", nullable = false)
-  private Integer cityID;
+  private Integer cityid;
 
   @Column(name = "Address")
   private String address;

@@ -21,7 +21,7 @@ public class Certification implements Serializable {
   private Integer id;
 
   @Column(name = "CVID", nullable = false)
-  private Integer cVID;
+  private Integer cvid;
 
   @Column(name = "CertificationName")
   private String certificationName;
