@@ -1,128 +1,46 @@
 package com.ats.entity;
 
-import javax.persistence.*;
-import java.sql.Timestamp;
-import java.util.Objects;
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.Data;
 
+@Table(name = "projectorproductworked")
 @Entity
-public class Projectorproductworked {
-    private int id;
-    private int cvid;
-    private String projetName;
-    private String vacancyName;
-    private Timestamp startTime;
-    private Timestamp endTime;
-    private String skillUsed;
-    private String description;
-    private Cv cvByCvid;
+@Data
+public class Projectorproductworked implements Serializable {
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "ID", nullable = false)
-    public int getId() {
-        return id;
-    }
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "ID", insertable = false, nullable = false)
+  private Integer ID;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  @Column(name = "CVID", nullable = false)
+  private Integer CVID;
 
-    @Basic
-    @Column(name = "CVID", nullable = false , insertable = false , updatable = false)
-    public int getCvid() {
-        return cvid;
-    }
+  @Column(name = "ProjetName")
+  private String ProjetName;
 
-    public void setCvid(int cvid) {
-        this.cvid = cvid;
-    }
+  @Column(name = "VacancyName")
+  private String VacancyName;
 
-    @Basic
-    @Column(name = "ProjetName", nullable = true, length = 100)
-    public String getProjetName() {
-        return projetName;
-    }
+  @Column(name = "StartTime")
+  private Date StartTime;
 
-    public void setProjetName(String projetName) {
-        this.projetName = projetName;
-    }
+  @Column(name = "EndTime")
+  private Date EndTime;
 
-    @Basic
-    @Column(name = "VacancyName", nullable = true, length = 50)
-    public String getVacancyName() {
-        return vacancyName;
-    }
+  @Column(name = "SkillUsed")
+  private String SkillUsed;
 
-    public void setVacancyName(String vacancyName) {
-        this.vacancyName = vacancyName;
-    }
+  @Column(name = "Description")
+  private String Description;
 
-    @Basic
-    @Column(name = "StartTime", nullable = true)
-    public Timestamp getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Timestamp startTime) {
-        this.startTime = startTime;
-    }
-
-    @Basic
-    @Column(name = "EndTime", nullable = true)
-    public Timestamp getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Timestamp endTime) {
-        this.endTime = endTime;
-    }
-
-    @Basic
-    @Column(name = "SkillUsed", nullable = true, length = 200)
-    public String getSkillUsed() {
-        return skillUsed;
-    }
-
-    public void setSkillUsed(String skillUsed) {
-        this.skillUsed = skillUsed;
-    }
-
-    @Basic
-    @Column(name = "Description", nullable = true, length = 50)
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Projectorproductworked that = (Projectorproductworked) o;
-        return id == that.id &&
-                cvid == that.cvid &&
-                Objects.equals(projetName, that.projetName) &&
-                Objects.equals(vacancyName, that.vacancyName) &&
-                Objects.equals(startTime, that.startTime) &&
-                Objects.equals(endTime, that.endTime) &&
-                Objects.equals(skillUsed, that.skillUsed) &&
-                Objects.equals(description, that.description);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, cvid, projetName, vacancyName, startTime, endTime, skillUsed, description);
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "CVID", referencedColumnName = "ID", nullable = false)
-    public Cv getCvByCvid() {
-        return cvByCvid;
-    }
-
-    public void setCvByCvid(Cv cvByCvid) {
-        this.cvByCvid = cvByCvid;
-    }
+  
 }

@@ -1,93 +1,30 @@
 package com.ats.entity;
 
-
-import javax.persistence.*;
-import java.util.List;
-import java.util.Objects;
 import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.Data;
 
-
 @Entity
-public class Skill {
-    private int id;
-    private int skillMasterId;
-    private Integer skillLevel;
-    private Skillmaster skillmasterBySkillMasterId;
-    private List<Skillincv> skillincvsById;
-    private List<Skillneedforjob> skillneedforjobsById;
+@Data
+@Table(name = "skill")
+public class Skill implements Serializable {
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "ID", nullable = false)
-    public int getId() {
-        return id;
-    }
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "ID", insertable = false, nullable = false)
+  private Integer ID;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  @Column(name = "SkillMasterID", nullable = false)
+  private Integer SkillMasterID;
 
-    @Basic
-    @Column(name = "SkillMasterID", nullable = false ,insertable = false , updatable = false)
-    public int getSkillMasterId() {
-        return skillMasterId;
-    }
+  @Column(name = "SkillLevel")
+  private Integer SkillLevel;
 
-    public void setSkillMasterId(int skillMasterId) {
-        this.skillMasterId = skillMasterId;
-    }
-
-    @Basic
-    @Column(name = "SkillLevel", nullable = true)
-    public Integer getSkillLevel() {
-        return skillLevel;
-    }
-
-    public void setSkillLevel(Integer skillLevel) {
-        this.skillLevel = skillLevel;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Skill skill = (Skill) o;
-        return id == skill.id &&
-                skillMasterId == skill.skillMasterId &&
-                Objects.equals(skillLevel, skill.skillLevel);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, skillMasterId, skillLevel);
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "SkillMasterID", referencedColumnName = "ID", nullable = false)
-    public Skillmaster getSkillmasterBySkillMasterId() {
-        return skillmasterBySkillMasterId;
-    }
-
-    public void setSkillmasterBySkillMasterId(Skillmaster skillmasterBySkillMasterId) {
-        this.skillmasterBySkillMasterId = skillmasterBySkillMasterId;
-    }
-
-    @OneToMany(mappedBy = "skillBySkillId")
-    public List<Skillincv> getSkillincvsById() {
-        return skillincvsById;
-    }
-
-    public void setSkillincvsById(List<Skillincv> skillincvsById) {
-        this.skillincvsById = skillincvsById;
-    }
-
-    @OneToMany(mappedBy = "skillBySkillId")
-    public List<Skillneedforjob> getSkillneedforjobsById() {
-        return skillneedforjobsById;
-    }
-
-    public void setSkillneedforjobsById(List<Skillneedforjob> skillneedforjobsById) {
-        this.skillneedforjobsById = skillneedforjobsById;
-    }
+  
 }

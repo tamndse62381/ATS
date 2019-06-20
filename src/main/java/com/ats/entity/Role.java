@@ -1,55 +1,27 @@
 package com.ats.entity;
 
-import javax.persistence.*;
-import java.util.List;
-import java.util.Objects;
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.Data;
 
+@Table(name = "role")
+@Data
 @Entity
-public class Role {
-    private int id;
-    private String roleName;
-    private List<Users> usersById;
+public class Role implements Serializable {
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "ID", nullable = false)
-    public int getId() {
-        return id;
-    }
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "ID", insertable = false, nullable = false)
+  private Integer ID;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  @Column(name = "RoleName")
+  private String RoleName;
 
-    @Basic
-    @Column(name = "RoleName", nullable = true, length = 50)
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Role role = (Role) o;
-        return id == role.id &&
-                Objects.equals(roleName, role.roleName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, roleName);
-    }
-
-    @OneToMany(mappedBy = "roleByRoleId")
-    public List<Users> getUsersById() {
-        return usersById;
-    }
-
-    public void setUsersById(List<Users> usersById) {
-        this.usersById = usersById;
-    }
+  
 }

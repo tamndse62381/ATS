@@ -1,67 +1,30 @@
 package com.ats.entity;
 
-import javax.persistence.*;
-import java.util.Objects;
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.Data;
 
 @Entity
-public class Certification {
-    private int id;
-    private int cvid;
-    private String certificationName;
-    private Cv cvByCvid;
+@Table(name = "certification")
+@Data
+public class Certification implements Serializable {
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "ID", nullable = false)
-    public int getId() {
-        return id;
-    }
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "ID", insertable = false, nullable = false)
+  private Integer ID;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  @Column(name = "CVID", nullable = false)
+  private Integer CVID;
 
-    @Basic
-    @Column(name = "CVID", nullable = false , insertable = false , updatable = false)
-    public int getCvid() {
-        return cvid;
-    }
+  @Column(name = "CertificationName")
+  private String CertificationName;
 
-    public void setCvid(int cvid) {
-        this.cvid = cvid;
-    }
-
-    @Basic
-    @Column(name = "CertificationName", nullable = true, length = 50)
-    public String getCertificationName() {
-        return certificationName;
-    }
-
-    public void setCertificationName(String certificationName) {
-        this.certificationName = certificationName;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Certification that = (Certification) o;
-        return id == that.id &&
-                cvid == that.cvid &&
-                Objects.equals(certificationName, that.certificationName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, cvid, certificationName);
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "CVID", referencedColumnName = "ID", nullable = false)
-    public Cv getCvByCvid() {
-        return cvByCvid;
-    }
-
-    public void setCvByCvid(Cv cvByCvid) {
-        this.cvByCvid = cvByCvid;
-    }
+  
 }

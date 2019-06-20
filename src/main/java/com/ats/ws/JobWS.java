@@ -82,7 +82,7 @@ public class JobWS {
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getTop8")
     @ResponseBody
-    public List<JobDTO> getTop8() {z
+    public List<JobDTO> getTop8() {
         LOGGER.info("Begin getTop8 in JobWS ");
         List<JobDTO> listJobs = new ArrayList<>();
         try {

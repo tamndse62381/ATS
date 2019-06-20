@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface EducationRepository extends JpaRepository<Education,Integer> {
-    @Query("Select e from Education e where e.cvid = :id")
+    @Query("Select e from Education e where e.CVID = :id")
     public List<Education> findAllEduByCVID (@Param("id") int id);
 }

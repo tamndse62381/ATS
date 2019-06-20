@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CVRepository extends JpaRepository<Cv, Integer> {
-    @Query("Select c from Cv c where c.email = :email")
+    @Query("Select c from Cv c where c.Email = :email")
     public Cv findCVByCVID (@Param("email") String email);
 }

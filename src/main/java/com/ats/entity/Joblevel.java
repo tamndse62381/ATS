@@ -1,65 +1,27 @@
 package com.ats.entity;
 
-import javax.persistence.*;
-import java.util.List;
-import java.util.Objects;
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.Data;
 
+@Table(name = "joblevel")
 @Entity
-public class Joblevel {
-    private int id;
-    private String jobLevelName;
-    private List<Job> jobsById;
-    private List<Users> usersById;
+@Data
+public class Joblevel implements Serializable {
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "ID", nullable = false)
-    public int getId() {
-        return id;
-    }
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "ID", insertable = false, nullable = false)
+  private Integer ID;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  @Column(name = "JobLevelName")
+  private String JobLevelName;
 
-    @Basic
-    @Column(name = "JobLevelName", nullable = true, length = 50)
-    public String getJobLevelName() {
-        return jobLevelName;
-    }
-
-    public void setJobLevelName(String jobLevelName) {
-        this.jobLevelName = jobLevelName;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Joblevel joblevel = (Joblevel) o;
-        return id == joblevel.id &&
-                Objects.equals(jobLevelName, joblevel.jobLevelName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, jobLevelName);
-    }
-
-    @OneToMany(mappedBy = "joblevelByJobLevelId")
-    public List<Job> getJobsById() {
-        return jobsById;
-    }
-
-    public void setJobsById(List<Job> jobsById) {
-        this.jobsById = jobsById;
-    }
-
-    @OneToMany(mappedBy = "joblevelByJobLevelId")
-    public List<Users> getUsersById() {
-        return usersById;
-    }
-
-    public void setUsersById(List<Users> usersById) {
-        this.usersById = usersById;
-    }
+  
 }

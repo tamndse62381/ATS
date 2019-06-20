@@ -42,7 +42,7 @@ public class IndustryWS {
     // put edit item
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<Industry> update(@RequestBody Industry editedIndustry) {
-        if (industryRepository.getOne(editedIndustry.getId()) != null) {
+        if (industryRepository.getOne(editedIndustry.getID()) != null) {
             return ResponseEntity.ok().body(industryRepository.save(editedIndustry));
         }
         return ResponseEntity.badRequest().body(null);

@@ -42,7 +42,7 @@ public class JobServiceImpl implements JobService {
         Job newJob;
         try {
             newJob = jobRepository.save(job);
-            result = newJob.getId();
+            result = newJob.getID();
             System.out.println("KQ : " + result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,11 +87,11 @@ public class JobServiceImpl implements JobService {
             }.getType();
             listofDTO = mapper.map(listofJob, targetListType);
             for (int i = 0; i < listofJob.size(); i++) {
-                company = companyService.findComanyByEmployerID(listofJob.get(i).getUserId());
+                company = companyService.findComanyByEmployerID(listofJob.get(i).getUserid());
                 listofDTO.get(i).setCompanyName(company.getNameCompany());
             }
             for (int i = 0; i < listofJob.size(); i++) {
-                city = cityService.getCityById(listofJob.get(i).getCityId());
+                city = cityService.getCityById(listofJob.get(i).getCityid());
                 listofDTO.get(i).setCityName(city.getFullName());
             }
             LOGGER.info("End getTop8 in Job Repository with job name : {}");

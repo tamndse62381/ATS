@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CityRepository extends JpaRepository<City, Integer> {
-    @Query("Select c from City c where c.id = :id")
+    @Query("Select c from City c where c.ID = :id")
     City getCityNameById(@Param("id") int id);
 
 }

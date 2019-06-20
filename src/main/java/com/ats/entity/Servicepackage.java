@@ -1,80 +1,34 @@
 package com.ats.entity;
 
-import javax.persistence.*;
-import java.sql.Time;
-import java.util.List;
-import java.util.Objects;
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.Data;
 
 @Entity
-public class Servicepackage {
-    private int id;
-    private String name;
-    private String status;
-    private Time duration;
-    private List<Receipts> receiptsById;
+@Table(name = "servicepackage")
+@Data
+public class Servicepackage implements Serializable {
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "ID", nullable = false)
-    public int getId() {
-        return id;
-    }
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "ID", insertable = false, nullable = false)
+  private Integer ID;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  @Column(name = "Name")
+  private String Name;
 
-    @Basic
-    @Column(name = "Name", nullable = true, length = 50)
-    public String getName() {
-        return name;
-    }
+  @Column(name = "Status")
+  private String Status;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  @Column(name = "Duration")
+  private Date Duration;
 
-    @Basic
-    @Column(name = "Status", nullable = true, length = 50)
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    @Basic
-    @Column(name = "Duration", nullable = true)
-    public Time getDuration() {
-        return duration;
-    }
-
-    public void setDuration(Time duration) {
-        this.duration = duration;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Servicepackage that = (Servicepackage) o;
-        return id == that.id &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(status, that.status) &&
-                Objects.equals(duration, that.duration);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, status, duration);
-    }
-
-    @OneToMany(mappedBy = "servicepackageByServicePackageId")
-    public List<Receipts> getReceiptsById() {
-        return receiptsById;
-    }
-
-    public void setReceiptsById(List<Receipts> receiptsById) {
-        this.receiptsById = receiptsById;
-    }
+  
 }

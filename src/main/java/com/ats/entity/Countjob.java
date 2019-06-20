@@ -1,91 +1,34 @@
 package com.ats.entity;
 
-import javax.persistence.*;
-import java.sql.Timestamp;
-import java.util.Objects;
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.Data;
 
+@Table(name = "countjob")
 @Entity
-public class Countjob {
-    private int id;
-    private int userId;
-    private int jobId;
-    private Timestamp createdDate;
-    private Users usersByUserId;
-    private Job jobByJobId;
+@Data
+public class Countjob implements Serializable {
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "ID", nullable = false)
-    public int getId() {
-        return id;
-    }
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "ID", insertable = false, nullable = false)
+  private Integer ID;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  @Column(name = "UserID", nullable = false)
+  private Integer UserID;
 
-    @Basic
-    @Column(name = "UserID", nullable = false , insertable = false , updatable = false)
-    public int getUserId() {
-        return userId;
-    }
+  @Column(name = "JobID", nullable = false)
+  private Integer JobID;
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
+  @Column(name = "CreatedDate")
+  private Date CreatedDate;
 
-    @Basic
-    @Column(name = "JobID", nullable = false , insertable = false , updatable = false)
-    public int getJobId() {
-        return jobId;
-    }
-
-    public void setJobId(int jobId) {
-        this.jobId = jobId;
-    }
-
-    @Basic
-    @Column(name = "CreatedDate", nullable = true)
-    public Timestamp getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Countjob countjob = (Countjob) o;
-        return id == countjob.id &&
-                userId == countjob.userId &&
-                jobId == countjob.jobId &&
-                Objects.equals(createdDate, countjob.createdDate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, userId, jobId, createdDate);
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "UserID", referencedColumnName = "ID", nullable = false)
-    public Users getUsersByUserId() {
-        return usersByUserId;
-    }
-
-    public void setUsersByUserId(Users usersByUserId) {
-        this.usersByUserId = usersByUserId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "JobID", referencedColumnName = "ID", nullable = false)
-    public Job getJobByJobId() {
-        return jobByJobId;
-    }
-
-    public void setJobByJobId(Job jobByJobId) {
-        this.jobByJobId = jobByJobId;
-    }
+  
 }

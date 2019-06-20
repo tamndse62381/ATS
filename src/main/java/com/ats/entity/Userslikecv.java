@@ -1,115 +1,40 @@
 package com.ats.entity;
 
-import javax.persistence.*;
-import java.sql.Timestamp;
-import java.util.Objects;
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.Data;
 
+@Data
 @Entity
-public class Userslikecv {
-    private int id;
-    private int userId;
-    private int cvid;
-    private Timestamp createdDate;
-    private Timestamp lastModifyDate;
-    private Integer isActive;
-    private Users usersByUserId;
-    private Cv cvByCvid;
+@Table(name = "userslikecv")
+public class Userslikecv implements Serializable {
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "ID", nullable = false)
-    public int getId() {
-        return id;
-    }
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "ID", insertable = false, nullable = false)
+  private Integer ID;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  @Column(name = "UserID", nullable = false)
+  private Integer UserID;
 
-    @Basic
-    @Column(name = "UserID", nullable = false , insertable = false , updatable = false)
-    public int getUserId() {
-        return userId;
-    }
+  @Column(name = "CVID", nullable = false)
+  private Integer CVID;
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
+  @Column(name = "CreatedDate")
+  private Date CreatedDate;
 
-    @Basic
-    @Column(name = "CVID", nullable = false , insertable = false , updatable = false)
-    public int getCvid() {
-        return cvid;
-    }
+  @Column(name = "LastModifyDate")
+  private Date LastModifyDate;
 
-    public void setCvid(int cvid) {
-        this.cvid = cvid;
-    }
+  @Column(name = "isActive")
+  private Integer isActive;
 
-    @Basic
-    @Column(name = "CreatedDate", nullable = true)
-    public Timestamp getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    @Basic
-    @Column(name = "LastModifyDate", nullable = true)
-    public Timestamp getLastModifyDate() {
-        return lastModifyDate;
-    }
-
-    public void setLastModifyDate(Timestamp lastModifyDate) {
-        this.lastModifyDate = lastModifyDate;
-    }
-
-    @Basic
-    @Column(name = "isActive", nullable = true)
-    public Integer getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Integer isActive) {
-        this.isActive = isActive;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Userslikecv that = (Userslikecv) o;
-        return id == that.id &&
-                userId == that.userId &&
-                cvid == that.cvid &&
-                Objects.equals(createdDate, that.createdDate) &&
-                Objects.equals(lastModifyDate, that.lastModifyDate) &&
-                Objects.equals(isActive, that.isActive);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, userId, cvid, createdDate, lastModifyDate, isActive);
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "UserID", referencedColumnName = "ID", nullable = false)
-    public Users getUsersByUserId() {
-        return usersByUserId;
-    }
-
-    public void setUsersByUserId(Users usersByUserId) {
-        this.usersByUserId = usersByUserId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "CVID", referencedColumnName = "ID", nullable = false)
-    public Cv getCvByCvid() {
-        return cvByCvid;
-    }
-
-    public void setCvByCvid(Cv cvByCvid) {
-        this.cvByCvid = cvByCvid;
-    }
+  
 }

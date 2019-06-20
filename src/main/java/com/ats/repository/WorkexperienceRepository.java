@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface WorkexperienceRepository extends JpaRepository<Workexperience, Integer> {
-    @Query("Select w from Workexperience w where w.cvid = :id")
+    @Query("Select w from Workexperience w where w.CVID = :id")
     List<Workexperience> findByCVID(@Param("id") int id);
 }

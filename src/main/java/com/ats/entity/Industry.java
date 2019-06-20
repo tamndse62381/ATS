@@ -1,65 +1,27 @@
 package com.ats.entity;
 
-import javax.persistence.*;
-import java.util.List;
-import java.util.Objects;
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.Data;
 
 @Entity
-public class Industry {
-    private int id;
-    private String name;
-    private List<Companyindustry> companyindustriesById;
-    private List<Cv> cvsById;
+@Table(name = "industry")
+@Data
+public class Industry implements Serializable {
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "ID", nullable = false)
-    public int getId() {
-        return id;
-    }
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "ID", insertable = false, nullable = false)
+  private Integer ID;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  @Column(name = "Name")
+  private String Name;
 
-    @Basic
-    @Column(name = "Name", nullable = true, length = 50)
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Industry industry = (Industry) o;
-        return id == industry.id &&
-                Objects.equals(name, industry.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name);
-    }
-
-    @OneToMany(mappedBy = "industryByIndustryId")
-    public List<Companyindustry> getCompanyindustriesById() {
-        return companyindustriesById;
-    }
-
-    public void setCompanyindustriesById(List<Companyindustry> companyindustriesById) {
-        this.companyindustriesById = companyindustriesById;
-    }
-
-    @OneToMany(mappedBy = "industryByIndustryId")
-    public List<Cv> getCvsById() {
-        return cvsById;
-    }
-
-    public void setCvsById(List<Cv> cvsById) {
-        this.cvsById = cvsById;
-    }
+  
 }
