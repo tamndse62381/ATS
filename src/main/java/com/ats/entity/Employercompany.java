@@ -19,16 +19,16 @@ public class Employercompany implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  private Integer id;
 
   @Column(name = "UserID", nullable = false)
-  private Integer UserID;
+  private Integer userID;
 
   @Column(name = "CompanyID", nullable = false)
-  private Integer CompanyID;
+  private Integer companyID;
 
   @Column(name = "CreatedDate")
-  private Date CreatedDate;
+  private Date createdDate;
 
-  
+
 }

@@ -18,13 +18,13 @@ public class Companyindustry implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  private Integer id;
 
   @Column(name = "CompanyID", nullable = false)
-  private Integer CompanyID;
+  private Integer companyID;
 
   @Column(name = "IndustryID", nullable = false)
-  private Integer IndustryID;
+  private Integer industryID;
 
-  
+
 }
