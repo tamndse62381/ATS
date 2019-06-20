@@ -19,40 +19,38 @@ public class Company implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  private Integer id;
 
   @Column(name = "NameCompany")
-  private String NameCompany;
+  private String nameCompany;
 
   @Column(name = "UserID", nullable = false)
-  private Integer UserID;
+  private Integer userID;
 
   @Column(name = "CityID", nullable = false)
-  private Integer CityID;
+  private Integer cityID;
 
   @Column(name = "Address")
-  private String Address;
+  private String address;
 
   @Column(name = "TelephoneNumber")
-  private String TelephoneNumber;
+  private String telephoneNumber;
 
   @Column(name = "Email")
-  private String Email;
+  private String email;
 
   @Column(name = "LogoImg")
-  private String LogoImg;
+  private String logoImg;
 
   @Column(name = "Description")
-  private String Description;
+  private String description;
 
   @Column(name = "CreatedDate")
-  private Date CreatedDate;
+  private Date createdDate;
 
   @Column(name = "LastModify")
-  private Date LastModify;
+  private Date lastModify;
 
   @Column(name = "Status")
-  private String Status;
-
-  
+  private String status;
 }

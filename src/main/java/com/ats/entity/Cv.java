@@ -22,64 +22,62 @@ public class Cv implements Serializable {
   private Integer id;
 
   @Column(name = "Title")
-  private String Title;
+  private String title;
 
   @Column(name = "UserID", nullable = false)
-  private Integer UserID;
+  private Integer userID;
 
   @Column(name = "Img")
-  private String Img;
+  private String img;
 
   @Column(name = "Email")
-  private String Email;
+  private String email;
 
   @Column(name = "TelephoneNumber")
-  private String TelephoneNumber;
+  private String telephoneNumber;
 
   @Column(name = "FirstName")
-  private String FirstName;
+  private String firstName;
 
   @Column(name = "LastName")
-  private String LastName;
+  private String lastName;
 
   @Column(name = "Gender")
-  private String Gender;
+  private String gender;
 
   @Column(name = "DOB")
-  private Date DOB;
+  private Date dob;
 
   @Column(name = "CityID", nullable = false)
-  private Integer CityID;
+  private Integer cityID;
 
   @Column(name = "Address")
-  private String Address;
+  private String address;
 
   @Column(name = "IndustryID", nullable = false)
-  private Integer IndustryID;
+  private Integer industryID;
 
   @Column(name = "Description")
-  private String Description;
+  private String description;
 
   @Column(name = "YearExperience")
-  private Integer YearExperience;
+  private Integer yearExperience;
 
   @Column(name = "SalaryFrom")
-  private Double SalaryFrom;
+  private Double salaryFrom;
 
   @Column(name = "SalaryTo")
-  private Double SalaryTo;
+  private Double salaryTo;
 
   @Column(name = "Status")
-  private String Status;
+  private String status;
 
   @Column(name = "CreatedDate")
-  private Date CreatedDate;
+  private Date createdDate;
 
   @Column(name = "LastModify")
-  private Date LastModify;
+  private Date lastModify;
 
   @Column(name = "isActive")
   private Integer isActive;
-
-  
 }

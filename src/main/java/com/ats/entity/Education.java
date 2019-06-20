@@ -19,28 +19,28 @@ public class Education implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  private Integer id;
 
   @Column(name = "CVID", nullable = false)
-  private Integer CVID;
+  private Integer cVID;
 
   @Column(name = "SchoolType")
-  private String SchoolType;
+  private String schoolType;
 
   @Column(name = "SchoolName")
-  private String SchoolName;
+  private String schoolName;
 
   @Column(name = "Major")
-  private String Major;
+  private String major;
 
   @Column(name = "StartTime")
-  private Date StartTime;
+  private Date startTime;
 
   @Column(name = "Endtime")
-  private Date Endtime;
+  private Date endtime;
 
   @Column(name = "Description")
-  private String Description;
+  private String description;
 
-  
+
 }

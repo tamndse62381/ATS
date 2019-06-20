@@ -18,13 +18,13 @@ public class Certification implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  private Integer id;
 
   @Column(name = "CVID", nullable = false)
-  private Integer CVID;
+  private Integer cVID;
 
   @Column(name = "CertificationName")
-  private String CertificationName;
+  private String certificationName;
 
-  
+
 }

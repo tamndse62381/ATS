@@ -73,7 +73,7 @@ public class CVWS {
         cv.setFirstName(newCV.getFirstName());
         cv.setLastName(newCV.getLastName());
         cv.setGender(newCV.getGender());
-        cv.setDOB(new Timestamp(newCV.getDob().getTime()));
+        cv.setDob(new Timestamp(newCV.getDob().getTime()));
         cv.setCityID(newCV.getCityid());
         cv.setAddress(newCV.getAddress());
         cv.setIndustryID(newCV.getIndustryid());
