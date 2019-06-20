@@ -1,0 +1,55 @@
+package com.ats.service.impl;
+
+import com.ats.entity.Skill;
+
+import com.ats.repository.SkillRepository;
+import com.ats.service.SkillService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional
+public class SkillServiceImpl implements SkillService {
+
+    @Autowired
+    SkillRepository skillRepository;
+
+    private static final Logger LOGGER = LogManager.getLogger(SkillServiceImpl.class);
+
+    @Override
+    public int addNewSkill(Skill skill) {
+        LOGGER.info("Begin addNewSkill in Skill Service with skillmaster id {}", skill.getSkillmasterid());
+        Skill skillResult = null;
+        try {
+            if (checkSkillBySkillLevel(skill)) {
+                skillResult = skillRepository.findSkillbySkillLevel(skill.getSkillLevel(), skill.getSkillmasterid());
+            } else {
+                skillResult = skillRepository.save(skill);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End addNewSkill in Skill Service with skillmaster id {}", skill.getSkillmasterid());
+        return skillResult.getId();
+    }
+
+    @Override
+    public boolean checkSkillBySkillLevel(Skill skill) {
+        LOGGER.info("Begin checkSkillBySkillLevel in Skill Service with skill master with skill level {}",
+                skill.getSkillmasterid() + "-" + skill.getSkillLevel());
+        try {
+            Skill skillResult = skillRepository.findSkillbySkillLevel(skill.getSkillLevel(), skill.getSkillmasterid());
+            LOGGER.info("Begin checkSkillBySkillLevel in Skill Service with skill master with skill level {}",
+                    skill.getSkillmasterid() + "-" + skill.getSkillLevel());
+            if (skillResult != null) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+}

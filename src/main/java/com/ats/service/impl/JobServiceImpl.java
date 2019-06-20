@@ -1,5 +1,6 @@
 package com.ats.service.impl;
 
+import com.ats.dto.JobDTO2;
 import com.ats.dto.JobDTO;
 import com.ats.entity.City;
 import com.ats.entity.Company;
@@ -36,12 +37,14 @@ public class JobServiceImpl implements JobService {
     private static final Logger LOGGER = LogManager.getLogger(JobServiceImpl.class);
 
     @Override
-    public int createJob(Job job) {
+    public int createJob(JobDTO2 job) {
         LOGGER.info("Begin createJob in Job Service with job name : {}", job.getTitle());
         int result = 0;
         Job newJob;
         try {
-            newJob = jobRepository.save(job);
+            ModelMapper mapper = new ModelMapper();
+            Job jobEntity = mapper.map(job, Job.class);
+            newJob = jobRepository.save(jobEntity);
             result = newJob.getID();
             System.out.println("KQ : " + result);
         } catch (Exception e) {
@@ -59,6 +62,12 @@ public class JobServiceImpl implements JobService {
         try {
             LOGGER.info("Begin searchJob in Job Repository with job name : {} ", job);
             listofJob = jobRepository.searchJob(job);
+            for (int i = 0; i < listofJob.size(); i++) {
+                if (!listofJob.get(i).getStatus().matches("new")) {
+                    listofJob.remove(i);
+                }
+            }
+
             ModelMapper mapper = new ModelMapper();
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
             }.getType();
@@ -78,10 +87,14 @@ public class JobServiceImpl implements JobService {
         Company company;
         City city;
         List<JobDTO> listofDTO = new ArrayList<>();
-//        Pageable firstPageWithTwoElements = new PageRequest.of(0,2);
         try {
             LOGGER.info("Begin getTop8 in Job Repository with job name : {}");
             listofJob = jobRepository.getTop8();
+            for (int i = 0; i < listofJob.size(); i++) {
+                if (!listofJob.get(i).getStatus().matches("new")) {
+                    listofJob.remove(i);
+                }
+            }
             ModelMapper mapper = new ModelMapper();
             Type targetListType = new TypeToken<List<JobDTO>>() {
             }.getType();
@@ -104,6 +117,15 @@ public class JobServiceImpl implements JobService {
         return listofDTO;
 
 
+    }
+
+    @Override
+    public int changeStatus(int id, String newStatus) {
+        LOGGER.info("Begin changeStatus in Account Service with Account id - newStatus : {}", id + newStatus);
+        int success;
+        success = jobRepository.changeStatus(id, newStatus);
+        LOGGER.info("End changeStatus in Account Service with result: {}", success);
+        return success;
     }
 
 }

@@ -98,14 +98,6 @@ public class UsersServiceImpl implements UsersService {
         return newUsers.getId();
     }
 
-    @Override
-    public boolean checkAccountValidation(String email) {
-        boolean valid = true;
-        if (usersRepository.findAccountByEmail(email) != null) {
-            valid = false;
-        }
-        return valid;
-    }
 
     @Override
     public boolean checkPassword(String password, int id) {

@@ -12,4 +12,5 @@ public class JobDTO {
     private String cityName;
     private Double salaryTo;
     private Double salaryFrom;
+
 }

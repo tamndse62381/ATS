@@ -105,7 +105,7 @@ public class UserWS {
 
     @ResponseBody
     @CrossOrigin(origins = "localhost:8090")
-    @PostMapping(value = "/changeStatus", produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/changeUserStatus", produces = "application/json;charset=UTF-8")
     public RestResponse changeStatus(@RequestBody UsersDTO usersDTO) {
         LOGGER.info("Begin changeStatus in UserWS with Account id : {}" + usersDTO.getId());
         int success;

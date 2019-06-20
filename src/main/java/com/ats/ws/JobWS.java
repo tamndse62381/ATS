@@ -1,7 +1,11 @@
 package com.ats.ws;
 
+import com.ats.dto.JobDTO2;
 import com.ats.dto.JobDTO;
 import com.ats.entity.Job;
+import com.ats.entity.Skill;
+import com.ats.service.SkillNeedForJobService;
+import com.ats.service.SkillService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -22,22 +26,34 @@ import java.util.List;
 public class JobWS {
     @Autowired
     JobService jobService;
+    @Autowired
+    SkillService skillService;
+    @Autowired
+    SkillNeedForJobService skillNeedForJobService;
 
     private static final Logger LOGGER = LogManager.getLogger(UserWS.class);
 
     @ResponseBody
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/create")
-    public RestResponse createJob(@RequestBody Job job) {
+    public RestResponse createJob(@RequestBody JobDTO2 job) {
         LOGGER.info("Begin createJob in JobWS with Job title : {}" + job.getTitle());
         int result = 0;
+        List<Integer> listSkillId = new ArrayList<Integer>();
+        Date dt = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(dt);
         try {
-            Date date = new Date();
-            Timestamp ts=new Timestamp(date.getTime());
-            System.out.println(ts);
-            job.setCreatedDate(ts);
+            job.setCreatedDate(dt);
+            c.add(Calendar.DATE, 30);
+            job.setEndDateForApply(c.getTime());
             job.setStatus("new");
             result = jobService.createJob(job);
+            List<Skill> listSkill = job.getListSkill();
+            for (int i = 0; i < listSkill.size(); i++) {
+                listSkillId.add(skillService.addNewSkill(listSkill.get(i)));
+            }
+            skillNeedForJobService.addSkillForJob(listSkillId, result);
             if (result > 0) {
                 return new RestResponse(true, "Create New Job Successfull", null);
             }
@@ -65,18 +81,22 @@ public class JobWS {
     }
 
     @CrossOrigin(origins = "*")
-    @GetMapping(value = "/changeJobStatus")
+    @PostMapping(value = "/changeJobStatus")
     @ResponseBody
-    public List<Job> changeJobStatus(@RequestParam(value = "search") String search) {
-        LOGGER.info("Begin changeJobStatus in JobWS with Search value : {}" + search);
-        List<Job> listUser = new ArrayList<>();
+    public RestResponse changeJobStatus(@RequestBody JobDTO2 job) {
+        LOGGER.info("Begin changeJobStatus in JobWS with Search value : {}" + job.getId());
+        int success;
         try {
-//            listUser = jobService.searchJob(search);
+            success = jobService.changeStatus(job.getId(), job.getStatus());
+            if (success > 0) {
+                return new RestResponse(true, "changeStatus Successful with status " + job.getStatus(), null);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOGGER.info("End changeJobStatus in JobWS with Search value : {}" + search);
-        return listUser;
+        LOGGER.info("End changeJobStatus in JobWS with Search value : {}" + job.getId());
+        return new RestResponse(false, "changeStatus Fail", null);
+
     }
 
     @CrossOrigin(origins = "*")
