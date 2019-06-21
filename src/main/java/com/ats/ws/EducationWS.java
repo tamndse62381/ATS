@@ -2,12 +2,10 @@ package com.ats.ws;
 
 import com.ats.entity.Education;
 import com.ats.repository.EducationRepository;
+import com.ats.service.EducationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,19 +13,30 @@ import java.util.List;
 @RequestMapping("/education")
 public class EducationWS {
     @Autowired
-    private EducationRepository educationRepository;
+    private EducationService educationService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<Education>> getByCVID(@RequestParam("cvid") int id){
-        try {
-            // find by cai cvid de lay ra
-        } catch (RuntimeException e){
-            System.out.println(e);
-        }
-        return ResponseEntity.badRequest().body(null);
+//    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+//    @CrossOrigin(origins = "")
+//    public ResponseEntity<List<Education>> getALLByCVID(@PathVariable int id){
+//        return educationService.getListEduByCVId(id);
+//    }
+
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @CrossOrigin(origins = "")
+    public ResponseEntity<Education> createANewEducation(@RequestBody Education newEducation){
+        return ResponseEntity.ok().body(educationService.createANewEducation(newEducation));
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @CrossOrigin(origins = "")
+    public ResponseEntity<Education> editAEducation(@RequestBody Education editedEducation, @PathVariable int id){
 
+        return null;
+    }
 
-
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+    @CrossOrigin(origins = "")
+    public boolean deleteAEducation(@PathVariable int id){
+        return educationService.deleteAEducation(id);
+    }
 }

@@ -1,22 +1,13 @@
 package com.ats.ws;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import com.ats.entity.Users;
-//import com.ats.specification.UserSpecificationsBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
-
 import com.ats.dto.UsersDTO;
-
 import com.ats.service.UsersService;
 import com.ats.token.TokenAuthenticationService;
 import com.ats.util.RestResponse;
@@ -62,8 +53,11 @@ public class UserWS {
                 usersDTO.getEmail() + " - " + usersDTO.getPassword() + " - " + usersDTO.getFullname());
         int result;
         try {
+            java.util.Date date = new java.util.Date();
             String tokenString = tokenService.addAuthentication(usersDTO.getEmail());
             usersDTO.setAccessToken(tokenString);
+            usersDTO.setLastLogin(date);
+            usersDTO.setCreatedDate(date);
             result = usersService.registration(usersDTO);
             LOGGER.info("End Registration in UserWS with email - password - fullname: {}",
                     usersDTO.getEmail() + " - " + usersDTO.getPassword() + " - " + usersDTO.getFullname());
@@ -84,7 +78,7 @@ public class UserWS {
         LOGGER.info("Begin login in UserWS with Token : {}", accessToken);
         UsersDTO usersDTO;
         try {
-            usersDTO = usersService.findAccountByToken(accessToken);
+            usersDTO = usersService.findUserByToken(accessToken);
             LOGGER.info("End login in UserWS with Token : {}", accessToken);
             if (usersDTO != null) {
                 return new RestResponse(true, "CheckLogin To Successful", usersDTO);
@@ -116,7 +110,7 @@ public class UserWS {
 
     @ResponseBody
     @CrossOrigin(origins = "localhost:8090")
-    @PostMapping(value = "/changeStatus", produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/changeUserStatus", produces = "application/json;charset=UTF-8")
     public RestResponse changeStatus(@RequestBody UsersDTO usersDTO) {
         LOGGER.info("Begin changeStatus in UserWS with Account id : {}" + usersDTO.getId());
         int success;
@@ -125,7 +119,6 @@ public class UserWS {
             if (success > 0) {
                 return new RestResponse(true, "changeStatus Successful with status " + usersDTO.getStatus(), null);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }

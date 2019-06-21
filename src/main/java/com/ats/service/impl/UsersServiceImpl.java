@@ -1,21 +1,16 @@
 package com.ats.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-//import java.util.HashMap;
 
 import com.ats.dto.UsersDTO;
 import com.ats.entity.Users;
 import com.ats.repository.UsersRepository;
-//import com.ats.specification.UserSpecificationsBuilder;
+import com.ats.service.RoleService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +25,8 @@ public class UsersServiceImpl implements UsersService {
 
     @Autowired
     private UsersRepository usersRepository;
+    @Autowired
+    private RoleService roleService;
     @Autowired
     TokenAuthenticationService tokenService;
 
@@ -46,8 +43,9 @@ public class UsersServiceImpl implements UsersService {
         UsersDTO usersDTO;
         UsersDTO reTurnUsersDTO = new UsersDTO();
         passwordUtil = new EncrytedPasswordUtils();
+        modelMapper = new ModelMapper();
         if (email != null) {
-            usersDTO = findAccountByEmail(email);
+            usersDTO = findUserByEmail(email);
             reTurnUsersDTO.setEmail("Account not Existed !! ");
             if (usersDTO != null) {
                 reTurnUsersDTO.setEmail("Wrong password !! ");
@@ -56,8 +54,12 @@ public class UsersServiceImpl implements UsersService {
                     if (usersDTO.getStatus().matches("new")) {
                         Date lastLoginDate = new Date();
                         usersRepository.editAccountLastLogin(lastLoginDate, usersDTO.getEmail(), usersDTO.getAccessToken());
+
+                        modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
+//                       reTurnUsersDTO = modelMapper.map(usersDTO,UsersDTO.class);
                         reTurnUsersDTO = new UsersDTO(usersDTO.getId(), usersDTO.getFullname(),
                                 usersDTO.getEmail(), usersDTO.getRoleId(), usersDTO.getAccessToken());
+
                         return reTurnUsersDTO;
                     } else {
                         reTurnUsersDTO.setEmail("is Banned !!");
@@ -79,13 +81,12 @@ public class UsersServiceImpl implements UsersService {
         dto.setPassword(newPassword);
         Users users = modelMapper.map(dto, Users.class);
         UsersDTO existedUsers;
-        existedUsers = findAccountByEmail(dto.getEmail());
+        existedUsers = findUserByEmail(dto.getEmail());
 
         if (existedUsers == null) {
             if (users != null) {
                 try {
                     newUsers = usersRepository.save(users);
-                    System.out.println("NEW ID  " + newUsers.getId());
                     LOGGER.info("End registration in Account Service with result: {}", newUsers.toString());
                 } catch (Exception e) {
                     System.out.println(e);
@@ -97,14 +98,6 @@ public class UsersServiceImpl implements UsersService {
         return newUsers.getId();
     }
 
-    @Override
-    public boolean checkAccountValidation(String email) {
-        boolean valid = true;
-        if (usersRepository.findAccountByEmail(email) != null) {
-            valid = false;
-        }
-        return valid;
-    }
 
     @Override
     public boolean checkPassword(String password, int id) {
@@ -117,15 +110,17 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public UsersDTO findAccountByEmail(String email) {
+    public UsersDTO findUserByEmail(String email) {
         LOGGER.info("Begin findAccountByEmail in Account Service with email {}", email);
         modelMapper = new ModelMapper();
         UsersDTO usersDTO = null;
+        modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
         Users users;
         if (email != null) {
             users = usersRepository.findAccountByEmail(email);
             if (users != null) {
                 usersDTO = modelMapper.map(users, UsersDTO.class);
+
             }
         }
         LOGGER.info("End findAccountByEmail in Account Service with result: {}", usersDTO);
@@ -134,7 +129,7 @@ public class UsersServiceImpl implements UsersService {
 
 
     @Override
-    public UsersDTO findAccountByToken(String token) {
+    public UsersDTO findUserByToken(String token) {
         LOGGER.info("Begin findAccountByToken in Account Service with token {}", token);
         UsersDTO usersDTO;
         modelMapper = new ModelMapper();
@@ -162,30 +157,6 @@ public class UsersServiceImpl implements UsersService {
         }
         return reTurnUsersDTO;
     }
-
-//    @Override
-//    public List<UsersDTO> searchUser(String search) {
-//        LOGGER.info("Begin searchUser in Account Service with Search value : {}" + search);
-//        List<Users> listEntity = new ArrayList<>();
-//        List<UsersDTO> listDTO = new ArrayList<>();
-//        ModelMapper modelMapper = new ModelMapper();
-//        UserSpecificationsBuilder builder = new UserSpecificationsBuilder();
-//        Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
-//        Matcher matcher = pattern.matcher(search + ",");
-//        while (matcher.find()) {
-//            builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
-//        }
-//
-//        Specification<Users> spec = builder.build();
-//        listEntity = usersRepository.findAll(spec);
-//        for (int i = 0; i < listEntity.size(); i++) {
-//            listDTO.add( modelMapper.map(listEntity.get(i),UsersDTO.class));
-//        }
-//
-//        LOGGER.info("End searchUser in Account Service with Search value : {}" + search);
-//
-//        return listDTO;
-//    }
 
     @Override
     public int changeStatus(int id, String newStatus) {

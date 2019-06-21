@@ -18,19 +18,19 @@ public class Jobseekerlikejob implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", insertable = false, nullable = false)
+  @Column(name = "ID", insertable = false, nullable = false)
   private Integer id;
 
-  @Column(name = "userid")
+  @Column(name = "UserID", nullable = false)
   private Integer userid;
 
-  @Column(name = "jobid")
+  @Column(name = "JobID", nullable = false)
   private Integer jobid;
 
-  @Column(name = "createdDate")
+  @Column(name = "CreatedDate")
   private Date createdDate;
 
-  @Column(name = "lastModifyDate")
+  @Column(name = "LastModifyDate")
   private Date lastModifyDate;
 
   @Column(name = "isActive")

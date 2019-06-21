@@ -33,7 +33,7 @@ public class SkillmasterServiceImpl implements SkillmasterService {
     @Override
     public boolean editASkillmaster(Skillmaster editedSkillmaster, int id) {
         try {
-            Skillmaster skillmaster = skillmasterRepository.findOne(id);
+            Skillmaster skillmaster = skillmasterRepository.getOne(id);
             if (skillmaster != null){
                 skillmaster.setSkillName(editedSkillmaster.getSkillName());
                 skillmaster.setSkilltypeid(editedSkillmaster.getSkilltypeid());
@@ -44,5 +44,15 @@ public class SkillmasterServiceImpl implements SkillmasterService {
             System.out.println(e);
         }
         return false;
+    }
+
+    @Override
+    public List<Skillmaster> findAllLanguageskill(int id) {
+        try {
+            return skillmasterRepository.findAllLanguageSkill(id);
+        } catch (Exception e){
+            System.out.println(e);
+        }
+        return null;
     }
 }

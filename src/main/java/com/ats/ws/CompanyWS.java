@@ -10,8 +10,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.List;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/company")
@@ -25,8 +27,8 @@ public class CompanyWS {
     @PostMapping("")
     public ResponseEntity<Company> create(@RequestBody Company newCompany){
         try {
-            newCompany.setCreatedDate(Calendar.getInstance().getTime());
-            newCompany.setLastModify(Calendar.getInstance().getTime());
+            newCompany.setCreatedDate(new Timestamp(new Date().getTime()));
+            newCompany.setLastModify(new Timestamp(new Date().getTime()));
             return ResponseEntity.ok().body(companyRepository.save(newCompany));
         } catch (RuntimeException e){
             System.out.println(e);
@@ -34,11 +36,14 @@ public class CompanyWS {
         return ResponseEntity.badRequest().body(null);
     }
 
-    // edit info's compnay
+    // edit info's company
     @PutMapping("")
     public ResponseEntity<Company> edit(@RequestBody Company editedCompany){
         try {
-            editedCompany.setLastModify(Calendar.getInstance().getTime());
+//            Date date = new Date();
+//            Timestamp ts=new Timestamp(date.getTime());
+//            System.out.println(ts);
+            editedCompany.setLastModify(new Timestamp(new Date().getTime()));
             return ResponseEntity.ok().body(companyRepository.save(editedCompany));
         } catch (RuntimeException e){
             System.out.println(e);
@@ -55,11 +60,6 @@ public class CompanyWS {
     // Get one company by Employerid
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     ResponseEntity<Company> getByEmployerId(@Param("id") int id){
-        try {
-
-        } catch (RuntimeException e){
-
-        }
         return null;
     }
 }

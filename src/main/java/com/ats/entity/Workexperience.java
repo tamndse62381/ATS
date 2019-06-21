@@ -10,33 +10,33 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
 
-@Entity
 @Table(name = "workexperience")
+@Entity
 @Data
 public class Workexperience implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", insertable = false, nullable = false)
+  @Column(name = "ID", insertable = false, nullable = false)
   private Integer id;
 
-  @Column(name = "cvid")
+  @Column(name = "CVID", nullable = false)
   private Integer cvid;
 
-  @Column(name = "companyName")
+  @Column(name = "CompanyName")
   private String companyName;
 
-  @Column(name = "vacancyName")
+  @Column(name = "VacancyName")
   private String vacancyName;
 
-  @Column(name = "startTime")
+  @Column(name = "StartTime")
   private Date startTime;
 
-  @Column(name = "endTime")
+  @Column(name = "EndTime")
   private Date endTime;
 
-  @Column(name = "description")
+  @Column(name = "Description")
   private String description;
 
   

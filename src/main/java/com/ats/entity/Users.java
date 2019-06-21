@@ -10,64 +10,64 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
 
-@Entity
 @Data
+@Entity
 @Table(name = "users")
 public class Users implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", insertable = false, nullable = false)
+  @Column(name = "ID", insertable = false, nullable = false)
   private Integer id;
 
-  @Column(name = "email")
+  @Column(name = "Email")
   private String email;
 
-  @Column(name = "fullName")
+  @Column(name = "FullName")
   private String fullName;
 
-  @Column(name = "password")
+  @Column(name = "Password")
   private String password;
 
-  @Column(name = "accessToken")
+  @Column(name = "AccessToken")
   private String accessToken;
 
-  @Column(name = "roleid")
+  @Column(name = "RoleId", nullable = false)
   private Integer roleid;
 
-  @Column(name = "telephoneNumber")
+  @Column(name = "TelephoneNumber")
   private String telephoneNumber;
 
-  @Column(name = "gender")
+  @Column(name = "Gender")
   private String gender;
 
-  @Column(name = "jobLevelID")
-  private Integer jobLevelID;
+  @Column(name = "JobLevelID")
+  private Integer joblevelid;
 
-  @Column(name = "vacancyName")
+  @Column(name = "VacancyName")
   private String vacancyName;
 
-  @Column(name = "cityid")
+  @Column(name = "CityID")
   private Integer cityid;
 
-  @Column(name = "address")
+  @Column(name = "Address")
   private String address;
 
-  @Column(name = "description")
+  @Column(name = "Description")
   private String description;
 
-  @Column(name = "createdDate")
+  @Column(name = "CreatedDate")
   private Date createdDate;
 
   @Column(name = "LastLogin")
-  private Date LastLogin;
+  private Date lastLogin;
 
   @Column(name = "LastModify")
-  private Date LastModify;
+  private Date lastModify;
 
   @Column(name = "Status")
-  private String Status;
+  private String status;
 
   
 }

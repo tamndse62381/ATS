@@ -18,20 +18,20 @@ public class Apply implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", insertable = false, nullable = false)
+  @Column(name = "ID", insertable = false, nullable = false)
   private Integer id;
 
-  @Column(name = "jobseekerid")
+  @Column(name = "JobSeekerID", nullable = false)
   private Integer jobseekerid;
 
-  @Column(name = "jobid")
+  @Column(name = "JobID", nullable = false)
   private Integer jobid;
 
-  @Column(name = "dayApply")
+  @Column(name = "DayApply")
   private Date dayApply;
 
-  @Column(name = "status")
+  @Column(name = "Status")
   private String status;
 
-  
+
 }

@@ -10,49 +10,47 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
 
-@Entity
 @Table(name = "company")
 @Data
+@Entity
 public class Company implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", insertable = false, nullable = false)
+  @Column(name = "ID", insertable = false, nullable = false)
   private Integer id;
 
-  @Column(name = "nameCompany")
+  @Column(name = "NameCompany")
   private String nameCompany;
 
-  @Column(name = "userid")
+  @Column(name = "UserID", nullable = false)
   private Integer userid;
 
-  @Column(name = "cityid")
+  @Column(name = "CityID", nullable = false)
   private Integer cityid;
 
-  @Column(name = "address")
+  @Column(name = "Address")
   private String address;
 
-  @Column(name = "telephoneNumber")
+  @Column(name = "TelephoneNumber")
   private String telephoneNumber;
 
-  @Column(name = "email")
+  @Column(name = "Email")
   private String email;
 
-  @Column(name = "logoImg")
+  @Column(name = "LogoImg")
   private String logoImg;
 
-  @Column(name = "description")
+  @Column(name = "Description")
   private String description;
 
-  @Column(name = "createdDate")
+  @Column(name = "CreatedDate")
   private Date createdDate;
 
-  @Column(name = "lastModify")
+  @Column(name = "LastModify")
   private Date lastModify;
 
-  @Column(name = "status")
+  @Column(name = "Status")
   private String status;
-
-  
 }

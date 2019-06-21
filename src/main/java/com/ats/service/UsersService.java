@@ -1,7 +1,6 @@
 package com.ats.service;
 
 
-
 import com.ats.dto.UsersDTO;
 import org.springframework.stereotype.Service;
 
@@ -9,23 +8,19 @@ import java.util.List;
 
 @Service
 public interface UsersService {
-	 UsersDTO login(String email, String password);
+    UsersDTO login(String email, String password);
 
-	 int registration(UsersDTO dto);
-	
-	 int changePassword(int id , String newPassword , String oldPassword);
-	
-	 int changeStatus(int id , String newStatus);
+    int registration(UsersDTO dto);
 
-	boolean checkAccountValidation(String email);
-	
-	boolean checkPassword(String password,int id);
+    int changePassword(int id, String newPassword, String oldPassword);
 
-	 UsersDTO findAccountByEmail(String email);
-	
-	 UsersDTO findAccountByToken(String token);
+    int changeStatus(int id, String newStatus);
 
-//	 UsersDTO findAccountById(int id);
+    boolean checkPassword(String password, int id);
 
-//	List<UsersDTO> searchUser(String search);
+    UsersDTO findUserByEmail(String email);
+
+    UsersDTO findUserByToken(String token);
+
+
 }

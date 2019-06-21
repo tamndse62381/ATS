@@ -10,73 +10,74 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "cv")
-@Data
 public class Cv implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", insertable = false, nullable = false)
+  @Column(name = "ID", insertable = false, nullable = false)
   private Integer id;
 
-  @Column(name = "title")
+  @Column(name = "Title")
   private String title;
 
-  @Column(name = "userid")
+  @Column(name = "UserID", nullable = false)
   private Integer userid;
 
-  @Column(name = "img")
+  @Column(name = "Img")
   private String img;
 
-  @Column(name = "email")
+  @Column(name = "Email")
   private String email;
 
-  @Column(name = "firstName")
+  @Column(name = "TelephoneNumber")
+  private String telephoneNumber;
+
+  @Column(name = "FirstName")
   private String firstName;
 
-  @Column(name = "lastName")
+  @Column(name = "LastName")
   private String lastName;
 
-  @Column(name = "gender")
+  @Column(name = "Gender")
   private String gender;
 
-  @Column(name = "dob")
+  @Column(name = "DOB")
   private Date dob;
 
-  @Column(name = "cityid")
-  private Integer cityid;
+  @Column(name = "CityID", nullable = false)
+  private Integer cityID;
 
-  @Column(name = "address")
+  @Column(name = "Address")
   private String address;
 
-  @Column(name = "industryid")
+  @Column(name = "IndustryID", nullable = false)
   private Integer industryid;
 
-  @Column(name = "description")
+  @Column(name = "Description")
   private String description;
 
-  @Column(name = "yearExperience")
+  @Column(name = "YearExperience")
   private Integer yearExperience;
 
-  @Column(name = "salaryFrom")
+  @Column(name = "SalaryFrom")
   private Double salaryFrom;
 
-  @Column(name = "salaryTo")
+  @Column(name = "SalaryTo")
   private Double salaryTo;
 
-  @Column(name = "status")
+  @Column(name = "Status")
   private String status;
 
-  @Column(name = "createdDate")
+  @Column(name = "CreatedDate")
   private Date createdDate;
 
-  @Column(name = "lastModify")
+  @Column(name = "LastModify")
   private Date lastModify;
 
   @Column(name = "isActive")
   private Integer isActive;
-
-  
 }

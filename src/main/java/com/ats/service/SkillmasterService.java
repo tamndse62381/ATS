@@ -13,4 +13,6 @@ public interface SkillmasterService {
     public List<Skillmaster> listAll();
 
     public boolean editASkillmaster(Skillmaster editedSkillmaster, int id);
+
+    public List<Skillmaster> findAllLanguageskill(int id);
 }

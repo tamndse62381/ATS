@@ -9,21 +9,21 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
 
-@Entity
-@Data
 @Table(name = "skillincv")
+@Data
+@Entity
 public class Skillincv implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", insertable = false, nullable = false)
+  @Column(name = "ID", insertable = false, nullable = false)
   private Integer id;
 
-  @Column(name = "cvid")
+  @Column(name = "CVID", nullable = false)
   private Integer cvid;
 
-  @Column(name = "skillid")
+  @Column(name = "SkillID", nullable = false)
   private Integer skillid;
 
   
