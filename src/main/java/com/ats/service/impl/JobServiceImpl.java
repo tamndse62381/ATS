@@ -20,7 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ats.service.JobService;
 
 import java.lang.reflect.Type;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -58,20 +60,22 @@ public class JobServiceImpl implements JobService {
     public List<JobDTO> searchJob(String job, Pageable pageable) {
         LOGGER.info("Begin searchJob in Job Service with job name : {} ", job);
         List<Job> listofJob = new ArrayList<>();
+        List<Job> listofResult = new ArrayList<>();
         List<JobDTO> listofDTO = new ArrayList<>();
         try {
             LOGGER.info("Begin searchJob in Job Repository with job name : {} ", job);
             listofJob = jobRepository.searchJob(job);
             for (int i = 0; i < listofJob.size(); i++) {
-                if (!listofJob.get(i).getStatus().matches("new")) {
-                    listofJob.remove(i);
+                if (listofJob.get(i).getStatus().matches("new") &&
+                        listofJob.get(i).getEndDateForApply().after(new Date())) {
+                    LOGGER.info("Add a job to listofResult because job is available " + listofJob.get(i).getTitle());
+                    listofResult.add(listofJob.get(i));
                 }
             }
-
             ModelMapper mapper = new ModelMapper();
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
             }.getType();
-            listofDTO = mapper.map(listofJob, targetListType);
+            listofDTO = mapper.map(listofResult, targetListType);
             LOGGER.info("End searchJob in Job Repository with job list size : {} ", listofJob.size());
         } catch (Exception e) {
             e.printStackTrace();
@@ -82,38 +86,39 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public List<JobDTO> getTop8() {
-        LOGGER.info("Begin getTop8 in Job Service with job name : {}");
+        LOGGER.info("Begin getTop8 in Job Service");
         List<Job> listofJob;
+        List<Job> listofResult = new ArrayList<>();
         Company company;
         City city;
         List<JobDTO> listofDTO = new ArrayList<>();
         try {
-            LOGGER.info("Begin getTop8 in Job Repository with job name : {}");
+            LOGGER.info("Begin getTop8 in Job Repository ");
             listofJob = jobRepository.getTop8();
+            LOGGER.info("End getTop8 in Job Repository");
             for (int i = 0; i < listofJob.size(); i++) {
-                if (!listofJob.get(i).getStatus().matches("new")) {
-                    listofJob.remove(i);
+                if (listofJob.get(i).getStatus().matches("new") &&
+                        listofJob.get(i).getEndDateForApply().after(new Date())) {
+                    LOGGER.info("Add a job to listofResult because job is available " + listofJob.get(i).getTitle());
+                    listofResult.add(listofJob.get(i));
                 }
             }
             ModelMapper mapper = new ModelMapper();
             Type targetListType = new TypeToken<List<JobDTO>>() {
             }.getType();
-            listofDTO = mapper.map(listofJob, targetListType);
-            for (int i = 0; i < listofJob.size(); i++) {
+            listofDTO = mapper.map(listofResult, targetListType);
+            for (int i = 0; i < listofResult.size(); i++) {
                 company = companyService.findComanyByEmployerID(listofJob.get(i).getUserid());
                 listofDTO.get(i).setCompanyName(company.getNameCompany());
             }
-            for (int i = 0; i < listofJob.size(); i++) {
+            for (int i = 0; i < listofResult.size(); i++) {
                 city = cityService.getCityById(listofJob.get(i).getCityid());
                 listofDTO.get(i).setCityName(city.getFullName());
             }
-            LOGGER.info("End getTop8 in Job Repository with job name : {}");
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOGGER.info("End getTop8 in Job Service with job name : {}");
+        LOGGER.info("End getTop8 in Job Service");
         return listofDTO;
 
 

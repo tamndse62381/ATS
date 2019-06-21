@@ -2,7 +2,6 @@ package com.ats.ws;
 
 import com.ats.dto.JobDTO2;
 import com.ats.dto.JobDTO;
-import com.ats.entity.Job;
 import com.ats.entity.Skill;
 import com.ats.service.SkillNeedForJobService;
 import com.ats.service.SkillService;
@@ -53,16 +52,15 @@ public class JobWS {
             for (int i = 0; i < listSkill.size(); i++) {
                 listSkillId.add(skillService.addNewSkill(listSkill.get(i)));
             }
-            skillNeedForJobService.addSkillForJob(listSkillId, result);
-            if (result > 0) {
+            LOGGER.info("End createJob in JobWS with Job title : {}" + job.getTitle());
+            boolean finish = skillNeedForJobService.addSkillForJob(listSkillId, result);
+            if (result > 0 && finish) {
                 return new RestResponse(true, "Create New Job Successfull", null);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOGGER.info("End createJob in JobWS with Job title : {}" + job.getTitle());
         return new RestResponse(false, "Fail To Create New Job ", null);
-
     }
 
     @CrossOrigin(origins = "*")
