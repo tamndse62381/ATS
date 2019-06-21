@@ -20,7 +20,7 @@ public class Job implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", insertable = false, nullable = false)
-  private Integer ID;
+  private Integer id;
 
   @Column(name = "UserID", nullable = false)
   private Integer userid;

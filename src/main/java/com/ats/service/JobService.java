@@ -2,6 +2,7 @@ package com.ats.service;
 
 import com.ats.dto.JobDTO2;
 import com.ats.dto.JobDTO;
+import com.ats.entity.Job;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,8 @@ public interface JobService {
     List<JobDTO> searchJob(String job, Pageable pageable);
 
     List<JobDTO> getTop8();
+
+    Job getJobDetail(int id);
 
     int changeStatus(int id , String newStatus);
 

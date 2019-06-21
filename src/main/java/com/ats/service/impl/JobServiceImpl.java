@@ -47,7 +47,7 @@ public class JobServiceImpl implements JobService {
             ModelMapper mapper = new ModelMapper();
             Job jobEntity = mapper.map(job, Job.class);
             newJob = jobRepository.save(jobEntity);
-            result = newJob.getID();
+            result = newJob.getId();
             System.out.println("KQ : " + result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -122,6 +122,28 @@ public class JobServiceImpl implements JobService {
         return listofDTO;
 
 
+    }
+
+    @Override
+    public Job getJobDetail(int id) {
+        LOGGER.info("Begin getJobDetail in Job Service with id : " + id);
+        Job job = null;
+        try {
+            LOGGER.info("Begin getJobDetail in Job Repository with id : " + id);
+            job = jobRepository.findOne(id);
+            LOGGER.info("End getJobDetail in Job Repository with id : " + id);
+            if (job != null) {
+                if (!job.getStatus().matches("new") ||
+                        !job.getEndDateForApply().after(new Date())) {
+                    job = null;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getJobDetail in Job Service with id : " + id);
+        return job;
     }
 
     @Override
