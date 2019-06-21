@@ -38,11 +38,16 @@ public class UserWS {
         LOGGER.info("Begin login inUserWS with username - password: {}", usersDTO.getEmail() + " - " + usersDTO.getPassword());
 
         try {
-            usersDTO = usersService.login(usersDTO.getEmail(), usersDTO.getPassword());
-            LOGGER.info("End login in UserWS with username - password : {}", usersDTO.getEmail() + " - " + usersDTO.getPassword());
-            if (usersDTO != null && usersDTO.getId() != 0) {
-                return new RestResponse(true, "Login Successful", usersDTO);
+            if(!usersDTO.getPassword().isEmpty()){
+                usersDTO = usersService.login(usersDTO.getEmail(), usersDTO.getPassword());
+                LOGGER.info("End login in UserWS with username - password : {}", usersDTO.getEmail() + " - " + usersDTO.getPassword());
+                if (usersDTO != null && usersDTO.getId() != 0) {
+                    return new RestResponse(true, "Login Successful", usersDTO);
+                }
+            } else {
+                return new RestResponse(false, "Null Password", usersDTO);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -126,6 +131,51 @@ public class UserWS {
         }
         LOGGER.info("Begin changeStatus in UserWS with Account id : {}" + usersDTO.getId());
         return new RestResponse(false, "changeStatus Fail", null);
+    }
+
+    @ResponseBody
+    @CrossOrigin(origins = "http://localhost:8090")
+    @PostMapping(value = "/registrationGoogle")
+    public RestResponse registrationGoogle(@RequestBody UsersDTO usersDTO) {
+        LOGGER.info("Begin Registration in UserWS with email - password - fullname: {}",
+                usersDTO.getEmail()  + " - " + usersDTO.getFullname());
+        int result;
+        try {
+            if(usersDTO.getPassword().isEmpty()){
+                String tokenString = tokenService.addAuthentication(usersDTO.getEmail());
+                usersDTO.setAccessToken(tokenString);
+                result = usersService.registration(usersDTO);
+                LOGGER.info("End Registration in UserWS with email - password - fullname: {}",
+                        usersDTO.getEmail() + " - " + usersDTO.getFullname());
+
+                if (result > -1) {
+                    return new RestResponse(true, "Create To Successful", null);
+                }
+            }else {
+                    return new RestResponse(false, "Create Fail", null);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new RestResponse(false, "Fail Create To Account", null);
+    }
+
+    @CrossOrigin(origins = "http://localhost:8090")
+    @PostMapping(value = "/loginGoogle")
+    @ResponseBody
+    public RestResponse loginGoogle(@RequestBody UsersDTO usersDTO) {
+        LOGGER.info("Begin login inUserWS with username - password: {}", usersDTO.getEmail() + " - " + usersDTO.getPassword());
+        try {
+                usersDTO = usersService.login(usersDTO.getEmail(), usersDTO.getPassword());
+                LOGGER.info("End login in UserWS with username - password : {}", usersDTO.getEmail() + " - " + usersDTO.getPassword());
+                if (usersDTO != null && usersDTO.getId() != 0) {
+                    return new RestResponse(true, "Login Successful", usersDTO);
+                }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new RestResponse(false, "Login Fail Because " + usersDTO.getEmail(), null);
     }
 
 //    @CrossOrigin(origins = "localhost:8090")
