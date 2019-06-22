@@ -22,8 +22,8 @@ public class IndustryWS {
         return industryService.getAll();
     }
 
-    @RequestMapping(value = "/getOne", method = RequestMethod.GET)
-    public ResponseEntity<Industry> getById(@RequestParam("id") int id){
+    @RequestMapping(value = "/getOne/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Industry> getById(@PathVariable int id){
         try {
             return ResponseEntity.ok().body(industryRepository.getOne(id));
         } catch (RuntimeException e){

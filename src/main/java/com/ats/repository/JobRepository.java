@@ -8,6 +8,7 @@ import com.ats.entity.Job;
 
 import org.springframework.data.domain.Pageable;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface JobRepository extends JpaRepository<Job, Integer>{
@@ -16,4 +17,8 @@ public interface JobRepository extends JpaRepository<Job, Integer>{
 
     @Query("Select b from Job b order by b.createdDate desc")
     List<Job> getTop8();
+
+    Optional<Job> findById(int id);
+
+    List<Job> findByUserid(int id);
 }
