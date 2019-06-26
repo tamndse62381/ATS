@@ -24,7 +24,7 @@ public class JoblevelWS  {
     @GetMapping(value = "/")
     public RestResponse getJobLevel() {
         LOGGER.info("Begin getJobLevel in JoblevelWS ");
-        List result = new ArrayList<Joblevel>();
+        List result ;
         try {
             result = joblevelService.getAllJobLevel();
                 return new RestResponse(true, "Get All Job Level Successfull", result);
