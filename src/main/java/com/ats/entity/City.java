@@ -1,27 +1,80 @@
 package com.ats.entity;
 
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.*;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Table(name = "city")
-@Data
-public class City implements Serializable {
-  private static final long serialVersionUID = 1L;
+public class City {
+    private int id;
+    private String fullName;
+    private List<Company> companiesById;
+    private List<Cv> cvsById;
+    private List<Job> jobsById;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID", insertable = false, nullable = false)
-  private Integer id;
+    @Id
+    @Column(name = "ID", nullable = false)
+    public int getId() {
+        return id;
+    }
 
-  @Column(name = "FullName")
-  private String fullName;
+    public void setId(int id) {
+        this.id = id;
+    }
 
+    @Basic
+    @Column(name = "FullName", nullable = true, length = 50)
+    public String getFullName() {
+        return fullName;
+    }
 
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        City city = (City) o;
+        return id == city.id &&
+                Objects.equals(fullName, city.fullName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, fullName);
+    }
+
+    @OneToMany(mappedBy = "cityByCityId")
+    @JsonBackReference
+    public List<Company> getCompaniesById() {
+        return companiesById;
+    }
+
+    public void setCompaniesById(List<Company> companiesById) {
+        this.companiesById = companiesById;
+    }
+
+    @OneToMany(mappedBy = "cityByCityId")
+    @JsonBackReference
+    public List<Cv> getCvsById() {
+        return cvsById;
+    }
+
+    public void setCvsById(List<Cv> cvsById) {
+        this.cvsById = cvsById;
+    }
+
+    @OneToMany(mappedBy = "cityByCityId")
+    @JsonBackReference
+    public List<Job> getJobsById() {
+        return jobsById;
+    }
+
+    public void setJobsById(List<Job> jobsById) {
+        this.jobsById = jobsById;
+    }
 }

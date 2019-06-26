@@ -21,7 +21,7 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public int addNewSkill(Skill skill) {
-        LOGGER.info("Begin addNewSkill in Skill Service with skillmaster id {}", skill.getSkillmasterid());
+        LOGGER.info("Begin addNewSkill in Skill Service with skillmaster id {}", skill.getSkillMasterId());
         int skillResult = -1;
         try {
             skillResult = checkSkillBySkillLevel(skill);
@@ -32,18 +32,18 @@ public class SkillServiceImpl implements SkillService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOGGER.info("End addNewSkill in Skill Service with skillmaster id {}", skill.getSkillmasterid());
+        LOGGER.info("End addNewSkill in Skill Service with skillmaster id {}", skill.getSkillMasterId());
         return skillResult;
     }
 
     @Override
     public int checkSkillBySkillLevel(Skill skill) {
         LOGGER.info("Begin checkSkillBySkillLevel in Skill Service with skill master with skill level {}",
-                skill.getSkillmasterid() + "-" + skill.getSkillLevel());
+                skill.getSkillMasterId() + "-" + skill.getSkillLevel());
         try {
-            Skill skillResult = skillRepository.findSkillbySkillLevel(skill.getSkillLevel(), skill.getSkillmasterid());
+            Skill skillResult = skillRepository.findSkillbySkillLevel(skill.getSkillLevel(), skill.getSkillMasterId());
             LOGGER.info("End checkSkillBySkillLevel in Skill Service with skill master with skill level {}",
-                    skill.getSkillmasterid() + "-" + skill.getSkillLevel());
+                    skill.getSkillMasterId() + "-" + skill.getSkillLevel());
             if (skillResult != null) {
                 return skillResult.getId();
             }

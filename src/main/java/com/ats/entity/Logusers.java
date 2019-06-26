@@ -1,37 +1,95 @@
 package com.ats.entity;
 
-import java.io.Serializable;
-import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
-@Data
-@Table(name = "logusers")
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Objects;
+
 @Entity
-public class Logusers implements Serializable {
-  private static final long serialVersionUID = 1L;
+public class Logusers {
+    private int id;
+    private int userId;
+    private int curatorId;
+    private int logType;
+    private Timestamp createDate;
+    private Users usersByUserId;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID", insertable = false, nullable = false)
-  private Integer id;
+    @Id
+    @Column(name = "ID", nullable = false)
+    public int getId() {
+        return id;
+    }
 
-  @Column(name = "UserID", nullable = false)
-  private Integer userid;
+    public void setId(int id) {
+        this.id = id;
+    }
 
-  @Column(name = "CuratorID", nullable = false)
-  private Integer curatorid;
+    @Basic
+    @Column(name = "UserID", nullable = false , insertable = false , updatable = false)
+    public int getUserId() {
+        return userId;
+    }
 
-  @Column(name = "LogType", nullable = false)
-  private Integer logType;
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
-  @Column(name = "CreateDate")
-  private Date createDate;
+    @Basic
+    @Column(name = "CuratorID", nullable = false)
+    public int getCuratorId() {
+        return curatorId;
+    }
 
-  
+    public void setCuratorId(int curatorId) {
+        this.curatorId = curatorId;
+    }
+
+    @Basic
+    @Column(name = "LogType", nullable = false)
+    public int getLogType() {
+        return logType;
+    }
+
+    public void setLogType(int logType) {
+        this.logType = logType;
+    }
+
+    @Basic
+    @Column(name = "CreateDate", nullable = true)
+    public Timestamp getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Timestamp createDate) {
+        this.createDate = createDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Logusers logusers = (Logusers) o;
+        return id == logusers.id &&
+                userId == logusers.userId &&
+                curatorId == logusers.curatorId &&
+                logType == logusers.logType &&
+                Objects.equals(createDate, logusers.createDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userId, curatorId, logType, createDate);
+    }
+
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "UserID", referencedColumnName = "ID", nullable = false)
+    public Users getUsersByUserId() {
+        return usersByUserId;
+    }
+
+    public void setUsersByUserId(Users usersByUserId) {
+        this.usersByUserId = usersByUserId;
+    }
 }

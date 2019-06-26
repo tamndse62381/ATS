@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ApplyRepository extends JpaRepository<Apply, Integer> {
-    @Query("Select a from Apply a where a.jobseekerid  = :jobseekerid and a.jobid = :jobid")
+    @Query("Select a from Apply a where a.jobSeekerId  = :jobseekerid and a.jobId = :jobid")
     Apply findApplyBy (@Param("jobseekerid") int jobseekerid, @Param("jobid") int jobid);
 }

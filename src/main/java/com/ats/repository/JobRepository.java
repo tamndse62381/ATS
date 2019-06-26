@@ -27,5 +27,5 @@ public interface JobRepository extends JpaRepository<Job, Integer>{
     int changeStatus(@Param("id") int id, @Param("newStatus") String newStatus);
     Optional<Job> findById(int id);
 
-    List<Job> findByUserid(int id);
+    List<Job> findByUserId(int id);
 }

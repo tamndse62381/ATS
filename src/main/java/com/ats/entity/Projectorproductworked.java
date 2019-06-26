@@ -1,46 +1,131 @@
 package com.ats.entity;
 
-import java.io.Serializable;
-import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
-@Table(name = "projectorproductworked")
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Objects;
+
 @Entity
-@Data
-public class Projectorproductworked implements Serializable {
-  private static final long serialVersionUID = 1L;
+public class Projectorproductworked {
+    private int id;
+    private int cvid;
+    private String projetName;
+    private String vacancyName;
+    private Timestamp startTime;
+    private Timestamp endTime;
+    private String skillUsed;
+    private String description;
+    private Cv cvByCvid;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID", insertable = false, nullable = false)
-  private Integer id;
+    @Id
+    @Column(name = "ID", nullable = false)
+    public int getId() {
+        return id;
+    }
 
-  @Column(name = "CVID", nullable = false)
-  private Integer cvid;
+    public void setId(int id) {
+        this.id = id;
+    }
 
-  @Column(name = "ProjetName")
-  private String projectName;
+    @Basic
+    @Column(name = "CVID", nullable = false , insertable = false , updatable = false)
+    public int getCvid() {
+        return cvid;
+    }
 
-  @Column(name = "VacancyName")
-  private String vacancyName;
+    public void setCvid(int cvid) {
+        this.cvid = cvid;
+    }
 
-  @Column(name = "StartTime")
-  private Date startTime;
+    @Basic
+    @Column(name = "ProjetName", nullable = true, length = 100)
+    public String getProjetName() {
+        return projetName;
+    }
 
-  @Column(name = "EndTime")
-  private Date endTime;
+    public void setProjetName(String projetName) {
+        this.projetName = projetName;
+    }
 
-  @Column(name = "SkillUsed")
-  private String skillUsed;
+    @Basic
+    @Column(name = "VacancyName", nullable = true, length = 50)
+    public String getVacancyName() {
+        return vacancyName;
+    }
 
-  @Column(name = "Description")
-  private String description;
+    public void setVacancyName(String vacancyName) {
+        this.vacancyName = vacancyName;
+    }
 
-  
+    @Basic
+    @Column(name = "StartTime", nullable = true)
+    public Timestamp getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
+    }
+
+    @Basic
+    @Column(name = "EndTime", nullable = true)
+    public Timestamp getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
+    }
+
+    @Basic
+    @Column(name = "SkillUsed", nullable = true, length = 200)
+    public String getSkillUsed() {
+        return skillUsed;
+    }
+
+    public void setSkillUsed(String skillUsed) {
+        this.skillUsed = skillUsed;
+    }
+
+    @Basic
+    @Column(name = "Description", nullable = true, length = 50)
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Projectorproductworked that = (Projectorproductworked) o;
+        return id == that.id &&
+                cvid == that.cvid &&
+                Objects.equals(projetName, that.projetName) &&
+                Objects.equals(vacancyName, that.vacancyName) &&
+                Objects.equals(startTime, that.startTime) &&
+                Objects.equals(endTime, that.endTime) &&
+                Objects.equals(skillUsed, that.skillUsed) &&
+                Objects.equals(description, that.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, cvid, projetName, vacancyName, startTime, endTime, skillUsed, description);
+    }
+
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "CVID", referencedColumnName = "ID", nullable = false)
+    public Cv getCvByCvid() {
+        return cvByCvid;
+    }
+
+    public void setCvByCvid(Cv cvByCvid) {
+        this.cvByCvid = cvByCvid;
+    }
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CountcvRepository extends JpaRepository<Countcv, Integer> {
-    @Query("Select c from Countcv c where c.cvid = :cvid and c.userid = :userid")
+    @Query("Select c from Countcv c where c.cvid = :cvid and c.userId = :userid")
     Countcv findCountcv (@Param("cvid") int cvid, @Param("userid") int userid);
 
     int countCountcvsByCvid(int id);

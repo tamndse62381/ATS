@@ -32,7 +32,7 @@ public class CountcvServiceImpl implements CountcvService {
         Countcv count = countcvRepository.findCountcv(CVID, EmployerID);
         if (count == null){
             count.setCvid(CVID);
-            count.setUserid(EmployerID);
+            count.setUserId(EmployerID);
             count.setCreatedDate(new Timestamp(new Date().getTime()));
             countcvRepository.save(count);
             return true;
@@ -42,7 +42,7 @@ public class CountcvServiceImpl implements CountcvService {
 
     @Override
     public int countAccessTimes(int JobSeekerId) {
-        List<Cv> listCv = cvRepository.findByUserid(JobSeekerId);
+        List<Cv> listCv = cvRepository.findByUserId(JobSeekerId);
         int count = 0;
         for (Cv cv : listCv) {
             count =+ countcvRepository.countCountcvsByCvid(cv.getId());

@@ -108,11 +108,11 @@ public class JobServiceImpl implements JobService {
             }.getType();
             listofDTO = mapper.map(listofResult, targetListType);
             for (int i = 0; i < listofResult.size(); i++) {
-                company = companyService.findComanyByEmployerID(listofJob.get(i).getUserid());
+                company = companyService.findComanyByEmployerID(listofJob.get(i).getUserId());
                 listofDTO.get(i).setCompanyName(company.getNameCompany());
             }
             for (int i = 0; i < listofResult.size(); i++) {
-                city = cityService.getCityById(listofJob.get(i).getCityid());
+                city = cityService.getCityById(listofJob.get(i).getCityId());
                 listofDTO.get(i).setCityName(city.getFullName());
             }
         } catch (Exception e) {

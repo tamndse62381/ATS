@@ -1,30 +1,82 @@
 package com.ats.entity;
 
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
-@Data
-@Table(name = "skillneedforjob")
+import javax.persistence.*;
+import java.util.Objects;
+
 @Entity
-public class Skillneedforjob implements Serializable {
-  private static final long serialVersionUID = 1L;
+public class Skillneedforjob {
+    private int id;
+    private int jobId;
+    private int skillId;
+    private Job jobByJobId;
+    private Skill skillBySkillId;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID", insertable = false, nullable = false)
-  private Integer id;
+    @Id
+    @Column(name = "ID", nullable = false)
+    public int getId() {
+        return id;
+    }
 
-  @Column(name = "JobID", nullable = false)
-  private Integer jobid;
+    public void setId(int id) {
+        this.id = id;
+    }
 
-  @Column(name = "SkillID", nullable = false)
-  private Integer skillid;
+    @Basic
+    @Column(name = "JobID", nullable = false , insertable = false , updatable = false)
+    public int getJobId() {
+        return jobId;
+    }
 
-  
+    public void setJobId(int jobId) {
+        this.jobId = jobId;
+    }
+
+    @Basic
+    @Column(name = "SkillID", nullable = false , insertable = false , updatable = false)
+    public int getSkillId() {
+        return skillId;
+    }
+
+    public void setSkillId(int skillId) {
+        this.skillId = skillId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Skillneedforjob that = (Skillneedforjob) o;
+        return id == that.id &&
+                jobId == that.jobId &&
+                skillId == that.skillId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, jobId, skillId);
+    }
+
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "JobID", referencedColumnName = "ID", nullable = false)
+    public Job getJobByJobId() {
+        return jobByJobId;
+    }
+
+    public void setJobByJobId(Job jobByJobId) {
+        this.jobByJobId = jobByJobId;
+    }
+
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "SkillID", referencedColumnName = "ID", nullable = false)
+    public Skill getSkillBySkillId() {
+        return skillBySkillId;
+    }
+
+    public void setSkillBySkillId(Skill skillBySkillId) {
+        this.skillBySkillId = skillBySkillId;
+    }
 }

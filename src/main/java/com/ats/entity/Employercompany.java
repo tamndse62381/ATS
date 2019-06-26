@@ -1,34 +1,95 @@
 package com.ats.entity;
 
-import java.io.Serializable;
-import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
-@Table(name = "employercompany")
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Objects;
+
 @Entity
-@Data
-public class Employercompany implements Serializable {
-  private static final long serialVersionUID = 1L;
+public class Employercompany {
+    private int id;
+    private int userId;
+    private int companyId;
+    private Timestamp createdDate;
+    private Users usersByUserId;
+    private Company companyByCompanyId;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID", insertable = false, nullable = false)
-  private Integer id;
+    @Id
+    @Column(name = "ID", nullable = false)
+    public int getId() {
+        return id;
+    }
 
-  @Column(name = "UserID", nullable = false)
-  private Integer userid;
+    public void setId(int id) {
+        this.id = id;
+    }
 
-  @Column(name = "CompanyID", nullable = false)
-  private Integer companyid;
+    @Basic
+    @Column(name = "UserID", nullable = false , insertable = false , updatable = false)
+    public int getUserId() {
+        return userId;
+    }
 
-  @Column(name = "CreatedDate")
-  private Date createdDate;
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
+    @Basic
+    @Column(name = "CompanyID", nullable = false , insertable = false , updatable = false)
+    public int getCompanyId() {
+        return companyId;
+    }
 
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
+    }
+
+    @Basic
+    @Column(name = "CreatedDate", nullable = true)
+    public Timestamp getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Timestamp createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employercompany that = (Employercompany) o;
+        return id == that.id &&
+                userId == that.userId &&
+                companyId == that.companyId &&
+                Objects.equals(createdDate, that.createdDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userId, companyId, createdDate);
+    }
+
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "UserID", referencedColumnName = "ID", nullable = false)
+    public Users getUsersByUserId() {
+        return usersByUserId;
+    }
+
+    public void setUsersByUserId(Users usersByUserId) {
+        this.usersByUserId = usersByUserId;
+    }
+
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "CompanyID", referencedColumnName = "ID", nullable = false)
+    public Company getCompanyByCompanyId() {
+        return companyByCompanyId;
+    }
+
+    public void setCompanyByCompanyId(Company companyByCompanyId) {
+        this.companyByCompanyId = companyByCompanyId;
+    }
 }

@@ -29,8 +29,8 @@ public class SkillNeedForJobServiceImpl implements SkillNeedForJobService {
 
             for (int i = 0; i < listSkillId.size(); i++) {
                 Skillneedforjob skillneedforjob = new Skillneedforjob();
-                skillneedforjob.setJobid(jobId);
-                skillneedforjob.setSkillid(listSkillId.get(i));
+                skillneedforjob.setJobId(jobId);
+                skillneedforjob.setSkillId(listSkillId.get(i));
                 skillResult = checkSkillNeedForJob(skillneedforjob);
                 if (skillResult == -1) {
                     skillNeedForJobRepository.save(skillneedforjob);
@@ -49,11 +49,11 @@ public class SkillNeedForJobServiceImpl implements SkillNeedForJobService {
     @Override
     public int checkSkillNeedForJob(Skillneedforjob entity) {
         LOGGER.info("Begin checkSkillNeedForJob in SkillNeedForJob Service with skill master with skill level {}",
-                entity.getJobid() + "-" + entity.getSkillid());
+                entity.getJobId() + "-" + entity.getSkillId());
         try {
-            Skillneedforjob skillResult = skillNeedForJobRepository.findSkillneedforjob(entity.getJobid(), entity.getSkillid());
+            Skillneedforjob skillResult = skillNeedForJobRepository.findSkillneedforjob(entity.getJobId(), entity.getSkillId());
             LOGGER.info("End checkSkillNeedForJob in SkillNeedForJob Service with skill master with skill level {}",
-                    entity.getJobid() + "-" + entity.getSkillid());
+                    entity.getJobId() + "-" + entity.getSkillId());
             if (skillResult != null) {
                 return skillResult.getId();
             }

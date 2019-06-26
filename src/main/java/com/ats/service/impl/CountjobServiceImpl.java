@@ -32,8 +32,8 @@ public class CountjobServiceImpl implements CountjobService{
                 new NotFoundException("Can't found JobSeeker havr ID: " + JodSeekerID));
         Countjob count = countjobRepository.findCountcv(JobID, JodSeekerID);
         if (count != null) {
-            count.setJobid(JobID);
-            count.setUserid(JodSeekerID);
+            count.setJobId(JobID);
+            count.setUserId(JodSeekerID);
             count.setCreatedDate(new Timestamp(new Date().getTime()));
             countjobRepository.save(count);
         }
@@ -41,10 +41,10 @@ public class CountjobServiceImpl implements CountjobService{
 
     @Override
     public int countAccessTimes(int EmployerId) {
-        List<Job> listCv = jobRepository.findByUserid(EmployerId);
+        List<Job> listCv = jobRepository.findByUserId(EmployerId);
         int count = 0;
         for (Job job : listCv) {
-            count =+ countjobRepository.countCountjobByUserid(job.getId());
+            count =+ countjobRepository.countCountjobByUserId(job.getId());
             return count;
         }
         return 0;

@@ -1,34 +1,95 @@
 package com.ats.entity;
 
-import java.io.Serializable;
-import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
-@Table(name = "countcv")
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Objects;
+
 @Entity
-@Data
-public class Countcv implements Serializable {
-  private static final long serialVersionUID = 1L;
+public class Countcv {
+    private int id;
+    private int userId;
+    private int cvid;
+    private Timestamp createdDate;
+    private Users usersByUserId;
+    private Cv cvByCvid;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID", insertable = false, nullable = false)
-  private Integer id;
+    @Id
+    @Column(name = "ID", nullable = false)
+    public int getId() {
+        return id;
+    }
 
-  @Column(name = "UserID", nullable = false)
-  private Integer userid;
+    public void setId(int id) {
+        this.id = id;
+    }
 
-  @Column(name = "CVID", nullable = false)
-  private Integer cvid;
+    @Basic
+    @Column(name = "UserID", nullable = false , insertable = false , updatable = false)
+    public int getUserId() {
+        return userId;
+    }
 
-  @Column(name = "CreatedDate")
-  private Date createdDate;
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
+    @Basic
+    @Column(name = "CVID", nullable = false , insertable = false , updatable = false)
+    public int getCvid() {
+        return cvid;
+    }
 
+    public void setCvid(int cvid) {
+        this.cvid = cvid;
+    }
+
+    @Basic
+    @Column(name = "CreatedDate", nullable = true)
+    public Timestamp getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Timestamp createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Countcv countcv = (Countcv) o;
+        return id == countcv.id &&
+                userId == countcv.userId &&
+                cvid == countcv.cvid &&
+                Objects.equals(createdDate, countcv.createdDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userId, cvid, createdDate);
+    }
+
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "UserID", referencedColumnName = "ID", nullable = false)
+    public Users getUsersByUserId() {
+        return usersByUserId;
+    }
+
+    public void setUsersByUserId(Users usersByUserId) {
+        this.usersByUserId = usersByUserId;
+    }
+
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "CVID", referencedColumnName = "ID", nullable = false)
+    public Cv getCvByCvid() {
+        return cvByCvid;
+    }
+
+    public void setCvByCvid(Cv cvByCvid) {
+        this.cvByCvid = cvByCvid;
+    }
 }

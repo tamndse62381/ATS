@@ -19,7 +19,7 @@ public class ApplyWS {
     public ResponseEntity<Apply> create(@RequestBody Apply newApply, BindingResult result){
         if (result.hasErrors())
             return ResponseEntity.badRequest().body(null);
-        boolean check = applyService.create(newApply.getJobseekerid(), newApply.getJobid());
+        boolean check = applyService.create(newApply.getJobSeekerId(), newApply.getJobId());
         if (check)
             return ResponseEntity.ok(newApply);
         return ResponseEntity.badRequest().body(null);

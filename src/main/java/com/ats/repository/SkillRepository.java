@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SkillRepository extends JpaRepository<Skill, Integer> {
 
-    @Query("Select s from Skill s where s.skillLevel = :skillLevel and s.skillmasterid = :skillMaster")
+    @Query("Select s from Skill s where s.skillLevel = :skillLevel and s.skillMasterId = :skillMaster")
     Skill findSkillbySkillLevel(@Param("skillLevel") int skillLevel, @Param("skillMaster") int skillMaster);
 }

@@ -1,27 +1,58 @@
 package com.ats.entity;
 
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
-@Table(name = "joblevel")
+import javax.persistence.*;
+import java.util.List;
+import java.util.Objects;
+
 @Entity
-@Data
-public class Joblevel implements Serializable {
-  private static final long serialVersionUID = 1L;
+public class Joblevel {
+    private int id;
+    private String jobLevelName;
+    private List<Job> jobsById;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID", insertable = false, nullable = false)
-  private Integer id;
+    @Id
+    @Column(name = "ID", nullable = false)
+    public int getId() {
+        return id;
+    }
 
-  @Column(name = "JobLevelName")
-  private String joblevelName;
+    public void setId(int id) {
+        this.id = id;
+    }
 
-  
+    @Basic
+    @Column(name = "JobLevelName", nullable = true, length = 50)
+    public String getJobLevelName() {
+        return jobLevelName;
+    }
+
+    public void setJobLevelName(String jobLevelName) {
+        this.jobLevelName = jobLevelName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Joblevel joblevel = (Joblevel) o;
+        return id == joblevel.id &&
+                Objects.equals(jobLevelName, joblevel.jobLevelName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, jobLevelName);
+    }
+
+    @OneToMany(mappedBy = "joblevelByJobLevelId")
+    @JsonBackReference
+    public List<Job> getJobsById() {
+        return jobsById;
+    }
+
+    public void setJobsById(List<Job> jobsById) {
+        this.jobsById = jobsById;
+    }
 }

@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CountjobRepository extends JpaRepository<Countjob, Integer> {
-    @Query("Select c from Countjob c where c.jobid = :jobid and c.userid = :userid")
+    @Query("Select c from Countjob c where c.jobId = :jobid and c.userId = :userid")
     Countjob findCountcv (@Param("jobid") int jobid, @Param("userid") int userid);
 
-    int countCountjobByUserid(int id);
+    int countCountjobByUserId(int id);
 }

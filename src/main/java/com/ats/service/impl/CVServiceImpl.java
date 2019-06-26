@@ -69,16 +69,16 @@ public class CVServiceImpl implements CVService {
             cv = cvRepository.findCVByCVID(EMAIL);
             // mapping CV
             cv.setTitle(newCV.getTitle());
-            cv.setUserid(newCV.getUserid());
+            cv.setUserId(newCV.getUserid());
             cv.setImg(newCV.getImg());
             cv.setEmail(newCV.getEmail());
             cv.setFirstName(newCV.getFirstName());
             cv.setLastName(newCV.getLastName());
             cv.setGender(newCV.getGender());
             cv.setDob(new Timestamp(newCV.getDob().getTime()));
-            cv.setCityID(newCV.getCityid());
+            cv.setCityId(newCV.getCityid());
             cv.setAddress(newCV.getAddress());
-            cv.setIndustryid(newCV.getIndustryid());
+            cv.setIndustryId(newCV.getIndustryid());
             cv.setDescription(newCV.getDescription());
             cv.setYearExperience(newCV.getYearExperience());
             cv.setSalaryFrom(newCV.getSalaryFrom());

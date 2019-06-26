@@ -1,37 +1,107 @@
 package com.ats.entity;
 
-import java.io.Serializable;
-import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Objects;
 
 @Entity
-@Data
-@Table(name = "apply")
-public class Apply implements Serializable {
-  private static final long serialVersionUID = 1L;
+public class Apply {
+    private int id;
+    private int jobSeekerId;
+    private int jobId;
+    private Timestamp dayApply;
+    private String status;
+    private Cv cvByJobSeekerId;
+    private Job jobByJobId;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID", insertable = false, nullable = false)
-  private Integer id;
+    @Id
+    @Column(name = "ID", nullable = false)
+    public int getId() {
+        return id;
+    }
 
-  @Column(name = "JobSeekerID", nullable = false)
-  private Integer jobseekerid;
+    public void setId(int id) {
+        this.id = id;
+    }
 
-  @Column(name = "JobID", nullable = false)
-  private Integer jobid;
+    @Basic
+    @Column(name = "JobSeekerID", nullable = false , insertable = false , updatable = false)
+    public int getJobSeekerId() {
+        return jobSeekerId;
+    }
 
-  @Column(name = "DayApply")
-  private Date dayApply;
+    public void setJobSeekerId(int jobSeekerId) {
+        this.jobSeekerId = jobSeekerId;
+    }
 
-  @Column(name = "Status")
-  private String status;
+    @Basic
+    @Column(name = "JobID", nullable = false , insertable = false , updatable = false)
+    public int getJobId() {
+        return jobId;
+    }
 
+    public void setJobId(int jobId) {
+        this.jobId = jobId;
+    }
 
+    @Basic
+    @Column(name = "DayApply", nullable = true)
+    public Timestamp getDayApply() {
+        return dayApply;
+    }
+
+    public void setDayApply(Timestamp dayApply) {
+        this.dayApply = dayApply;
+    }
+
+    @Basic
+    @Column(name = "Status", nullable = true, length = 50)
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Apply apply = (Apply) o;
+        return id == apply.id &&
+                jobSeekerId == apply.jobSeekerId &&
+                jobId == apply.jobId &&
+                Objects.equals(dayApply, apply.dayApply) &&
+                Objects.equals(status, apply.status);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, jobSeekerId, jobId, dayApply, status);
+    }
+
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "JobSeekerID", referencedColumnName = "ID", nullable = false)
+    public Cv getCvByJobSeekerId() {
+        return cvByJobSeekerId;
+    }
+
+    public void setCvByJobSeekerId(Cv cvByJobSeekerId) {
+        this.cvByJobSeekerId = cvByJobSeekerId;
+    }
+
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "JobID", referencedColumnName = "ID", nullable = false)
+    public Job getJobByJobId() {
+        return jobByJobId;
+    }
+
+    public void setJobByJobId(Job jobByJobId) {
+        this.jobByJobId = jobByJobId;
+    }
 }

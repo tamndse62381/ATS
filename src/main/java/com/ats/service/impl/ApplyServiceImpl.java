@@ -30,7 +30,7 @@ public class ApplyServiceImpl implements ApplyService {
         if (!check(JobSeekerID, JobID))
         {
             Apply apply = new Apply();
-            apply.setJobid(JobID);
+            apply.setJobId(JobID);
             apply.setId(JobSeekerID);
             apply.setDayApply(new Timestamp(new Date().getTime()));
             apply.setStatus("1");
