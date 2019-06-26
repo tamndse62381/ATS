@@ -86,9 +86,11 @@ public class UsersServiceImpl implements UsersService {
         if (existedUsers == null) {
             if (users != null) {
                 try {
-
+                    LOGGER.info("End registration in User Repository with result: {}", users.toString());
+                    users.setRoleId(1);
                     newUsers = usersRepository.save(users);
-                    LOGGER.info("End registration in Account Service with result: {}", newUsers.toString());
+                    LOGGER.info("End registration in User Repository with result: {}", newUsers.toString());
+
                 } catch (Exception e) {
                     System.out.println(e);
                 }
@@ -96,6 +98,7 @@ public class UsersServiceImpl implements UsersService {
         } else {
             return -1;
         }
+        LOGGER.info("End registration in Account Service with result: {}", newUsers.getId());
         return newUsers.getId();
     }
 
@@ -121,7 +124,6 @@ public class UsersServiceImpl implements UsersService {
             users = usersRepository.findAccountByEmail(email);
             if (users != null) {
                 usersDTO = modelMapper.map(users, UsersDTO.class);
-
             }
         }
         LOGGER.info("End findAccountByEmail in Account Service with result: {}", usersDTO);

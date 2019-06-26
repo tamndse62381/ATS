@@ -1,14 +1,17 @@
 package com.ats.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Users {
+public class Users implements Serializable {
     private int id;
     private String email;
     private String fullName;
@@ -38,6 +41,7 @@ public class Users {
     private List<Userslikecv> userslikecvsById;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     public int getId() {
         return id;
@@ -88,7 +92,7 @@ public class Users {
     }
 
     @Basic
-    @Column(name = "RoleId", nullable = false , insertable = false , updatable = false)
+    @Column(name = "RoleId", nullable = false)
     public int getRoleId() {
         return roleId;
     }
@@ -118,7 +122,7 @@ public class Users {
     }
 
     @Basic
-    @Column(name = "JobLevelID", nullable = true , insertable = false , updatable = false)
+    @Column(name = "JobLevelID", nullable = true )
     public Integer getJobLevelId() {
         return jobLevelId;
     }
@@ -138,7 +142,7 @@ public class Users {
     }
 
     @Basic
-    @Column(name = "CityID", nullable = true , insertable = false , updatable = false)
+    @Column(name = "CityID", nullable = true )
     public Integer getCityId() {
         return cityId;
     }

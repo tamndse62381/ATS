@@ -4,11 +4,11 @@ import lombok.Data;
 
 @Data
 public class JobDTO {
-    private Integer id;
+    private int id;
     private String title;
-    private String companyid;
+    private int companyid;
     private String companyName;
-    private Integer cityid;
+    private int cityid;
     private String cityName;
     private Double salaryTo;
     private Double salaryFrom;

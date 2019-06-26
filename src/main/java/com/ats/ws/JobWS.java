@@ -16,6 +16,7 @@ import com.ats.util.RestResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -100,7 +101,7 @@ public class JobWS {
     @ResponseBody
     public RestResponse getTop8() {
         LOGGER.info("Begin getTop8 in JobWS ");
-        List<JobDTO> listJobs = new ArrayList<>();
+        List<Job> listJobs = new ArrayList<>();
         try {
             listJobs = jobService.getTop8();
             return new RestResponse(true, "get Top8 Successfull with list size is : " +
