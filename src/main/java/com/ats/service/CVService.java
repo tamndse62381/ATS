@@ -1,11 +1,15 @@
 package com.ats.service;
 
+import com.ats.dto.CVDTO;
 import com.ats.entity.Cv;
-import org.springframework.stereotype.Service;
+import org.springframework.http.ResponseEntity;
 
-@Service
 public interface CVService {
-    public Cv getCVByCVID(int id);
+    ResponseEntity<CVDTO> getCVByCVID(int id);
 
-    public Cv getCvByEmail(String email);
+    Cv getCvByEmail(String email);
+
+    boolean create(CVDTO newCV);
+
+    boolean edit(CVDTO editedCv);
 }

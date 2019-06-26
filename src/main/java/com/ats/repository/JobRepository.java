@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface JobRepository extends JpaRepository<Job, Integer>{
@@ -24,4 +25,7 @@ public interface JobRepository extends JpaRepository<Job, Integer>{
     @Modifying
     @Query("UPDATE Job b SET b.status = :newStatus WHERE b.id = :id")
     int changeStatus(@Param("id") int id, @Param("newStatus") String newStatus);
+    Optional<Job> findById(int id);
+
+    List<Job> findByUserid(int id);
 }

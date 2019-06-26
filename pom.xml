@@ -7,7 +7,7 @@
 	<groupId>com.ats</groupId>
 	<artifactId>ATS</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>ATS</name>
 	<description>Job Application Tracking System</description>
@@ -18,6 +18,18 @@
 		<version>1.5.8.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
+
+	<repositories>
+		<repository>
+			<id>central</id>
+			<name>Central Repository</name>
+			<url>https://repo.maven.apache.org/maven2</url>
+			<layout>default</layout>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -200,8 +212,14 @@
 				</configuration>
 			</plugin>
 		</plugins>
-
+		<finalName>anan-always-final-because-he-is-an-execellence-student</finalName>
 
 	</build>
-
+	<distributionManagement>
+		<repository>
+			<id>central</id>
+			<name>Central Repository</name>
+			<url>file://D:/war</url>
+		</repository>
+	</distributionManagement>
 </project>

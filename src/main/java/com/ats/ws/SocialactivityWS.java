@@ -16,7 +16,7 @@ public class SocialactivityWS {
     private SocialactivityService socialactivityService;
 
     // find list socialactivity of one CV
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @CrossOrigin(origins = "")
     public ResponseEntity<List<Socialactivities>> findByCVID (@PathVariable int id){
         return  ResponseEntity.ok().body(socialactivityService.findListSocialactivityByCVID(id));
@@ -42,14 +42,14 @@ public class SocialactivityWS {
 
 
     // find one socialactivity by ID
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @CrossOrigin(origins = "")
-    public ResponseEntity findOneByID(@PathVariable int id){
-        Socialactivities soc = socialactivityService.findOneByID(id);
-        if(soc != null)
-            return ResponseEntity.ok().body(soc);
-        return ResponseEntity.badRequest().body(null);
-    }
+//    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+//    @CrossOrigin(origins = "")
+//    public ResponseEntity findOneByID(@PathVariable int id){
+//        Socialactivities soc = socialactivityService.findOneByID(id);
+//        if(soc != null)
+//            return ResponseEntity.ok().body(soc);
+//        return ResponseEntity.badRequest().body(null);
+//    }
 
     // Delete one socialactivity by ID
 

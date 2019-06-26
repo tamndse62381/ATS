@@ -59,7 +59,7 @@ public class CompanyWS {
 
     // Get one company by Employerid
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    ResponseEntity<Company> getByEmployerId(@Param("id") int id){
+    ResponseEntity<Company> getByEmployerId(@PathVariable("id") int id){
         return null;
     }
 }

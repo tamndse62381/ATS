@@ -4,9 +4,13 @@ import com.ats.dto.CVDTO;
 import com.ats.entity.*;
 import com.ats.repository.CVRepository;
 import com.ats.service.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -18,125 +22,33 @@ import java.util.List;
 @RequestMapping("/cv")
 public class CVWS {
     @Autowired
-    private CVRepository cvRepository;
+    private CVService cvService;
     @Autowired
-    private EducationService educationService;
-    @Autowired
-    private CertificationService certificationService;
-    @Autowired
-    private WorkexperienceService workexperienceService;
-    @Autowired
-    private SocialactivityService socialactivityService;
-    @Autowired
-    private ProjectorproductworkedService projectorproductworkedService;
+    private CountcvService countcvService;
+    // ModelMapper
     ModelMapper modelMapper = new ModelMapper();
-    // Conts
+    // Constant
     private static String EMAIL = "1101010001001101000000000000";
+    private static final Logger LOGGER = LogManager.getLogger(CVWS.class);
 
     // Get CV By CVID
-    @RequestMapping(value = "/getOne", method = RequestMethod.GET)
+    @RequestMapping(value = "/getOne/{CVID}/{EmployerID}", method = RequestMethod.GET)
     @CrossOrigin(origins = "")
-    public ResponseEntity<CVDTO> getCV(@RequestParam("id") int CVID){
-        Cv cv = cvRepository.findOne(CVID);
-        if (cv != null) {
-            List<Certification> listCer = certificationService.getListCertificationByCVID(CVID);
-            List<Education> listEdu = educationService.getListEduByCVId(CVID);
-            List<Workexperience> listWork = workexperienceService.getByCVID(CVID);
-            List<Socialactivities> listSoc = socialactivityService.findListSocialactivityByCVID(CVID);
-            List<Projectorproductworked> listPro = projectorproductworkedService.getListProjectByCVID(CVID);
-
-            CVDTO returnCVDTO = modelMapper.map(cv, CVDTO.class);
-            returnCVDTO.setCertifications(listCer);
-            returnCVDTO.setSocialactivities(listSoc);
-            returnCVDTO.setWorkexperiences(listWork);
-            returnCVDTO.setProjectorproductworkeds(listPro);
-            returnCVDTO.setEducations(listEdu);
-            return ResponseEntity.ok().body(returnCVDTO);
+    public ResponseEntity<CVDTO> getCV(@PathVariable int CVID,
+                                       @PathVariable int EmployerId,
+                                       BindingResult result){
+        if (result.hasErrors()){
+            LOGGER.info("Error in CVWS- getOne: " + result);
         }
-        return ResponseEntity.badRequest().body(null);
+        countcvService.countWhenEmployerGetDetailOfCV(CVID, EmployerId);
+        return cvService.getCVByCVID(CVID);
     }
 
     // Create A New CV
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @CrossOrigin(origins = "")
-    public ResponseEntity<CVDTO> createANewCV(@RequestBody CVDTO newCV){
-        Cv cv = new Cv();
-        cv.setEmail(EMAIL);
-        cvRepository.save(cv);
-        cv = cvRepository.findCVByCVID(EMAIL);
-
-        // mapping CV
-        cv.setTitle(newCV.getTitle());
-        cv.setUserid(newCV.getUserid());
-        cv.setImg(newCV.getImg());
-        cv.setEmail(newCV.getEmail());
-        cv.setFirstName(newCV.getFirstName());
-        cv.setLastName(newCV.getLastName());
-        cv.setGender(newCV.getGender());
-        cv.setDob(new Timestamp(newCV.getDob().getTime()));
-        cv.setCityID(newCV.getCityid());
-        cv.setAddress(newCV.getAddress());
-        cv.setIndustryid(newCV.getIndustryid());
-        cv.setDescription(newCV.getDescription());
-        cv.setYearExperience(newCV.getYearExperience());
-        cv.setSalaryFrom(newCV.getSalaryFrom());
-        cv.setSalaryTo(newCV.getSalaryTo());
-        cv.setStatus(newCV.getStatus());
-        cv.setCreatedDate(new Timestamp(new Date().getTime()));
-        cv.setIsActive(1);
-
-        // get CVID
-        int CVID = cv.getId();
-
-        // mapping Certification
-        List<Certification> listCer = newCV.getCertifications();
-        if (listCer != null){
-            for (Certification certification : listCer) {
-                certification.setCvid(CVID);
-                certificationService.createANewCertification(certification);
-            }
-        }
-
-
-        // mapping Education
-        List<Education> listEdu = newCV.getEducations();
-        if (listEdu != null){
-            for (Education education : listEdu) {
-                education.setCvid(CVID);
-                educationService.createANewEducation(education);
-            }
-        }
-
-        // mapping SocialActivity
-        List<Socialactivities> listAct = newCV.getSocialactivities();
-        if (listAct != null){
-            for (Socialactivities socialactivities : listAct) {
-                socialactivities.setCvid(CVID);
-                socialactivityService.createANewSocialactivity(socialactivities);
-            }
-        }
-
-        // mapping WorkExperience
-        List<Workexperience> listWor = newCV.getWorkexperiences();
-        if (listWor != null){
-            for (Workexperience workexperience : listWor) {
-                workexperience.setCvid(CVID);
-                workexperienceService.createANewWorkExperience(workexperience);
-            }
-        }
-
-        //mapping ProjectOrProduct
-        List<Projectorproductworked> listPro = newCV.getProjectorproductworkeds();
-        if (listPro != null){
-            for (Projectorproductworked projectorproductworked : listPro) {
-                projectorproductworked.setCvid(CVID);
-                projectorproductworkedService.createANewProjectorProduct(projectorproductworked);
-            }
-        }
-
-        // Save to DB
-        cvRepository.save(cv);
-        return null;
+    public boolean createANewCV(@RequestBody CVDTO newCV){
+        return cvService.create(newCV);
     }
 
     // Delete One CV
@@ -146,4 +58,11 @@ public class CVWS {
         return null;
     }
 
+
+    // Edit information's cv, without list belong to this cv
+    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    @CrossOrigin(origins = "")
+    public boolean  editCv(@RequestBody CVDTO editedCv){
+        return false;
+    }
 }
