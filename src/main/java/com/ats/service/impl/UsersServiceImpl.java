@@ -86,6 +86,7 @@ public class UsersServiceImpl implements UsersService {
         if (existedUsers == null) {
             if (users != null) {
                 try {
+
                     newUsers = usersRepository.save(users);
                     LOGGER.info("End registration in Account Service with result: {}", newUsers.toString());
                 } catch (Exception e) {

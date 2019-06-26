@@ -22,20 +22,44 @@ public class SkillNeedForJobServiceImpl implements SkillNeedForJobService {
 
     @Override
     public boolean addSkillForJob(List<Integer> listSkillId, int jobId) {
-        LOGGER.info("Begin addSkillForJob in SkillNeedForJob Service with JobID {}", jobId);
+        boolean result = false;
+        int skillResult = -1;
+        LOGGER.info("Begin addSkillForJob in SkillNeedForJob Service with JobID {}", listSkillId.size());
         try {
 
             for (int i = 0; i < listSkillId.size(); i++) {
                 Skillneedforjob skillneedforjob = new Skillneedforjob();
                 skillneedforjob.setJobid(jobId);
                 skillneedforjob.setSkillid(listSkillId.get(i));
-                skillNeedForJobRepository.save(skillneedforjob);
+                skillResult = checkSkillNeedForJob(skillneedforjob);
+                if (skillResult == -1) {
+                    skillNeedForJobRepository.save(skillneedforjob);
+
+                }
+                result = true;
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         LOGGER.info("End addSkillForJob in SkillNeedForJob Service with JobID {}", jobId);
-        return false;
+        return result;
+    }
+
+    @Override
+    public int checkSkillNeedForJob(Skillneedforjob entity) {
+        LOGGER.info("Begin checkSkillNeedForJob in SkillNeedForJob Service with skill master with skill level {}",
+                entity.getJobid() + "-" + entity.getSkillid());
+        try {
+            Skillneedforjob skillResult = skillNeedForJobRepository.findSkillneedforjob(entity.getJobid(), entity.getSkillid());
+            LOGGER.info("End checkSkillNeedForJob in SkillNeedForJob Service with skill master with skill level {}",
+                    entity.getJobid() + "-" + entity.getSkillid());
+            if (skillResult != null) {
+                return skillResult.getId();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 }

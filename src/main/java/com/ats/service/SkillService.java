@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface SkillService {
-    public int addNewSkill(Skill skill);
+    int addNewSkill(Skill skill);
 
-    public boolean checkSkillBySkillLevel(Skill skill);
+    int checkSkillBySkillLevel(Skill skill);
 }

@@ -22,34 +22,34 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public int addNewSkill(Skill skill) {
         LOGGER.info("Begin addNewSkill in Skill Service with skillmaster id {}", skill.getSkillmasterid());
-        Skill skillResult = null;
+        int skillResult = -1;
         try {
-            if (checkSkillBySkillLevel(skill)) {
-                skillResult = skillRepository.findSkillbySkillLevel(skill.getSkillLevel(), skill.getSkillmasterid());
-            } else {
-                skillResult = skillRepository.save(skill);
+            skillResult = checkSkillBySkillLevel(skill);
+            if (skillResult == -1) {
+                skill = skillRepository.save(skill);
+                skillResult = skill.getId();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         LOGGER.info("End addNewSkill in Skill Service with skillmaster id {}", skill.getSkillmasterid());
-        return skillResult.getId();
+        return skillResult;
     }
 
     @Override
-    public boolean checkSkillBySkillLevel(Skill skill) {
+    public int checkSkillBySkillLevel(Skill skill) {
         LOGGER.info("Begin checkSkillBySkillLevel in Skill Service with skill master with skill level {}",
                 skill.getSkillmasterid() + "-" + skill.getSkillLevel());
         try {
             Skill skillResult = skillRepository.findSkillbySkillLevel(skill.getSkillLevel(), skill.getSkillmasterid());
-            LOGGER.info("Begin checkSkillBySkillLevel in Skill Service with skill master with skill level {}",
+            LOGGER.info("End checkSkillBySkillLevel in Skill Service with skill master with skill level {}",
                     skill.getSkillmasterid() + "-" + skill.getSkillLevel());
             if (skillResult != null) {
-                return true;
+                return skillResult.getId();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return -1;
     }
 }

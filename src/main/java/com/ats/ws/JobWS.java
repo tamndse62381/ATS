@@ -41,7 +41,7 @@ public class JobWS {
     public RestResponse createJob(@RequestBody JobDTO2 job) {
         LOGGER.info("Begin createJob in JobWS with Job title : {}" + job.getTitle());
         int result = 0;
-        List<Integer> listSkillId = new ArrayList<Integer>();
+
         Date dt = new Date();
         Calendar c = Calendar.getInstance();
         c.setTime(dt);
@@ -51,14 +51,9 @@ public class JobWS {
             job.setEndDateForApply(c.getTime());
             job.setStatus("new");
             result = jobService.createJob(job);
-            List<Skill> listSkill = job.getListSkill();
-            for (int i = 0; i < listSkill.size(); i++) {
-                listSkillId.add(skillService.addNewSkill(listSkill.get(i)));
-            }
-            LOGGER.info("End createJob in JobWS with Job title : {}" + job.getTitle());
-            boolean finish = skillNeedForJobService.addSkillForJob(listSkillId, result);
-            if (result > 0 && finish) {
-                return new RestResponse(true, "Create New Job Successfull", null);
+
+            if (result > 0) {
+                return new RestResponse(true, "Create New Job Successfull", result);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -117,27 +112,15 @@ public class JobWS {
         return new RestResponse(false, "get Top8 Fail", listJobs);
     }
 
-    //    @CrossOrigin(origins = "*")
-//    @GetMapping(value = "/createJobComponents")
-//    @ResponseBody
-//    public List<JobDTO> createJobComponents() {
-//        LOGGER.info("Begin getTop8 in JobWS ");
-//        List<JobDTO> listJobs = new ArrayList<>();
-//        try {
-//            listJobs = jobService.getTop8();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        LOGGER.info("End getTop8 in JobWS ");
-//        return listJobs;
-//    }
+
+
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getJobDetail", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public RestResponse getJobDetail(@RequestParam("id") int id) {
         LOGGER.info("Begin getJobDetail in JobWS with id " + id);
-        Job job = new Job();
+        Job job;
         try {
             job = jobService.getJobDetail(id);
             if (job != null) {
