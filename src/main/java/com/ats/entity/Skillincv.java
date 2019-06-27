@@ -59,7 +59,7 @@ public class Skillincv {
     }
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference(value="CVID")
     @JoinColumn(name = "CVID", referencedColumnName = "ID", nullable = false)
     public Cv getCvByCvid() {
         return cvByCvid;
@@ -70,7 +70,7 @@ public class Skillincv {
     }
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference(value="SkillID")
     @JoinColumn(name = "SkillID", referencedColumnName = "ID", nullable = false)
     public Skill getSkillBySkillId() {
         return skillBySkillId;

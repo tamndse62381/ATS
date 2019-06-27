@@ -3,10 +3,9 @@ package com.ats.ws;
 import com.ats.dto.JobDTO2;
 import com.ats.dto.JobDTO;
 import com.ats.entity.Job;
-import com.ats.entity.Skill;
 import com.ats.service.SkillNeedForJobService;
 import com.ats.service.SkillService;
-import com.fasterxml.jackson.annotation.JsonInclude;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.ats.service.JobService;
 import com.ats.util.RestResponse;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
+
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.MediaType;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;

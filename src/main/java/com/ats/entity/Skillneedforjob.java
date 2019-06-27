@@ -1,6 +1,8 @@
 package com.ats.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -14,6 +16,7 @@ public class Skillneedforjob {
     private Skill skillBySkillId;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     public int getId() {
         return id;
@@ -58,8 +61,8 @@ public class Skillneedforjob {
         return Objects.hash(id, jobId, skillId);
     }
 
+    @JsonBackReference(value="JobID")
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "JobID", referencedColumnName = "ID", nullable = false)
     public Job getJobByJobId() {
         return jobByJobId;
@@ -69,8 +72,8 @@ public class Skillneedforjob {
         this.jobByJobId = jobByJobId;
     }
 
+    @JsonBackReference(value="SkillID")
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "SkillID", referencedColumnName = "ID", nullable = false)
     public Skill getSkillBySkillId() {
         return skillBySkillId;

@@ -1,5 +1,7 @@
 package com.ats.service.impl;
 
+import com.ats.entity.Job;
+import com.ats.entity.Skill;
 import com.ats.entity.Skillneedforjob;
 import com.ats.repository.SkillNeedForJobRepository;
 import com.ats.service.SkillNeedForJobService;
@@ -33,6 +35,15 @@ public class SkillNeedForJobServiceImpl implements SkillNeedForJobService {
                 skillneedforjob.setSkillId(listSkillId.get(i));
                 skillResult = checkSkillNeedForJob(skillneedforjob);
                 if (skillResult == -1) {
+                    Skill skill = new Skill();
+                    skill.setId(listSkillId.get(i));
+
+                    Job job = new Job();
+                    job.setId(jobId);
+
+                    skillneedforjob.setSkillBySkillId(skill);
+                    skillneedforjob.setJobByJobId(job);
+
                     skillNeedForJobRepository.save(skillneedforjob);
 
                 }
