@@ -1,8 +1,17 @@
 package com.ats.ws;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import com.ats.dto.CompanyDTO;
+import com.ats.dto.CompanyDTO2;
+import com.ats.entity.City;
+import com.ats.entity.Company;
+import com.ats.entity.Joblevel;
+import com.ats.service.CityService;
+import com.ats.service.CompanyService;
+import com.ats.service.JoblevelService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +29,13 @@ public class UserWS {
     UsersService usersService;
     @Autowired
     TokenAuthenticationService tokenService;
+    @Autowired
+    JoblevelService joblevelService;
+    @Autowired
+    CityService cityService;
+    @Autowired
+    CompanyService companyService;
+
     private static final Logger LOGGER = LogManager.getLogger(UserWS.class);
 
     @CrossOrigin(origins = "http://localhost:8090")
@@ -163,10 +179,10 @@ public class UserWS {
     @PostMapping(value = "/loginGoogle")
     @ResponseBody
     public RestResponse loginGoogle(@RequestBody UsersDTO usersDTO) {
-        LOGGER.info("Begin login inUserWS with username - password: {}", usersDTO.getEmail() + " - " + usersDTO.getPassword());
+        LOGGER.info("Begin loginGoogle inUserWS with username - password: {}", usersDTO.getEmail() + " - " + usersDTO.getPassword());
         try {
                 usersDTO = usersService.login(usersDTO.getEmail(), usersDTO.getPassword());
-                LOGGER.info("End login in UserWS with username - password : {}", usersDTO.getEmail() + " - " + usersDTO.getPassword());
+                LOGGER.info("End loginGoogle in UserWS with username - password : {}", usersDTO.getEmail() + " - " + usersDTO.getPassword());
                 if (usersDTO != null && usersDTO.getId() != 0) {
                     return new RestResponse(true, "Login Successful", usersDTO);
                 }
@@ -176,19 +192,43 @@ public class UserWS {
         return new RestResponse(false, "Login Fail Because " + usersDTO.getEmail(), null);
     }
 
-//    @CrossOrigin(origins = "localhost:8090")
-//    @GetMapping(value = "/search")
-//    @ResponseBody
-//    public List<UsersDTO> searchUser(@RequestParam(value = "search") String search) {
-//        LOGGER.info("Begin searchUser in AccountWS with Search value : {}" + search);
-//        List<UsersDTO> listUser = new ArrayList<>();
-//        try {
+    @CrossOrigin(origins = "localhost:8090")
+    @GetMapping(value = "/getUserDetail")
+    @ResponseBody
+    public List<UsersDTO> getUserDetail(@RequestParam(value = "search") String search) {
+        LOGGER.info("Begin searchUser in AccountWS with Search value : {}" + search);
+        List<UsersDTO> listUser = new ArrayList<>();
+        try {
 //            listUser = usersService.searchUser(search);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-//        LOGGER.info("End searchUser in AccountWS with Search value : {}" + search);
-//        return listUser;
-//    }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        LOGGER.info("End searchUser in AccountWS with Search value : {}" + search);
+        return listUser;
+    }
 
+    @CrossOrigin(origins = "*")
+    @GetMapping(value = "/getRegisterEmployerComponent")
+    public RestResponse getRegisterEmployerComponent(){
+        LOGGER.info("Begin getRegisterEmployerComponent in UserWS");
+        List<City> listCity;
+        List<Joblevel> listJobLevel;
+        List<CompanyDTO2> listCompany;
+        try {
+            listCity = cityService.getAllCity();
+            listCompany = companyService.listAll();
+            listJobLevel = joblevelService.getAllJobLevel();
+            HashMap<String,List> map = new HashMap<>();
+            map.put("city", listCity);
+            map.put("level" , listJobLevel);
+            map.put("company" , listCompany);
+            return new RestResponse(true, "Get Register Employer Component Successful", map);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getRegisterEmployerComponent in UserWS");
+
+        return new RestResponse(false, "Job is Not Available : ", null);
+    }
 }
