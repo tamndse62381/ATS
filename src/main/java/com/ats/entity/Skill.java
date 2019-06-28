@@ -1,13 +1,16 @@
 package com.ats.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Skill {
+public class Skill implements Serializable {
     private int id;
     private int skillMasterId;
     private Integer skillLevel;
@@ -16,6 +19,7 @@ public class Skill {
     private List<Skillneedforjob> skillneedforjobsById;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     public int getId() {
         return id;
@@ -61,7 +65,7 @@ public class Skill {
     }
 
     @ManyToOne
-    @JsonBackReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "SkillMasterID", referencedColumnName = "ID", nullable = false)
     public Skillmaster getSkillmasterBySkillMasterId() {
         return skillmasterBySkillMasterId;
@@ -72,7 +76,8 @@ public class Skill {
     }
 
     @OneToMany(mappedBy = "skillBySkillId")
-    @JsonBackReference
+    @JsonManagedReference(value="Skillincvs")
+    @LazyCollection(LazyCollectionOption.FALSE)
     public List<Skillincv> getSkillincvsById() {
         return skillincvsById;
     }
@@ -82,7 +87,8 @@ public class Skill {
     }
 
     @OneToMany(mappedBy = "skillBySkillId")
-    @JsonBackReference
+    @JsonManagedReference(value="Skillneedforjobs")
+    @LazyCollection(LazyCollectionOption.FALSE)
     public List<Skillneedforjob> getSkillneedforjobsById() {
         return skillneedforjobsById;
     }

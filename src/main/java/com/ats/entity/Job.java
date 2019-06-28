@@ -1,6 +1,8 @@
 package com.ats.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -39,6 +41,7 @@ public class Job {
     private List<Skillneedforjob> skillneedforjobsById;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     public int getId() {
         return id;
@@ -260,7 +263,7 @@ public class Job {
     }
 
     @OneToMany(mappedBy = "jobByJobId")
-    @JsonBackReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     public List<Apply> getAppliesById() {
         return appliesById;
     }
@@ -270,7 +273,7 @@ public class Job {
     }
 
     @OneToMany(mappedBy = "jobByJobId")
-    @JsonBackReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     public List<Countjob> getCountjobsById() {
         return countjobsById;
     }
@@ -280,7 +283,7 @@ public class Job {
     }
 
     @ManyToOne
-    @JsonBackReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "UserID", referencedColumnName = "ID", nullable = false)
     public Users getUsersByUserId() {
         return usersByUserId;
@@ -291,7 +294,7 @@ public class Job {
     }
 
     @ManyToOne
-    @JsonBackReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "CompanyID", referencedColumnName = "ID", nullable = false)
     public Company getCompanyByCompanyId() {
         return companyByCompanyId;
@@ -302,7 +305,7 @@ public class Job {
     }
 
     @ManyToOne
-    @JsonBackReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "CityID", referencedColumnName = "ID", nullable = false)
     public City getCityByCityId() {
         return cityByCityId;
@@ -313,7 +316,7 @@ public class Job {
     }
 
     @ManyToOne
-    @JsonBackReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "JobLevelID", referencedColumnName = "ID", nullable = false)
     public Joblevel getJoblevelByJobLevelId() {
         return joblevelByJobLevelId;
@@ -324,7 +327,7 @@ public class Job {
     }
 
     @OneToMany(mappedBy = "jobByJobId")
-    @JsonBackReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     public List<Jobseekerlikejob> getJobseekerlikejobsById() {
         return jobseekerlikejobsById;
     }
@@ -334,7 +337,7 @@ public class Job {
     }
 
     @OneToMany(mappedBy = "jobByJobId")
-    @JsonBackReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     public List<Logjob> getLogjobsById() {
         return logjobsById;
     }
@@ -344,7 +347,7 @@ public class Job {
     }
 
     @OneToMany(mappedBy = "jobByJobId")
-    @JsonBackReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     public List<Skillneedforjob> getSkillneedforjobsById() {
         return skillneedforjobsById;
     }

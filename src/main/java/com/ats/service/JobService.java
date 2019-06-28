@@ -15,7 +15,7 @@ public interface JobService {
 
     List<JobDTO> searchJob(String job, Pageable pageable);
 
-    List<JobDTO> getTop8();
+    List<Job> getTop8();
 
     Job getJobDetail(int id);
 

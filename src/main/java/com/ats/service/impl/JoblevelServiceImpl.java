@@ -27,14 +27,14 @@ public class JoblevelServiceImpl implements JoblevelService {
 
     @Override
     public List<Joblevel> getAllJobLevel() {
-        LOGGER.info("Begin getJobLevelById in JoblevelService");
+        LOGGER.info("Begin getJobLevelById in Joblevel Service");
         List joblevellist = new ArrayList<Joblevel>();
         try {
             joblevellist = joblevelRepository.findAll();
         } catch (Exception e) {
             LOGGER.info(e);
         }
-        LOGGER.info("End getAllJobLevel in JoblevelService");
+        LOGGER.info("End getAllJobLevel in Joblevel Service");
         return joblevellist;
 
     }

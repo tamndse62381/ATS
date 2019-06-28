@@ -1,10 +1,8 @@
 package com.ats.dto;
 
-import com.ats.entity.Skill;
-import lombok.Data;
 
+import lombok.Data;
 import java.util.Date;
-import java.util.List;
 
 @Data
 public class JobDTO2 {
@@ -27,5 +25,5 @@ public class JobDTO2 {
     private String additionalRequest;
     private String candidateBenefits;
     private String status;
-    private List<Skill> listSkill;
+
 }

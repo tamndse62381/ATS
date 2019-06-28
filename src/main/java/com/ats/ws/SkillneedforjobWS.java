@@ -2,7 +2,6 @@ package com.ats.ws;
 
 
 import com.ats.dto.SkillNeedForJobDTO;
-import com.ats.entity.Skill;
 import com.ats.service.SkillNeedForJobService;
 import com.ats.service.SkillService;
 import com.ats.util.RestResponse;
@@ -15,28 +14,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(value ="/skillneedforjob")
-public class SkillneedofrjobWS {
+@RequestMapping("/skillneedforjob")
+public class SkillneedforjobWS {
     @Autowired
     SkillService skillService;
     @Autowired
     SkillNeedForJobService skillNeedForJobService;
 
-    private static final Logger LOGGER = LogManager.getLogger(SkillneedofrjobWS.class);
+    private static final Logger LOGGER = LogManager.getLogger(SkillneedforjobWS.class);
 
     @ResponseBody
     @CrossOrigin(origins = "*")
-    @PostMapping(value = "/addNewSkill")
+    @PostMapping(value = "/addNewSkill" )
     public RestResponse createSkill(@RequestBody SkillNeedForJobDTO dto) {
-        LOGGER.info("Begin createSkill in SkillneedofrjobWS with Job id : {}" + dto.getJobid());
-
+        LOGGER.info("Begin createSkill in SkillneedforjobWS with Job id : {}" + dto.getJobId());
+        System.out.println(dto.toString());
         List<Integer> listSkillId = new ArrayList<>();
         try {
             for (int i = 0; i < dto.getListSkill().size(); i++) {
                 listSkillId.add(skillService.addNewSkill(dto.getListSkill().get(i)));
             }
-            LOGGER.info("End createSkill in SkillneedofrjobWS with Job id : {}" + dto.getJobid());
-            boolean finish = skillNeedForJobService.addSkillForJob(listSkillId, dto.getJobid());
+            LOGGER.info("End createSkill in SkillneedofrjobWS with Job id : {}" + dto.getJobId());
+            boolean finish = skillNeedForJobService.addSkillForJob(listSkillId, dto.getJobId());
             if (finish) {
                 return new RestResponse(true, "Create New Skill Successfull", null);
             }

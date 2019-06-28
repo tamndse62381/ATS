@@ -2,9 +2,7 @@ package com.ats.service.impl;
 
 import com.ats.dto.JobDTO2;
 import com.ats.dto.JobDTO;
-import com.ats.entity.City;
-import com.ats.entity.Company;
-import com.ats.entity.Job;
+import com.ats.entity.*;
 import com.ats.repository.JobRepository;
 import com.ats.service.CityService;
 import com.ats.service.CompanyService;
@@ -45,8 +43,25 @@ public class JobServiceImpl implements JobService {
         Job newJob;
         try {
             ModelMapper mapper = new ModelMapper();
-            Job jobEntity = mapper.map(job, Job.class);
-            newJob = jobRepository.save(jobEntity);
+            newJob = mapper.map(job, Job.class);
+            City city = new City();
+            city.setId(newJob.getCityId());
+
+            Company company = new Company();
+            company.setId(newJob.getCompanyId());
+
+            Users users = new Users();
+            users.setId(newJob.getUserId());
+
+            Joblevel joblevel = new Joblevel();
+            joblevel.setId(newJob.getJobLevelId());
+
+            newJob.setCityByCityId(city);
+            newJob.setUsersByUserId(users);
+            newJob.setCompanyByCompanyId(company);
+            newJob.setJoblevelByJobLevelId(joblevel);
+
+            newJob = jobRepository.save(newJob);
             result = newJob.getId();
             System.out.println("KQ : " + result);
         } catch (Exception e) {
@@ -85,7 +100,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public List<JobDTO> getTop8() {
+    public List<Job> getTop8() {
         LOGGER.info("Begin getTop8 in Job Service");
         List<Job> listofJob;
         List<Job> listofResult = new ArrayList<>();
@@ -103,23 +118,23 @@ public class JobServiceImpl implements JobService {
                     listofResult.add(listofJob.get(i));
                 }
             }
-            ModelMapper mapper = new ModelMapper();
-            Type targetListType = new TypeToken<List<JobDTO>>() {
-            }.getType();
-            listofDTO = mapper.map(listofResult, targetListType);
-            for (int i = 0; i < listofResult.size(); i++) {
-                company = companyService.findComanyByEmployerID(listofJob.get(i).getUserId());
-                listofDTO.get(i).setCompanyName(company.getNameCompany());
-            }
-            for (int i = 0; i < listofResult.size(); i++) {
-                city = cityService.getCityById(listofJob.get(i).getCityId());
-                listofDTO.get(i).setCityName(city.getFullName());
-            }
+//            ModelMapper mapper = new ModelMapper();
+//            Type targetListType = new TypeToken<List<JobDTO>>() {
+//            }.getType();
+//            listofDTO = mapper.map(listofResult, targetListType);
+//            for (int i = 0; i < listofResult.size(); i++) {
+//                company = companyService.findComanyByEmployerID(listofJob.get(i).getUserId());
+//                listofDTO.get(i).setCompanyName(company.getNameCompany());
+//            }
+//            for (int i = 0; i < listofResult.size(); i++) {
+//                city = cityService.getCityById(listofJob.get(i).getCityId());
+//                listofDTO.get(i).setCityName(city.getFullName());
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         LOGGER.info("End getTop8 in Job Service");
-        return listofDTO;
+        return listofResult;
 
 
     }
