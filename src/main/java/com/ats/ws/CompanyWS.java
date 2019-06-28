@@ -1,8 +1,12 @@
 package com.ats.ws;
 
+import com.ats.dto.CompanyDTO;
+import com.ats.entity.City;
 import com.ats.entity.Company;
+import com.ats.entity.Users;
 import com.ats.repository.CompanyRepository;
 import com.ats.service.CompanyService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,10 +29,23 @@ public class CompanyWS {
 
     // Create a new company
     @PostMapping("")
-    public ResponseEntity<Company> create(@RequestBody Company newCompany){
+    public ResponseEntity<Company> create(@RequestBody CompanyDTO companyDTO){
         try {
-            newCompany.setCreatedDate(new Timestamp(new Date().getTime()));
-            newCompany.setLastModify(new Timestamp(new Date().getTime()));
+            companyDTO.setCreatedDate(new Timestamp(new Date().getTime()));
+            companyDTO.setLastModify(new Timestamp(new Date().getTime()));
+            ModelMapper mapper = new ModelMapper();
+            Company newCompany = mapper.map(companyDTO,Company.class);
+            Users users = new Users();
+            users.setId(newCompany.getUserId());
+            System.out.println("user : " + newCompany.getUserId());
+
+            City city = new City();
+            city.setId(newCompany.getCityId());
+            System.out.println("city : " + newCompany.getCityId());
+
+            newCompany.setCityByCityId(city);
+            newCompany.setUsersByUserId(users);
+
             return ResponseEntity.ok().body(companyRepository.save(newCompany));
         } catch (RuntimeException e){
             System.out.println(e);

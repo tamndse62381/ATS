@@ -23,7 +23,7 @@ public class CityServiceImpl implements CityService {
         LOGGER.info("Begin getAllCity in City Service ");
         List<City> cityList = null;
         cityList = cityRepository.findAll();
-        LOGGER.info("End getAllCity in City Service with Numer of City: {}", cityList.size());
+        LOGGER.info("End getAllCity in City Service with Number of City: {}", cityList.size());
         return cityList;
     }
 
