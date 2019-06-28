@@ -23,6 +23,11 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public Company findComanyByID(int id) {
+        return companyRepository.findOne(id);
+    }
+
+    @Override
     public List<CompanyDTO2> listAll() {
         ModelMapper mapper = new ModelMapper();
         java.lang.reflect.Type targetListType = new TypeToken<List<CompanyDTO2>>() {
