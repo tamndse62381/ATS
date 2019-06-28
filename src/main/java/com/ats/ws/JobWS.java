@@ -142,13 +142,9 @@ public class JobWS {
     public RestResponse getJobComponent(){
         LOGGER.info("Begin getJobComponent in JobWS");
         List<SkillMasterDTO> listSkillMaster;
-//        HashMap<Integer,String> listSkillName = new HashMap<>();
         List<Joblevel> listJobLevel;
         try {
             listSkillMaster = skillmasterService.listAll();
-//            for (int i = 0; i < listSkillMaster.size(); i++) {
-//                listSkillName.put(listSkillMaster.get(i).getId(),listSkillMaster.get(i).getSkillName());
-//            }
 
             listJobLevel = joblevelService.getAllJobLevel();
             HashMap<String,List> map = new HashMap<>();
