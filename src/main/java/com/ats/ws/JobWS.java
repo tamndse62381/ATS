@@ -3,14 +3,15 @@ package com.ats.ws;
 import com.ats.dto.JobDTO2;
 import com.ats.dto.JobDTO;
 import com.ats.entity.Job;
-import com.ats.service.SkillNeedForJobService;
-import com.ats.service.SkillService;
+import com.ats.entity.Joblevel;
+import com.ats.entity.Skillmaster;
+import com.ats.service.*;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.ats.service.JobService;
 import com.ats.util.RestResponse;
 import org.springframework.data.domain.Pageable;
 
@@ -18,10 +19,7 @@ import org.springframework.data.web.PageableDefault;
 
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/job")
@@ -32,6 +30,10 @@ public class JobWS {
     SkillService skillService;
     @Autowired
     SkillNeedForJobService skillNeedForJobService;
+    @Autowired
+    JoblevelService joblevelService;
+    @Autowired
+    SkillmasterService skillmasterService;
 
     private static final Logger LOGGER = LogManager.getLogger(UserWS.class);
 
@@ -97,7 +99,6 @@ public class JobWS {
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getTop8")
-    @ResponseBody
     public RestResponse getTop8() {
         LOGGER.info("Begin getTop8 in JobWS ");
         List<Job> listJobs = new ArrayList<>();
@@ -117,7 +118,6 @@ public class JobWS {
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getJobDetail", produces = "application/json;charset=UTF-8")
-    @ResponseBody
     public RestResponse getJobDetail(@RequestParam("id") int id) {
         LOGGER.info("Begin getJobDetail in JobWS with id " + id);
         Job job;
@@ -130,6 +130,33 @@ public class JobWS {
             e.printStackTrace();
         }
         LOGGER.info("End getJobDetail in JobWS with id " + id);
+
+        return new RestResponse(false, "Job is Not Available : ", null);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping(value = "/getJobComponent")
+    public RestResponse getJobComponent(){
+        LOGGER.info("Begin getJobComponent in JobWS");
+        List<Skillmaster> listSkillMaster;
+        List<String> listSkillName = new ArrayList<>();
+        List<Joblevel> listJobLevel;
+        try {
+            listSkillMaster = skillmasterService.listAll();
+            for (int i = 0; i < listSkillMaster.size(); i++) {
+                listSkillName.add(listSkillMaster.get(i).getSkillName());
+            }
+
+            listJobLevel = joblevelService.getAllJobLevel();
+            HashMap<String,List> map = new HashMap<>();
+            map.put("skillname", listSkillName);
+            map.put("level" , listJobLevel);
+                return new RestResponse(true, "Get job Component Successful", map);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getJobComponent in JobWS");
 
         return new RestResponse(false, "Job is Not Available : ", null);
     }

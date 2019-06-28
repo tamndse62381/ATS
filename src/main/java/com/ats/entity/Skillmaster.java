@@ -64,6 +64,7 @@ public class Skillmaster {
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "skillmasterBySkillMasterId")
+    @JsonManagedReference
     public List<Skill> getSkillsById() {
         return skillsById;
     }

@@ -87,7 +87,7 @@ public class UsersServiceImpl implements UsersService {
             if (users != null) {
                 try {
                     LOGGER.info("End registration in User Repository with result: {}", users.toString());
-                    users.setRoleId(1);
+
                     newUsers = usersRepository.save(users);
                     LOGGER.info("End registration in User Repository with result: {}", newUsers.toString());
 
