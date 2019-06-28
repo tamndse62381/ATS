@@ -1,9 +1,12 @@
 package com.ats.service.impl;
 
+import com.ats.dto.SkillMasterDTO;
 import com.ats.entity.Skill;
 import com.ats.entity.Skillmaster;
 import com.ats.repository.SkillmasterRepository;
 import com.ats.service.SkillmasterService;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +29,14 @@ public class SkillmasterServiceImpl implements SkillmasterService {
     }
 
     @Override
-    public List<Skillmaster> listAll() {
-        return skillmasterRepository.findAll();
+    public List<SkillMasterDTO> listAll() {
+        ModelMapper mapper = new ModelMapper();
+        java.lang.reflect.Type targetListType = new TypeToken<List<SkillMasterDTO>>() {
+        }.getType();
+        List<SkillMasterDTO> listofDTO;
+        List<Skillmaster> listSkillMaster = skillmasterRepository.findAll();
+        listofDTO = mapper.map(listSkillMaster, targetListType);
+        return listofDTO;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.ats.service;
 
+import com.ats.dto.SkillMasterDTO;
 import com.ats.entity.Skillmaster;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,7 @@ import java.util.List;
 public interface SkillmasterService {
      boolean createANewSkillMaster(Skillmaster skillmaster);
 
-     List<Skillmaster> listAll();
+     List<SkillMasterDTO> listAll();
 
      boolean editASkillmaster(Skillmaster editedSkillmaster, int id);
 

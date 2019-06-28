@@ -1,5 +1,6 @@
 package com.ats.ws;
 
+import com.ats.dto.SkillMasterDTO;
 import com.ats.entity.Skill;
 import com.ats.entity.Skillmaster;
 import com.ats.service.SkillmasterService;
@@ -18,7 +19,7 @@ public class SkillmasterWS {
     // LIST RA HET BO VO DROP DOWN CHO NGUOI NHAP CHON
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @CrossOrigin(origins = "")
-    public ResponseEntity<List<Skillmaster>> getAll(){
+    public ResponseEntity<List<SkillMasterDTO>> getAll(){
         return ResponseEntity.ok().body(skillmasterService.listAll());
     }
 

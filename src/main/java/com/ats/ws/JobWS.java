@@ -2,6 +2,7 @@ package com.ats.ws;
 
 import com.ats.dto.JobDTO2;
 import com.ats.dto.JobDTO;
+import com.ats.dto.SkillMasterDTO;
 import com.ats.entity.Job;
 import com.ats.entity.Joblevel;
 import com.ats.entity.Skillmaster;
@@ -10,6 +11,8 @@ import com.ats.service.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ats.util.RestResponse;
@@ -138,18 +141,18 @@ public class JobWS {
     @GetMapping(value = "/getJobComponent")
     public RestResponse getJobComponent(){
         LOGGER.info("Begin getJobComponent in JobWS");
-        List<Skillmaster> listSkillMaster;
-        List<String> listSkillName = new ArrayList<>();
+        List<SkillMasterDTO> listSkillMaster;
+//        HashMap<Integer,String> listSkillName = new HashMap<>();
         List<Joblevel> listJobLevel;
         try {
             listSkillMaster = skillmasterService.listAll();
-            for (int i = 0; i < listSkillMaster.size(); i++) {
-                listSkillName.add(listSkillMaster.get(i).getSkillName());
-            }
+//            for (int i = 0; i < listSkillMaster.size(); i++) {
+//                listSkillName.put(listSkillMaster.get(i).getId(),listSkillMaster.get(i).getSkillName());
+//            }
 
             listJobLevel = joblevelService.getAllJobLevel();
             HashMap<String,List> map = new HashMap<>();
-            map.put("skillname", listSkillName);
+            map.put("skillname", listSkillMaster);
             map.put("level" , listJobLevel);
                 return new RestResponse(true, "Get job Component Successful", map);
 
