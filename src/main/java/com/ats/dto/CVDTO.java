@@ -3,53 +3,51 @@ package com.ats.dto;
 import com.ats.entity.*;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 public class CVDTO implements Serializable {
-    private Integer id;
+    private int id;
     private String title;
-    private Integer userid;
+    private int userId;
     private String img;
     private String email;
+    private String telephoneNumber;
     private String firstName;
     private String lastName;
     private String gender;
-    private Date dob;
-    private Integer cityid;
+    private Timestamp dob;
+    private int cityId;
     private String address;
-    private Integer industryid;
+    private int industryId;
     private String description;
     private Integer yearExperience;
     private Double salaryFrom;
     private Double salaryTo;
     private String status;
-    private Date createdDate;
-    private Date lastModify;
+    private Timestamp createdDate;
+    private Timestamp lastModify;
     private Integer isActive;
-    private List<Certification> certifications;
-    private List<Education> educations;
-    private List<Socialactivities> socialactivities;
-    private List<Workexperience> workexperiences;
-    private List<Projectorproductworked> projectorproductworkeds;
-    private List<Skillincv> skillincvs;
+    private List<CertificationDTO> certificationsById;
+    private List<EducationDTO> educationsById;
+    private List<ProjectorproductworkedDTO> projectorproductworkedsById;
+    private List<SocialactivitiesDTO> socialactivitiesById;
+    private List<WorkexperienceDTO> workexperiencesById;
 
-    public CVDTO() {
-    }
-
-    public CVDTO(Integer id, String title, Integer userid, String img, String email, String firstName, String lastName, String gender, Date dob, Integer cityid, String address, Integer industryid, String description, Integer yearExperience, Double salaryFrom, Double salaryTo, String status, Date createdDate, Date lastModify, Integer isActive, List<Certification> certifications, List<Education> educations, List<Socialactivities> socialactivities, List<Workexperience> workexperiences, List<Projectorproductworked> projectorproductworkeds, List<Skillincv> skillincvs) {
+    public CVDTO(int id, String title, int userId, String img, String email, String telephoneNumber, String firstName, String lastName, String gender, Timestamp dob, int cityId, String address, int industryId, String description, Integer yearExperience, Double salaryFrom, Double salaryTo, String status, Timestamp createdDate, Timestamp lastModify, Integer isActive, List<CertificationDTO> certificationsById, List<EducationDTO> educationsById, List<ProjectorproductworkedDTO> projectorproductworkedsById, List<SocialactivitiesDTO> socialactivitiesById, List<WorkexperienceDTO> workexperiencesById) {
         this.id = id;
         this.title = title;
-        this.userid = userid;
+        this.userId = userId;
         this.img = img;
         this.email = email;
+        this.telephoneNumber = telephoneNumber;
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
         this.dob = dob;
-        this.cityid = cityid;
+        this.cityId = cityId;
         this.address = address;
-        this.industryid = industryid;
+        this.industryId = industryId;
         this.description = description;
         this.yearExperience = yearExperience;
         this.salaryFrom = salaryFrom;
@@ -58,19 +56,21 @@ public class CVDTO implements Serializable {
         this.createdDate = createdDate;
         this.lastModify = lastModify;
         this.isActive = isActive;
-        this.certifications = certifications;
-        this.educations = educations;
-        this.socialactivities = socialactivities;
-        this.workexperiences = workexperiences;
-        this.projectorproductworkeds = projectorproductworkeds;
-        this.skillincvs = skillincvs;
+        this.certificationsById = certificationsById;
+        this.educationsById = educationsById;
+        this.projectorproductworkedsById = projectorproductworkedsById;
+        this.socialactivitiesById = socialactivitiesById;
+        this.workexperiencesById = workexperiencesById;
     }
 
-    public Integer getId() {
+    public CVDTO() {
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -82,12 +82,12 @@ public class CVDTO implements Serializable {
         this.title = title;
     }
 
-    public Integer getUserid() {
-        return userid;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUserid(Integer userid) {
-        this.userid = userid;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getImg() {
@@ -104,6 +104,14 @@ public class CVDTO implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getTelephoneNumber() {
+        return telephoneNumber;
+    }
+
+    public void setTelephoneNumber(String telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
     }
 
     public String getFirstName() {
@@ -130,20 +138,20 @@ public class CVDTO implements Serializable {
         this.gender = gender;
     }
 
-    public Date getDob() {
+    public Timestamp getDob() {
         return dob;
     }
 
-    public void setDob(Date dob) {
+    public void setDob(Timestamp dob) {
         this.dob = dob;
     }
 
-    public Integer getCityid() {
-        return cityid;
+    public int getCityId() {
+        return cityId;
     }
 
-    public void setCityid(Integer cityid) {
-        this.cityid = cityid;
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
     }
 
     public String getAddress() {
@@ -154,12 +162,12 @@ public class CVDTO implements Serializable {
         this.address = address;
     }
 
-    public Integer getIndustryid() {
-        return industryid;
+    public int getIndustryId() {
+        return industryId;
     }
 
-    public void setIndustryid(Integer industryid) {
-        this.industryid = industryid;
+    public void setIndustryId(int industryId) {
+        this.industryId = industryId;
     }
 
     public String getDescription() {
@@ -202,19 +210,19 @@ public class CVDTO implements Serializable {
         this.status = status;
     }
 
-    public Date getCreatedDate() {
+    public Timestamp getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
+    public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
     }
 
-    public Date getLastModify() {
+    public Timestamp getLastModify() {
         return lastModify;
     }
 
-    public void setLastModify(Date lastModify) {
+    public void setLastModify(Timestamp lastModify) {
         this.lastModify = lastModify;
     }
 
@@ -226,51 +234,43 @@ public class CVDTO implements Serializable {
         this.isActive = isActive;
     }
 
-    public List<Certification> getCertifications() {
-        return certifications;
+    public List<CertificationDTO> getCertificationsById() {
+        return certificationsById;
     }
 
-    public void setCertifications(List<Certification> certifications) {
-        this.certifications = certifications;
+    public void setCertificationsById(List<CertificationDTO> certificationsById) {
+        this.certificationsById = certificationsById;
     }
 
-    public List<Education> getEducations() {
-        return educations;
+    public List<EducationDTO> getEducationsById() {
+        return educationsById;
     }
 
-    public void setEducations(List<Education> educations) {
-        this.educations = educations;
+    public void setEducationsById(List<EducationDTO> educationsById) {
+        this.educationsById = educationsById;
     }
 
-    public List<Socialactivities> getSocialactivities() {
-        return socialactivities;
+    public List<ProjectorproductworkedDTO> getProjectorproductworkedsById() {
+        return projectorproductworkedsById;
     }
 
-    public void setSocialactivities(List<Socialactivities> socialactivities) {
-        this.socialactivities = socialactivities;
+    public void setProjectorproductworkedsById(List<ProjectorproductworkedDTO> projectorproductworkedsById) {
+        this.projectorproductworkedsById = projectorproductworkedsById;
     }
 
-    public List<Workexperience> getWorkexperiences() {
-        return workexperiences;
+    public List<SocialactivitiesDTO> getSocialactivitiesById() {
+        return socialactivitiesById;
     }
 
-    public void setWorkexperiences(List<Workexperience> workexperiences) {
-        this.workexperiences = workexperiences;
+    public void setSocialactivitiesById(List<SocialactivitiesDTO> socialactivitiesById) {
+        this.socialactivitiesById = socialactivitiesById;
     }
 
-    public List<Projectorproductworked> getProjectorproductworkeds() {
-        return projectorproductworkeds;
+    public List<WorkexperienceDTO> getWorkexperiencesById() {
+        return workexperiencesById;
     }
 
-    public void setProjectorproductworkeds(List<Projectorproductworked> projectorproductworkeds) {
-        this.projectorproductworkeds = projectorproductworkeds;
-    }
-
-    public List<Skillincv> getSkillincvs() {
-        return skillincvs;
-    }
-
-    public void setSkillincvs(List<Skillincv> skillincvs) {
-        this.skillincvs = skillincvs;
+    public void setWorkexperiencesById(List<WorkexperienceDTO> workexperiencesById) {
+        this.workexperiencesById = workexperiencesById;
     }
 }

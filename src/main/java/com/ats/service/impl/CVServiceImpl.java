@@ -1,8 +1,11 @@
 package com.ats.service.impl;
 
-import com.ats.dto.CVDTO;
+import com.ats.dto.*;
 import com.ats.entity.*;
 import com.ats.repository.CVRepository;
+import com.ats.repository.CityRepository;
+import com.ats.repository.IndustryRepository;
+import com.ats.repository.UsersRepository;
 import com.ats.service.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,108 +33,97 @@ public class CVServiceImpl implements CVService {
     private SocialactivityService socialactivityService;
     @Autowired
     private ProjectorproductworkedService projectorproductworkedService;
+    @Autowired
+    private CityRepository cityRepository;
+    @Autowired
+    private IndustryRepository industryRepository;
+    @Autowired
+    private UsersRepository usersRepository;
+    //Mapping Object
     ModelMapper modelMapper = new ModelMapper();
     // Conts
     private static String EMAIL = "1101010001001101000000000000";
-    @Override
-    public ResponseEntity<CVDTO> getCVByCVID(int id) {
-        Cv cv = cvRepository.findOne(id);
-        if (cv != null) {
-            List<Certification> listCer = certificationService.getListCertificationByCVID(id);
-            List<Education> listEdu = educationService.getListEduByCVId(id);
-            List<Workexperience> listWork = workexperienceService.getByCVID(id);
-            List<Socialactivities> listSoc = socialactivityService.findListSocialactivityByCVID(id);
-            List<Projectorproductworked> listPro = projectorproductworkedService.getListProjectByCVID(id);
 
-            CVDTO returnCVDTO = modelMapper.map(cv, CVDTO.class);
-            returnCVDTO.setCertifications(listCer);
-            returnCVDTO.setSocialactivities(listSoc);
-            returnCVDTO.setWorkexperiences(listWork);
-            returnCVDTO.setProjectorproductworkeds(listPro);
-            returnCVDTO.setEducations(listEdu);
-            return ResponseEntity.ok().body(returnCVDTO);
-        }
-        return ResponseEntity.badRequest().body(null);
+    @Override
+    public ResponseEntity<Cv> getCVByCVID(int id) {
+        Cv cv = cvRepository.findById(id).orElseThrow(() -> new
+                NotFoundException(""));
+        return ResponseEntity.ok(cv);
     }
 
     @Override
-    public Cv getCvByEmail(String email) {
-//        return cvRepository.find(email);
-        return null;
+    public Cv getCvByEmail() {
+           return cvRepository.findCVByEmail(EMAIL);
     }
 
     @Override
     public boolean create(CVDTO newCV) {
         try {
             Cv cv = new Cv();
+            cv = modelMapper.map(newCV, Cv.class);
             cv.setEmail(EMAIL);
-            cvRepository.save(cv);
-            cv = cvRepository.findCVByCVID(EMAIL);
-            // mapping CV
-            cv.setTitle(newCV.getTitle());
-            cv.setUserId(newCV.getUserid());
-            cv.setImg(newCV.getImg());
-            cv.setEmail(newCV.getEmail());
-            cv.setFirstName(newCV.getFirstName());
-            cv.setLastName(newCV.getLastName());
-            cv.setGender(newCV.getGender());
-            cv.setDob(new Timestamp(newCV.getDob().getTime()));
-            cv.setCityId(newCV.getCityid());
-            cv.setAddress(newCV.getAddress());
-            cv.setIndustryId(newCV.getIndustryid());
-            cv.setDescription(newCV.getDescription());
-            cv.setYearExperience(newCV.getYearExperience());
-            cv.setSalaryFrom(newCV.getSalaryFrom());
-            cv.setSalaryTo(newCV.getSalaryTo());
-            cv.setStatus(newCV.getStatus());
-            cv.setCreatedDate(new Timestamp(new Date().getTime()));
+            cv.setCityByCityId(cityRepository.findOne(newCV.getCityId()));
+            cv.setIndustryByIndustryId(industryRepository.findOne(newCV.getIndustryId()));
+            cv.setUsersByUserId(usersRepository.findOne(newCV.getUserId()));
+            cv.setStatus("1");
             cv.setIsActive(1);
-            // get CVID
-            int CVID = cv.getId();
+            cv.setCreatedDate(new Timestamp(new Date().getTime()));
+            cvRepository.save(cv);
+            Cv changeEmailCv = getCvByEmail();
+            int CVID = changeEmailCv.getId();
+            changeEmailCv.setEmail(newCV.getEmail());
+            cvRepository.save(changeEmailCv);
+
             // mapping Certification
-            List<Certification> listCer = newCV.getCertifications();
+            List<CertificationDTO> listCer = newCV.getCertificationsById();
             if (listCer != null){
-                for (Certification certification : listCer) {
-                    certification.setCvid(CVID);
-                    certificationService.createANewCertification(certification);
+                for (CertificationDTO certificationDTO : listCer) {
+                    Certification cer = modelMapper.map(certificationDTO, Certification.class);
+                    cer.setCvid(CVID);
+                    cer.setCvByCvid(cvRepository.findOne(CVID));
+                    certificationService.createANewCertification(cer);
                 }
             }
             // mapping Education
-            List<Education> listEdu = newCV.getEducations();
+            List<EducationDTO> listEdu = newCV.getEducationsById();
             if (listEdu != null){
-                for (Education education : listEdu) {
-                    education.setCvid(CVID);
-                    educationService.createANewEducation(education);
+                for (EducationDTO educationDTO : listEdu) {
+                    Education edu = modelMapper.map(educationDTO, Education.class);
+                    edu.setCvid(CVID);
+                    edu.setCvByCvid(cvRepository.findOne(CVID));
+                    educationService.createANewEducation(edu);
                 }
             }
-
             // mapping SocialActivity
-            List<Socialactivities> listAct = newCV.getSocialactivities();
+            List<SocialactivitiesDTO> listAct = newCV.getSocialactivitiesById();
             if (listAct != null){
-                for (Socialactivities socialactivities : listAct) {
-                    socialactivities.setCvid(CVID);
-                    socialactivityService.createANewSocialactivity(socialactivities);
+                for (SocialactivitiesDTO socialactivitiesDTO : listAct) {
+                    Socialactivities soc = modelMapper.map(socialactivitiesDTO, Socialactivities.class);
+                    soc.setCvid(CVID);
+                    soc.setCvByCvid(cvRepository.findOne(CVID));
+                    socialactivityService.createANewSocialactivity(soc);
                 }
             }
             // mapping WorkExperience
-            List<Workexperience> listWor = newCV.getWorkexperiences();
+            List<WorkexperienceDTO> listWor = newCV.getWorkexperiencesById();
             if (listWor != null){
-                for (Workexperience workexperience : listWor) {
-                    workexperience.setCvid(CVID);
-                    workexperienceService.createANewWorkExperience(workexperience);
+                for (WorkexperienceDTO workexperienceDTO : listWor) {
+                    Workexperience wor = modelMapper.map(workexperienceDTO, Workexperience.class);
+                    wor.setCvid(CVID);
+                    wor.setCvByCvid(cvRepository.findOne(CVID));
+                    workexperienceService.createANewWorkExperience(wor);
                 }
             }
-
             //mapping ProjectOrProduct
-            List<Projectorproductworked> listPro = newCV.getProjectorproductworkeds();
+            List<ProjectorproductworkedDTO> listPro = newCV.getProjectorproductworkedsById();
             if (listPro != null){
-                for (Projectorproductworked projectorproductworked : listPro) {
-                    projectorproductworked.setCvid(CVID);
-                    projectorproductworkedService.createANewProjectorProduct(projectorproductworked);
+                for (ProjectorproductworkedDTO projectorproductworkedDTO : listPro) {
+                    Projectorproductworked pro = modelMapper.map(projectorproductworkedDTO, Projectorproductworked.class);
+                    pro.setCvid(CVID);
+                    pro.setCvByCvid(cvRepository.findOne(CVID));
+                    projectorproductworkedService.createANewProjectorProduct(pro);
                 }
             }
-            // Save to DB
-            cvRepository.save(cv);
             return true;
         } catch (RuntimeException e){
             System.out.println(e);
@@ -145,7 +137,14 @@ public class CVServiceImpl implements CVService {
                 () -> new NotFoundException(editedCv.getId() + "Cv Not found")
         );
 
-
         return false;
+    }
+
+    @Override
+    public boolean delete(int id) {
+        Cv cv = cvRepository.findById(id).orElseThrow(()-> new NotFoundException("Can't find Cv have Id: " + id));
+        cv.setStatus("2");
+        cv.setIsActive(0);
+        return true;
     }
 }

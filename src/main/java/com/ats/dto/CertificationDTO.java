@@ -3,32 +3,32 @@ package com.ats.dto;
 import java.io.Serializable;
 
 public class CertificationDTO implements Serializable {
-    private Integer id;
-    private Integer cvid;
+    private int id;
+    private int cvid;
     private String certificationName;
 
     public CertificationDTO() {
     }
 
-    public CertificationDTO(Integer id, Integer cvid, String certificationName) {
+    public CertificationDTO(int id, int cvid, String certificationName) {
         this.id = id;
         this.cvid = cvid;
         this.certificationName = certificationName;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Integer getCvid() {
+    public int getCvid() {
         return cvid;
     }
 
-    public void setCvid(Integer cvid) {
+    public void setCvid(int cvid) {
         this.cvid = cvid;
     }
 

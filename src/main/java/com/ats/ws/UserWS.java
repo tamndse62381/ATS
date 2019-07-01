@@ -3,6 +3,8 @@ package com.ats.ws;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ats.entity.Users;
+import com.ats.repository.UsersRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -191,4 +193,17 @@ public class UserWS {
 //        return listUser;
 //    }
 
+    // Test
+    @Autowired
+    private UsersRepository usersRepository;
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public List<Users> test(){
+        return usersRepository.findAll();
+    }
+
+    @RequestMapping(value = "/testPost", method = RequestMethod.POST)
+    public void testPost(@RequestBody Users user){
+        usersRepository.save(user);
+    }
 }

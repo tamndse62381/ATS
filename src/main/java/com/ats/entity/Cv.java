@@ -1,6 +1,8 @@
 package com.ats.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -297,8 +299,8 @@ public class Cv {
         this.appliesById = appliesById;
     }
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "cvByCvid")
-    @JsonBackReference
     public List<Certification> getCertificationsById() {
         return certificationsById;
     }
@@ -330,7 +332,7 @@ public class Cv {
 
     @ManyToOne
     @JsonBackReference
-    @JoinColumn(name = "CityID", referencedColumnName = "ID", nullable = false)
+    @JoinColumn(name = "CityID", referencedColumnName = "ID")
     public City getCityByCityId() {
         return cityByCityId;
     }
@@ -350,8 +352,8 @@ public class Cv {
         this.industryByIndustryId = industryByIndustryId;
     }
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "cvByCvid")
-    @JsonBackReference
     public List<Education> getEducationsById() {
         return educationsById;
     }
@@ -370,8 +372,8 @@ public class Cv {
         this.logcvsById = logcvsById;
     }
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "cvByCvid")
-    @JsonBackReference
     public List<Projectorproductworked> getProjectorproductworkedsById() {
         return projectorproductworkedsById;
     }
@@ -390,8 +392,8 @@ public class Cv {
         this.skillincvsById = skillincvsById;
     }
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "cvByCvid")
-    @JsonBackReference
     public List<Socialactivities> getSocialactivitiesById() {
         return socialactivitiesById;
     }
@@ -410,8 +412,9 @@ public class Cv {
         this.userslikecvsById = userslikecvsById;
     }
 
+
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "cvByCvid")
-    @JsonBackReference
     public List<Workexperience> getWorkexperiencesById() {
         return workexperiencesById;
     }
