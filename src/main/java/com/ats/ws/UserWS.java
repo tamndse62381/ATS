@@ -80,7 +80,7 @@ public class UserWS {
                     usersDTO.getEmail() + " - " + usersDTO.getPassword() + " - " + usersDTO.getFullname());
 
             if (result > -1) {
-                return new RestResponse(true, "Create To Successful", null);
+                return new RestResponse(true, "Create To Successful", usersDTO.getId());
             }
         } catch (Exception e) {
             e.printStackTrace();

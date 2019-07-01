@@ -12,7 +12,9 @@ import java.util.List;
 
 @Service
 public interface CompanyService {
-    public Company findComanyByEmployerID(@Param("id") int id);
+    Company findComanyByEmployerID(@Param("id") int id);
+
+    Company findComanyByID(int id);
 
     List<CompanyDTO2> listAll();
 }
