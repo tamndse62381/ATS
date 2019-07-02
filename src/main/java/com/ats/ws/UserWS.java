@@ -236,14 +236,9 @@ public class UserWS {
     @CrossOrigin(origins = "http://localhost:8090")
     @PostMapping(value = "/updateUser")
     public RestResponse updateUser(@RequestBody UsersDTO usersDTO) {
-        LOGGER.info("Begin updateUser in UserWS with email - password - fullname: {}",
-                usersDTO.getEmail() + " - " + usersDTO.getPassword() + " - " + usersDTO.getFullname());
+        LOGGER.info("Begin updateUser in UserWS with email - password - fullname: ", usersDTO.getFullname());
         int result;
         try {
-            java.util.Date date = new java.util.Date();
-            usersDTO.setLastModify(date);
-
-
             result = usersService.updateUser(usersDTO);
             LOGGER.info("End updateUser in UserWS with email - password - fullname: {}",
                     usersDTO.getEmail() + " - " + usersDTO.getPassword() + " - " + usersDTO.getFullname());
