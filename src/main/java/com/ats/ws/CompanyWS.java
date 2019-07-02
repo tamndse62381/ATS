@@ -30,7 +30,7 @@ public class CompanyWS {
 
     //Create a new company
     @PostMapping("")
-    @CrossOrigin("")
+    @CrossOrigin("*")
     public ResponseEntity<CompanyDTO> create(@RequestBody CompanyDTO newCompany, BindingResult result, FileModel file){
         if (result.hasErrors())
             return ResponseEntity.badRequest().body(null);
@@ -40,7 +40,7 @@ public class CompanyWS {
 
     // edit info's company
     @PutMapping("")
-    @CrossOrigin("")
+    @CrossOrigin("*")
     public ResponseEntity<Company> edit(@RequestBody Company editedCompany){
         try {
             editedCompany.setLastModify(new Timestamp(new Date().getTime()));
@@ -53,7 +53,7 @@ public class CompanyWS {
 
     // Paging
     @RequestMapping("/pagingAll")
-    @CrossOrigin("")
+    @CrossOrigin("*")
     public ResponseEntity<Page<Company>> test(@PageableDefault Pageable pageable){
         return ResponseEntity.ok().body(companyRepository.findAllPaging(pageable));
     }

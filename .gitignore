@@ -24,3 +24,5 @@ dist/
 nbdist/
 .nb-gradle/
 src/main/resources/application.properties
+src/main/java/com/ats/ws/CompanyWS.java
+src/main/resources/application.properties
