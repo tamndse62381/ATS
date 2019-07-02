@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface SkilltypeService {
-    public boolean createANewSkilltype(Skilltype newSkilltype);
+     boolean createANewSkilltype(Skilltype newSkilltype);
 
-    public boolean editASkilltype(Skilltype editedSkilltype, int id);
+     boolean editASkilltype(Skilltype editedSkilltype, int id);
 }

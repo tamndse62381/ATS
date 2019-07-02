@@ -1,7 +1,6 @@
 package com.ats.dto;
 
 import lombok.Data;
-
 import java.sql.Timestamp;
 
 @Data

@@ -11,5 +11,5 @@ public interface CountjobRepository extends JpaRepository<Countjob, Integer> {
     @Query("Select c from Countjob c where c.jobId = :jobid and c.userId = :userid")
     Countjob findCountcv (@Param("jobid") int jobid, @Param("userid") int userid);
 
-    int countCountjobByUserId(int id);
+    int countCountjobsByJobId(int id);
 }

@@ -8,9 +8,9 @@ import java.util.List;
 
 @Service
 public interface ProjectorproductworkedService {
-    public List<Projectorproductworked> getListProjectByCVID(int id);
+    List<Projectorproductworked> getListProjectByCVID(int id);
 
-    public ResponseEntity<Projectorproductworked> createANewProjectorProduct(Projectorproductworked newpoProjectorproductworked);
+    ResponseEntity<Projectorproductworked> createANewProjectorProduct(Projectorproductworked newpoProjectorproductworked);
 
-    public ResponseEntity<Projectorproductworked> editAProjectOrProduct(Projectorproductworked editedProjectorproductworked, int id);
+    ResponseEntity<Projectorproductworked> editAProjectOrProduct(Projectorproductworked editedProjectorproductworked, int id);
 }
