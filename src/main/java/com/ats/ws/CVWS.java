@@ -2,6 +2,7 @@ package com.ats.ws;
 
 import com.ats.dto.CVDTO;
 import com.ats.entity.*;
+import com.ats.model.FileModel;
 import com.ats.repository.CVRepository;
 import com.ats.service.*;
 import org.apache.logging.log4j.LogManager;
@@ -26,24 +27,30 @@ public class CVWS {
     // Get CV By CVID
     @RequestMapping(value = "/getOne/{CVID}/{EmployerID}", method = RequestMethod.GET)
     @CrossOrigin(origins = "")
-    public ResponseEntity<Cv> getCV(@PathVariable int CVID,
-                                       @PathVariable int EmployerId,
+    public ResponseEntity<Cv> getCV(@PathVariable(name = "CVID") int CVID,
+                                       @PathVariable(name = "EmployerID") int EmployerId,
                                        BindingResult result){
-        if (result.hasErrors()){
+        if (result.hasErrors()) {
             LOGGER.info("Error in CVWS- getOne: " + result);
         }
-        countcvService.countWhenEmployerGetDetailOfCV(CVID, EmployerId);
-        return cvService.getCVByCVID(CVID);
+        if (EmployerId == 0 ){
+            return cvService.getCVByCVID(CVID);
+        } else {
+            countcvService.countWhenEmployerGetDetailOfCV(CVID, EmployerId);
+            return cvService.getCVByCVID(CVID);
+        }
     }
 
     // Create A New CV
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @CrossOrigin(origins = "")
-    public boolean createANewCV(@RequestBody CVDTO newCV, BindingResult result){
+    public boolean createANewCV(@RequestBody CVDTO newCV,
+                                BindingResult result,
+                                FileModel file){
         if (result.hasErrors()){
             return false;
         }
-        return cvService.create(newCV);
+        return cvService.create(newCV, file);
     }
 
     // Delete One CV

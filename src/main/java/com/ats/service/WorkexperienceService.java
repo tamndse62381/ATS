@@ -8,13 +8,13 @@ import java.util.List;
 
 @Service
 public interface WorkexperienceService {
-    public List<Workexperience> getAll();
+     List<Workexperience> getAll();
 
-    public List<Workexperience> getByCVID(int id);
+     List<Workexperience> getByCVID(int id);
 
-    public ResponseEntity<Workexperience> editByID(Workexperience editedWorkexperience, int id);
+     ResponseEntity<Workexperience> editByID(Workexperience editedWorkexperience, int id);
 
-    public ResponseEntity<Workexperience> deleteByID(Workexperience deletedWorkexperience, int id);
+     ResponseEntity<Workexperience> deleteByID(Workexperience deletedWorkexperience, int id);
 
-    public boolean createANewWorkExperience(Workexperience newWorkexperience);
+     boolean createANewWorkExperience(Workexperience newWorkexperience);
 }

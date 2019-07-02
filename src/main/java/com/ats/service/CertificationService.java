@@ -9,9 +9,7 @@ import java.util.List;
 
 @Service
 public interface CertificationService {
-    public List<Certification> getListCertificationByCVID(int id);
+     List<Certification> getListCertificationByCVID(int id);
 
-    public void createANewCertification(Certification newCertification);
-
-
+     void createANewCertification(Certification newCertification);
 }

@@ -2,11 +2,13 @@ package com.ats.service.impl;
 
 import com.ats.dto.*;
 import com.ats.entity.*;
+import com.ats.model.FileModel;
 import com.ats.repository.CVRepository;
 import com.ats.repository.CityRepository;
 import com.ats.repository.IndustryRepository;
 import com.ats.repository.UsersRepository;
 import com.ats.service.*;
+import com.ats.util.FileUltis;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +16,9 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.NotFoundException;
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +43,9 @@ public class CVServiceImpl implements CVService {
     private IndustryRepository industryRepository;
     @Autowired
     private UsersRepository usersRepository;
+    @Autowired
+    HttpServletRequest httpServletRequest;
+
     //Mapping Object
     ModelMapper modelMapper = new ModelMapper();
     // Conts
@@ -57,7 +64,7 @@ public class CVServiceImpl implements CVService {
     }
 
     @Override
-    public boolean create(CVDTO newCV) {
+    public boolean create(CVDTO newCV, FileModel file) {
         try {
             Cv cv = new Cv();
             cv = modelMapper.map(newCV, Cv.class);
@@ -65,6 +72,11 @@ public class CVServiceImpl implements CVService {
             cv.setCityByCityId(cityRepository.findOne(newCV.getCityId()));
             cv.setIndustryByIndustryId(industryRepository.findOne(newCV.getIndustryId()));
             cv.setUsersByUserId(usersRepository.findOne(newCV.getUserId()));
+            //updaload file
+            String uploadPath = httpServletRequest.getRealPath("") + File.separator + "hinhanh" + File.separator;
+            //set img
+            String fileName = FileUltis.saveFile(file, uploadPath);
+            cv.setImg(fileName);
             cv.setStatus("1");
             cv.setIsActive(1);
             cv.setCreatedDate(new Timestamp(new Date().getTime()));
@@ -74,13 +86,14 @@ public class CVServiceImpl implements CVService {
             changeEmailCv.setEmail(newCV.getEmail());
             cvRepository.save(changeEmailCv);
 
+            Cv saveCv = cvRepository.findOne(CVID);
             // mapping Certification
             List<CertificationDTO> listCer = newCV.getCertificationsById();
             if (listCer != null){
                 for (CertificationDTO certificationDTO : listCer) {
                     Certification cer = modelMapper.map(certificationDTO, Certification.class);
                     cer.setCvid(CVID);
-                    cer.setCvByCvid(cvRepository.findOne(CVID));
+                    cer.setCvByCvid(saveCv);
                     certificationService.createANewCertification(cer);
                 }
             }
@@ -90,7 +103,7 @@ public class CVServiceImpl implements CVService {
                 for (EducationDTO educationDTO : listEdu) {
                     Education edu = modelMapper.map(educationDTO, Education.class);
                     edu.setCvid(CVID);
-                    edu.setCvByCvid(cvRepository.findOne(CVID));
+                    edu.setCvByCvid(saveCv);
                     educationService.createANewEducation(edu);
                 }
             }
@@ -100,7 +113,7 @@ public class CVServiceImpl implements CVService {
                 for (SocialactivitiesDTO socialactivitiesDTO : listAct) {
                     Socialactivities soc = modelMapper.map(socialactivitiesDTO, Socialactivities.class);
                     soc.setCvid(CVID);
-                    soc.setCvByCvid(cvRepository.findOne(CVID));
+                    soc.setCvByCvid(saveCv);
                     socialactivityService.createANewSocialactivity(soc);
                 }
             }
@@ -110,7 +123,7 @@ public class CVServiceImpl implements CVService {
                 for (WorkexperienceDTO workexperienceDTO : listWor) {
                     Workexperience wor = modelMapper.map(workexperienceDTO, Workexperience.class);
                     wor.setCvid(CVID);
-                    wor.setCvByCvid(cvRepository.findOne(CVID));
+                    wor.setCvByCvid(saveCv);
                     workexperienceService.createANewWorkExperience(wor);
                 }
             }
@@ -120,7 +133,7 @@ public class CVServiceImpl implements CVService {
                 for (ProjectorproductworkedDTO projectorproductworkedDTO : listPro) {
                     Projectorproductworked pro = modelMapper.map(projectorproductworkedDTO, Projectorproductworked.class);
                     pro.setCvid(CVID);
-                    pro.setCvByCvid(cvRepository.findOne(CVID));
+                    pro.setCvByCvid(saveCv);
                     projectorproductworkedService.createANewProjectorProduct(pro);
                 }
             }
@@ -136,7 +149,6 @@ public class CVServiceImpl implements CVService {
         Cv cv =cvRepository.findById(editedCv.getId()).orElseThrow(
                 () -> new NotFoundException(editedCv.getId() + "Cv Not found")
         );
-
         return false;
     }
 

@@ -31,10 +31,13 @@ public class CountcvServiceImpl implements CountcvService {
                 new NotFoundException("Not found Employer have ID: " + EmployerID));
         Countcv count = countcvRepository.findCountcv(CVID, EmployerID);
         if (count == null){
-            count.setCvid(CVID);
-            count.setUserId(EmployerID);
-            count.setCreatedDate(new Timestamp(new Date().getTime()));
-            countcvRepository.save(count);
+            Countcv countcvSave = new Countcv();
+            countcvSave.setCvid(CVID);
+            countcvSave.setUserId(EmployerID);
+            countcvSave.setCreatedDate(new Timestamp(new Date().getTime()));
+            countcvSave.setUsersByUserId(user);
+            countcvSave.setCvByCvid(cv);
+            countcvRepository.save(countcvSave);
             return true;
         }
         return false;

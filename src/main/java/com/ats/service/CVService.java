@@ -2,6 +2,7 @@ package com.ats.service;
 
 import com.ats.dto.CVDTO;
 import com.ats.entity.Cv;
+import com.ats.model.FileModel;
 import org.springframework.http.ResponseEntity;
 
 public interface CVService {
@@ -9,7 +10,7 @@ public interface CVService {
 
     Cv getCvByEmail();
 
-    boolean create(CVDTO newCV);
+    boolean create(CVDTO newCV, FileModel file);
 
     boolean edit(CVDTO editedCv);
 

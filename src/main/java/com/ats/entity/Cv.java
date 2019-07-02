@@ -1,6 +1,7 @@
 package com.ats.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -319,8 +320,8 @@ public class Cv {
         this.countcvsById = countcvsById;
     }
 
+    @JsonManagedReference
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "UserID", referencedColumnName = "ID", nullable = false)
     public Users getUsersByUserId() {
         return usersByUserId;
@@ -330,8 +331,8 @@ public class Cv {
         this.usersByUserId = usersByUserId;
     }
 
+    @JsonManagedReference
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "CityID", referencedColumnName = "ID")
     public City getCityByCityId() {
         return cityByCityId;
@@ -341,8 +342,8 @@ public class Cv {
         this.cityByCityId = cityByCityId;
     }
 
+    @JsonManagedReference
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "IndustryID", referencedColumnName = "ID", nullable = false)
     public Industry getIndustryByIndustryId() {
         return industryByIndustryId;

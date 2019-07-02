@@ -24,6 +24,7 @@ public class CountjobServiceImpl implements CountjobService{
     private UsersRepository usersRepository;
 
 
+
     @Override
     public void countWhenEmployerGetDetailOfJob(int JobID, int JodSeekerID) {
         Job job = jobRepository.findById(JobID).orElseThrow(()->
@@ -31,20 +32,23 @@ public class CountjobServiceImpl implements CountjobService{
         Users user = usersRepository.findById(JodSeekerID).orElseThrow(() ->
                 new NotFoundException("Can't found JobSeeker havr ID: " + JodSeekerID));
         Countjob count = countjobRepository.findCountcv(JobID, JodSeekerID);
-        if (count != null) {
-            count.setJobId(JobID);
-            count.setUserId(JodSeekerID);
-            count.setCreatedDate(new Timestamp(new Date().getTime()));
-            countjobRepository.save(count);
+        if (count == null) {
+            Countjob countjobSave = new Countjob();
+            countjobSave.setJobId(JobID);
+            countjobSave.setUserId(JodSeekerID);
+            countjobSave.setCreatedDate(new Timestamp(new Date().getTime()));
+            countjobSave.setUsersByUserId(user);
+            countjobSave.setJobByJobId(job);
+            countjobRepository.save(countjobSave);
         }
     }
 
     @Override
     public int countAccessTimes(int EmployerId) {
-        List<Job> listCv = jobRepository.findByUserId(EmployerId);
+        List<Job> listJob = jobRepository.findByUserId(EmployerId);
         int count = 0;
-        for (Job job : listCv) {
-            count =+ countjobRepository.countCountjobByUserId(job.getId());
+        for (Job job : listJob) {
+            count =+ countjobRepository.countCountjobsByJobId(job.getId());
             return count;
         }
         return 0;
