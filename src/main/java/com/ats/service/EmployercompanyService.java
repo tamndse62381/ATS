@@ -9,4 +9,6 @@ public interface EmployercompanyService {
     boolean createNewEmployerCompany(EmployercompanyDTO dto);
 
     int findCompanyById(int id);
+
+    int findCompanyByUserId(int userId);
 }

@@ -13,7 +13,6 @@ import java.util.List;
 
 @Service
 public interface CompanyService {
-    Company findComanyByEmployerID(@Param("id") int id);
 
     Company findComanyByID(int id);
 
