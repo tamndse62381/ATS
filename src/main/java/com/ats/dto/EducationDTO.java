@@ -1,52 +1,62 @@
 package com.ats.dto;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class EducationDTO implements Serializable {
-    private Integer id;
-    private Integer cvid;
-    private String schooltype;
+    private int id;
+    private int cvid;
+    private String schoolType;
+    private String schoolName;
     private String major;
-    private Date starttime;
-    private Date endtime;
+    private Timestamp startTime;
+    private Timestamp endtime;
     private String description;
 
     public EducationDTO() {
     }
 
-    public EducationDTO(Integer id, Integer cvid, String schooltype, String major, Date starttime, Date endtime, String description) {
+    public EducationDTO(int id, int cvid, String schoolType, String schoolName, String major, Timestamp startTime, Timestamp endtime, String description) {
         this.id = id;
         this.cvid = cvid;
-        this.schooltype = schooltype;
+        this.schoolType = schoolType;
+        this.schoolName = schoolName;
         this.major = major;
-        this.starttime = starttime;
+        this.startTime = startTime;
         this.endtime = endtime;
         this.description = description;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Integer getCvid() {
+    public int getCvid() {
         return cvid;
     }
 
-    public void setCvid(Integer cvid) {
+    public void setCvid(int cvid) {
         this.cvid = cvid;
     }
 
-    public String getSchooltype() {
-        return schooltype;
+    public String getSchoolType() {
+        return schoolType;
     }
 
-    public void setSchooltype(String schooltype) {
-        this.schooltype = schooltype;
+    public void setSchoolType(String schoolType) {
+        this.schoolType = schoolType;
+    }
+
+    public String getSchoolName() {
+        return schoolName;
+    }
+
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
     }
 
     public String getMajor() {
@@ -57,19 +67,19 @@ public class EducationDTO implements Serializable {
         this.major = major;
     }
 
-    public Date getStarttime() {
-        return starttime;
+    public Timestamp getStartTime() {
+        return startTime;
     }
 
-    public void setStarttime(Date starttime) {
-        this.starttime = starttime;
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
     }
 
-    public Date getEndtime() {
+    public Timestamp getEndtime() {
         return endtime;
     }
 
-    public void setEndtime(Date endtime) {
+    public void setEndtime(Timestamp endtime) {
         this.endtime = endtime;
     }
 

@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface CVRepository extends JpaRepository<Cv, Integer> {
     @Query("Select c from Cv c where c.email = :email")
-    public Cv findCVByCVID (@Param("email") String email);
+     Cv findCVByEmail (@Param("email") String email);
 
     Optional<Cv> findById(int id);
 

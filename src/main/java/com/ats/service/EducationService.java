@@ -8,11 +8,11 @@ import java.util.List;
 
 @Service
 public interface EducationService {
-    public List<Education> getListEduByCVId(int id);
+     List<Education> getListEduByCVId(int id);
 
-    public Education createANewEducation(Education newEducation);
+     Education createANewEducation(Education newEducation);
 
-    public Education editAEducation(Education editedEducation, int id);
+     Education editAEducation(Education editedEducation, int id);
 
-    public boolean deleteAEducation(int id);
+     boolean deleteAEducation(int id);
 }
