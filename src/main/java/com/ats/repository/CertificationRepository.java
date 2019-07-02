@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface CertificationRepository extends JpaRepository<Certification, Integer> {
     @Query("Select c from Certification c where c.cvid = :id")
-    public List<Certification> findListCertificationByCVID(@Param("id") int id);
+    List<Certification> findListCertificationByCVID(@Param("id") int id);
 }

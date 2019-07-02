@@ -29,7 +29,6 @@ public class Users implements Serializable {
     private Timestamp lastLogin;
     private Timestamp lastModify;
     private String status;
-    private List<Company> companiesById;
     private List<Countcv> countcvsById;
     private List<Countjob> countjobsById;
     private List<Cv> cvsById;
@@ -240,15 +239,6 @@ public class Users implements Serializable {
         return Objects.hash(id, email, fullName, password, accessToken, roleId, telephoneNumber, gender, jobLevelId, vacancyName, cityId, address, description, createdDate, lastLogin, lastModify, status);
     }
 
-    @OneToMany(mappedBy = "usersByUserId")
-    @JsonBackReference
-    public List<Company> getCompaniesById() {
-        return companiesById;
-    }
-
-    public void setCompaniesById(List<Company> companiesById) {
-        this.companiesById = companiesById;
-    }
 
     @OneToMany(mappedBy = "usersByUserId")
     @JsonBackReference

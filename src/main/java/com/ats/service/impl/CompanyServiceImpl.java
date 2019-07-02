@@ -14,9 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import com.ats.util.FileUltis;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -34,10 +31,6 @@ public class CompanyServiceImpl implements CompanyService {
     //Mapping Object
     ModelMapper modelMapper = new ModelMapper();
 
-    @Override
-    public Company findComanyByEmployerID(int id) {
-        return companyRepository.findComanyByEmployerID(id);
-    }
 
     @Override
     public Company findComanyByID(int id) {

@@ -15,8 +15,6 @@ import java.util.Optional;
 
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Integer> {
-    @Query("Select c from Company c where c.userId = :id")
-     Company findComanyByEmployerID(@Param("id") int id);
 
     @Query("Select c from Company c")
      Page<Company> findAllPaging(Pageable pageable);

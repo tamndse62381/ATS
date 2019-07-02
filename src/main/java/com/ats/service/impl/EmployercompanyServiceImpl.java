@@ -60,7 +60,7 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
 
     @Override
     public int findCompanyById(int id) {
-        LOGGER.info("Begin createSkill in Employercompany Service with Company id : " + id);
+        LOGGER.info("Begin findCompanyById in Employercompany Service with Company id : " + id);
         int result = -1;
         try {
             Company company = companyService.findComanyByID(id);
@@ -70,7 +70,23 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOGGER.info("End createSkill in Employercompany Service with Company id : " + id);
+        LOGGER.info("End findCompanyById in Employercompany Service with Company id : " + id);
+        return result;
+    }
+
+    @Override
+    public int findCompanyByUserId(int userId) {
+        LOGGER.info("Begin findCompanyByUserId in Employercompany Service with User id : " + userId);
+        int result = -1;
+        try {
+            Employercompany employercompany = employercompanyRepository.findCompanyByUserId(userId);
+            if (employercompany != null) {
+                result = employercompany.getCompanyId();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End findCompanyByUserId in Employercompany Service with User id : " + userId);
         return result;
     }
 }

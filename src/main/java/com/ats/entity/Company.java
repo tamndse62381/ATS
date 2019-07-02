@@ -11,7 +11,6 @@ import java.util.Objects;
 public class Company {
     private int id;
     private String nameCompany;
-    private int userId;
     private int cityId;
     private String address;
     private String telephoneNumber;
@@ -21,7 +20,6 @@ public class Company {
     private Timestamp createdDate;
     private Timestamp lastModify;
     private String status;
-    private Users usersByUserId;
     private City cityByCityId;
     private List<Companyindustry> companyindustriesById;
     private List<Employercompany> employercompaniesById;
@@ -47,15 +45,6 @@ public class Company {
         this.nameCompany = nameCompany;
     }
 
-    @Basic
-    @Column(name = "UserID", nullable = false , insertable = false , updatable = false)
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
 
     @Basic
     @Column(name = "CityID", nullable = false , insertable = false , updatable = false)
@@ -153,7 +142,6 @@ public class Company {
         if (o == null || getClass() != o.getClass()) return false;
         Company company = (Company) o;
         return id == company.id &&
-                userId == company.userId &&
                 cityId == company.cityId &&
                 Objects.equals(nameCompany, company.nameCompany) &&
                 Objects.equals(address, company.address) &&
@@ -168,19 +156,9 @@ public class Company {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nameCompany, userId, cityId, address, telephoneNumber, email, logoImg, description, createdDate, lastModify, status);
+        return Objects.hash(id, nameCompany, cityId, address, telephoneNumber, email, logoImg, description, createdDate, lastModify, status);
     }
 
-    @ManyToOne
-    @JsonBackReference
-    @JoinColumn(name = "UserID", referencedColumnName = "ID", nullable = false)
-    public Users getUsersByUserId() {
-        return usersByUserId;
-    }
-
-    public void setUsersByUserId(Users usersByUserId) {
-        this.usersByUserId = usersByUserId;
-    }
 
     @ManyToOne
     @JsonBackReference
