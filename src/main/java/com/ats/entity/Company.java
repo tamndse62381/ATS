@@ -21,7 +21,6 @@ public class Company {
     private Timestamp createdDate;
     private Timestamp lastModify;
     private String status;
-    private Users usersByUserId;
     private City cityByCityId;
     private List<Companyindustry> companyindustriesById;
     private List<Employercompany> employercompaniesById;
@@ -171,16 +170,6 @@ public class Company {
         return Objects.hash(id, nameCompany, userId, cityId, address, telephoneNumber, email, logoImg, description, createdDate, lastModify, status);
     }
 
-    @ManyToOne
-    @JsonBackReference
-    @JoinColumn(name = "UserID", referencedColumnName = "ID", nullable = false)
-    public Users getUsersByUserId() {
-        return usersByUserId;
-    }
-
-    public void setUsersByUserId(Users usersByUserId) {
-        this.usersByUserId = usersByUserId;
-    }
 
     @ManyToOne
     @JsonBackReference
