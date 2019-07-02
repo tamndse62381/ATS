@@ -22,5 +22,7 @@ public interface UsersService {
 
     UsersDTO findUserByToken(String token);
 
+    int updateUser(UsersDTO dto);
+
 
 }

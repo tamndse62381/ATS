@@ -85,7 +85,7 @@ public class UserWS {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new RestResponse(false, "Fail Create To Account", null);
+        return new RestResponse(false, "Fail Create To User", null);
     }
 
     @ResponseBody
@@ -230,5 +230,30 @@ public class UserWS {
         LOGGER.info("End getRegisterEmployerComponent in UserWS");
 
         return new RestResponse(false, "Job is Not Available : ", null);
+    }
+
+    @ResponseBody
+    @CrossOrigin(origins = "http://localhost:8090")
+    @PostMapping(value = "/updateUser")
+    public RestResponse updateUser(@RequestBody UsersDTO usersDTO) {
+        LOGGER.info("Begin updateUser in UserWS with email - password - fullname: {}",
+                usersDTO.getEmail() + " - " + usersDTO.getPassword() + " - " + usersDTO.getFullname());
+        int result;
+        try {
+            java.util.Date date = new java.util.Date();
+            usersDTO.setLastModify(date);
+
+
+            result = usersService.updateUser(usersDTO);
+            LOGGER.info("End updateUser in UserWS with email - password - fullname: {}",
+                    usersDTO.getEmail() + " - " + usersDTO.getPassword() + " - " + usersDTO.getFullname());
+
+            if (result > -1) {
+                return new RestResponse(true, "Update Successful", usersDTO.getId());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new RestResponse(false, "Fail Update To User", null);
     }
 }

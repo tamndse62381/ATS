@@ -162,6 +162,30 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    public int updateUser(UsersDTO dto) {
+        LOGGER.info("Begin updateUser in User Service with User DTO Email : {}", dto.getEmail());
+        Users updateUsers = null;
+        EncrytedPasswordUtils passwordUtil = new EncrytedPasswordUtils();
+        String newPassword = passwordUtil.encrytePassword(dto.getPassword());
+        dto.setPassword(newPassword);
+        modelMapper = new ModelMapper();
+        Users users = modelMapper.map(dto, Users.class);
+
+        if (users != null) {
+            try {
+                LOGGER.info("End updateUser in User Repository with result: {}", users.toString());
+                updateUsers = usersRepository.save(users);
+                LOGGER.info("End updateUser in User Repository with result: {}", updateUsers.toString());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        LOGGER.info("End updateUser in User Service with result: {}", updateUsers.getId());
+        return updateUsers.getId();
+    }
+
+    @Override
     public int changeStatus(int id, String newStatus) {
         LOGGER.info("Begin changeStatus in Account Service with Account id - newStatus : {}", id + newStatus);
         int success;
