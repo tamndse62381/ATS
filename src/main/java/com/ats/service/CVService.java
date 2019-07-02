@@ -2,14 +2,17 @@ package com.ats.service;
 
 import com.ats.dto.CVDTO;
 import com.ats.entity.Cv;
+import com.ats.model.FileModel;
 import org.springframework.http.ResponseEntity;
 
 public interface CVService {
-    ResponseEntity<CVDTO> getCVByCVID(int id);
+    ResponseEntity<Cv> getCVByCVID(int id);
 
-    Cv getCvByEmail(String email);
+    Cv getCvByEmail();
 
-    boolean create(CVDTO newCV);
+    boolean create(CVDTO newCV, FileModel file);
 
     boolean edit(CVDTO editedCv);
+
+    boolean delete(int id);
 }

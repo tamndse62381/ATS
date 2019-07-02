@@ -18,11 +18,13 @@ public class IndustryWS {
     private IndustryService industryService;
 
     @RequestMapping(method = RequestMethod.GET)
+    @CrossOrigin(origins = "http://localhost:8090")
     public ResponseEntity<List<Industry>> getAll(){
         return industryService.getAll();
     }
 
     @RequestMapping(value = "/getOne/{id}", method = RequestMethod.GET)
+    @CrossOrigin(origins = "http://localhost:8090")
     public ResponseEntity<Industry> getById(@PathVariable int id){
         try {
             return ResponseEntity.ok().body(industryRepository.getOne(id));
@@ -34,6 +36,7 @@ public class IndustryWS {
 
     // create new Industry
     @RequestMapping(method = RequestMethod.POST)
+    @CrossOrigin(origins = "http://localhost:8090")
     public ResponseEntity<Industry> create(@RequestBody Industry newIndustry){
         industryRepository.save(newIndustry);
         return ResponseEntity.ok().body(null);
@@ -41,6 +44,7 @@ public class IndustryWS {
 
     // put edit item
     @RequestMapping(method = RequestMethod.PUT)
+    @CrossOrigin(origins = "http://localhost:8090")
     public ResponseEntity<Industry> update(@RequestBody Industry editedIndustry) {
         if (industryRepository.getOne(editedIndustry.getId()) != null) {
             return ResponseEntity.ok().body(industryRepository.save(editedIndustry));

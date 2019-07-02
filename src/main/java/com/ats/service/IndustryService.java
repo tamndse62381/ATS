@@ -8,5 +8,5 @@ import java.util.List;
 
 @Service
 public interface IndustryService {
-    public ResponseEntity<List<Industry>> getAll();
+    ResponseEntity<List<Industry>> getAll();
 }

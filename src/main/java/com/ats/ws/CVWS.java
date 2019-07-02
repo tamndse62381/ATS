@@ -2,20 +2,16 @@ package com.ats.ws;
 
 import com.ats.dto.CVDTO;
 import com.ats.entity.*;
+import com.ats.model.FileModel;
 import com.ats.repository.CVRepository;
 import com.ats.service.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -25,37 +21,47 @@ public class CVWS {
     private CVService cvService;
     @Autowired
     private CountcvService countcvService;
-    // ModelMapper
-    ModelMapper modelMapper = new ModelMapper();
-    // Constant
-    private static String EMAIL = "1101010001001101000000000000";
+
     private static final Logger LOGGER = LogManager.getLogger(CVWS.class);
 
     // Get CV By CVID
     @RequestMapping(value = "/getOne/{CVID}/{EmployerID}", method = RequestMethod.GET)
     @CrossOrigin(origins = "")
-    public ResponseEntity<CVDTO> getCV(@PathVariable int CVID,
-                                       @PathVariable int EmployerId,
+    public ResponseEntity<Cv> getCV(@PathVariable(name = "CVID") int CVID,
+                                       @PathVariable(name = "EmployerID") int EmployerId,
                                        BindingResult result){
-        if (result.hasErrors()){
+        if (result.hasErrors()) {
             LOGGER.info("Error in CVWS- getOne: " + result);
         }
-        countcvService.countWhenEmployerGetDetailOfCV(CVID, EmployerId);
-        return cvService.getCVByCVID(CVID);
+        if (EmployerId == 0 ){
+            return cvService.getCVByCVID(CVID);
+        } else {
+            countcvService.countWhenEmployerGetDetailOfCV(CVID, EmployerId);
+            return cvService.getCVByCVID(CVID);
+        }
     }
 
     // Create A New CV
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @CrossOrigin(origins = "")
-    public boolean createANewCV(@RequestBody CVDTO newCV){
-        return cvService.create(newCV);
+    public boolean createANewCV(@RequestBody CVDTO newCV,
+                                BindingResult result,
+                                FileModel file){
+        if (result.hasErrors()){
+            return false;
+        }
+        return cvService.create(newCV, file);
     }
 
     // Delete One CV
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "/deleteCV/{id}", method = RequestMethod.POST)
     @CrossOrigin(origins = "")
-    public ResponseEntity<CVDTO> deleteACV(@RequestBody CVDTO deletedCVDTO){
-        return null;
+    public boolean deleteACV(@PathVariable int id, BindingResult result){
+        if (result.hasErrors()){
+            return false;
+        }
+        cvService.delete(id);
+        return true;
     }
 
 
@@ -65,4 +71,14 @@ public class CVWS {
     public boolean  editCv(@RequestBody CVDTO editedCv){
         return false;
     }
+
+
+    // Test
+    @Autowired
+    private CVRepository cvRepository;
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public List<Cv> test(){
+        return cvRepository.findAll();
+    }
+
 }

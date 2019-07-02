@@ -4,34 +4,34 @@ package com.ats.dto;
 import java.io.Serializable;
 
 public class SocialactivitiesDTO implements Serializable {
-    private Integer id;
-    private Integer cvid;
+    private int id;
+    private int cvid;
     private String name;
     private String description;
 
     public SocialactivitiesDTO() {
     }
 
-    public SocialactivitiesDTO(Integer id, Integer cvid, String name, String description) {
+    public SocialactivitiesDTO(int id, int cvid, String name, String description) {
         this.id = id;
         this.cvid = cvid;
         this.name = name;
         this.description = description;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Integer getCvid() {
+    public int getCvid() {
         return cvid;
     }
 
-    public void setCvid(Integer cvid) {
+    public void setCvid(int cvid) {
         this.cvid = cvid;
     }
 
