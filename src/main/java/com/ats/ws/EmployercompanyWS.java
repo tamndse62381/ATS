@@ -40,12 +40,12 @@ public class EmployercompanyWS {
 
     @ResponseBody
     @CrossOrigin(origins = "*")
-    @PostMapping(value = "/getCompanyId" )
-    public RestResponse getCompany(@RequestParam("userId") int userId) {
-        LOGGER.info("Begin addNewEmployerCompany in EmployercompanyWS with Job id : {}" + userId);
+    @PostMapping(value = "/getCompanyId")
+    public RestResponse getCompany(@RequestBody EmployercompanyDTO dto) {
+        LOGGER.info("Begin addNewEmployerCompany in EmployercompanyWS with Job id : {}" + dto.getUserId());
         try {
 
-            int result = employercompanyService.findCompanyByUserId(userId);
+            int result = employercompanyService.findCompanyByUserId(dto.getUserId());
             if (result > -1) {
                 return new RestResponse(true, "Get Company Id Successful", result);
             }

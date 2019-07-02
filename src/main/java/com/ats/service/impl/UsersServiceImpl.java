@@ -165,9 +165,7 @@ public class UsersServiceImpl implements UsersService {
     public int updateUser(UsersDTO dto) {
         LOGGER.info("Begin updateUser in User Service with User DTO Email : {}", dto.getEmail());
         Users updateUsers = null;
-        EncrytedPasswordUtils passwordUtil = new EncrytedPasswordUtils();
-        String newPassword = passwordUtil.encrytePassword(dto.getPassword());
-        dto.setPassword(newPassword);
+
         modelMapper = new ModelMapper();
         Users users = modelMapper.map(dto, Users.class);
 
