@@ -20,4 +20,6 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
      Page<Company> findAllPaging(Pageable pageable);
 
     Company findCompanyByNameCompany(String nameCompany);
+
+    Optional<Company> findCompanyById(Integer id);
 }

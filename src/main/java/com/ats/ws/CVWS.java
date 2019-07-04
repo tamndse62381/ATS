@@ -81,4 +81,15 @@ public class CVWS {
         return cvRepository.findAll();
     }
 
+
+    // Post Temp
+    @RequestMapping(value = "/testCreate", method = RequestMethod.POST)
+    @CrossOrigin("*")
+    public boolean testCreate(@RequestBody CVDTO newCV,
+                              BindingResult result){
+        if (result.hasErrors()){
+            return false;
+        }
+        return cvService.createTemp(newCV);
+    }
 }

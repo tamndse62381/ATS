@@ -12,6 +12,8 @@ public interface CVService {
 
     boolean create(CVDTO newCV, FileModel file);
 
+    boolean createTemp(CVDTO newCV);
+
     boolean edit(CVDTO editedCv);
 
     boolean delete(int id);

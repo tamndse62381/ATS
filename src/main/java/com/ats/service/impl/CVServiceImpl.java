@@ -145,6 +145,82 @@ public class CVServiceImpl implements CVService {
     }
 
     @Override
+    public boolean createTemp(CVDTO newCV) {
+        try {
+            Cv cv = new Cv();
+            cv = modelMapper.map(newCV, Cv.class);
+            cv.setEmail(EMAIL);
+            cv.setCityByCityId(cityRepository.findOne(newCV.getCityId()));
+            cv.setIndustryByIndustryId(industryRepository.findOne(newCV.getIndustryId()));
+            cv.setUsersByUserId(usersRepository.findOne(newCV.getUserId()));
+            cv.setStatus("1");
+            cv.setIsActive(1);
+            cv.setCreatedDate(new Timestamp(new Date().getTime()));
+            cvRepository.save(cv);
+            Cv changeEmailCv = getCvByEmail();
+            int CVID = changeEmailCv.getId();
+            changeEmailCv.setEmail(newCV.getEmail());
+            cvRepository.save(changeEmailCv);
+
+            Cv saveCv = cvRepository.findOne(CVID);
+            // mapping Certification
+            List<CertificationDTO> listCer = newCV.getCertificationsById();
+            if (listCer != null){
+                for (CertificationDTO certificationDTO : listCer) {
+                    Certification cer = modelMapper.map(certificationDTO, Certification.class);
+                    cer.setCvid(CVID);
+                    cer.setCvByCvid(saveCv);
+                    certificationService.createANewCertification(cer);
+                }
+            }
+            // mapping Education
+            List<EducationDTO> listEdu = newCV.getEducationsById();
+            if (listEdu != null){
+                for (EducationDTO educationDTO : listEdu) {
+                    Education edu = modelMapper.map(educationDTO, Education.class);
+                    edu.setCvid(CVID);
+                    edu.setCvByCvid(saveCv);
+                    educationService.createANewEducation(edu);
+                }
+            }
+            // mapping SocialActivity
+            List<SocialactivitiesDTO> listAct = newCV.getSocialactivitiesById();
+            if (listAct != null){
+                for (SocialactivitiesDTO socialactivitiesDTO : listAct) {
+                    Socialactivities soc = modelMapper.map(socialactivitiesDTO, Socialactivities.class);
+                    soc.setCvid(CVID);
+                    soc.setCvByCvid(saveCv);
+                    socialactivityService.createANewSocialactivity(soc);
+                }
+            }
+            // mapping WorkExperience
+            List<WorkexperienceDTO> listWor = newCV.getWorkexperiencesById();
+            if (listWor != null){
+                for (WorkexperienceDTO workexperienceDTO : listWor) {
+                    Workexperience wor = modelMapper.map(workexperienceDTO, Workexperience.class);
+                    wor.setCvid(CVID);
+                    wor.setCvByCvid(saveCv);
+                    workexperienceService.createANewWorkExperience(wor);
+                }
+            }
+            //mapping ProjectOrProduct
+            List<ProjectorproductworkedDTO> listPro = newCV.getProjectorproductworkedsById();
+            if (listPro != null){
+                for (ProjectorproductworkedDTO projectorproductworkedDTO : listPro) {
+                    Projectorproductworked pro = modelMapper.map(projectorproductworkedDTO, Projectorproductworked.class);
+                    pro.setCvid(CVID);
+                    pro.setCvByCvid(saveCv);
+                    projectorproductworkedService.createANewProjectorProduct(pro);
+                }
+            }
+            return true;
+        } catch (RuntimeException e){
+            System.out.println(e);
+        }
+        return false;
+    }
+
+    @Override
     public boolean edit(CVDTO editedCv) {
         Cv cv =cvRepository.findById(editedCv.getId()).orElseThrow(
                 () -> new NotFoundException(editedCv.getId() + "Cv Not found")

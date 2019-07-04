@@ -17,5 +17,8 @@ public interface CompanyService {
     Company findComanyByID(int id);
 
     List<CompanyDTO2> listAll();
+
     CompanyDTO create(CompanyDTO newCompany, FileModel file);
+
+    CompanyDTO createTemp(CompanyDTO newCompany);
 }

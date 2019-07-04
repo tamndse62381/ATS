@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import com.ats.util.FileUltis;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -47,17 +48,32 @@ public class CompanyServiceImpl implements CompanyService {
         listofDTO = mapper.map(listCompany, targetListType);
         return listofDTO;
     }
-    
+
     public CompanyDTO create(CompanyDTO newCompany, FileModel file) {
         Company company = companyRepository.findCompanyByNameCompany(newCompany.getNameCompany());
         if (company != null){
             return null;
         }
-        //updaload file
-        String uploadPath = httpServletRequest.getRealPath("") + File.separator + "hinhanh" + File.separator;
-        //set imgLogo
-        String fileName = FileUltis.saveFile(file, uploadPath);
-        company.setLogoImg(fileName);
+        MultipartFile mul = file.getFile();
+        if (mul != null){
+            // up load file
+            String uploadPath = httpServletRequest.getRealPath("") + File.separator + "hinhanh" + File.separator;
+
+            //set imgLogo
+            String fileName = FileUltis.saveFile(file, uploadPath);
+            company.setLogoImg(fileName);
+        }
+        company = modelMapper.map(newCompany, Company.class);
+        company.setCreatedDate(new Timestamp(new Date().getTime()));
+        company.setCityByCityId(cityRepository.findOne(newCompany.getCityId()));
+        company.setLastModify(new Timestamp(new Date().getTime()));
+        companyRepository.save(company);
+        return newCompany;
+    }
+
+    @Override
+    public CompanyDTO createTemp(CompanyDTO newCompany) {
+        Company company = companyRepository.findCompanyByNameCompany(newCompany.getNameCompany());
         company = modelMapper.map(newCompany, Company.class);
         company.setCreatedDate(new Timestamp(new Date().getTime()));
         company.setCityByCityId(cityRepository.findOne(newCompany.getCityId()));

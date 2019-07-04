@@ -25,6 +25,7 @@ public interface JobRepository extends JpaRepository<Job, Integer>{
     @Modifying
     @Query("UPDATE Job b SET b.status = :newStatus WHERE b.id = :id")
     int changeStatus(@Param("id") int id, @Param("newStatus") String newStatus);
+
     Optional<Job> findById(int id);
 
     List<Job> findByUserId(int id);

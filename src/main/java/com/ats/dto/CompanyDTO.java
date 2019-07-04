@@ -1,7 +1,9 @@
 package com.ats.dto;
 
+import com.ats.entity.Companyindustry;
 import lombok.Data;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 public class CompanyDTO {
@@ -17,4 +19,5 @@ public class CompanyDTO {
     private Timestamp createdDate;
     private Timestamp lastModify;
     private String status;
+    private List<CompanyindustryDTO> companyindustriesById;
 }
