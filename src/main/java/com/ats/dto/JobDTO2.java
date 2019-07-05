@@ -7,12 +7,12 @@ import java.util.Date;
 @Data
 public class JobDTO2 {
     private Integer id;
-    private Integer userid;
-    private Integer companyid;
+    private Integer userId;
+    private Integer companyId;
     private String title;
-    private Integer cityid;
+    private Integer cityId;
     private String address;
-    private Integer joblevelid;
+    private Integer joblevelId;
     private String vacancyname;
     private String workingtype;
     private Integer numberofrecruitment;

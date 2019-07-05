@@ -15,7 +15,13 @@ import java.util.Optional;
 
 @Repository
 public interface JobRepository extends JpaRepository<Job, Integer>{
-    @Query("Select b from Job b where b.title LIKE CONCAT('%',LOWER(:search),'%')")
+
+@Query("SELECT distinct j FROM Job j " +
+        "INNER JOIN j.skillneedforjobsById s " +
+        "INNER JOIN s.skillBySkillId a " +
+        "INNER JOIN a.skillmasterBySkillMasterId m " +
+        "WHERE j.title LIKE CONCAT('%',LOWER(:search),'%') " +
+        "OR m.skillName LIKE CONCAT('%',LOWER(:search),'%') ")
     List<Job> searchJob(@Param("search") String search );
 
     @Query("Select b from Job b order by b.createdDate desc")
@@ -25,6 +31,7 @@ public interface JobRepository extends JpaRepository<Job, Integer>{
     @Modifying
     @Query("UPDATE Job b SET b.status = :newStatus WHERE b.id = :id")
     int changeStatus(@Param("id") int id, @Param("newStatus") String newStatus);
+
     Optional<Job> findById(int id);
 
     List<Job> findByUserId(int id);
