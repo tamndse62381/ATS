@@ -1,5 +1,6 @@
 package com.ats.service.impl;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 import com.ats.dto.UsersDTO;
@@ -165,11 +166,16 @@ public class UsersServiceImpl implements UsersService {
     public int updateUser(UsersDTO dto) {
         LOGGER.info("Begin updateUser in User Service with User DTO Email : {}", dto.getEmail());
         Users updateUsers = null;
+        java.util.Date date = new java.util.Date();
+        Users users = usersRepository.findOne(dto.getId());
 
-        modelMapper = new ModelMapper();
-        Users users = modelMapper.map(dto, Users.class);
 
         if (users != null) {
+            users.setFullName(dto.getFullname());
+            users.setAddress(dto.getAddress());
+            users.setDescription(dto.getDescription());
+            users.setTelephoneNumber(dto.getTelephoneNumber());
+            users.setLastModify(new Timestamp(date.getTime()));
             try {
                 LOGGER.info("End updateUser in User Repository with result: {}", users.toString());
                 updateUsers = usersRepository.save(users);
