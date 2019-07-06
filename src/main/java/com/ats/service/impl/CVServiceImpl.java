@@ -2,6 +2,7 @@ package com.ats.service.impl;
 
 import com.ats.dto.*;
 import com.ats.entity.*;
+import com.ats.form.CreateCVForm;
 import com.ats.model.FileModel;
 import com.ats.repository.CVRepository;
 import com.ats.repository.CityRepository;
@@ -45,6 +46,8 @@ public class CVServiceImpl implements CVService {
     private UsersRepository usersRepository;
     @Autowired
     HttpServletRequest httpServletRequest;
+    @Autowired
+    private FileStorageService fileStorageService;
 
     //Mapping Object
     ModelMapper modelMapper = new ModelMapper();
@@ -217,6 +220,12 @@ public class CVServiceImpl implements CVService {
         } catch (RuntimeException e){
             System.out.println(e);
         }
+        return false;
+    }
+
+    @Override
+    public boolean createTemp1(CreateCVForm newCv) {
+
         return false;
     }
 
