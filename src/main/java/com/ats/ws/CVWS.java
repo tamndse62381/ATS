@@ -26,7 +26,7 @@ public class CVWS {
 
     // Get CV By CVID
     @RequestMapping(value = "/getOne/{CVID}/{EmployerID}", method = RequestMethod.GET)
-    @CrossOrigin(origins = "")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<Cv> getCV(@PathVariable(name = "CVID") int CVID,
                                        @PathVariable(name = "EmployerID") int EmployerId,
                                        BindingResult result){
