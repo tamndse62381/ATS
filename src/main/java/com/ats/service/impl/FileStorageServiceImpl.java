@@ -8,6 +8,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -50,5 +51,23 @@ public class FileStorageServiceImpl implements FileStorageService {
         } catch (MalformedURLException ex) {
             return new RestResponse(false, "Không tìm thấy!!!", null);
         }
+    }
+
+    @Override
+    public Resource loadImg(String storedFilename) {
+        try {
+            Path filePath = this.fileStoreLocation.resolve(storedFilename).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+            return resource;
+//            try {
+//                File file =  resource.getFile();
+//                return file;
+//            } catch (IOException e){
+//                System.out.println(e);
+//            }
+        } catch (MalformedURLException ex){
+            System.out.println(ex);
+        }
+        return null;
     }
 }

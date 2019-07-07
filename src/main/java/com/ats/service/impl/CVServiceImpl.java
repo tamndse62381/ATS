@@ -246,6 +246,7 @@ public class CVServiceImpl implements CVService {
             return new RestResponse(false, "Không tìm thấy CV có Id: " + id, null);
         cv.setStatus("2");
         cv.setIsActive(0);
+        cvRepository.save(cv);
         return new RestResponse(true, "Đã xoá CV thành công!!!", null);
     }
 
