@@ -10,6 +10,7 @@ import com.ats.repository.IndustryRepository;
 import com.ats.repository.UsersRepository;
 import com.ats.service.*;
 import com.ats.util.FileUltis;
+import com.ats.util.RestResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.NotFoundException;
 import java.io.File;
@@ -232,16 +234,29 @@ public class CVServiceImpl implements CVService {
     @Override
     public boolean edit(CVDTO editedCv) {
         Cv cv =cvRepository.findById(editedCv.getId()).orElseThrow(
-                () -> new NotFoundException(editedCv.getId() + "Cv Not found")
+                () -> new NotFoundException(editedCv.getId() + "Không tìm thấy CV này!!!")
         );
         return false;
     }
 
     @Override
-    public boolean delete(int id) {
-        Cv cv = cvRepository.findById(id).orElseThrow(()-> new NotFoundException("Can't find Cv have Id: " + id));
+    public RestResponse delete(int id) {
+        Cv cv = cvRepository.findOne(id);
+        if (cv == null)
+            return new RestResponse(false, "Không tìm thấy CV có Id: " + id, null);
         cv.setStatus("2");
         cv.setIsActive(0);
-        return true;
+        return new RestResponse(true, "Đã xoá CV thành công!!!", null);
+    }
+
+    @Override
+    public RestResponse getlistCvByUserId(int id) {
+        Users user = usersRepository.findOne(id);
+        if (user == null)
+            return new RestResponse(false, "Không tìm thấy người dùng có ID là: " + id, null);
+        List<Cv> list =  cvRepository.findByUserIdAndStatus(id, "1");
+        if (list == null)
+            return new RestResponse(false, "Bạn chưa tạo CV!!!", null);
+        return new RestResponse(true, "", list);
     }
 }

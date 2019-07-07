@@ -64,16 +64,6 @@ public class CompanyWS {
         return ResponseEntity.ok().body(companyRepository.findAllPaging(pageable));
     }
 
-
-    // test
-    @PostMapping("/testPost")
-    public HashMap<String, String> handleUploadFile(@RequestParam("file") MultipartFile file){
-        HashMap result = new HashMap<>();
-        result.put("status", "success");
-        result.put("file", file.getOriginalFilename());
-        return result;
-    }
-
     // create temp
     @PostMapping("/create")
     @CrossOrigin("*")

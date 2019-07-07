@@ -27,7 +27,7 @@ public class CVWS {
 
     private static final Logger LOGGER = LogManager.getLogger(CVWS.class);
 
-    // Get CV By CVID -- thiếu BindingRéault
+    // Get CV By CVID -- thiếu BindingResult -- tested
     @RequestMapping(value = "/getOne/{CVID}/{EmployerID}", method = RequestMethod.GET)
     @CrossOrigin(origins = "")
     public ResponseEntity<Cv> getCV(@PathVariable(name = "CVID") Integer CVID,
@@ -43,12 +43,11 @@ public class CVWS {
         }
     }
 
-    // GET List CV cho User xem
+    // GET List CV cho User xem bang UserID - tested - co status = 1 (valid)
     @GetMapping("/get-list/{id}")
     @CrossOrigin
-    public RestResponse getListCvByCVID(@PathVariable Integer CVID){
-
-        return null;
+    public RestResponse getListCvByUserId(@PathVariable(name = "id") int UserId){
+        return cvService.getlistCvByUserId(UserId);
     }
 
 
@@ -68,12 +67,8 @@ public class CVWS {
     // Delete One CV
     @RequestMapping(value = "/deleteCV/{id}", method = RequestMethod.POST)
     @CrossOrigin(origins = "")
-    public boolean deleteACV(@PathVariable int id){
-//        if (result.hasErrors()){
-//            return false;
-//        }
-        cvService.delete(id);
-        return true;
+    public RestResponse deleteACV(@PathVariable int id){
+        return cvService.delete(id);
     }
 
 

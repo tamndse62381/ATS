@@ -4,6 +4,7 @@ import com.ats.dto.CountcvDTO;
 import com.ats.entity.Countcv;
 import com.ats.repository.CountcvRepository;
 import com.ats.service.CountcvService;
+import com.ats.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,14 @@ public class CountcvWS {
     @CrossOrigin(origins = "")
     public int countCv(@PathVariable(name = "id") Integer id){
         return countcvService.countAccessTimes(id);
+    }
+
+    // Count in one months
+    @GetMapping("/count-month/{id}")
+    @CrossOrigin("*")
+    public RestResponse countMonth(@PathVariable int id){
+
+        return null;
     }
 
     // Test get

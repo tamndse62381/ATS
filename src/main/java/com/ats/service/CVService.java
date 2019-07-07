@@ -4,7 +4,11 @@ import com.ats.dto.CVDTO;
 import com.ats.entity.Cv;
 import com.ats.form.CreateCVForm;
 import com.ats.model.FileModel;
+import com.ats.util.RestResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import javax.persistence.criteria.CriteriaBuilder;
 
 public interface CVService {
     ResponseEntity<Cv> getCVByCVID(int id);
@@ -19,5 +23,7 @@ public interface CVService {
 
     boolean edit(CVDTO editedCv);
 
-    boolean delete(int id);
+    RestResponse delete(int id);
+
+    RestResponse getlistCvByUserId(int id);
 }
