@@ -19,11 +19,11 @@ public class TestWS {
 
     @RequestMapping(value = "/post", method = RequestMethod.POST)
     public void create(MultipartFile file){
-        fileStorageService.store(file, "moeomeo");
+        fileStorageService.store(file, file.getOriginalFilename());
     }
 
     @GetMapping("/get")
     public Resource get(){
-        return  fileStorageService.loadImg("moeomeo");
+        return  fileStorageService.loadImg("123.PNG");
     }
 }
