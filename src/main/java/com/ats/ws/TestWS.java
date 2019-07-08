@@ -22,8 +22,8 @@ public class TestWS {
         fileStorageService.store(file, file.getOriginalFilename());
     }
 
-    @GetMapping("/get")
-    public Resource get(){
-        return  fileStorageService.loadImg("123.PNG");
-    }
+//    @GetMapping("/get")
+//    public Resource get(){
+//        return  fileStorageService.loadImg("123.PNG");
+//    }
 }

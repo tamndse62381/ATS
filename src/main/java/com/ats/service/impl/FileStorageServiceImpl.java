@@ -1,7 +1,6 @@
 package com.ats.service.impl;
 
 import com.ats.service.FileStorageService;
-import com.ats.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -39,32 +38,35 @@ public class FileStorageServiceImpl implements FileStorageService {
     }
 
     @Override
-    public RestResponse loadFileAsResource(String storedFilename) {
+    public Resource loadFileAsResource(String storedFilename) {
         try {
+            if (storedFilename == null)
+                storedFilename = "default.png";
             Path filePath = this.fileStoreLocation.resolve(storedFilename).normalize();
             Resource resource = new UrlResource(filePath.toUri());
             if (resource.exists()) {
-                return new RestResponse(true, "", resource);
+                return resource;
             } else {
-                return new RestResponse(false, "Không tìm thấy!!!", null);
+                Path filePath1 = this.fileStoreLocation.resolve("default.png").normalize();
+                Resource resource1 = new UrlResource(filePath1.toUri());
+                return resource1;
             }
         } catch (MalformedURLException ex) {
-            return new RestResponse(false, "Không tìm thấy!!!", null);
         }
+        return null;
     }
 
     @Override
-    public Resource loadImg(String storedFilename) {
+    public File loadImg(String storedFilename) {
         try {
             Path filePath = this.fileStoreLocation.resolve(storedFilename).normalize();
             Resource resource = new UrlResource(filePath.toUri());
-            return resource;
-//            try {
-//                File file =  resource.getFile();
-//                return file;
-//            } catch (IOException e){
-//                System.out.println(e);
-//            }
+            try {
+                File file =  resource.getFile();
+                return file;
+            } catch (IOException e){
+                System.out.println(e);
+            }
         } catch (MalformedURLException ex){
             System.out.println(ex);
         }

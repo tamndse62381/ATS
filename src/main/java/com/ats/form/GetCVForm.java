@@ -2,35 +2,24 @@ package com.ats.form;
 
 import com.ats.dto.*;
 import lombok.Data;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.format.annotation.NumberFormat;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
 @Data
-public class CreateCVForm implements Serializable {
+public class GetCVForm implements Serializable {
     private int id;
     private String title;
-    @NotNull(message = "User ID can't null")
     private int userId;
-    private MultipartFile img;
-    @NotNull(message = "Email can't null!!!")
+    private String img;
     private String email;
-    @NumberFormat(style = NumberFormat.Style.NUMBER)
     private String telephoneNumber;
     private String firstName;
     private String lastName;
     private String gender;
     private Timestamp dob;
-    @NotNull
     private int cityId;
     private String address;
-    @NotNull
     private int industryId;
     private String description;
     private Integer yearExperience;

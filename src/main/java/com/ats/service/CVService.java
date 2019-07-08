@@ -9,17 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import java.net.MalformedURLException;
 
 public interface CVService {
-    ResponseEntity<Cv> getCVByCVID(int id);
+    RestResponse getCVByCVID(int id);
 
     Cv getCvByEmail();
 
-    boolean create(CVDTO newCV, FileModel file);
-
-    boolean createTemp(CVDTO newCV);
-
-    boolean createTemp1(CreateCVForm newCv);
+    RestResponse create(CreateCVForm newCV);
 
     boolean edit(CVDTO editedCv);
 
