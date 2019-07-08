@@ -68,7 +68,7 @@ public class CVWS {
         return cvRepository.findAll();
     }
 
-    // Post Temp 2 with multipartfile and CreateCvForm
+    // Create New Cv
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @CrossOrigin("*")
     @ResponseBody
@@ -78,6 +78,4 @@ public class CVWS {
             return new RestResponse(false ,"ERROR: " + result.toString(), null);
         return cvService.create(newCv);
     }
-
-
 }

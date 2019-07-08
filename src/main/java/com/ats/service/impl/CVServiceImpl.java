@@ -67,13 +67,6 @@ public class CVServiceImpl implements CVService {
         Cv cv = cvRepository.findOne(id);
         if (cv == null)
             return new RestResponse(false,"CV này không tồn tại!!!", null);
-        try {
-            File imgFile = fileStorageService.loadFileAsResource(cv.getImg()).getFile();
-            String imgBase64 = convert.convertBase64(imgFile);
-            cv.setImg(imgBase64);
-        } catch (IOException ex){
-
-        }
         return new RestResponse(true, "Tải CV thành công!!!", cv);
     }
 
