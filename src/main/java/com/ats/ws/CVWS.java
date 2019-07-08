@@ -69,10 +69,10 @@ public class CVWS {
     }
 
     // Post Temp 2 with multipartfile and CreateCvForm
-    @RequestMapping(value = "/testCreate2/files", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     @CrossOrigin("*")
     @ResponseBody
-    public RestResponse testCreate2(@Valid CreateCVForm newCv,
+    public RestResponse create(@Valid @RequestBody  CVDTO newCv,
                                     BindingResult result){
         if (result.hasErrors())
             return new RestResponse(false ,"ERROR: " + result.toString(), null);

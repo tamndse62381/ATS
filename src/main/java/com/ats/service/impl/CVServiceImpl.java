@@ -12,6 +12,7 @@ import com.ats.repository.UsersRepository;
 import com.ats.service.*;
 import com.ats.util.FileUltis;
 import com.ats.util.RestResponse;
+import org.hibernate.hql.internal.ast.tree.RestrictableStatement;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -82,7 +83,7 @@ public class CVServiceImpl implements CVService {
     }
 
     @Override
-    public RestResponse create(CreateCVForm newCV) {
+    public RestResponse create(CVDTO newCV) {
         try {
             Cv cv = new Cv();
             cv = modelMapper.map(newCV, Cv.class);
@@ -96,10 +97,7 @@ public class CVServiceImpl implements CVService {
                 cv.setIsActive(1);
             else
                 cv.setIsActive(2);
-
             cv.setStatus("1");
-            String storageName =  newCV.getUserId() + "_" + newCV.getId() + "_" + newCV.getImg().getOriginalFilename();
-            fileStorageService.store(newCV.getImg(), storageName);
             cv.setCreatedDate(new Timestamp(new Date().getTime()));
             cvRepository.save(cv);
             Cv changeEmailCv = getCvByEmail();
@@ -107,6 +105,7 @@ public class CVServiceImpl implements CVService {
             changeEmailCv.setEmail(newCV.getEmail());
             cvRepository.save(changeEmailCv);
 
+            // Save vo
             Cv saveCv = cvRepository.findOne(CVID);
             // mapping Certification
             List<CertificationDTO> listCer = newCV.getCertificationsById();
@@ -166,11 +165,12 @@ public class CVServiceImpl implements CVService {
     }
 
     @Override
-    public boolean edit(CVDTO editedCv) {
-        Cv cv =cvRepository.findById(editedCv.getId()).orElseThrow(
-                () -> new NotFoundException(editedCv.getId() + "Không tìm thấy CV này!!!")
-        );
-        return false;
+    public RestResponse edit(CVDTO editedCv) {
+        Cv cv = cvRepository.findOne(editedCv.getId());
+        if (cv == null)
+            return new RestResponse(false,"Không thành công!!!", null);
+
+        return new RestResponse(true, "Chỉnh sửa thành công!!!", null);
     }
 
     @Override

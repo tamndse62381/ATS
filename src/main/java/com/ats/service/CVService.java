@@ -16,9 +16,9 @@ public interface CVService {
 
     Cv getCvByEmail();
 
-    RestResponse create(CreateCVForm newCV);
+    RestResponse create(CVDTO newCV);
 
-    boolean edit(CVDTO editedCv);
+    RestResponse edit(CVDTO editedCv);
 
     RestResponse delete(int id);
 
