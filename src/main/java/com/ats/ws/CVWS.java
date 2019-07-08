@@ -27,7 +27,7 @@ public class CVWS {
 
     // Get CV By CVID -- tested
     @RequestMapping(value = "/getOne/{CVID}/{EmployerID}", method = RequestMethod.GET)
-    @CrossOrigin(origins = "")
+    @CrossOrigin(origins = "*")
     public RestResponse getCV(@PathVariable(name = "CVID") Integer CVID,
                                        @PathVariable(name = "EmployerID") Integer EmployerId){
         if (EmployerId == 0 ){
@@ -55,7 +55,7 @@ public class CVWS {
 
     // Edit information's cv, without list belong to this cv
     @RequestMapping(value = "/", method = RequestMethod.PUT)
-    @CrossOrigin(origins = "")
+    @CrossOrigin(origins = "*")
     public boolean  editCv(@RequestBody CVDTO editedCv){
         return false;
     }
@@ -77,5 +77,19 @@ public class CVWS {
         if (result.hasErrors())
             return new RestResponse(false ,"ERROR: " + result.toString(), null);
         return cvService.create(newCv);
+    }
+
+    // Check xem no da co CV nao Active chua
+    @RequestMapping(value = "/check-acrive/{id}", method = RequestMethod.POST)
+    @CrossOrigin(origins = "*")
+    public RestResponse checkActive(@PathVariable int id){
+        return cvService.checkActive(id);
+    }
+
+    // Set CV là cv chính
+    @RequestMapping(value = "/set-main-cv/{id}", method = RequestMethod.GET)
+    @CrossOrigin(origins = "*")
+    public RestResponse setMainCV(@PathVariable int id){
+        return cvService.setMainCv(id);
     }
 }

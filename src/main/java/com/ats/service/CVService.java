@@ -23,4 +23,8 @@ public interface CVService {
     RestResponse delete(int id);
 
     RestResponse getlistCvByUserId(int id);
+
+    RestResponse checkActive(int id);
+
+    RestResponse setMainCv(int id);
 }

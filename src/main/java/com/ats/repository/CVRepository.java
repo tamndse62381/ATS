@@ -18,6 +18,9 @@ public interface CVRepository extends JpaRepository<Cv, Integer> {
     @Query("select c from Cv c where c.userId = :userid and c.isActive = :status")
     List<Cv> checkIsActive(@Param("userid") Integer userid, @Param("status") Integer status);
 
+    @Query("select c from Cv c where c.userId = :userid and c.isActive = :status and c.isActive = 1")
+    List<Cv> checkActive(@Param("userid") Integer userid, @Param("status") Integer status);
+
     Optional<Cv> findById(int id);
 
     List<Cv> findByUserIdAndStatus(int id, String status);

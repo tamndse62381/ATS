@@ -188,6 +188,32 @@ public class CVServiceImpl implements CVService {
         return new RestResponse(true, "", list);
     }
 
+    @Override
+    public RestResponse checkActive(int id) {
+        List<Cv> list1 = cvRepository.findByUserId(id);
+        if (list1 == null)
+            return new RestResponse(true, "Bạn chưa tạo CV nào!!!", null);
+        List<Cv> list = cvRepository.checkActive(id, 1);
+        if (list == null)
+            return new RestResponse(true, "Bạn chưa chọn CV nào là Cv chính của mình. Hãy đặt CV chính để không bỏ lỡ cơ hội tìm việc nhé!!!", null);
+        return null;
+    }
+
+    @Override
+    public RestResponse setMainCv(int id) {
+        Cv cv = cvRepository.findOne(id);
+        if (cv == null)
+            return new RestResponse(false, "Có lỗi!!!!", null);
+        List<Cv> list = cvRepository.findByUserId(cv.getUserId());
+        for (Cv cv1 : list) {
+            cv1.setIsActive(0);
+            cvRepository.save(cv1);
+        }
+        cv.setIsActive(1);
+        cvRepository.save(cv);
+        return new RestResponse(true, "Cập nhật thành công!!!", null);
+    }
+
     private boolean checkIsActive(int userId){
         List<Cv> list = cvRepository.checkIsActive(userId, 1);
         if (list.isEmpty())

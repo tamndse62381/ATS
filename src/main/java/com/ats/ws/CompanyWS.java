@@ -6,6 +6,7 @@ import com.ats.entity.Company;
 import com.ats.model.FileModel;
 import com.ats.repository.CompanyRepository;
 import com.ats.service.CompanyService;
+import com.ats.util.RestResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.swing.text.html.parser.Entity;
+import javax.validation.Valid;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,15 +35,11 @@ public class CompanyWS {
 
     //Create a new company
     @PostMapping("")
-    @CrossOrigin("")
-    public ResponseEntity<CompanyDTO> create(@RequestBody CompanyDTO newCompany
-                                             ,@RequestParam("file") MultipartFile file
-                                             ,BindingResult result){
-        FileModel fileModel = new FileModel();
-        fileModel.setFile(file);
+    @CrossOrigin("*")
+    public RestResponse create(@Valid @RequestBody CompanyDTO newCompany, BindingResult result){
         if (result.hasErrors())
-            return ResponseEntity.badRequest().body(null);
-        return ResponseEntity.ok(companyService.create(newCompany, fileModel));
+            return null;
+        return null;
     }
 
     // edit info's company
@@ -62,15 +60,5 @@ public class CompanyWS {
     @CrossOrigin("")
     public ResponseEntity<Page<Company>> test(@PageableDefault Pageable pageable){
         return ResponseEntity.ok().body(companyRepository.findAllPaging(pageable));
-    }
-
-    // create temp
-    @PostMapping("/create")
-    @CrossOrigin("*")
-    public ResponseEntity<CompanyDTO> create(@RequestBody CompanyDTO newCompany
-            ,BindingResult result){
-        if (result.hasErrors())
-            return ResponseEntity.badRequest().body(null);
-        return ResponseEntity.ok(companyService.createTemp(newCompany));
     }
 }

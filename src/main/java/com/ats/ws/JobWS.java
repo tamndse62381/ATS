@@ -145,7 +145,6 @@ public class JobWS {
         List<Joblevel> listJobLevel;
         try {
             listSkillMaster = skillmasterService.listAll();
-
             listJobLevel = joblevelService.getAllJobLevel();
             HashMap<String,List> map = new HashMap<>();
             map.put("skillname", listSkillMaster);
