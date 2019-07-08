@@ -60,7 +60,6 @@ public class CVWS {
         return false;
     }
 
-
     // Test
     @Autowired
     private CVRepository cvRepository;
@@ -70,13 +69,15 @@ public class CVWS {
     }
 
     // Post Temp 2 with multipartfile and CreateCvForm
-    @RequestMapping(value = "/testCreate2", method = RequestMethod.POST)
+    @RequestMapping(value = "/testCreate2/files", method = RequestMethod.POST)
     @CrossOrigin("*")
     @ResponseBody
-    public RestResponse testCreate2(@Valid @RequestBody CreateCVForm newCv,
+    public RestResponse testCreate2(@Valid CreateCVForm newCv,
                                     BindingResult result){
         if (result.hasErrors())
             return new RestResponse(false ,"ERROR: " + result.toString(), null);
         return cvService.create(newCv);
     }
+
+
 }

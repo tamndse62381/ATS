@@ -53,6 +53,8 @@ public class CVServiceImpl implements CVService {
     HttpServletRequest httpServletRequest;
     @Autowired
     private FileStorageService fileStorageService;
+    // File to Base64
+    private FileToBase64Convert convert = new FileToBase64Convert();
 
     //Mapping Object
     ModelMapper modelMapper = new ModelMapper();
@@ -64,13 +66,14 @@ public class CVServiceImpl implements CVService {
         Cv cv = cvRepository.findOne(id);
         if (cv == null)
             return new RestResponse(false,"CV này không tồn tại!!!", null);
-        GetCVForm getCv = new GetCVForm();
-        getCv = modelMapper.map(cv, GetCVForm.class);
-//        try {
-////            getCv.setImg(fileStorageService.loadFileAsResource(cv.getImg()).getFile());
-//        } catch (IOException ex){
-//        }
-        return new RestResponse(true, "Tải CV thành công!!!", getCv);
+        try {
+            File imgFile = fileStorageService.loadFileAsResource(cv.getImg()).getFile();
+            String imgBase64 = convert.convertBase64(imgFile);
+            cv.setImg(imgBase64);
+        } catch (IOException ex){
+
+        }
+        return new RestResponse(true, "Tải CV thành công!!!", cv);
     }
 
     @Override
