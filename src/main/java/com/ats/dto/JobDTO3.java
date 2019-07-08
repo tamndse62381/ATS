@@ -19,6 +19,7 @@ public class JobDTO3 {
     private City city;
     private String address;
     private Integer joblevelId;
+    private String joblevelName;
     private String vacancyname;
     private String workingtype;
     private Integer numberofrecruitment;
