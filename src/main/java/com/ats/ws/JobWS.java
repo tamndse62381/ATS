@@ -2,10 +2,12 @@ package com.ats.ws;
 
 import com.ats.dto.JobDTO2;
 import com.ats.dto.JobDTO;
+import com.ats.dto.JobDTO3;
 import com.ats.dto.SkillMasterDTO;
 import com.ats.entity.Job;
 import com.ats.entity.Joblevel;
 import com.ats.entity.Skillmaster;
+import com.ats.entity.Skillneedforjob;
 import com.ats.service.*;
 
 import org.apache.logging.log4j.LogManager;
@@ -66,6 +68,29 @@ public class JobWS {
         return new RestResponse(false, "Fail To Create New Job ", null);
     }
 
+    @ResponseBody
+    @CrossOrigin(origins = "*")
+    @PostMapping(value = "/update")
+    public RestResponse updateJob(@RequestBody JobDTO2 job) {
+        LOGGER.info("Begin updateJob in JobWS with Job title : {}" + job.getTitle());
+        int result = 0;
+
+        Date dt = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(dt);
+        try {
+            job.setEndDateForApply(c.getTime());
+            result = jobService.updateJob(job);
+
+            if (result > 0) {
+                return new RestResponse(true, "Update Job Successfull", result);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new RestResponse(false, "Fail To Update Job ", null);
+    }
+
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/search")
     @ResponseBody
@@ -116,16 +141,14 @@ public class JobWS {
         return new RestResponse(false, "get Top8 Fail", listJobs);
     }
 
-
-
-
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getJobDetail", produces = "application/json;charset=UTF-8")
     public RestResponse getJobDetail(@RequestParam("id") int id) {
         LOGGER.info("Begin getJobDetail in JobWS with id " + id);
-        Job job;
+        JobDTO3 job;
         try {
             job = jobService.getJobDetail(id);
+
             if (job != null) {
                 return new RestResponse(true, "Get job Detail with job id : " + id, job);
             }

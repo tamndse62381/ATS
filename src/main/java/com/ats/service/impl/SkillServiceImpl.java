@@ -4,8 +4,10 @@ import com.ats.dto.SkillDTO;
 import com.ats.entity.Skill;
 
 import com.ats.entity.Skillmaster;
+import com.ats.entity.Skillneedforjob;
 import com.ats.repository.SkillRepository;
 import com.ats.service.SkillService;
+import com.ats.service.SkillmasterService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
@@ -13,12 +15,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Transactional
 public class SkillServiceImpl implements SkillService {
 
     @Autowired
     SkillRepository skillRepository;
+
+    @Autowired
+    SkillmasterService skillmasterService;
 
     private static final Logger LOGGER = LogManager.getLogger(SkillServiceImpl.class);
 
@@ -30,7 +38,7 @@ public class SkillServiceImpl implements SkillService {
         try {
             skillResult = checkSkillBySkillLevel(skilldto);
             ModelMapper mapper = new ModelMapper();
-            skill = mapper.map(skilldto,Skill.class);
+            skill = mapper.map(skilldto, Skill.class);
             if (skillResult == -1) {
                 Skillmaster skillmaster = new Skillmaster();
                 skillmaster.setId(skill.getSkillMasterId());
@@ -60,5 +68,27 @@ public class SkillServiceImpl implements SkillService {
             e.printStackTrace();
         }
         return -1;
+    }
+
+    @Override
+    public List<String> getSkillName(List<Skillneedforjob> skillneedforjob) {
+        LOGGER.info("Begin getSkillName in Skill Service with List size : ",
+                skillneedforjob.size());
+        List<Integer> listSkillMasterId = new ArrayList<>();
+        List<String> listSkillName = new ArrayList<>();
+        try {
+            for (int i = 0; i < skillneedforjob.size(); i++) {
+                Skill skill = skillRepository.findOne(skillneedforjob.get(i).getSkillId());
+                listSkillMasterId.add(skill.getSkillMasterId());
+            }
+
+            listSkillName  = skillmasterService.getSkillNameById(listSkillMasterId);
+            LOGGER.info("End getSkillName in Skill Service with List size : ",
+                    skillneedforjob.size());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listSkillName;
     }
 }
