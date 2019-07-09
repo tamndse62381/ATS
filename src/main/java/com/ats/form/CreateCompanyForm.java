@@ -1,25 +1,22 @@
-package com.ats.dto;
+package com.ats.form;
 
-import com.ats.entity.Companyindustry;
+import com.ats.dto.CompanyindustryDTO;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.List;
 
 @Data
-public class CompanyDTO {
+public class CreateCompanyForm {
     private int id;
-    @NotNull
     private String nameCompany;
+    private int userId;
     private int cityId;
-    @NotNull
     private String address;
-    @NotNull
     private String telephoneNumber;
-    @NotNull
     private String email;
-    private String logoImg;
+    private MultipartFile logoImg;
     private String description;
     private Timestamp createdDate;
     private Timestamp lastModify;

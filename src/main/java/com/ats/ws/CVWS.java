@@ -2,16 +2,17 @@ package com.ats.ws;
 
 import com.ats.dto.CVDTO;
 import com.ats.entity.*;
-import com.ats.model.FileModel;
+import com.ats.form.CreateCVForm;
 import com.ats.repository.CVRepository;
 import com.ats.service.*;
+import com.ats.util.RestResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -24,15 +25,11 @@ public class CVWS {
 
     private static final Logger LOGGER = LogManager.getLogger(CVWS.class);
 
-    // Get CV By CVID
+    // Get CV By CVID -- tested
     @RequestMapping(value = "/getOne/{CVID}/{EmployerID}", method = RequestMethod.GET)
-    @CrossOrigin(origins = "")
-    public ResponseEntity<Cv> getCV(@PathVariable(name = "CVID") int CVID,
-                                       @PathVariable(name = "EmployerID") int EmployerId,
-                                       BindingResult result){
-        if (result.hasErrors()) {
-            LOGGER.info("Error in CVWS- getOne: " + result);
-        }
+    @CrossOrigin(origins = "*")
+    public RestResponse getCV(@PathVariable(name = "CVID") Integer CVID,
+                                       @PathVariable(name = "EmployerID") Integer EmployerId){
         if (EmployerId == 0 ){
             return cvService.getCVByCVID(CVID);
         } else {
@@ -41,37 +38,27 @@ public class CVWS {
         }
     }
 
-    // Create A New CV
-    @RequestMapping(value = "/create", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    @CrossOrigin(origins = "")
-    public boolean createANewCV(@RequestBody CVDTO newCV,
-                                BindingResult result,
-                                FileModel file){
-        if (result.hasErrors()){
-            return false;
-        }
-        return cvService.create(newCV, file);
+    // GET List CV cho User xem bang UserID - tested - co status = 1 (valid)
+    @GetMapping("/get-list/{id}")
+    @CrossOrigin
+    public RestResponse getListCvByUserId(@PathVariable(name = "id") int UserId){
+        return cvService.getlistCvByUserId(UserId);
     }
 
     // Delete One CV
     @RequestMapping(value = "/deleteCV/{id}", method = RequestMethod.POST)
     @CrossOrigin(origins = "")
-    public boolean deleteACV(@PathVariable int id, BindingResult result){
-        if (result.hasErrors()){
-            return false;
-        }
-        cvService.delete(id);
-        return true;
+    public RestResponse deleteACV(@PathVariable int id){
+        return cvService.delete(id);
     }
 
 
     // Edit information's cv, without list belong to this cv
     @RequestMapping(value = "/", method = RequestMethod.PUT)
-    @CrossOrigin(origins = "")
+    @CrossOrigin(origins = "*")
     public boolean  editCv(@RequestBody CVDTO editedCv){
         return false;
     }
-
 
     // Test
     @Autowired
@@ -81,4 +68,28 @@ public class CVWS {
         return cvRepository.findAll();
     }
 
+    // Create New Cv
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @CrossOrigin("*")
+    @ResponseBody
+    public RestResponse create(@Valid @RequestBody  CVDTO newCv,
+                                    BindingResult result){
+        if (result.hasErrors())
+            return new RestResponse(false ,"ERROR: " + result.toString(), null);
+        return cvService.create(newCv);
+    }
+
+    // Check xem no da co CV nao Active chua
+    @RequestMapping(value = "/check-acrive/{id}", method = RequestMethod.POST)
+    @CrossOrigin(origins = "*")
+    public RestResponse checkActive(@PathVariable int id){
+        return cvService.checkActive(id);
+    }
+
+    // Set CV là cv chính
+    @RequestMapping(value = "/set-main-cv/{id}", method = RequestMethod.GET)
+    @CrossOrigin(origins = "*")
+    public RestResponse setMainCV(@PathVariable int id){
+        return cvService.setMainCv(id);
+    }
 }
