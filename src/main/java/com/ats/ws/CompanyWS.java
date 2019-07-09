@@ -39,7 +39,7 @@ public class CompanyWS {
     public RestResponse create(@Valid @RequestBody CompanyDTO newCompany, BindingResult result){
         if (result.hasErrors())
             return null;
-        return null;
+        return companyService.create(newCompany);
     }
 
     // edit info's company

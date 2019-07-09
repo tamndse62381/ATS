@@ -12,7 +12,6 @@ public class CompanyDTO {
     private int id;
     @NotNull
     private String nameCompany;
-    private int userId;
     private int cityId;
     @NotNull
     private String address;

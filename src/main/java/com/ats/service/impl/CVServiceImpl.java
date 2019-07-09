@@ -52,11 +52,6 @@ public class CVServiceImpl implements CVService {
     private UsersRepository usersRepository;
     @Autowired
     HttpServletRequest httpServletRequest;
-    @Autowired
-    private FileStorageService fileStorageService;
-    // File to Base64
-    private FileToBase64Convert convert = new FileToBase64Convert();
-
     //Mapping Object
     ModelMapper modelMapper = new ModelMapper();
     // Conts
@@ -89,7 +84,7 @@ public class CVServiceImpl implements CVService {
             if (checkIsActive(newCV.getUserId()))
                 cv.setIsActive(1);
             else
-                cv.setIsActive(2);
+                cv.setIsActive(0);
             cv.setStatus("1");
             cv.setCreatedDate(new Timestamp(new Date().getTime()));
             cvRepository.save(cv);
