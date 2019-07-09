@@ -148,21 +148,23 @@ public class JobWS {
         JobDTO3 job;
         try {
             job = jobService.getJobDetail(id);
-
+            System.out.println(job.getCreatedDate());
+            System.out.println(job.getEndDateForApply());
+            LOGGER.info("End getJobDetail in JobWS with id " + id);
             if (job != null) {
                 return new RestResponse(true, "Get job Detail with job id : " + id, job);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOGGER.info("End getJobDetail in JobWS with id " + id);
+
 
         return new RestResponse(false, "Job is Not Available : ", null);
     }
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getJobComponent")
-    public RestResponse getJobComponent(){
+    public RestResponse getJobComponent() {
         LOGGER.info("Begin getJobComponent in JobWS");
         List<SkillMasterDTO> listSkillMaster;
         List<Joblevel> listJobLevel;
@@ -170,10 +172,10 @@ public class JobWS {
             listSkillMaster = skillmasterService.listAll();
 
             listJobLevel = joblevelService.getAllJobLevel();
-            HashMap<String,List> map = new HashMap<>();
+            HashMap<String, List> map = new HashMap<>();
             map.put("skillname", listSkillMaster);
-            map.put("level" , listJobLevel);
-                return new RestResponse(true, "Get job Component Successful", map);
+            map.put("level", listJobLevel);
+            return new RestResponse(true, "Get job Component Successful", map);
 
         } catch (Exception e) {
             e.printStackTrace();

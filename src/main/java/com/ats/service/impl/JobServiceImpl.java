@@ -5,9 +5,7 @@ import com.ats.dto.JobDTO;
 import com.ats.dto.JobDTO3;
 import com.ats.entity.*;
 import com.ats.repository.JobRepository;
-import com.ats.service.CityService;
-import com.ats.service.CompanyService;
-import com.ats.service.SkillService;
+import com.ats.service.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
@@ -16,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.ats.service.JobService;
 
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
@@ -37,6 +33,8 @@ public class JobServiceImpl implements JobService {
     CityService cityService;
     @Autowired
     SkillService skillService;
+    @Autowired
+    JoblevelService joblevelService;
 
     private static final Logger LOGGER = LogManager.getLogger(JobServiceImpl.class);
 
@@ -189,12 +187,13 @@ public class JobServiceImpl implements JobService {
             }
             List<Job> listJobOfCompany = jobRepository.getJobByCompanyID(job.getCompanyId() ,job.getId());
             List<String> listSkillName = skillService.getSkillName(job.getSkillneedforjobsById());
-
+            String jobLevelName = joblevelService.getJobLevelNameById(job.getJobLevelId());
             ModelMapper mapper = new ModelMapper();
             jobDTO= mapper.map(job, JobDTO3.class);
 
             jobDTO.setListSkillName(listSkillName);
             jobDTO.setListJobSameCompany(listJobOfCompany);
+            jobDTO.setJoblevelName(jobLevelName);
         } catch (Exception e) {
             e.printStackTrace();
         }
