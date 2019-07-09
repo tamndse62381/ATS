@@ -2,7 +2,10 @@ package com.ats.service.impl;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
+import com.ats.dto.JobDTO;
+import com.ats.dto.JobDTO3;
 import com.ats.dto.UsersDTO;
 import com.ats.entity.Users;
 import com.ats.repository.UsersRepository;
@@ -11,6 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -139,22 +143,30 @@ public class UsersServiceImpl implements UsersService {
         modelMapper = new ModelMapper();
         Users users;
         UsersDTO reTurnUsersDTO = null;
+        List<JobDTO3> listofDTO;
         int i;
 
         if (token != null) {
             users = usersRepository.findAccountByToken(token);
             if (users != null) {
-                Date nowDate = new Date();
-                i = nowDate.compareTo(users.getLastLogin());
-                if (i > 10) {
-                    return null;
-                } else {
-                    usersDTO = modelMapper.map(users, UsersDTO.class);
-                    reTurnUsersDTO = new UsersDTO(usersDTO.getId(), usersDTO.getFullname(),
-                            usersDTO.getEmail(), usersDTO.getRoleId(), usersDTO.getAccessToken());
-                    LOGGER.info("End findAccountByToken in Account Service with token: {}",
-                            reTurnUsersDTO.getAccessToken());
-                }
+
+                usersDTO = modelMapper.map(users, UsersDTO.class);
+
+                reTurnUsersDTO = new UsersDTO(usersDTO.getId(), usersDTO.getFullname(),
+                        usersDTO.getEmail(), usersDTO.getRoleId(), usersDTO.getAccessToken());
+                ModelMapper mapper = new ModelMapper();
+
+                java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO3>>() {
+                }.getType();
+                listofDTO = mapper.map(users.getJobsById(), targetListType);
+
+
+
+                reTurnUsersDTO.setListOfJob(listofDTO);
+
+                LOGGER.info("End findAccountByToken in Account Service with token: {}",
+                        reTurnUsersDTO.getAccessToken());
+
             } else {
                 return null;
             }

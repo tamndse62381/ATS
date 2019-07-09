@@ -192,21 +192,6 @@ public class UserWS {
         return new RestResponse(false, "Login Fail Because " + usersDTO.getEmail(), null);
     }
 
-    @CrossOrigin(origins = "localhost:8090")
-    @GetMapping(value = "/getUserDetail")
-    @ResponseBody
-    public List<UsersDTO> getUserDetail(@RequestParam(value = "search") String search) {
-        LOGGER.info("Begin searchUser in AccountWS with Search value : {}" + search);
-        List<UsersDTO> listUser = new ArrayList<>();
-        try {
-//            listUser = usersService.searchUser(search);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        LOGGER.info("End searchUser in AccountWS with Search value : {}" + search);
-        return listUser;
-    }
-
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getRegisterEmployerComponent")
     public RestResponse getRegisterEmployerComponent(){
