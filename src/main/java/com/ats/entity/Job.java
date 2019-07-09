@@ -21,7 +21,6 @@ public class Job {
     private int cityId;
     private String address;
     private int jobLevelId;
-    private String vacancyName;
     private WorkingType workingType;
     private Integer numbeOfRecruitment;
     private Double salaryFrom;
@@ -114,15 +113,7 @@ public class Job {
         this.jobLevelId = jobLevelId;
     }
 
-    @Basic
-    @Column(name = "VacancyName", nullable = true, length = 50)
-    public String getVacancyName() {
-        return vacancyName;
-    }
 
-    public void setVacancyName(String vacancyName) {
-        this.vacancyName = vacancyName;
-    }
 
     @Basic
     @Enumerated(EnumType.STRING)
@@ -247,7 +238,7 @@ public class Job {
                 jobLevelId == job.jobLevelId &&
                 Objects.equals(title, job.title) &&
                 Objects.equals(address, job.address) &&
-                Objects.equals(vacancyName, job.vacancyName) &&
+
                 Objects.equals(workingType, job.workingType) &&
                 Objects.equals(numbeOfRecruitment, job.numbeOfRecruitment) &&
                 Objects.equals(salaryFrom, job.salaryFrom) &&
@@ -263,7 +254,7 @@ public class Job {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, companyId, title, cityId, address, jobLevelId, vacancyName, workingType, numbeOfRecruitment, salaryFrom, salaryTo, yearExperience, createdDate, endDateForApply, jobDescription, additionalRequest, candidateBenefits, status);
+        return Objects.hash(id, userId, companyId, title, cityId, address, jobLevelId, workingType, numbeOfRecruitment, salaryFrom, salaryTo, yearExperience, createdDate, endDateForApply, jobDescription, additionalRequest, candidateBenefits, status);
     }
 
     @OneToMany(mappedBy = "jobByJobId")

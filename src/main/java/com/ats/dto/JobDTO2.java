@@ -14,7 +14,6 @@ public class JobDTO2 {
     private Integer cityId;
     private String address;
     private Integer joblevelId;
-    private String vacancyName;
     private WorkingType workingtype;
     private Integer numbeOfRecruitment;
     private Double salaryFrom;
