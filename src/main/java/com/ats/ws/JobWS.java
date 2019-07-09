@@ -4,10 +4,7 @@ import com.ats.dto.JobDTO2;
 import com.ats.dto.JobDTO;
 import com.ats.dto.JobDTO3;
 import com.ats.dto.SkillMasterDTO;
-import com.ats.entity.Job;
-import com.ats.entity.Joblevel;
-import com.ats.entity.Skillmaster;
-import com.ats.entity.Skillneedforjob;
+import com.ats.entity.*;
 import com.ats.service.*;
 
 import org.apache.logging.log4j.LogManager;
@@ -39,6 +36,8 @@ public class JobWS {
     JoblevelService joblevelService;
     @Autowired
     SkillmasterService skillmasterService;
+    @Autowired
+    CityService cityService;
 
     private static final Logger LOGGER = LogManager.getLogger(UserWS.class);
 
@@ -168,13 +167,16 @@ public class JobWS {
         LOGGER.info("Begin getJobComponent in JobWS");
         List<SkillMasterDTO> listSkillMaster;
         List<Joblevel> listJobLevel;
+        List<City> listCity;
         try {
             listSkillMaster = skillmasterService.listAll();
 
             listJobLevel = joblevelService.getAllJobLevel();
+            listCity = cityService.getAllCity();
             HashMap<String, List> map = new HashMap<>();
             map.put("skillname", listSkillMaster);
             map.put("level", listJobLevel);
+            map.put("city",listCity);
             return new RestResponse(true, "Get job Component Successful", map);
 
         } catch (Exception e) {
