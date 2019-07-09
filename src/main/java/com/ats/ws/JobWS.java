@@ -194,16 +194,24 @@ public class JobWS {
         List<SkillMasterDTO> listSkillMaster;
         List<Joblevel> listJobLevel;
         List<String> listTitle;
+        List<String> listAll = new ArrayList<>();
         try {
             listSkillMaster = skillmasterService.listAll();
             listTitle = jobService.getALlJobTitle();
             listJobLevel = joblevelService.getAllJobLevel();
 
-            HashMap<String, List> map = new HashMap<>();
-            map.put("skillname", listSkillMaster);
-            map.put("level", listJobLevel);
-            map.put("title", listTitle);
-            return new RestResponse(true, "Get job Component Successful", map);
+            for (int i = 0; i < listJobLevel.size();i++) {
+                listAll.add(listJobLevel.get(i).getJobLevelName());
+            }
+            for (int i = 0; i < listTitle.size();i++) {
+                listAll.add(listTitle.get(i));
+            }
+            for (int i = 0; i < listSkillMaster.size();i++) {
+                listAll.add(listSkillMaster.get(i).getSkillName());
+            }
+
+
+            return new RestResponse(true, "Get job Component Successful", listAll);
 
         } catch (Exception e) {
             e.printStackTrace();
