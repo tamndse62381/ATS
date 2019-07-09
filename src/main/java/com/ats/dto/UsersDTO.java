@@ -27,7 +27,6 @@ public class UsersDTO{
     int cityid;
     String address;
     String description;
-    List<JobDTO3> listOfJob;
 
 
     public UsersDTO() {

@@ -7,6 +7,7 @@ import java.util.List;
 import com.ats.dto.JobDTO;
 import com.ats.dto.JobDTO3;
 import com.ats.dto.UsersDTO;
+import com.ats.dto.UsersDTO2;
 import com.ats.entity.Users;
 import com.ats.repository.UsersRepository;
 import com.ats.service.RoleService;
@@ -59,9 +60,6 @@ public class UsersServiceImpl implements UsersService {
                     if (usersDTO.getStatus().matches("new")) {
                         Date lastLoginDate = new Date();
                         usersRepository.editAccountLastLogin(lastLoginDate, usersDTO.getEmail(), usersDTO.getAccessToken());
-
-                        modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
-//                       reTurnUsersDTO = modelMapper.map(usersDTO,UsersDTO.class);
                         reTurnUsersDTO = new UsersDTO(usersDTO.getId(), usersDTO.getFullname(),
                                 usersDTO.getEmail(), usersDTO.getRoleId(), usersDTO.getAccessToken());
 
@@ -137,40 +135,34 @@ public class UsersServiceImpl implements UsersService {
 
 
     @Override
-    public UsersDTO findUserByToken(String token) {
-        LOGGER.info("Begin findAccountByToken in Account Service with token {}", token);
-        UsersDTO usersDTO;
+    public UsersDTO2 findUserByToken(String token) {
+        LOGGER.info("Begin findAccountByToken in User Service with token {}", token);
+        UsersDTO2 usersDTO = null;
         modelMapper = new ModelMapper();
         Users users;
-        UsersDTO reTurnUsersDTO = null;
-        List<JobDTO3> listofDTO;
-        int i;
 
         if (token != null) {
+            LOGGER.info("Begin findAccountByToken in User Repository with token: {}",
+                    usersDTO.getAccessToken());
             users = usersRepository.findAccountByToken(token);
+            LOGGER.info("End findAccountByToken in User Repository with token: {}",
+                    usersDTO.getAccessToken());
             if (users != null) {
-
-                usersDTO = modelMapper.map(users, UsersDTO.class);
-
-                reTurnUsersDTO = new UsersDTO(usersDTO.getId(), usersDTO.getFullname(),
-                        usersDTO.getEmail(), usersDTO.getRoleId(), usersDTO.getAccessToken());
-                ModelMapper mapper = new ModelMapper();
-
-                java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO3>>() {
-                }.getType();
-                listofDTO = mapper.map(users.getJobsById(), targetListType);
-
-
-                reTurnUsersDTO.setListOfJob(listofDTO);
-
-                LOGGER.info("End findAccountByToken in Account Service with token: {}",
-                        reTurnUsersDTO.getAccessToken());
-
+                usersDTO = modelMapper.map(users, UsersDTO2.class);
+                if (users.getRoleId() != 1) {
+                    List<JobDTO3> listofDTO;
+                    java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO3>>() {
+                    }.getType();
+                    listofDTO = modelMapper.map(users.getJobsById(), targetListType);
+                    usersDTO.setListOfJob(listofDTO);
+                }
             } else {
                 return null;
             }
         }
-        return reTurnUsersDTO;
+        LOGGER.info("End findAccountByToken in User Service with token: {}",
+                usersDTO.getAccessToken());
+        return usersDTO;
     }
 
     @Override
