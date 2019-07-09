@@ -1,6 +1,7 @@
 package com.ats.dto;
 
 
+import com.ats.enummerator.WorkingType;
 import lombok.Data;
 import java.util.Date;
 
@@ -13,9 +14,9 @@ public class JobDTO2 {
     private Integer cityId;
     private String address;
     private Integer joblevelId;
-    private String vacancyname;
-    private String workingtype;
-    private Integer numberofrecruitment;
+    private String vacancyName;
+    private WorkingType workingtype;
+    private Integer numbeOfRecruitment;
     private Double salaryFrom;
     private Double salaryTo;
     private Integer yearExperience;
