@@ -161,7 +161,6 @@ public class UsersServiceImpl implements UsersService {
                 listofDTO = mapper.map(users.getJobsById(), targetListType);
 
 
-
                 reTurnUsersDTO.setListOfJob(listofDTO);
 
                 LOGGER.info("End findAccountByToken in Account Service with token: {}",
