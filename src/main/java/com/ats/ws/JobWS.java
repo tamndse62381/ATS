@@ -186,4 +186,30 @@ public class JobWS {
 
         return new RestResponse(false, "Job is Not Available : ", null);
     }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping(value = "/getSearchComponent")
+    public RestResponse getSearchComponent() {
+        LOGGER.info("Begin getSearchComponent in JobWS");
+        List<SkillMasterDTO> listSkillMaster;
+        List<Joblevel> listJobLevel;
+        List<String> listTitle;
+        try {
+            listSkillMaster = skillmasterService.listAll();
+            listTitle = jobService.getALlJobTitle();
+            listJobLevel = joblevelService.getAllJobLevel();
+
+            HashMap<String, List> map = new HashMap<>();
+            map.put("skillname", listSkillMaster);
+            map.put("level", listJobLevel);
+            map.put("title", listTitle);
+            return new RestResponse(true, "Get job Component Successful", map);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getSearchComponent in JobWS");
+
+        return new RestResponse(false, "Job is Not Available : ", null);
+    }
 }

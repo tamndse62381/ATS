@@ -18,6 +18,8 @@ public interface JobService {
 
     List<JobDTO> searchJob(String job, Pageable pageable);
 
+    List<String> getALlJobTitle();
+
     List<Job> getTop8();
 
     JobDTO3 getJobDetail(int id);

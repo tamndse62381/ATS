@@ -1,13 +1,14 @@
 package com.ats.entity;
 
 
+import com.ats.enummerator.WorkingType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,7 +22,7 @@ public class Job {
     private String address;
     private int jobLevelId;
     private String vacancyName;
-    private String workingType;
+    private WorkingType workingType;
     private Integer numbeOfRecruitment;
     private Double salaryFrom;
     private Double salaryTo;
@@ -124,12 +125,13 @@ public class Job {
     }
 
     @Basic
+    @Enumerated(EnumType.STRING)
     @Column(name = "WorkingType", nullable = true, length = 50)
-    public String getWorkingType() {
+    public WorkingType getWorkingType() {
         return workingType;
     }
 
-    public void setWorkingType(String workingType) {
+    public void setWorkingType(WorkingType workingType) {
         this.workingType = workingType;
     }
 

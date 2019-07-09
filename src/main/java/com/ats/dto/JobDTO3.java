@@ -3,6 +3,7 @@ package com.ats.dto;
 import com.ats.entity.City;
 import com.ats.entity.Company;
 import com.ats.entity.Job;
+import com.ats.enummerator.WorkingType;
 import lombok.Data;
 
 import java.util.Date;
@@ -21,7 +22,7 @@ public class JobDTO3 {
     private Integer joblevelId;
     private String joblevelName;
     private String vacancyname;
-    private String workingtype;
+    private WorkingType workingtype;
     private Integer numberofrecruitment;
     private Double salaryFrom;
     private Double salaryTo;
