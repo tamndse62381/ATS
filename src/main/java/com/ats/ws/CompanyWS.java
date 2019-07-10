@@ -1,10 +1,12 @@
 package com.ats.ws;
 
 import com.ats.dto.CompanyDTO;
+import com.ats.dto.CompanyindustryDTO;
 import com.ats.entity.Company;
 import com.ats.model.FileModel;
 import com.ats.repository.CompanyRepository;
 import com.ats.service.CompanyService;
+import com.ats.util.RestResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,11 +16,14 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.swing.text.html.parser.Entity;
+import javax.validation.Valid;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/company")
@@ -31,11 +36,10 @@ public class CompanyWS {
     //Create a new company
     @PostMapping("")
     @CrossOrigin("*")
-    public ResponseEntity<CompanyDTO> create(@RequestBody CompanyDTO newCompany, BindingResult result, FileModel file){
+    public RestResponse create(@Valid @RequestBody CompanyDTO newCompany, BindingResult result){
         if (result.hasErrors())
-            return ResponseEntity.badRequest().body(null);
-        companyService.create(newCompany, file);
-        return ResponseEntity.ok(newCompany);
+            return null;
+        return companyService.create(newCompany);
     }
 
     // edit info's company

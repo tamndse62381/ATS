@@ -170,7 +170,6 @@ public class JobWS {
         List<City> listCity;
         try {
             listSkillMaster = skillmasterService.listAll();
-
             listJobLevel = joblevelService.getAllJobLevel();
             listCity = cityService.getAllCity();
             HashMap<String, List> map = new HashMap<>();

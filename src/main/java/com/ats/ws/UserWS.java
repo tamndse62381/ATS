@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.ats.dto.CompanyDTO;
 import com.ats.dto.CompanyDTO2;
+import com.ats.dto.UsersDTO2;
 import com.ats.entity.City;
 import com.ats.entity.Company;
 import com.ats.entity.Joblevel;
@@ -47,7 +48,7 @@ public class UserWS {
         try {
             if(!usersDTO.getPassword().isEmpty()){
                 usersDTO = usersService.login(usersDTO.getEmail(), usersDTO.getPassword());
-                LOGGER.info("End login in UserWS with username - password : {}", usersDTO.getEmail() + " - " + usersDTO.getPassword());
+                LOGGER.info("End login in UserWS with username ", usersDTO.getEmail() );
                 if (usersDTO != null && usersDTO.getId() != 0) {
                     return new RestResponse(true, "Login Successful", usersDTO);
                 }
@@ -93,7 +94,7 @@ public class UserWS {
     @PostMapping(value = "/checkLogin", produces = "application/json;charset=UTF-8")
     public RestResponse checkLogin(@RequestHeader(value = "accessToken") String accessToken) {
         LOGGER.info("Begin login in UserWS with Token : {}", accessToken);
-        UsersDTO usersDTO;
+        UsersDTO2 usersDTO;
         try {
             usersDTO = usersService.findUserByToken(accessToken);
             LOGGER.info("End login in UserWS with Token : {}", accessToken);

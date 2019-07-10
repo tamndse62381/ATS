@@ -7,6 +7,7 @@ import com.ats.repository.ApplyRepository;
 import com.ats.repository.JobRepository;
 import com.ats.repository.UsersRepository;
 import com.ats.service.ApplyService;
+import com.ats.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +25,13 @@ public class ApplyServiceImpl implements ApplyService {
     private JobRepository jobRepository;
 
     @Override
-    public boolean create(int JobSeekerID, int JobID) {
-        Users  user = usersRepository.findById(JobSeekerID).orElseThrow(() -> new NotFoundException("Can't found User has ID: " + JobSeekerID));
-        Job job = jobRepository.findById(JobID).orElseThrow(() -> new NotFoundException("Can't found Job has ID: " + JobID));
+    public RestResponse create(int JobSeekerID, int JobID) {
+        Users  user = usersRepository.findOne(JobSeekerID);
+        if (user == null)
+            return new RestResponse(false, "Lỗi: người dùng không tồn tại!", null);
+        Job job = jobRepository.findOne(JobID);
+        if (job == null)
+            return new RestResponse(false, "Lỗi: việc làm này không tồn tại!", null);
         if (!check(JobSeekerID, JobID))
         {
             Apply apply = new Apply();
@@ -35,9 +40,9 @@ public class ApplyServiceImpl implements ApplyService {
             apply.setDayApply(new Timestamp(new Date().getTime()));
             apply.setStatus("1");
             applyRepository.save(apply);
-            return true;
+            return new RestResponse(true,"Bạn đã ứng tuyển vào công việc này thành công!!!", null);
         }
-        return false;
+        return new RestResponse(false, "Ứng tuyển không thành công. Vui lòng thử lại!!!", null);
     }
 
     @Override

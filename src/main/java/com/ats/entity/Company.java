@@ -1,6 +1,8 @@
 package com.ats.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -171,8 +173,9 @@ public class Company {
         this.cityByCityId = cityByCityId;
     }
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "companyByCompanyId")
-    @JsonBackReference
+//    @JsonBackReference
     public List<Companyindustry> getCompanyindustriesById() {
         return companyindustriesById;
     }
