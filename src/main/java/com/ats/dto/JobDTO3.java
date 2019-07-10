@@ -17,6 +17,7 @@ public class JobDTO3 {
     private Company company;
     private String title;
     private Integer cityId;
+    private Integer industryId;
     private City city;
     private String address;
     private Integer joblevelId;

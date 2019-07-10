@@ -15,6 +15,7 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ats.util.RestResponse;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import org.springframework.data.web.PageableDefault;
@@ -93,16 +94,19 @@ public class JobWS {
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/search")
     @ResponseBody
-    public RestResponse searchJob(@RequestParam(value = "search") String search, @PageableDefault Pageable pageable) {
+    public RestResponse searchJob(@RequestParam(value = "search") String search,
+                                  @RequestParam(value = "city") int cityId,
+                                  @RequestParam(value = "industryid") int industryId,
+                                  @PageableDefault Pageable pageable) {
         LOGGER.info("Begin searchJob in JobWS  with Search value : {}" + search);
-        List<JobDTO> listJob = new ArrayList<>();
+        Page<JobDTO> listJob = null;
         try {
-            listJob = jobService.searchJob(search, pageable);
+            listJob = jobService.searchJob(search, cityId, industryId, pageable);
         } catch (Exception e) {
             e.printStackTrace();
         }
         LOGGER.info("End searchJob in JobWS with Search value : {}" + search);
-        return new RestResponse(true, "get searchJob Successfull with list Size : " + listJob.size(), listJob);
+        return new RestResponse(true, "get searchJob Successfull with list Size : ", listJob);
     }
 
     @CrossOrigin(origins = "*")
@@ -126,13 +130,12 @@ public class JobWS {
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getTop8")
-    public RestResponse getTop8() {
+    public RestResponse getTop8(@PageableDefault Pageable pageable) {
         LOGGER.info("Begin getTop8 in JobWS ");
-        List<Job> listJobs = new ArrayList<>();
+        Page<Job> listJobs = null;
         try {
-            listJobs = jobService.getTop8();
-            return new RestResponse(true, "get Top8 Successfull with list size is : " +
-                    listJobs.size(), listJobs);
+            listJobs = jobService.getTop8(pageable);
+            return new RestResponse(true, "get Top8 Successfull with list size is : ", listJobs);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -175,7 +178,7 @@ public class JobWS {
             HashMap<String, List> map = new HashMap<>();
             map.put("skillname", listSkillMaster);
             map.put("level", listJobLevel);
-            map.put("city",listCity);
+            map.put("city", listCity);
             return new RestResponse(true, "Get job Component Successful", map);
 
         } catch (Exception e) {
@@ -199,13 +202,13 @@ public class JobWS {
             listTitle = jobService.getALlJobTitle();
             listJobLevel = joblevelService.getAllJobLevel();
 
-            for (int i = 0; i < listJobLevel.size();i++) {
+            for (int i = 0; i < listJobLevel.size(); i++) {
                 listAll.add(listJobLevel.get(i).getJobLevelName());
             }
-            for (int i = 0; i < listTitle.size();i++) {
+            for (int i = 0; i < listTitle.size(); i++) {
                 listAll.add(listTitle.get(i));
             }
-            for (int i = 0; i < listSkillMaster.size();i++) {
+            for (int i = 0; i < listSkillMaster.size(); i++) {
                 listAll.add(listSkillMaster.get(i).getSkillName());
             }
 

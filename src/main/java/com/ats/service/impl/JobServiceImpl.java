@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,10 +45,8 @@ public class JobServiceImpl implements JobService {
         int result = 0;
         Job newJob;
         try {
-            System.out.println(job.getNumbeOfRecruitment());
             ModelMapper mapper = new ModelMapper();
             newJob = mapper.map(job, Job.class);
-            System.out.println(newJob.getNumbeOfRecruitment());
             City city = new City();
             city.setId(newJob.getCityId());
 
@@ -60,14 +59,18 @@ public class JobServiceImpl implements JobService {
             Joblevel joblevel = new Joblevel();
             joblevel.setId(newJob.getJobLevelId());
 
+            Industry industry = new Industry();
+            industry.setId(newJob.getIndustryId());
+
             newJob.setCityByCityId(city);
             newJob.setUsersByUserId(users);
             newJob.setCompanyByCompanyId(company);
             newJob.setJoblevelByJobLevelId(joblevel);
+            newJob.setIndustryByIndustryId(industry);
 
             newJob = jobRepository.save(newJob);
             result = newJob.getId();
-            System.out.println("KQ : " + result);
+            System.out.println("KQ : " + newJob.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -104,30 +107,23 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public List<JobDTO> searchJob(String job, Pageable pageable) {
+    public Page<JobDTO> searchJob(String job, int cityid, int industryid, Pageable pageable) {
         LOGGER.info("Begin searchJob in Job Service with job name : {} ", job);
-        List<Job> listofJob = new ArrayList<>();
-        List<Job> listofResult = new ArrayList<>();
-        List<JobDTO> listofDTO = new ArrayList<>();
+        Page<Job> listofJob ;
+        Page<JobDTO> listofDTO = null;
         try {
             LOGGER.info("Begin searchJob in Job Repository with job name : {} ", job);
-            listofJob = jobRepository.searchJob(job);
-            for (int i = 0; i < listofJob.size(); i++) {
-                if (listofJob.get(i).getStatus().matches("new") &&
-                        listofJob.get(i).getEndDateForApply().after(new Date())) {
-                    LOGGER.info("Add a job to listofResult because job is available " + listofJob.get(i).getTitle());
-                    listofResult.add(listofJob.get(i));
-                }
-            }
+            listofJob = jobRepository.searchJob(job, pageable, "new", new Date());
+
             ModelMapper mapper = new ModelMapper();
-            java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
+            java.lang.reflect.Type targetListType = new TypeToken<Page<JobDTO>>() {
             }.getType();
-            listofDTO = mapper.map(listofResult, targetListType);
-            LOGGER.info("End searchJob in Job Repository with job list size : {} ", listofJob.size());
+            listofDTO = mapper.map(listofJob, targetListType);
+            LOGGER.info("End searchJob in Job Repository with job list size : {} ");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOGGER.info("End searchJob in Job Service with job list size : {} ", listofJob.size());
+        LOGGER.info("End searchJob in Job Service with job list size : {} ");
         return listofDTO;
     }
 
@@ -157,32 +153,24 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public List<Job> getTop8() {
+    public Page<Job> getTop8(Pageable pageable) {
         LOGGER.info("Begin getTop8 in Job Service");
-        List<Job> listofJob;
-        List<Job> listofResult = new ArrayList<>();
+        Page<Job> listofJob = null;
         try {
             LOGGER.info("Begin getTop8 in Job Repository ");
-            listofJob = jobRepository.getTop8();
+            listofJob = jobRepository.getTop8(pageable, "new", new Date());
             LOGGER.info("End getTop8 in Job Repository");
-            for (int i = 0; i < listofJob.size(); i++) {
-                if (listofJob.get(i).getStatus().matches("new") &&
-                        listofJob.get(i).getEndDateForApply().after(new Date())) {
-                    LOGGER.info("Add a job to listofResult because job is available " + listofJob.get(i).getTitle());
-                    listofResult.add(listofJob.get(i));
-                }
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         LOGGER.info("End getTop8 in Job Service");
-        return listofResult;
+        return listofJob;
     }
 
     @Override
     public JobDTO3 getJobDetail(int id) {
         LOGGER.info("Begin getJobDetail in Job Service with id : " + id);
-        Job job ;
+        Job job;
         JobDTO3 jobDTO = null;
 
         try {
@@ -195,11 +183,11 @@ public class JobServiceImpl implements JobService {
                     job = null;
                 }
             }
-            List<Job> listJobOfCompany = jobRepository.getJobByCompanyID(job.getCompanyId() ,job.getId());
+            List<Job> listJobOfCompany = jobRepository.getJobByCompanyID(job.getCompanyId(), job.getId());
             List<String> listSkillName = skillService.getSkillName(job.getSkillneedforjobsById());
             String jobLevelName = joblevelService.getJobLevelNameById(job.getJobLevelId());
             ModelMapper mapper = new ModelMapper();
-            jobDTO= mapper.map(job, JobDTO3.class);
+            jobDTO = mapper.map(job, JobDTO3.class);
 
             jobDTO.setListSkillName(listSkillName);
             jobDTO.setListJobSameCompany(listJobOfCompany);

@@ -1,5 +1,6 @@
 package com.ats.repository;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,6 +11,7 @@ import com.ats.entity.Job;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,15 +22,23 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
             "INNER JOIN j.skillneedforjobsById s " +
             "INNER JOIN s.skillBySkillId a " +
             "INNER JOIN a.skillmasterBySkillMasterId m " +
-            "WHERE j.title LIKE CONCAT('%',LOWER(:search),'%') " +
-            "OR m.skillName LIKE CONCAT('%',LOWER(:search),'%') ")
-    List<Job> searchJob(@Param("search") String search);
+            "INNER JOIN j.cityByCityId c " +
+            "WHERE j.title LIKE CONCAT('%',LOWER(:search),'%') and " +
+            "j.status = :status and " +
+            "j.endDateForApply > :now and " +
+            "c.fullName LIKE CONCAT('%',LOWER(:search),'%') "+
+            "OR m.skillName LIKE CONCAT('%',LOWER(:search),'%')")
+    Page<Job> searchJob(@Param("search") String search, Pageable pageable,
+                        @Param("status") String status, @Param("now") Date endDateForApply);
 
-    @Query("Select b from Job b order by b.createdDate desc")
-    List<Job> getTop8();
+    @Query("Select b from Job b " +
+            "where b.status = :status and " +
+            "b.endDateForApply > :now " +
+            "order by b.createdDate desc")
+    Page<Job> getTop8(Pageable pageable, @Param("status") String status, @Param("now") Date endDateForApply);
 
     @Query("Select b from Job b where b.companyId = :companyId and b.id <> :jobId")
-    List<Job> getJobByCompanyID(@Param("companyId") int companyId , @Param("jobId") int jobId);
+    List<Job> getJobByCompanyID(@Param("companyId") int companyId, @Param("jobId") int jobId);
 
     @Transactional
     @Modifying

@@ -1,8 +1,11 @@
 package com.ats.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,6 +15,7 @@ public class Industry {
     private String name;
     private List<Companyindustry> companyindustriesById;
     private List<Cv> cvsById;
+    private List<Job> jobsById;
 
     @Id
     @Column(name = "ID", nullable = false)
@@ -48,7 +52,6 @@ public class Industry {
     }
 
     @OneToMany(mappedBy = "industryByIndustryId")
-    @JsonBackReference
     public List<Companyindustry> getCompanyindustriesById() {
         return companyindustriesById;
     }
@@ -58,12 +61,22 @@ public class Industry {
     }
 
     @OneToMany(mappedBy = "industryByIndustryId")
-    @JsonBackReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     public List<Cv> getCvsById() {
         return cvsById;
     }
 
     public void setCvsById(List<Cv> cvsById) {
         this.cvsById = cvsById;
+    }
+
+    @OneToMany(mappedBy = "industryByIndustryId")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    public List<Job> getJobsById() {
+        return jobsById;
+    }
+
+    public void setJobsById(List<Job> jobsById) {
+        this.jobsById = jobsById;
     }
 }
