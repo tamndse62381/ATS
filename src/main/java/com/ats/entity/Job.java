@@ -113,6 +113,7 @@ public class Job {
     }
 
     @Basic
+    @Enumerated(EnumType.STRING)
     @Column(name = "WorkingType", nullable = true)
     public WorkingType getWorkingType() {
         return workingType;
