@@ -26,3 +26,5 @@ nbdist/
 src/main/resources/application.properties
 src/main/java/com/ats/ws/CompanyWS.java
 src/main/resources/application.properties
+src/main/java/com/ats/dto/UsersDTO.java
+src/main/java/com/ats/service/impl/UsersServiceImpl.java

@@ -162,7 +162,7 @@ public class UsersServiceImpl implements UsersService {
 
 
 
-                reTurnUsersDTO.setListOfJob(listofDTO);
+//                reTurnUsersDTO.setListOfJob(listofDTO);
 
                 LOGGER.info("End findAccountByToken in Account Service with token: {}",
                         reTurnUsersDTO.getAccessToken());
