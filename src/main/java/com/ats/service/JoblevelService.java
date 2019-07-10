@@ -9,4 +9,6 @@ import java.util.List;
 @Service
 public interface JoblevelService {
     List<Joblevel> getAllJobLevel();
+
+    String getJobLevelNameById(int id);
 }

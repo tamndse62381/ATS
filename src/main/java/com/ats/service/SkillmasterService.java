@@ -15,4 +15,6 @@ public interface SkillmasterService {
      boolean editASkillmaster(Skillmaster editedSkillmaster, int id);
 
      List<Skillmaster> findAllLanguageskill(int id);
+
+     List<String> getSkillNameById(List<Integer> integerList);
 }

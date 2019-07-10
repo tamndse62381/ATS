@@ -2,6 +2,7 @@ package com.ats.service;
 
 
 import com.ats.dto.UsersDTO;
+import com.ats.dto.UsersDTO2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface UsersService {
 
     UsersDTO findUserByEmail(String email);
 
-    UsersDTO findUserByToken(String token);
+    UsersDTO2 findUserByToken(String token);
 
     int updateUser(UsersDTO dto);
 

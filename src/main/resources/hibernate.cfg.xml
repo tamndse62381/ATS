@@ -6,9 +6,9 @@
 
   <session-factory>
     <property name="connection.url">jdbc:mysql://localhost:3306/demoats</property>
-    <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
     <property name="hibernate.id.new_generator_mappings">false</property>
-    <mapping class="com.ats.entity.Apply"/>
+      <mapping class="com.ats.entity.Apply"/>
     <mapping class="com.ats.entity.Certification"/>
     <mapping class="com.ats.entity.City"/>
     <mapping class="com.ats.entity.Company"/>
@@ -38,7 +38,8 @@
     <mapping class="com.ats.entity.Users"/>
     <mapping class="com.ats.entity.Userslikecv"/>
     <mapping class="com.ats.entity.Workexperience"/>
-    <!-- <property name="connection.username"/> -->
+      <mapping class="com.ats.model.Job"/>
+      <!-- <property name="connection.username"/> -->
     <!-- <property name="connection.password"/> -->
 
     <!-- DB schema will be updated if needed -->

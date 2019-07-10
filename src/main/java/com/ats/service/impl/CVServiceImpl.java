@@ -2,6 +2,8 @@ package com.ats.service.impl;
 
 import com.ats.dto.*;
 import com.ats.entity.*;
+import com.ats.form.CreateCVForm;
+import com.ats.form.GetCVForm;
 import com.ats.model.FileModel;
 import com.ats.repository.CVRepository;
 import com.ats.repository.CityRepository;
@@ -9,6 +11,8 @@ import com.ats.repository.IndustryRepository;
 import com.ats.repository.UsersRepository;
 import com.ats.service.*;
 import com.ats.util.FileUltis;
+import com.ats.util.RestResponse;
+import org.hibernate.hql.internal.ast.tree.RestrictableStatement;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +20,12 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.NotFoundException;
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -45,17 +52,17 @@ public class CVServiceImpl implements CVService {
     private UsersRepository usersRepository;
     @Autowired
     HttpServletRequest httpServletRequest;
-
     //Mapping Object
     ModelMapper modelMapper = new ModelMapper();
     // Conts
     private static String EMAIL = "1101010001001101000000000000";
 
     @Override
-    public ResponseEntity<Cv> getCVByCVID(int id) {
-        Cv cv = cvRepository.findById(id).orElseThrow(() -> new
-                NotFoundException(""));
-        return ResponseEntity.ok(cv);
+    public RestResponse getCVByCVID(int id) {
+        Cv cv = cvRepository.findOne(id);
+        if (cv == null)
+            return new RestResponse(false,"CV này không tồn tại!!!", null);
+        return new RestResponse(true, "Tải CV thành công!!!", cv);
     }
 
     @Override
@@ -64,7 +71,7 @@ public class CVServiceImpl implements CVService {
     }
 
     @Override
-    public boolean create(CVDTO newCV, FileModel file) {
+    public RestResponse create(CVDTO newCV) {
         try {
             Cv cv = new Cv();
             cv = modelMapper.map(newCV, Cv.class);
@@ -72,13 +79,13 @@ public class CVServiceImpl implements CVService {
             cv.setCityByCityId(cityRepository.findOne(newCV.getCityId()));
             cv.setIndustryByIndustryId(industryRepository.findOne(newCV.getIndustryId()));
             cv.setUsersByUserId(usersRepository.findOne(newCV.getUserId()));
-            //updaload file
-            String uploadPath = httpServletRequest.getRealPath("") + File.separator + "hinhanh" + File.separator;
-            //set img
-            String fileName = FileUltis.saveFile(file, uploadPath);
-            cv.setImg(fileName);
+
+            // check đã có CV nào được Active tìm việc chưa
+            if (checkIsActive(newCV.getUserId()))
+                cv.setIsActive(1);
+            else
+                cv.setIsActive(0);
             cv.setStatus("1");
-            cv.setIsActive(1);
             cv.setCreatedDate(new Timestamp(new Date().getTime()));
             cvRepository.save(cv);
             Cv changeEmailCv = getCvByEmail();
@@ -86,6 +93,7 @@ public class CVServiceImpl implements CVService {
             changeEmailCv.setEmail(newCV.getEmail());
             cvRepository.save(changeEmailCv);
 
+            // Save vo
             Cv saveCv = cvRepository.findOne(CVID);
             // mapping Certification
             List<CertificationDTO> listCer = newCV.getCertificationsById();
@@ -137,26 +145,74 @@ public class CVServiceImpl implements CVService {
                     projectorproductworkedService.createANewProjectorProduct(pro);
                 }
             }
-            return true;
+            return new RestResponse(true, "Bạn đã tạo CV thành công!!!", null);
         } catch (RuntimeException e){
             System.out.println(e);
         }
-        return false;
+        return new RestResponse(false, "Tạo CV không thành công. Vui lòng thử lại!!!", null);
     }
 
     @Override
-    public boolean edit(CVDTO editedCv) {
-        Cv cv =cvRepository.findById(editedCv.getId()).orElseThrow(
-                () -> new NotFoundException(editedCv.getId() + "Cv Not found")
-        );
-        return false;
+    public RestResponse edit(CVDTO editedCv) {
+        Cv cv = cvRepository.findOne(editedCv.getId());
+        if (cv == null)
+            return new RestResponse(false,"Không thành công!!!", null);
+
+        return new RestResponse(true, "Chỉnh sửa thành công!!!", null);
     }
 
     @Override
-    public boolean delete(int id) {
-        Cv cv = cvRepository.findById(id).orElseThrow(()-> new NotFoundException("Can't find Cv have Id: " + id));
+    public RestResponse delete(int id) {
+        Cv cv = cvRepository.findOne(id);
+        if (cv == null)
+            return new RestResponse(false, "Không tìm thấy CV có Id: " + id, null);
         cv.setStatus("2");
         cv.setIsActive(0);
-        return true;
+        cvRepository.save(cv);
+        return new RestResponse(true, "Đã xoá CV thành công!!!", null);
+    }
+
+    @Override
+    public RestResponse getlistCvByUserId(int id) {
+        Users user = usersRepository.findOne(id);
+        if (user == null)
+            return new RestResponse(false, "Không tìm thấy người dùng có ID là: " + id, null);
+        List<Cv> list =  cvRepository.findByUserIdAndStatus(id, "1");
+        if (list == null)
+            return new RestResponse(false, "Bạn chưa tạo CV!!!", null);
+        return new RestResponse(true, "", list);
+    }
+
+    @Override
+    public RestResponse checkActive(int id) {
+        List<Cv> list1 = cvRepository.findByUserId(id);
+        if (list1 == null)
+            return new RestResponse(true, "Bạn chưa tạo CV nào!!!", null);
+        List<Cv> list = cvRepository.checkActive(id, 1);
+        if (list == null)
+            return new RestResponse(true, "Bạn chưa chọn CV nào là Cv chính của mình. Hãy đặt CV chính để không bỏ lỡ cơ hội tìm việc nhé!!!", null);
+        return null;
+    }
+
+    @Override
+    public RestResponse setMainCv(int id) {
+        Cv cv = cvRepository.findOne(id);
+        if (cv == null)
+            return new RestResponse(false, "Có lỗi!!!!", null);
+        List<Cv> list = cvRepository.findByUserId(cv.getUserId());
+        for (Cv cv1 : list) {
+            cv1.setIsActive(0);
+            cvRepository.save(cv1);
+        }
+        cv.setIsActive(1);
+        cvRepository.save(cv);
+        return new RestResponse(true, "Cập nhật thành công!!!", null);
+    }
+
+    private boolean checkIsActive(int userId){
+        List<Cv> list = cvRepository.checkIsActive(userId, 1);
+        if (list.isEmpty())
+            return true;
+        return false;
     }
 }

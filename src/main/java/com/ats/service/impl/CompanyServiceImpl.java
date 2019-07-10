@@ -2,21 +2,20 @@ package com.ats.service.impl;
 
 import com.ats.dto.CompanyDTO;
 import com.ats.dto.CompanyDTO2;
+import com.ats.dto.CompanyindustryDTO;
 import com.ats.entity.Company;
-import com.ats.model.FileModel;
+import com.ats.entity.Companyindustry;
 import com.ats.repository.CityRepository;
 import com.ats.repository.CompanyRepository;
+import com.ats.repository.CompanyindustryRepository;
+import com.ats.repository.IndustryRepository;
 import com.ats.service.CompanyService;
+import com.ats.util.RestResponse;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import com.ats.util.FileUltis;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -27,10 +26,14 @@ public class CompanyServiceImpl implements CompanyService {
     @Autowired
     private CityRepository cityRepository;
     @Autowired
-    HttpServletRequest httpServletRequest;
+    private CompanyindustryRepository companyindustryRepository;
+    @Autowired
+    private IndustryRepository industryRepository;
+
     //Mapping Object
     ModelMapper modelMapper = new ModelMapper();
-
+    // Conts
+    private static String EMAIL = "1101010001001101000000000000";
 
     @Override
     public Company findComanyByID(int id) {
@@ -47,22 +50,35 @@ public class CompanyServiceImpl implements CompanyService {
         listofDTO = mapper.map(listCompany, targetListType);
         return listofDTO;
     }
-    
-    public CompanyDTO create(CompanyDTO newCompany, FileModel file) {
-        Company company = companyRepository.findCompanyByNameCompany(newCompany.getNameCompany());
-        if (company != null){
-            return null;
-        }
-        //updaload file
-        String uploadPath = httpServletRequest.getRealPath("") + File.separator + "hinhanh" + File.separator;
-        //set imgLogo
-        String fileName = FileUltis.saveFile(file, uploadPath);
-        company.setLogoImg(fileName);
+
+    @Override
+    public RestResponse create(CompanyDTO newCompany) {
+        Company company = new Company();
         company = modelMapper.map(newCompany, Company.class);
-        company.setCreatedDate(new Timestamp(new Date().getTime()));
+        company.setEmail(EMAIL);
         company.setCityByCityId(cityRepository.findOne(newCompany.getCityId()));
-        company.setLastModify(new Timestamp(new Date().getTime()));
+        company.setStatus("1");
+        company.setCreatedDate(new Timestamp(new Date().getTime()));
+
         companyRepository.save(company);
-        return newCompany;
+        Company changeCompany = companyRepository.findByEmail(EMAIL);
+        int companyId = changeCompany.getId();
+        changeCompany.setEmail(newCompany.getEmail());
+        companyRepository.save(changeCompany);
+
+        // Save list
+        Company savedCompany = companyRepository.findOne(companyId);
+        // mapping Company va industry
+        List<CompanyindustryDTO> list = newCompany.getCompanyindustriesById();
+        if (list != null){
+            for (CompanyindustryDTO companyindustryDTO : list) {
+                Companyindustry com = modelMapper.map(companyindustryDTO, Companyindustry.class);
+                com.setCompanyId(companyId);
+                com.setIndustryByIndustryId(industryRepository.findOne(com.getIndustryId()));
+                com.setCompanyByCompanyId(savedCompany);
+                companyindustryRepository.save(com);
+            }
+        }
+        return new RestResponse(true, "Tạo công ty thành công!!!", null);
     }
 }

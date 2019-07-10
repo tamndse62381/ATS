@@ -38,4 +38,17 @@ public class JoblevelServiceImpl implements JoblevelService {
         return joblevellist;
 
     }
+
+    @Override
+    public String getJobLevelNameById(int id) {
+        LOGGER.info("Begin getJobLevelNameById in Joblevel Service with id :" + id);
+        Joblevel joblevel = null;
+        try {
+            joblevel = joblevelRepository.findOne(id);
+        } catch (Exception e) {
+            LOGGER.info(e);
+        }
+        LOGGER.info("End getJobLevelNameById in Joblevel Service with id :" + id);
+        return joblevel.getJobLevelName();
+    }
 }

@@ -14,18 +14,21 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface JobRepository extends JpaRepository<Job, Integer>{
+public interface JobRepository extends JpaRepository<Job, Integer> {
 
-@Query("SELECT distinct j FROM Job j " +
-        "INNER JOIN j.skillneedforjobsById s " +
-        "INNER JOIN s.skillBySkillId a " +
-        "INNER JOIN a.skillmasterBySkillMasterId m " +
-        "WHERE j.title LIKE CONCAT('%',LOWER(:search),'%') " +
-        "OR m.skillName LIKE CONCAT('%',LOWER(:search),'%') ")
-    List<Job> searchJob(@Param("search") String search );
+    @Query("SELECT distinct j FROM Job j " +
+            "INNER JOIN j.skillneedforjobsById s " +
+            "INNER JOIN s.skillBySkillId a " +
+            "INNER JOIN a.skillmasterBySkillMasterId m " +
+            "WHERE j.title LIKE CONCAT('%',LOWER(:search),'%') " +
+            "OR m.skillName LIKE CONCAT('%',LOWER(:search),'%') ")
+    List<Job> searchJob(@Param("search") String search);
 
     @Query("Select b from Job b order by b.createdDate desc")
     List<Job> getTop8();
+
+    @Query("Select b from Job b where b.companyId = :companyId and b.id <> :jobId")
+    List<Job> getJobByCompanyID(@Param("companyId") int companyId , @Param("jobId") int jobId);
 
     @Transactional
     @Modifying

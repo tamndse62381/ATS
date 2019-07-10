@@ -4,6 +4,7 @@ import com.ats.dto.CountjobDTO;
 import com.ats.entity.Countjob;
 import com.ats.repository.CountjobRepository;
 import com.ats.service.CountjobService;
+import com.ats.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,14 @@ public class CountjobWS {
     @CrossOrigin(origins = "")
     public int countJob(@PathVariable(name = "id") int id){
         return countjobService.countAccessTimes(id);
+    }
+
+
+    // Count in one months
+    @GetMapping("count-month/{id}")
+    @CrossOrigin("*")
+    public RestResponse countMonth(@PathVariable Integer id){
+        return null;
     }
 
     //Test get

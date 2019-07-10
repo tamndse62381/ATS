@@ -1,8 +1,10 @@
 package com.ats.dto;
 
+import com.ats.entity.Job;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Data
