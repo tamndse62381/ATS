@@ -10,6 +10,7 @@ public class JobDTO2 {
     private Integer id;
     private Integer userId;
     private Integer companyId;
+    private Integer industryId;
     private String title;
     private Integer cityId;
     private String address;
