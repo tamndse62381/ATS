@@ -18,10 +18,11 @@ public class ApplyWS {
     private ApplyService applyService;
 
     // create when jobseeker apply a job
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create/{CvId}/{JobId}", method = RequestMethod.POST)
     @CrossOrigin(origins = "*")
-    public RestResponse create(@RequestBody Apply newApply){
-        return applyService.create(newApply.getJobSeekerId(), newApply.getJobId());
+    public RestResponse create(@PathVariable(name = "CvId") int CvId,
+                               @PathVariable(name = "JobId") int JobId){
+        return applyService.create(CvId, JobId);
     }
 
     // edit status - confirm

@@ -21,9 +21,11 @@ public class ApplyServiceImpl implements ApplyService  {
     private UsersRepository usersRepository;
     @Autowired
     private JobRepository jobRepository;
+    @Autowired
+    private
 
     @Override
-    public RestResponse create(int JobSeekerID, int JobID) {
+    public RestResponse create(int CvId, int JobID) {
         Users  user = usersRepository.findOne(JobSeekerID);
         if (user == null)
             return new RestResponse(false, "Lỗi: người dùng không tồn tại!", null);

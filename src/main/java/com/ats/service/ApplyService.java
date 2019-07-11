@@ -3,7 +3,7 @@ package com.ats.service;
 import com.ats.util.RestResponse;
 
 public interface ApplyService {
-    RestResponse create(int JobSeekerID, int JobID);
+    RestResponse create(int CvId, int JobID);
 
     RestResponse confirm(int ApplyId);
 
