@@ -7,6 +7,7 @@ import com.ats.entity.Users;
 import com.ats.repository.EmployercompanyRepository;
 import com.ats.service.CompanyService;
 import com.ats.service.EmployercompanyService;
+import com.ats.service.UsersService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
@@ -22,6 +23,9 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
     EmployercompanyRepository employercompanyRepository;
     @Autowired
     CompanyService companyService;
+    @Autowired
+    UsersService usersService;
+
 
     private static final Logger LOGGER = LogManager.getLogger(EmployercompanyServiceImpl.class);
 
@@ -29,7 +33,7 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
     @Override
     public boolean createNewEmployerCompany(EmployercompanyDTO dto) {
         LOGGER.info("Begin createNewEmployerCompany in Employercompany Service with User id : {}" + dto.getUserId());
-        Employercompany employercompany = new Employercompany();
+        Employercompany employercompany;
         boolean result = false;
         try {
             int newid = findCompanyById(dto.getCompanyId());
@@ -46,8 +50,41 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
                 employercompany.setUsersByUserId(users);
 
                 employercompany = employercompanyRepository.save(employercompany);
-                if(employercompany != null){
-                   result = true;
+                if (employercompany != null) {
+                    result = true;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End createNewEmployerCompany in Employercompany Service with User id : {}" + dto.getUserId());
+        return result;
+    }
+
+    @Override
+    public boolean createNewEmployerExistedCompany(EmployercompanyDTO dto) {
+        LOGGER.info("Begin createNewEmployerCompany in Employercompany Service with User id : {}" + dto.getUserId());
+        Employercompany employercompany;
+        boolean result = false;
+        try {
+            int newid = findCompanyById(dto.getCompanyId());
+            if (newid > -1) {
+                ModelMapper mapper = new ModelMapper();
+                employercompany = mapper.map(dto, Employercompany.class);
+                Users users = new Users();
+                users.setId(employercompany.getUserId());
+
+                Company company = new Company();
+                company.setId(employercompany.getCompanyId());
+
+                employercompany.setCompanyByCompanyId(company);
+                employercompany.setUsersByUserId(users);
+
+                employercompany = employercompanyRepository.save(employercompany);
+                employercompany.getUsersByUserId().setRoleId(3);
+                if (employercompany != null) {
+                    result = true;
                 }
             }
 

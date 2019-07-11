@@ -135,7 +135,7 @@ public class JobWS {
     @GetMapping(value = "/getTop8")
     public RestResponse getTop8(@PageableDefault Pageable pageable) {
         LOGGER.info("Begin getTop8 in JobWS ");
-        Page<Job> listJobs = null;
+        Page<JobDTO> listJobs = null;
         try {
             listJobs = jobService.getTop8(pageable);
             return new RestResponse(true, "get Top8 Successfull with list size is : ", listJobs);
