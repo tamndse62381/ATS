@@ -24,18 +24,33 @@ public class ApplyWS {
         return applyService.create(newApply.getJobSeekerId(), newApply.getJobId());
     }
 
-    // edit status when - confirm - deny
-    @RequestMapping(value = "/confirm/{applyid}",method = RequestMethod.POST)
+    // edit status - confirm
+    @RequestMapping(value = "/confirm/{applyid}",method = RequestMethod.GET)
     @CrossOrigin(origins = "*")
     public RestResponse confirm(@PathVariable(name = "applyid") int applyid){
-
-        return new RestResponse(true, "", null);
+        return applyService.confirm(applyid);
     }
 
+    // edit status - deny
+    @RequestMapping(value = "/deny//{applyid}", method = RequestMethod.GET)
+    @CrossOrigin("*")
+    public RestResponse deny(@PathVariable(name = "applyid") int applyid){
+        return applyService.deny(applyid);
+    }
+
+    // check
     @RequestMapping(value = "/check/{JobSeekerId}/{JobId}", method = RequestMethod.GET)
     @CrossOrigin(origins = "*")
     public boolean check(@PathVariable(name = "JobSeekerId") int jobseekerid,
                          @PathVariable(name = "JobId") int jobid){
         return applyService.check(jobseekerid, jobid);
+    }
+
+    // get list Apply cua mot job nao do
+    @RequestMapping(value = "/get-list/{id}", method = RequestMethod.GET)
+    @CrossOrigin(origins = "*")
+    public RestResponse getListApplyByJobId(@PathVariable int JobId){
+
+        return new RestResponse(true, "Thành công!!!", null);
     }
 }

@@ -10,13 +10,11 @@ import com.ats.service.ApplyService;
 import com.ats.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.ws.rs.NotFoundException;
 import java.sql.Timestamp;
 import java.util.Date;
 
 @Service
-public class ApplyServiceImpl implements ApplyService {
+public class ApplyServiceImpl implements ApplyService  {
     @Autowired
     private ApplyRepository applyRepository;
     @Autowired
@@ -44,6 +42,28 @@ public class ApplyServiceImpl implements ApplyService {
         }
         return new RestResponse(false, "Ứng tuyển không thành công. Vui lòng thử lại!!!", null);
     }
+
+    @Override
+    public RestResponse confirm(int ApplyId) {
+        Apply apply = applyRepository.findOne(ApplyId);
+        if (apply == null)
+            return new RestResponse(false, "Có lỗi xảy ra. Vui lòng thử lại!!!", null);
+        apply.setStatus("2");
+        applyRepository.save(apply);
+        // goi mail serviec gui mail cho employer
+        return new RestResponse(true, "Thành công!!!", null);
+    }
+
+    @Override
+    public RestResponse deny(int ApplyId) {
+        Apply apply = applyRepository.findOne(ApplyId);
+        if (apply == null)
+            return new RestResponse(false, "Có lỗi xảy ra. Vui lòng thử lại!!!", null);
+        apply.setStatus("3");
+        applyRepository.save(apply);
+        return new RestResponse(true, "Thành công!!!", null);
+    }
+
 
     @Override
     public boolean check(int JobSeekerID, int JobID) {
