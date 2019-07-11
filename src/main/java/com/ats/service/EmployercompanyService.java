@@ -8,6 +8,8 @@ public interface EmployercompanyService {
 
     boolean createNewEmployerCompany(EmployercompanyDTO dto);
 
+    boolean createNewEmployerExistedCompany(EmployercompanyDTO dto);
+
     int findCompanyById(int id);
 
     int findCompanyByUserId(int userId);

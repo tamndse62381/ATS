@@ -123,10 +123,6 @@ public class JobServiceImpl implements JobService {
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
             }.getType();
             listofDTO = mapper.map(listofJob.getContent(), targetListType);
-            for (int i = 0; i < listofJob.getContent().size(); i++) {
-                System.out.println(listofJob.getContent().get(i).getCompanyByCompanyId().getLogoImg());
-                System.out.println(listofDTO.get(i).getCompanyLogoImg());
-            }
             pageDTO = new PageImpl<>(listofDTO, new PageRequest(listofJob.getTotalPages(), listofJob.getSize()
                     , listofJob.getSort()), listofDTO.size());
             LOGGER.info("End searchJob in Job Repository with job list size : {} ");
@@ -163,18 +159,26 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Page<Job> getTop8(Pageable pageable) {
+    public Page<JobDTO> getTop8(Pageable pageable) {
         LOGGER.info("Begin getTop8 in Job Service");
         Page<Job> listofJob = null;
+        List<JobDTO> listofDTO ;
+        Page<JobDTO> pageDTO = null;
         try {
             LOGGER.info("Begin getTop8 in Job Repository ");
             listofJob = jobRepository.getTop8(pageable, "new", new Date());
+            ModelMapper mapper = new ModelMapper();
+            java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
+            }.getType();
+            listofDTO = mapper.map(listofJob.getContent(), targetListType);
+            pageDTO = new PageImpl<>(listofDTO, new PageRequest(listofJob.getTotalPages(), listofJob.getSize()
+                    , listofJob.getSort()), listofDTO.size());
             LOGGER.info("End getTop8 in Job Repository");
         } catch (Exception e) {
             e.printStackTrace();
         }
         LOGGER.info("End getTop8 in Job Service");
-        return listofJob;
+        return pageDTO;
     }
 
     @Override

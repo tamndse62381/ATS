@@ -78,6 +78,6 @@ public class CompanyServiceImpl implements CompanyService {
                 companyindustryRepository.save(com);
             }
         }
-        return new RestResponse(true, "Tạo công ty thành công!!!", null);
+        return new RestResponse(true, "Tạo công ty thành công!!!", companyId);
     }
 }
