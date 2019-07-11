@@ -193,12 +193,20 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    public int changeRole(int id, int role) {
+        LOGGER.info("Begin changeRole in User Service with User id - newStatus : {}", id + role);
+        int success;
+        success = usersRepository.changeRole(id, role);
+        LOGGER.info("End changeRole in User Service with result: {}", success);
+        return success;
+    }
+
+    @Override
     public int changeStatus(int id, String newStatus) {
-        LOGGER.info("Begin changeStatus in Account Service with Account id - newStatus : {}", id + newStatus);
+        LOGGER.info("Begin changeStatus in User Service with User id - newStatus : {}", id + newStatus);
         int success;
         success = usersRepository.changeStatus(id, newStatus);
-
-        LOGGER.info("End changeStatus in Account Service with result: {}", success);
+        LOGGER.info("End changeStatus in User Service with result: {}", success);
         return success;
     }
 
