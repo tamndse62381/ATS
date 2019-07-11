@@ -73,7 +73,6 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
                 ModelMapper mapper = new ModelMapper();
                 employercompany = mapper.map(dto, Employercompany.class);
                 Users users = new Users();
-                users.setRoleId(3);
                 users.setId(employercompany.getUserId());
 
                 Company company = new Company();
@@ -83,7 +82,7 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
                 employercompany.setUsersByUserId(users);
 
                 employercompany = employercompanyRepository.save(employercompany);
-
+                usersService.changeRole(employercompany.getUserId(),3 );
                 if (employercompany != null) {
                     result = true;
                 }

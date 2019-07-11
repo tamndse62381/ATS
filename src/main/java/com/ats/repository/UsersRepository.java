@@ -33,6 +33,11 @@ public interface UsersRepository extends JpaRepository<Users, Integer> {
 
     @Transactional
     @Modifying
+    @Query("UPDATE Users b SET b.roleId = :role WHERE b.id = :id")
+    int changeRole(@Param("id") int id, @Param("role") int role);
+
+    @Transactional
+    @Modifying
     @Query("UPDATE Users b SET b.status = :newStatus WHERE b.id = :id")
     int changeStatus(@Param("id") int id, @Param("newStatus") String newStatus);
 

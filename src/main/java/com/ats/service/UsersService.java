@@ -25,5 +25,7 @@ public interface UsersService {
 
     int updateUser(UsersDTO dto);
 
+    int changeRole(int id , int role);
+
 
 }
