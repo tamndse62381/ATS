@@ -17,7 +17,7 @@ public interface JobService {
 
     int updateJob(JobDTO2 job);
 
-    Page<JobDTO> searchJob(String job, int cityid, int industryid, Pageable pageable);
+    Page<JobDTO> searchJob(String job, String cityid, String industryid, Pageable pageable);
 
     List<String> getALlJobTitle();
 

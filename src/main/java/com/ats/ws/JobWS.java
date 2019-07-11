@@ -98,13 +98,13 @@ public class JobWS {
     @GetMapping(value = "/search")
     @ResponseBody
     public RestResponse searchJob(@RequestParam(value = "search") String search,
-                                  @RequestParam(value = "city") int cityId,
-                                  @RequestParam(value = "industry") int industryId,
+                                  @RequestParam(value = "city") String city,
+                                  @RequestParam(value = "industry") String industry,
                                   @PageableDefault Pageable pageable) {
         LOGGER.info("Begin searchJob in JobWS  with Search value : {}" + search);
         Page<JobDTO> listJob = null;
         try {
-            listJob = jobService.searchJob(search, cityId, industryId, pageable);
+            listJob = jobService.searchJob(search, city, industry, pageable);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -59,7 +59,6 @@ public class CompanyServiceImpl implements CompanyService {
         company.setCityByCityId(cityRepository.findOne(newCompany.getCityId()));
         company.setStatus("1");
         company.setCreatedDate(new Timestamp(new Date().getTime()));
-
         companyRepository.save(company);
         Company changeCompany = companyRepository.findByEmail(EMAIL);
         int companyId = changeCompany.getId();

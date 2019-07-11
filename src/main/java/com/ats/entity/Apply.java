@@ -1,6 +1,5 @@
 package com.ats.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -8,13 +7,15 @@ import java.util.Objects;
 
 @Entity
 public class Apply {
-    private int id;
+ private int id;
     private int jobSeekerId;
     private int jobId;
     private Timestamp dayApply;
     private String status;
+    private int cvid;
     private Cv cvByJobSeekerId;
     private Job jobByJobId;
+    private Cv cvByCvid;
 
     @Id
     @Column(name = "ID", nullable = false)
@@ -27,7 +28,7 @@ public class Apply {
     }
 
     @Basic
-    @Column(name = "JobSeekerID", nullable = false , insertable = false , updatable = false)
+    @Column(name = "JobSeekerID", nullable = false, insertable = false , updatable = false)
     public int getJobSeekerId() {
         return jobSeekerId;
     }
@@ -37,7 +38,7 @@ public class Apply {
     }
 
     @Basic
-    @Column(name = "JobID", nullable = false , insertable = false , updatable = false)
+    @Column(name = "JobID", nullable = false, insertable = false , updatable = false)
     public int getJobId() {
         return jobId;
     }
@@ -66,6 +67,16 @@ public class Apply {
         this.status = status;
     }
 
+    @Basic
+    @Column(name = "CVID", nullable = false, insertable = false , updatable = false)
+    public int getCvid() {
+        return cvid;
+    }
+
+    public void setCvid(int cvid) {
+        this.cvid = cvid;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -74,17 +85,17 @@ public class Apply {
         return id == apply.id &&
                 jobSeekerId == apply.jobSeekerId &&
                 jobId == apply.jobId &&
+                cvid == apply.cvid &&
                 Objects.equals(dayApply, apply.dayApply) &&
                 Objects.equals(status, apply.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, jobSeekerId, jobId, dayApply, status);
+        return Objects.hash(id, jobSeekerId, jobId, dayApply, status, cvid);
     }
 
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "JobSeekerID", referencedColumnName = "ID", nullable = false)
     public Cv getCvByJobSeekerId() {
         return cvByJobSeekerId;
@@ -95,7 +106,6 @@ public class Apply {
     }
 
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "JobID", referencedColumnName = "ID", nullable = false)
     public Job getJobByJobId() {
         return jobByJobId;
@@ -103,5 +113,15 @@ public class Apply {
 
     public void setJobByJobId(Job jobByJobId) {
         this.jobByJobId = jobByJobId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "CVID", referencedColumnName = "ID", nullable = false)
+    public Cv getCvByCvid() {
+        return cvByCvid;
+    }
+
+    public void setCvByCvid(Cv cvByCvid) {
+        this.cvByCvid = cvByCvid;
     }
 }
