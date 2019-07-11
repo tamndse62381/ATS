@@ -59,7 +59,7 @@ public class JobWS {
             job.setStatus("new");
             result = jobService.createJob(job);
 
-            if (result > 0) {
+            if (result > -1) {
                 return new RestResponse(true, "Create New Job Successfull", result);
             }
         } catch (Exception e) {
@@ -96,7 +96,7 @@ public class JobWS {
     @ResponseBody
     public RestResponse searchJob(@RequestParam(value = "search") String search,
                                   @RequestParam(value = "city") int cityId,
-                                  @RequestParam(value = "industryid") int industryId,
+                                  @RequestParam(value = "industry") int industryId,
                                   @PageableDefault Pageable pageable) {
         LOGGER.info("Begin searchJob in JobWS  with Search value : {}" + search);
         Page<JobDTO> listJob = null;
