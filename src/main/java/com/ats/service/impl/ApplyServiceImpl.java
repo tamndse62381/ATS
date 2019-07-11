@@ -1,8 +1,6 @@
 package com.ats.service.impl;
 
-import  com.ats.entity.Apply;
-import com.ats.entity.Job;
-import com.ats.entity.Users;
+import com.ats.entity.*;
 import com.ats.repository.ApplyRepository;
 import com.ats.repository.CVRepository;
 import com.ats.repository.JobRepository;
@@ -12,10 +10,12 @@ import com.ats.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
-public class ApplyServiceImpl implements ApplyService  {
+public class ApplyServiceImpl implements ApplyService{
     @Autowired
     private ApplyRepository applyRepository;
     @Autowired
@@ -27,21 +27,20 @@ public class ApplyServiceImpl implements ApplyService  {
 
     @Override
     public RestResponse create(int CvId, int JobID) {
-//        Job job = jobRepository.findOne(JobID);
-//        if (job == null)
-//            return new RestResponse(false, "Lỗi: việc làm này không tồn tại!", null);
-//        if (!check(JobSeekerID, JobID))
-//        {
-//            Apply apply = new Apply();
-//            apply.setJobId(JobID);
-//            apply.setId(JobSeekerID);
-//            apply.setDayApply(new Timestamp(new Date().getTime()));
-//            apply.setStatus("1");
-//            applyRepository.save(apply);
-//            return new RestResponse(true,"Bạn đã ứng tuyển vào công việc này thành công!!!", null);
-//        }
-//        return new RestResponse(false, "Ứng tuyển không thành công. Vui lòng thử lại!!!", null);
-        return null;
+        Job job = jobRepository.findOne(JobID);
+        Cv cv = cvRepository.findOne(CvId);
+        if (job == null || cv == null)
+            return new RestResponse(false, "Lỗi: việc làm này không tồn tại!", null);
+        Apply apply = new Apply();
+        apply.setJobId(JobID);
+        apply.setCvid(CvId);
+        apply.setCvByJobSeekerId(cv);
+        apply.setCvByCvid(cv);
+        apply.setJobByJobId(job);
+        apply.setDayApply(new Timestamp(new Date().getTime()));
+        apply.setStatus("1");
+        applyRepository.save(apply);
+        return new RestResponse(true,"Bạn đã ứng tuyển vào công việc này thành công!!!", null);
     }
 
     @Override
@@ -71,5 +70,18 @@ public class ApplyServiceImpl implements ApplyService  {
         if (apply != null)
             return true;
         return false;
+    }
+
+    @Override
+    public RestResponse listJob(int JobSeekerId) {
+        Users user =  usersRepository.findOne(JobSeekerId);
+        if (user == null)
+            return new RestResponse(false, "Có lỗi xảy ra. Vui lòng thử lại!!!", null);
+        List<Apply> list = applyRepository.findAppliesByJobSeekerId(JobSeekerId);
+        List<Job> listJob = new ArrayList<>();
+        for (Apply apply : list) {
+            listJob.add(apply.getJobByJobId());
+        }
+        return new RestResponse(true, "Thành công!!!", listJob);
     }
 }

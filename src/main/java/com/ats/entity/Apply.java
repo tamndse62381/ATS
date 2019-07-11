@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 public class Apply {
- private int id;
+    private int id;
     private int jobSeekerId;
     private int jobId;
     private Timestamp dayApply;
@@ -28,7 +28,7 @@ public class Apply {
     }
 
     @Basic
-    @Column(name = "JobSeekerID", nullable = false)
+    @Column(name = "JobSeekerID", nullable = false, insertable = false , updatable = false)
     public int getJobSeekerId() {
         return jobSeekerId;
     }
@@ -38,7 +38,7 @@ public class Apply {
     }
 
     @Basic
-    @Column(name = "JobID", nullable = false)
+    @Column(name = "JobID", nullable = false, insertable = false , updatable = false)
     public int getJobId() {
         return jobId;
     }
@@ -68,7 +68,7 @@ public class Apply {
     }
 
     @Basic
-    @Column(name = "CVID", nullable = false)
+    @Column(name = "CVID", nullable = false, insertable = false , updatable = false)
     public int getCvid() {
         return cvid;
     }

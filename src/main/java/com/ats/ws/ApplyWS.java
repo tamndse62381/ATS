@@ -48,10 +48,9 @@ public class ApplyWS {
     }
 
     // get list Apply cua mot job nao do
-    @RequestMapping(value = "/get-list/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/list-applied/{id}", method = RequestMethod.GET)
     @CrossOrigin(origins = "*")
-    public RestResponse getListApplyByJobId(@PathVariable int JobId){
-
-        return new RestResponse(true, "Thành công!!!", null);
+    public RestResponse getListJobAppliedByJobId(@PathVariable int JobSeekerId){
+        return applyService.listJob(JobSeekerId);
     }
 }
