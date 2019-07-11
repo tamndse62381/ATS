@@ -8,10 +8,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 
 @Service
+@Transactional
 public interface JobService {
     int createJob(JobDTO2 job);
 
@@ -21,7 +24,7 @@ public interface JobService {
 
     List<String> getALlJobTitle();
 
-    Page<Job> getTop8(Pageable pageable);
+    Page<JobDTO> getTop8(Pageable pageable);
 
     JobDTO3 getJobDetail(int id);
 

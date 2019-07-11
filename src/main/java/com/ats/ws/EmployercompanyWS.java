@@ -22,7 +22,7 @@ public class EmployercompanyWS {
 
     @ResponseBody
     @CrossOrigin(origins = "*")
-    @PostMapping(value = "/addNewEmployerCompany" )
+    @PostMapping(value = "/addNewEmployerCompany")
     public RestResponse addNewEmployerCompany(@RequestBody EmployercompanyDTO dto) {
         LOGGER.info("Begin addNewEmployerCompany in EmployercompanyWS with User id : {}" + dto.getUserId());
         try {
@@ -40,11 +40,29 @@ public class EmployercompanyWS {
 
     @ResponseBody
     @CrossOrigin(origins = "*")
+    @PostMapping(value = "/addNewEmployerCompanyExistedCompany")
+    public RestResponse addNewEmployerCompanyExistedCompany(@RequestBody EmployercompanyDTO dto) {
+        LOGGER.info("Begin addNewEmployerCompany in EmployercompanyWS with User id : {}" + dto.getUserId());
+        try {
+            dto.setCreatedDate(new Timestamp(new Date().getTime()));
+            System.out.println();
+            boolean finish = employercompanyService.createNewEmployerExistedCompany(dto);
+            LOGGER.info("End addNewEmployerCompany in EmployercompanyWS with User id : {}" + dto.getUserId());
+            if (finish) {
+                return new RestResponse(true, "Create New Employer Company Successfull", null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new RestResponse(false, "Fail To Create New Employer Company ", null);
+    }
+
+    @ResponseBody
+    @CrossOrigin(origins = "*")
     @PostMapping(value = "/getCompanyId")
     public RestResponse getCompany(@RequestBody EmployercompanyDTO dto) {
         LOGGER.info("Begin addNewEmployerCompany in EmployercompanyWS with Job id : {}" + dto.getUserId());
         try {
-
             int result = employercompanyService.findCompanyByUserId(dto.getUserId());
             if (result > -1) {
                 return new RestResponse(true, "Get Company Id Successful", result);
