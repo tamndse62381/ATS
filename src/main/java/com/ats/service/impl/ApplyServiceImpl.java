@@ -4,6 +4,7 @@ import  com.ats.entity.Apply;
 import com.ats.entity.Job;
 import com.ats.entity.Users;
 import com.ats.repository.ApplyRepository;
+import com.ats.repository.CVRepository;
 import com.ats.repository.JobRepository;
 import com.ats.repository.UsersRepository;
 import com.ats.service.ApplyService;
@@ -22,27 +23,25 @@ public class ApplyServiceImpl implements ApplyService  {
     @Autowired
     private JobRepository jobRepository;
     @Autowired
-    private
+    private CVRepository cvRepository;
 
     @Override
     public RestResponse create(int CvId, int JobID) {
-        Users  user = usersRepository.findOne(JobSeekerID);
-        if (user == null)
-            return new RestResponse(false, "Lỗi: người dùng không tồn tại!", null);
-        Job job = jobRepository.findOne(JobID);
-        if (job == null)
-            return new RestResponse(false, "Lỗi: việc làm này không tồn tại!", null);
-        if (!check(JobSeekerID, JobID))
-        {
-            Apply apply = new Apply();
-            apply.setJobId(JobID);
-            apply.setId(JobSeekerID);
-            apply.setDayApply(new Timestamp(new Date().getTime()));
-            apply.setStatus("1");
-            applyRepository.save(apply);
-            return new RestResponse(true,"Bạn đã ứng tuyển vào công việc này thành công!!!", null);
-        }
-        return new RestResponse(false, "Ứng tuyển không thành công. Vui lòng thử lại!!!", null);
+//        Job job = jobRepository.findOne(JobID);
+//        if (job == null)
+//            return new RestResponse(false, "Lỗi: việc làm này không tồn tại!", null);
+//        if (!check(JobSeekerID, JobID))
+//        {
+//            Apply apply = new Apply();
+//            apply.setJobId(JobID);
+//            apply.setId(JobSeekerID);
+//            apply.setDayApply(new Timestamp(new Date().getTime()));
+//            apply.setStatus("1");
+//            applyRepository.save(apply);
+//            return new RestResponse(true,"Bạn đã ứng tuyển vào công việc này thành công!!!", null);
+//        }
+//        return new RestResponse(false, "Ứng tuyển không thành công. Vui lòng thử lại!!!", null);
+        return null;
     }
 
     @Override
