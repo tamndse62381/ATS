@@ -18,13 +18,13 @@ public class IndustryWS {
     private IndustryService industryService;
 
     @RequestMapping(method = RequestMethod.GET)
-    @CrossOrigin(origins = "http://localhost:8090")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<List<Industry>> getAll(){
         return industryService.getAll();
     }
 
     @RequestMapping(value = "/getOne/{id}", method = RequestMethod.GET)
-    @CrossOrigin(origins = "http://localhost:8090")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<Industry> getById(@PathVariable int id){
         try {
             return ResponseEntity.ok().body(industryRepository.getOne(id));

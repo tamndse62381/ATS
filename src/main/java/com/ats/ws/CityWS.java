@@ -26,7 +26,7 @@ public class CityWS {
 
     private static final Logger LOGGER = LogManager.getLogger(CityWS.class);
 
-    @CrossOrigin(origins = "localhost:8090")
+    @CrossOrigin(origins = "*")
     @GetMapping(value = "/getAllCity" ,produces = "application/json;charset=UTF-8")
     @ResponseBody
     public RestResponse getAllCity() {
