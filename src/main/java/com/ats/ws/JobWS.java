@@ -9,9 +9,6 @@ import com.ats.service.*;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.JSONObject;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ats.util.RestResponse;
@@ -39,6 +36,8 @@ public class JobWS {
     SkillmasterService skillmasterService;
     @Autowired
     CityService cityService;
+    @Autowired
+    IndustryService industryService;
 
     private static final Logger LOGGER = LogManager.getLogger(UserWS.class);
 
@@ -58,8 +57,12 @@ public class JobWS {
             job.setEndDateForApply(c.getTime());
             job.setStatus("new");
             result = jobService.createJob(job);
-
-            if (result > -1) {
+            List<Integer> listSkillId = new ArrayList<>();
+            for (int i = 0; i < job.getListSkill().size(); i++) {
+                listSkillId.add(skillService.addNewSkill(job.getListSkill().get(i)));
+            }
+            boolean finish = skillNeedForJobService.addSkillForJob(listSkillId, result);
+            if (finish) {
                 return new RestResponse(true, "Create New Job Successfull", result);
             }
         } catch (Exception e) {
@@ -171,14 +174,17 @@ public class JobWS {
         List<SkillMasterDTO> listSkillMaster;
         List<Joblevel> listJobLevel;
         List<City> listCity;
+        List<Industry> listIndustry;
         try {
             listSkillMaster = skillmasterService.listAll();
             listJobLevel = joblevelService.getAllJobLevel();
             listCity = cityService.getAllCity();
+            listIndustry = industryService.getAll();
             HashMap<String, List> map = new HashMap<>();
             map.put("skillname", listSkillMaster);
             map.put("level", listJobLevel);
             map.put("city", listCity);
+            map.put("industry", listIndustry);
             return new RestResponse(true, "Get job Component Successful", map);
 
         } catch (Exception e) {
@@ -196,12 +202,16 @@ public class JobWS {
         List<SkillMasterDTO> listSkillMaster;
         List<Joblevel> listJobLevel;
         List<String> listTitle;
-        List<String> listAll = new ArrayList<>();
+        List<Object> listAll = new ArrayList<>();
+        List<City> listCity;
+        List<Industry> listIndustry;
         try {
             listSkillMaster = skillmasterService.listAll();
             listTitle = jobService.getALlJobTitle();
             listJobLevel = joblevelService.getAllJobLevel();
-
+            listCity = cityService.getAllCity();
+            listIndustry = industryService.getAll();
+            HashMap<String, List> map = new HashMap<>();
             for (int i = 0; i < listJobLevel.size(); i++) {
                 listAll.add(listJobLevel.get(i).getJobLevelName());
             }
@@ -211,9 +221,12 @@ public class JobWS {
             for (int i = 0; i < listSkillMaster.size(); i++) {
                 listAll.add(listSkillMaster.get(i).getSkillName());
             }
+            map.put("all", listAll);
+            map.put("city", listCity);
+            map.put("industry", listIndustry);
 
 
-            return new RestResponse(true, "Get job Component Successful", listAll);
+            return new RestResponse(true, "Get job Component Successful", map);
 
         } catch (Exception e) {
             e.printStackTrace();

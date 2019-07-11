@@ -16,12 +16,12 @@ public class IndustryServiceImpl implements IndustryService {
     private IndustryRepository industryRepository;
 
     @Override
-    public ResponseEntity<List<Industry>> getAll() {
+    public List<Industry> getAll() {
         try {
-            return ResponseEntity.ok().body(industryRepository.findAll());
+            return industryRepository.findAll();
         } catch (RuntimeException e){
             System.out.println(e);
         }
-        return ResponseEntity.badRequest().body(null);
+        return null;
     }
 }

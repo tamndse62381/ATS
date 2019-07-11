@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Transactional
 public interface JobRepository extends JpaRepository<Job, Integer> {
 
     @Query("SELECT distinct j FROM Job j " +

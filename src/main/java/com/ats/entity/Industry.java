@@ -52,6 +52,7 @@ public class Industry {
     }
 
     @OneToMany(mappedBy = "industryByIndustryId")
+    @JsonBackReference
     public List<Companyindustry> getCompanyindustriesById() {
         return companyindustriesById;
     }
