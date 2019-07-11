@@ -107,7 +107,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Page<JobDTO> searchJob(String job, int cityid, int industryid, Pageable pageable) {
+    public Page<JobDTO> searchJob(String job, String cityid, String industryid, Pageable pageable) {
         LOGGER.info("Begin searchJob in Job Service with job name : {} ", job);
         Page<Job> listofJob;
         Page<JobDTO> listofDTO = null;
