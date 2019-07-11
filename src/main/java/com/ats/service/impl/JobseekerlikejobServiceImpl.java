@@ -48,4 +48,10 @@ public class JobseekerlikejobServiceImpl implements JobseekerlikejobService {
         return new RestResponse(true, "Thành công!!!", null);
     }
 
+    @Override
+    public RestResponse listJob(int JobSeekerId) {
+
+        return null;
+    }
+
 }

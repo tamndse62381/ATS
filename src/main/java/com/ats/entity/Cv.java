@@ -393,7 +393,7 @@ public class Cv {
         this.skillincvsById = skillincvsById;
     }
 
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonBackReference
     @OneToMany(mappedBy = "cvByCvid")
     public List<Socialactivities> getSocialactivitiesById() {
         return socialactivitiesById;
@@ -403,8 +403,8 @@ public class Cv {
         this.socialactivitiesById = socialactivitiesById;
     }
 
-    @OneToMany(mappedBy = "cvByCvid")
     @JsonBackReference
+    @OneToMany(mappedBy = "cvByCvid")
     public List<Userslikecv> getUserslikecvsById() {
         return userslikecvsById;
     }

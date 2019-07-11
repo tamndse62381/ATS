@@ -44,7 +44,7 @@ public class IndustryWS {
 
     // put edit item
     @RequestMapping(method = RequestMethod.PUT)
-    @CrossOrigin(origins = "http://localhost:8090")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<Industry> update(@RequestBody Industry editedIndustry) {
         if (industryRepository.getOne(editedIndustry.getId()) != null) {
             return ResponseEntity.ok().body(industryRepository.save(editedIndustry));

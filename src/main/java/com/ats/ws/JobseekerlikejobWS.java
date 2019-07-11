@@ -26,7 +26,13 @@ public class JobseekerlikejobWS {
     @CrossOrigin("*")
     public boolean check(@PathVariable(name = "JobSeekerId") int JobSeekerId,
                          @PathVariable("JobId") int JobId){
+        return jobseekerlikejobService.check(JobSeekerId, JobId);
+    }
 
-        return true;
+    // list các Job ma một JobSeeker da like
+    @RequestMapping(value = "/list/{JobSeekerId}", method = RequestMethod.GET)
+    @CrossOrigin(origins = "*")
+    public RestResponse listJob(@PathVariable int JobSeekerId){
+        return null;
     }
 }

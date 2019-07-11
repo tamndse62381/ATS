@@ -8,4 +8,6 @@ public interface JobseekerlikejobService {
     boolean check(int JobSeekerId, int Jobid);
 
     RestResponse create(int JobSeekerId, int JobId);
+
+    RestResponse listJob(int JobSeekerId);
 }
