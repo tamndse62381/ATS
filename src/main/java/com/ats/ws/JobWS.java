@@ -101,7 +101,7 @@ public class JobWS {
                                   @RequestParam(value = "city") String city,
                                   @RequestParam(value = "industry") String industry,
                                   @PageableDefault Pageable pageable) {
-        LOGGER.info("Begin searchJob in JobWS  with Search value : {}" + search);
+        LOGGER.info("Begin searchJob in JobWS  with Search value : {}" + search + " " + city + " " + industry);
         Page<JobDTO> listJob = null;
         try {
             listJob = jobService.searchJob(search, city, industry, pageable);
@@ -109,7 +109,7 @@ public class JobWS {
             e.printStackTrace();
         }
         LOGGER.info("End searchJob in JobWS with Search value : {}" + search);
-        return new RestResponse(true, "get searchJob Successfull with list Size : ", listJob);
+        return new RestResponse(true, "searchJob Successfull with list Size : ", listJob);
     }
 
     @CrossOrigin(origins = "*")
@@ -233,6 +233,6 @@ public class JobWS {
         }
         LOGGER.info("End getSearchComponent in JobWS");
 
-        return new RestResponse(false, "Job is Not Available : ", null);
+        return new RestResponse(false, "Get job Component Fail ", null);
     }
 }

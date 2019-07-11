@@ -12,6 +12,8 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -107,24 +109,32 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Page<JobDTO> searchJob(String job, String cityid, String industryid, Pageable pageable) {
+    public Page<JobDTO> searchJob(String job, String city, String industry, Pageable pageable) {
         LOGGER.info("Begin searchJob in Job Service with job name : {} ", job);
         Page<Job> listofJob;
-        Page<JobDTO> listofDTO = null;
+        List<JobDTO> listofDTO ;
+        Page<JobDTO> pageDTO = null;
         try {
             LOGGER.info("Begin searchJob in Job Repository with job name : {} ", job);
-            listofJob = jobRepository.searchJob(job, pageable, "new", new Date(), cityid, industryid);
+            listofJob = jobRepository.searchJob(job, pageable, "new", new Date(), city, industry);
+
 
             ModelMapper mapper = new ModelMapper();
-            java.lang.reflect.Type targetListType = new TypeToken<Page<JobDTO>>() {
+            java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
             }.getType();
-            listofDTO = mapper.map(listofJob, targetListType);
+            listofDTO = mapper.map(listofJob.getContent(), targetListType);
+            for (int i = 0; i < listofJob.getContent().size(); i++) {
+                System.out.println(listofJob.getContent().get(i).getCompanyByCompanyId().getLogoImg());
+                System.out.println(listofDTO.get(i).getCompanyLogoImg());
+            }
+            pageDTO = new PageImpl<>(listofDTO, new PageRequest(listofJob.getTotalPages(), listofJob.getSize()
+                    , listofJob.getSort()), listofDTO.size());
             LOGGER.info("End searchJob in Job Repository with job list size : {} ");
         } catch (Exception e) {
             e.printStackTrace();
         }
         LOGGER.info("End searchJob in Job Service with job list size : {} ");
-        return listofDTO;
+        return pageDTO;
     }
 
     @Override
