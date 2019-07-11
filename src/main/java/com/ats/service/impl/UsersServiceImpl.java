@@ -143,10 +143,10 @@ public class UsersServiceImpl implements UsersService {
 
         if (token != null) {
             LOGGER.info("Begin findAccountByToken in User Repository with token: {}",
-                    usersDTO.getAccessToken());
+                    token);
             users = usersRepository.findAccountByToken(token);
             LOGGER.info("End findAccountByToken in User Repository with token: {}",
-                    usersDTO.getAccessToken());
+                    token);
             if (users != null) {
                 usersDTO = modelMapper.map(users, UsersDTO2.class);
                 if (users.getRoleId() != 1) {
