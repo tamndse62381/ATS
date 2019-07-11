@@ -8,6 +8,7 @@ public class JobDTO {
     private String title;
     private int companyId;
     private String companyName;
+    private String companyLogoImg;
     private int cityId;
     private String cityName;
     private Double salaryTo;
