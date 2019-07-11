@@ -42,7 +42,7 @@ public class JobServiceImpl implements JobService {
     @Override
     public int createJob(JobDTO2 job) {
         LOGGER.info("Begin createJob in Job Service with job name : {}", job.getTitle());
-        int result = 0;
+        int result = -1;
         Job newJob;
         try {
             ModelMapper mapper = new ModelMapper();
@@ -68,9 +68,9 @@ public class JobServiceImpl implements JobService {
             newJob.setJoblevelByJobLevelId(joblevel);
             newJob.setIndustryByIndustryId(industry);
 
-            newJob = jobRepository.save(newJob);
-            result = newJob.getId();
-            System.out.println("KQ : " + newJob.getId());
+//            newJob = jobRepository.save(newJob);
+            result = jobRepository.save(newJob).getId();
+            System.out.println("KQ : " + result);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -109,11 +109,11 @@ public class JobServiceImpl implements JobService {
     @Override
     public Page<JobDTO> searchJob(String job, int cityid, int industryid, Pageable pageable) {
         LOGGER.info("Begin searchJob in Job Service with job name : {} ", job);
-        Page<Job> listofJob ;
+        Page<Job> listofJob;
         Page<JobDTO> listofDTO = null;
         try {
             LOGGER.info("Begin searchJob in Job Repository with job name : {} ", job);
-            listofJob = jobRepository.searchJob(job, pageable, "new", new Date());
+            listofJob = jobRepository.searchJob(job, pageable, "new", new Date(), cityid, industryid);
 
             ModelMapper mapper = new ModelMapper();
             java.lang.reflect.Type targetListType = new TypeToken<Page<JobDTO>>() {
