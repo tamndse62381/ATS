@@ -36,7 +36,7 @@ public class IndustryWS {
 
     // create new Industry
     @RequestMapping(method = RequestMethod.POST)
-    @CrossOrigin(origins = "http://localhost:8090")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<Industry> create(@RequestBody Industry newIndustry){
         industryRepository.save(newIndustry);
         return ResponseEntity.ok().body(null);

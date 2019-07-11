@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service;
 public interface JobseekerlikejobService {
     boolean check(int JobSeekerId, int Jobid);
 
-    RestResponse create();
+    RestResponse create(int JobSeekerId, int JobId);
 }

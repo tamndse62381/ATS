@@ -52,6 +52,7 @@ public class Industry {
     }
 
     @OneToMany(mappedBy = "industryByIndustryId")
+    @JsonBackReference
     public List<Companyindustry> getCompanyindustriesById() {
         return companyindustriesById;
     }
@@ -61,7 +62,7 @@ public class Industry {
     }
 
     @OneToMany(mappedBy = "industryByIndustryId")
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonBackReference
     public List<Cv> getCvsById() {
         return cvsById;
     }
@@ -71,7 +72,7 @@ public class Industry {
     }
 
     @OneToMany(mappedBy = "industryByIndustryId")
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonBackReference
     public List<Job> getJobsById() {
         return jobsById;
     }

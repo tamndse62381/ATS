@@ -1,6 +1,6 @@
 package com.ats.service.impl;
 
-import com.ats.entity.Apply;
+import  com.ats.entity.Apply;
 import com.ats.entity.Job;
 import com.ats.entity.Users;
 import com.ats.repository.ApplyRepository;
@@ -63,7 +63,6 @@ public class ApplyServiceImpl implements ApplyService  {
         applyRepository.save(apply);
         return new RestResponse(true, "Thành công!!!", null);
     }
-
 
     @Override
     public boolean check(int JobSeekerID, int JobID) {

@@ -13,14 +13,15 @@ public class JobseekerlikejobWS {
     @Autowired
     private JobseekerlikejobService jobseekerlikejobService;
 
-    //create
-    @PostMapping("/create")
+    //create  -- chua test nha
+    @PostMapping("/create/{JobSeekerId}/{JobId}")
     @CrossOrigin(origins = "*")
-    public RestResponse create(@RequestBody JobseekerlikejobDTO newJobseekerlikejobDTO){
-        return new RestResponse(true, "Thành công!!!", null);
+    public RestResponse create(@PathVariable(name = "JobSeekerId")int JobSeekerId,
+                                @PathVariable(name = "JobId") int JobId) {
+        return jobseekerlikejobService.create(JobSeekerId, JobId);
     }
 
-    //check jobseeker like job or not
+    //check jobseeker like job or not -- chua test nha
     @RequestMapping(value = "/check/{JobSeekerId}/{JobId}", method = RequestMethod.GET)
     @CrossOrigin("*")
     public boolean check(@PathVariable(name = "JobSeekerId") int JobSeekerId,

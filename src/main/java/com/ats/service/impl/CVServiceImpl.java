@@ -157,7 +157,9 @@ public class CVServiceImpl implements CVService {
         Cv cv = cvRepository.findOne(editedCv.getId());
         if (cv == null)
             return new RestResponse(false,"Không thành công!!!", null);
-
+        Cv editCv = new Cv();
+        editCv = modelMapper.map(editCv, Cv.class);
+        cvRepository.save(editCv);
         return new RestResponse(true, "Chỉnh sửa thành công!!!", null);
     }
 

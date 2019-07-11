@@ -47,6 +47,7 @@ public class CompanyWS {
     @CrossOrigin("")
     public ResponseEntity<Company> edit(@RequestBody Company editedCompany){
         try {
+
             editedCompany.setLastModify(new Timestamp(new Date().getTime()));
             return ResponseEntity.ok().body(companyRepository.save(editedCompany));
         } catch (RuntimeException e){
