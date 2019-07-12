@@ -2,6 +2,7 @@ package com.ats.entity;
 
 import com.ats.enummerator.WorkingType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -266,7 +267,7 @@ public class Job {
     }
 
     @OneToMany(mappedBy = "jobByJobId")
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonBackReference
     public List<Apply> getAppliesById() {
         return appliesById;
     }
@@ -297,7 +298,7 @@ public class Job {
     }
 
     @ManyToOne
-    @JsonBackReference
+    @JsonManagedReference
     @JoinColumn(name = "CompanyID", referencedColumnName = "ID", nullable = false)
     public Company getCompanyByCompanyId() {
         return companyByCompanyId;

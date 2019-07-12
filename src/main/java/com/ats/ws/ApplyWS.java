@@ -33,7 +33,7 @@ public class ApplyWS {
     }
 
     // edit status - deny
-    @RequestMapping(value = "/deny//{applyid}", method = RequestMethod.GET)
+    @RequestMapping(value = "/deny/{applyid}", method = RequestMethod.GET)
     @CrossOrigin("*")
     public RestResponse deny(@PathVariable(name = "applyid") int applyid){
         return applyService.deny(applyid);
@@ -50,7 +50,7 @@ public class ApplyWS {
     // get list Apply cua mot job nao do
     @RequestMapping(value = "/list-applied/{id}", method = RequestMethod.GET)
     @CrossOrigin(origins = "*")
-    public RestResponse getListJobAppliedByJobId(@PathVariable int JobSeekerId){
+    public RestResponse getListJobAppliedByJobId(@PathVariable(name = "id") int JobSeekerId){
         return applyService.listJob(JobSeekerId);
     }
 }

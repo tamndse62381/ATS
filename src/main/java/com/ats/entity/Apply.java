@@ -1,6 +1,8 @@
 package com.ats.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -107,6 +109,7 @@ public class Apply {
 
     @ManyToOne
     @JoinColumn(name = "JobID", referencedColumnName = "ID", nullable = false)
+    @JsonIgnore
     public Job getJobByJobId() {
         return jobByJobId;
     }
