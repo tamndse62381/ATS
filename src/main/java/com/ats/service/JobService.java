@@ -4,6 +4,7 @@ import com.ats.dto.JobDTO2;
 import com.ats.dto.JobDTO;
 import com.ats.dto.JobDTO3;
 import com.ats.entity.Job;
+import com.ats.util.RestResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -27,5 +28,7 @@ public interface JobService {
 
     int changeStatus(int id , String newStatus);
 
+    RestResponse findListJobValid(int EmployerId);
 
+    RestResponse findListJobInValid(int EmployerId);
 }

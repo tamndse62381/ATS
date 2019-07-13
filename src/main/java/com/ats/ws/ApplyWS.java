@@ -53,4 +53,12 @@ public class ApplyWS {
     public RestResponse getListJobAppliedByJobId(@PathVariable(name = "id") int JobSeekerId){
         return applyService.listJob(JobSeekerId);
     }
+
+
+    // get List Cv applied for one Job
+    @GetMapping("/cv-applied/{jobid}")
+    @CrossOrigin(origins = "*")
+    public RestResponse getListCvAppliedForOneJob(@PathVariable(name = "jobid") int JobId){
+        return applyService.listCv(JobId);
+    }
 }

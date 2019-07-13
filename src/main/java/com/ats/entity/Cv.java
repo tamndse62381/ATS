@@ -314,7 +314,7 @@ public class Cv {
         this.countcvsById = countcvsById;
     }
 
-    @JsonManagedReference
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "UserID", referencedColumnName = "ID", nullable = false)
     public Users getUsersByUserId() {

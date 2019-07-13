@@ -89,4 +89,19 @@ public class ApplyServiceImpl implements ApplyService{
         }
         return new RestResponse(true, "Thành công!!!", listJob);
     }
+
+    @Override
+    public RestResponse listCv(int JobId) {
+        Job job = jobRepository.findOne(JobId);
+        if (job == null)
+            return new RestResponse(false, "Có lỗi xảy ra!!!", null);
+        List<Apply> listApply = applyRepository.findAppliesByJobId(JobId);
+        if (listApply == null)
+            return new RestResponse(false, "Chưa có ứng viên nào cho công việc này!!!", null);
+        List<Cv> listCv = new ArrayList<>();
+        for (Apply apply : listApply) {
+            listCv.add(apply.getCvByCvid());
+        }
+        return new RestResponse(true, "Thành công!!!", listCv);
+    }
 }

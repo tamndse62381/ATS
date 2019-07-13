@@ -12,4 +12,6 @@ public interface ApplyService {
     boolean check(int JobSeekerID, int JobID);
 
     RestResponse listJob(int JobSeekerId);
+
+    RestResponse listCv(int JobId);
 }

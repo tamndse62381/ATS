@@ -10,7 +10,9 @@ import com.ats.entity.Job;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -51,4 +53,10 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
     Optional<Job> findById(int id);
 
     List<Job> findByUserId(int id);
+
+    @Query("Select j from Job  j where j.userId = :userid and j.endDateForApply >= :now")
+    List<Job> getJobValid(@Param("userid") int userid, @Param("now") Timestamp now);
+
+    @Query("Select j from Job  j where j.userId = :userid and j.endDateForApply <= :now")
+    List<Job> getJobInValid(@Param("userid") int userid, @Param("now") Timestamp now);
 }

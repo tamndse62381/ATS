@@ -6,6 +6,7 @@ import com.ats.dto.JobDTO3;
 import com.ats.entity.*;
 import com.ats.repository.JobRepository;
 import com.ats.service.*;
+import com.ats.util.RestResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
@@ -16,8 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Type;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -206,6 +206,22 @@ public class JobServiceImpl implements JobService {
         success = jobRepository.changeStatus(id, newStatus);
         LOGGER.info("End changeStatus in Account Service with result: {}", success);
         return success;
+    }
+
+    @Override
+    public RestResponse findListJobValid(int EmployerId) {
+        List<Job> listJob = jobRepository.getJobValid(EmployerId, new Timestamp(new Date().getTime()));
+        if (listJob == null)
+            return new RestResponse(false, "không có công việc nào!!!", null);
+        return new RestResponse(true, "Thành công!!!", listJob);
+    }
+
+    @Override
+    public RestResponse findListJobInValid(int EmployerId) {
+        List<Job> listJob = jobRepository.getJobInValid(EmployerId, new Timestamp(new Date().getTime()));
+        if (listJob == null)
+            return new RestResponse(false, "Không có công việc nào!!", null);
+        return new RestResponse(true, "Thành công!!!", listJob);
     }
 
 }
