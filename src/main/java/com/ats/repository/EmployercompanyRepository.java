@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EmployercompanyRepository extends JpaRepository<Employercompany,Integer> {
-
     @Query("Select b from Employercompany b where b.userId = :userId")
     Employercompany findCompanyByUserId(@Param("userId") int userId);
 }

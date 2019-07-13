@@ -129,7 +129,6 @@ public class JobWS {
         }
         LOGGER.info("End changeJobStatus in JobWS with Search value : {}" + job.getId());
         return new RestResponse(false, "changeStatus Fail", null);
-
     }
 
     @CrossOrigin(origins = "*")
@@ -249,7 +248,6 @@ public class JobWS {
         return jobService.findListJobInValid(EmployerId);
     }
 
-
     // Test
     @Autowired
     private JobRepository jobRepository;
@@ -259,4 +257,7 @@ public class JobWS {
     public RestResponse testGet(){
         return new RestResponse(true, "Thanh cong", jobRepository.findAll());
     }
+
+
+
 }
