@@ -24,7 +24,7 @@ public class EmailService {
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setTo("nguyenduyan.annd@gmail.com");
         mail.setSubject("Test Mail");
-        mail.setText("Thong tin nay!!!");
+        mail.setText("Thong tin nay!!!<br/> 123");
         javaMailSender.send(mail);
     }
 }
