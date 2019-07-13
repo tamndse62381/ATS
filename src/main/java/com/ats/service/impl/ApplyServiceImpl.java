@@ -34,7 +34,6 @@ public class ApplyServiceImpl implements ApplyService{
         Apply apply = new Apply();
         apply.setJobId(JobID);
         apply.setCvid(CvId);
-        apply.setCvByJobSeekerId(cv);
         apply.setCvByCvid(cv);
         apply.setJobByJobId(job);
         apply.setDayApply(new Timestamp(new Date().getTime()));
@@ -66,21 +65,27 @@ public class ApplyServiceImpl implements ApplyService{
 
     @Override
     public boolean check(int JobSeekerID, int JobID) {
-        Apply apply = applyRepository.findApplyBy(JobSeekerID, JobID);
-        if (apply != null)
+        List<Cv> listCv = cvRepository.findByUserId(JobSeekerID);
+        if (listCv == null)
             return true;
+        for (Cv cv : listCv) {
+            if (applyRepository.findForCheck(cv.getId(), JobID) != null)
+                return true;
+        }
         return false;
     }
 
     @Override
     public RestResponse listJob(int JobSeekerId) {
-        Users user =  usersRepository.findOne(JobSeekerId);
-        if (user == null)
-            return new RestResponse(false, "Có lỗi xảy ra. Vui lòng thử lại!!!", null);
-        List<Apply> list = applyRepository.findAppliesByJobSeekerId(JobSeekerId);
+        List<Cv> listCv = cvRepository.findByUserId(JobSeekerId);
+        if (listCv == null)
+            return new RestResponse(false, "Bạn chưa ứng tuyển công việc nào!!!", null);
         List<Job> listJob = new ArrayList<>();
-        for (Apply apply : list) {
-            listJob.add(apply.getJobByJobId());
+        for (Cv cv : listCv) {
+            List<Apply> list = applyRepository.findAppliesByCvid(cv.getId());
+            for (Apply apply : list) {
+                listJob.add(apply.getJobByJobId());
+            }
         }
         return new RestResponse(true, "Thành công!!!", listJob);
     }
