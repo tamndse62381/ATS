@@ -290,12 +290,6 @@ public class Cv {
         return Objects.hash(id, title, userId, img, email, telephoneNumber, firstName, lastName, gender, dob, cityId, address, industryId, description, yearExperience, salaryFrom, salaryTo, status, createdDate, lastModify, isActive);
     }
 
-    @OneToMany(mappedBy = "cvByJobSeekerId")
-    @JsonBackReference
-    public List<Apply> getAppliesById() {
-        return appliesById;
-    }
-
     public void setAppliesById(List<Apply> appliesById) {
         this.appliesById = appliesById;
     }
@@ -320,7 +314,7 @@ public class Cv {
         this.countcvsById = countcvsById;
     }
 
-    @JsonManagedReference
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "UserID", referencedColumnName = "ID", nullable = false)
     public Users getUsersByUserId() {

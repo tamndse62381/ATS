@@ -33,7 +33,7 @@ public class ApplyWS {
     }
 
     // edit status - deny
-    @RequestMapping(value = "/deny//{applyid}", method = RequestMethod.GET)
+    @RequestMapping(value = "/deny/{applyid}", method = RequestMethod.GET)
     @CrossOrigin("*")
     public RestResponse deny(@PathVariable(name = "applyid") int applyid){
         return applyService.deny(applyid);
@@ -48,10 +48,17 @@ public class ApplyWS {
     }
 
     // get list Apply cua mot job nao do
-    @RequestMapping(value = "/get-list/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/list-applied/{id}", method = RequestMethod.GET)
     @CrossOrigin(origins = "*")
-    public RestResponse getListApplyByJobId(@PathVariable int JobId){
+    public RestResponse getListJobAppliedByJobId(@PathVariable(name = "id") int JobSeekerId){
+        return applyService.listJob(JobSeekerId);
+    }
 
-        return new RestResponse(true, "Thành công!!!", null);
+
+    // get List Cv applied for one Job
+        @GetMapping("/cv-applied/{jobid}")
+    @CrossOrigin(origins = "*")
+    public RestResponse getListCvAppliedForOneJob(@PathVariable(name = "jobid") int JobId){
+        return applyService.listCv(JobId);
     }
 }

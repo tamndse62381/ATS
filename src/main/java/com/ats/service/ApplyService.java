@@ -10,4 +10,8 @@ public interface ApplyService {
     RestResponse deny(int ApplyId);
 
     boolean check(int JobSeekerID, int JobID);
+
+    RestResponse listJob(int JobSeekerId);
+
+    RestResponse listCv(int JobId);
 }

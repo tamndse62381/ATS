@@ -5,6 +5,7 @@ import com.ats.dto.JobDTO;
 import com.ats.dto.JobDTO3;
 import com.ats.dto.SkillMasterDTO;
 import com.ats.entity.*;
+import com.ats.repository.JobRepository;
 import com.ats.service.*;
 
 import org.apache.logging.log4j.LogManager;
@@ -143,7 +144,6 @@ public class JobWS {
         }
         LOGGER.info("End changeJobStatus in JobWS with Search value : {}" + job.getId());
         return new RestResponse(false, "changeStatus Fail", null);
-
     }
 
     @CrossOrigin(origins = "*")
@@ -250,4 +250,29 @@ public class JobWS {
 
         return new RestResponse(false, "Get job Component Fail ", null);
     }
+
+    @GetMapping("/list-valid/{EmployerId}")
+    @CrossOrigin(origins = "*")
+    public RestResponse listJobsByEmployerIdValid(@PathVariable(name = "EmployerId") int EmployerId){
+        return jobService.findListJobValid(EmployerId);
+    }
+
+    @GetMapping("/list-invalid/{EmployerId}")
+    @CrossOrigin(origins = "*")
+    public RestResponse listJobsByEmployerIdInValid(@PathVariable(name = "EmployerId") int EmployerId){
+        return jobService.findListJobInValid(EmployerId);
+    }
+
+    // Test
+    @Autowired
+    private JobRepository jobRepository;
+    // Test get
+    @GetMapping("/test/get")
+    @CrossOrigin("*")
+    public RestResponse testGet(){
+        return new RestResponse(true, "Thanh cong", jobRepository.findAll());
+    }
+
+
+
 }

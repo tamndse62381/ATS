@@ -53,6 +53,10 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public RestResponse create(CompanyDTO newCompany) {
+        // check name's company
+        Company check = companyRepository.findByNameCompany(newCompany.getNameCompany());
+        if (check != null)
+            return new RestResponse(false, "Tên công ty đã tồn tại!!!", null);
         Company company = new Company();
         company = modelMapper.map(newCompany, Company.class);
         company.setEmail(EMAIL);

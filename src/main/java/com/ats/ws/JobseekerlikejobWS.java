@@ -1,7 +1,5 @@
 package com.ats.ws;
 
-import com.ats.dto.JobseekerlikejobDTO;
-import com.ats.repository.JobseekerlikejobRespository;
 import com.ats.service.JobseekerlikejobService;
 import com.ats.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +31,14 @@ public class JobseekerlikejobWS {
     @RequestMapping(value = "/list/{JobSeekerId}", method = RequestMethod.GET)
     @CrossOrigin(origins = "*")
     public RestResponse listJob(@PathVariable int JobSeekerId){
-        return null;
+        return jobseekerlikejobService.listJob(JobSeekerId);
+    }
+
+    // un-check = delete
+    @PostMapping("uncheck/{JobSeekerId}/{JobId}")
+    @CrossOrigin("*")
+    public RestResponse unCheck(@PathVariable(name = "JobSeekerId") int JobSeekerId,
+                           @PathVariable("JobId") int JobId){
+        return jobseekerlikejobService.unCheck(JobSeekerId, JobId);
     }
 }

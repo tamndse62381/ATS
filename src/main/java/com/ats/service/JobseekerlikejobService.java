@@ -10,4 +10,6 @@ public interface JobseekerlikejobService {
     RestResponse create(int JobSeekerId, int JobId);
 
     RestResponse listJob(int JobSeekerId);
+
+    RestResponse unCheck(int JobSeekerId, int JobId);
 }
