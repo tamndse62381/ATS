@@ -30,5 +30,7 @@ public interface JobService {
 
     int changeStatus(int id , String newStatus);
 
+    Page<JobDTO> suggestJob(int cvid , Pageable pageable);
+
 
 }

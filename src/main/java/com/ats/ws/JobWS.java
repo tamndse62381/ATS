@@ -113,6 +113,21 @@ public class JobWS {
     }
 
     @CrossOrigin(origins = "*")
+    @GetMapping(value = "/suggest")
+    @ResponseBody
+    public RestResponse suggestJob(@RequestParam(value = "cvId") int cvId, @PageableDefault Pageable pageable) {
+        LOGGER.info("Begin suggestJob in JobWS  with cvId : " + cvId);
+        Page<JobDTO> listJob = null;
+        try {
+            listJob = jobService.suggestJob(cvId, pageable);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End suggestJob in JobWS  with cvId : " + cvId);
+        return new RestResponse(true, "suggestJob Successfull", listJob);
+    }
+
+    @CrossOrigin(origins = "*")
     @PostMapping(value = "/changeJobStatus")
     @ResponseBody
     public RestResponse changeJobStatus(@RequestBody JobDTO2 job) {
