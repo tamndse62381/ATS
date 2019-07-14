@@ -49,6 +49,21 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
     @Query("UPDATE Job b SET b.status = :newStatus WHERE b.id = :id")
     int changeStatus(@Param("id") int id, @Param("newStatus") String newStatus);
 
+    @Query("SELECT distinct j FROM Job j " +
+            "INNER JOIN j.cityByCityId c " +
+            "INNER JOIN j.industryByIndustryId d " +
+            "WHERE j.status = :status and " +
+            "j.endDateForApply > :now and " +
+            "j.yearExperience >= :yE and " +
+            "c.id = :cityId and " +
+            "d.id = :industryId")
+    Page<Job> suggestJob(@Param("yE") int yearExperience,
+                         @Param("industryId") int industryId,
+                         @Param("cityId") int city,
+                         @Param("status") String status,
+                         @Param("now") Date now,
+                         Pageable pageable);
+
     Optional<Job> findById(int id);
 
     List<Job> findByUserId(int id);

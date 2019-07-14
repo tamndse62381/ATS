@@ -4,6 +4,7 @@ import com.ats.dto.JobDTO2;
 import com.ats.dto.JobDTO;
 import com.ats.dto.JobDTO3;
 import com.ats.entity.*;
+import com.ats.repository.CVRepository;
 import com.ats.repository.JobRepository;
 import com.ats.service.*;
 import org.apache.logging.log4j.LogManager;
@@ -38,6 +39,8 @@ public class JobServiceImpl implements JobService {
     SkillService skillService;
     @Autowired
     JoblevelService joblevelService;
+    @Autowired
+    CVRepository cvRepository;
 
     private static final Logger LOGGER = LogManager.getLogger(JobServiceImpl.class);
 
@@ -112,12 +115,11 @@ public class JobServiceImpl implements JobService {
     public Page<JobDTO> searchJob(String job, String city, String industry, Pageable pageable) {
         LOGGER.info("Begin searchJob in Job Service with job name : {} ", job);
         Page<Job> listofJob;
-        List<JobDTO> listofDTO ;
+        List<JobDTO> listofDTO;
         Page<JobDTO> pageDTO = null;
         try {
             LOGGER.info("Begin searchJob in Job Repository with job name : {} ", job);
             listofJob = jobRepository.searchJob(job, pageable, "new", new Date(), city, industry);
-
 
             ModelMapper mapper = new ModelMapper();
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
@@ -162,7 +164,7 @@ public class JobServiceImpl implements JobService {
     public Page<JobDTO> getTop8(Pageable pageable) {
         LOGGER.info("Begin getTop8 in Job Service");
         Page<Job> listofJob = null;
-        List<JobDTO> listofDTO ;
+        List<JobDTO> listofDTO;
         Page<JobDTO> pageDTO = null;
         try {
             LOGGER.info("Begin getTop8 in Job Repository ");
@@ -220,6 +222,50 @@ public class JobServiceImpl implements JobService {
         success = jobRepository.changeStatus(id, newStatus);
         LOGGER.info("End changeStatus in Account Service with result: {}", success);
         return success;
+    }
+
+    @Override
+    public Page<JobDTO> suggestJob(int cvid,Pageable pageable) {
+        LOGGER.info("Begin suggestJob in Job Service with cvId : ", cvid);
+        List<Integer> skillInCvId = null;
+        List<Job> jobList;
+
+        List<Job> suggestJobList = null;
+        Page<Job> jobPage;
+
+        List<JobDTO> listofDTO;
+        Page<JobDTO> pageDTO = null;
+        try {
+            Cv cv = cvRepository.findOne(cvid);
+            for (int i = 0; i < cv.getSkillincvsById().size(); i++) {
+                skillInCvId.add(cv.getSkillincvsById().get(i).getSkillId());
+            }
+            jobPage = jobRepository.suggestJob(cv.getYearExperience(),
+                    cv.getIndustryId(), cv.getCityId(),
+                    "new", new Date(), pageable);
+
+            jobList = jobPage.getContent();
+            for (int i = 0; i < jobList.size(); i++) {
+//                List<Integer> skillNeedForJobId = null;
+                List<Skillneedforjob> skillneedforjobs = jobList.get(i).getSkillneedforjobsById();
+                for (int j = 0; j < skillneedforjobs.size(); j++) {
+//                    skillNeedForJobId.add(skillneedforjobs.get(j).getSkillId());
+                    if (skillInCvId.contains(skillneedforjobs.get(j).getSkillId())) {
+                        suggestJobList.add(jobList.get(i));
+                    }
+                }
+            }
+
+            ModelMapper mapper = new ModelMapper();
+            java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
+            }.getType();
+            listofDTO = mapper.map(suggestJobList, targetListType);
+            pageDTO = new PageImpl<>(listofDTO, new PageRequest(10,0) ,listofDTO.size());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End suggestJob in Job Service with cvId : ", cvid);
+        return pageDTO;
     }
 
 }
