@@ -2,7 +2,6 @@ package com.ats.ws;
 
 import com.ats.dto.CVDTO;
 import com.ats.entity.*;
-import com.ats.form.CreateCVForm;
 import com.ats.repository.CVRepository;
 import com.ats.service.*;
 import com.ats.util.RestResponse;
@@ -53,11 +52,11 @@ public class CVWS {
     }
 
 
-    // Edit information's cv, without list belong to this cv
-    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    // Edit information's cv
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @CrossOrigin(origins = "*")
-    public boolean  editCv(@RequestBody CVDTO editedCv){
-        return false;
+    public RestResponse  editCv(@RequestBody CVDTO editedCv){
+        return cvService.edit(editedCv);
     }
 
     // Test
