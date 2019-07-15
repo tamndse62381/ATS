@@ -30,5 +30,5 @@ public interface JobService {
 
     int changeStatus(int id , String newStatus);
 
-
+    Page<Job> getAllJob(Pageable pageable);
 }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ats.util.RestResponse;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import org.springframework.data.web.PageableDefault;
@@ -234,5 +235,21 @@ public class JobWS {
         LOGGER.info("End getSearchComponent in JobWS");
 
         return new RestResponse(false, "Get job Component Fail ", null);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping(value = "/getAllJob")
+    public RestResponse getAllJob(@PageableDefault Pageable pageable) {
+        LOGGER.info("Begin getAllJob in JobWS");
+        pageable = new PageRequest(0,Integer.MAX_VALUE);
+        Page<Job> listJobs = null;
+        try {
+            listJobs = jobService.getAllJob(pageable);
+            return new RestResponse(true, "Get getAllJob Successful", listJobs);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getAllJob in JobWS");
+        return new RestResponse(false, "No Job is Available : ", null);
     }
 }

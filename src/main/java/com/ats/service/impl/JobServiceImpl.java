@@ -222,4 +222,20 @@ public class JobServiceImpl implements JobService {
         return success;
     }
 
+    @Override
+    public Page<Job> getAllJob(Pageable pageable) {
+        LOGGER.info("Begin getAllJob in Job Service");
+        Page<Job> listofJob = null;
+        try {
+            LOGGER.info("Begin getAllJob in Job Repository ");
+            listofJob = jobRepository.findAll(pageable);
+
+            LOGGER.info("End getAllJob in Job Repository");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getAllJob in Job Service");
+        return listofJob;
+    }
+
 }
