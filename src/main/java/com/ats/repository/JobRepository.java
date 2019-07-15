@@ -55,8 +55,8 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
             "INNER JOIN j.cityByCityId c " +
             "INNER JOIN j.industryByIndustryId d " +
             "WHERE j.status = :status and " +
+            "j.yearExperience <= :yE and " +
             "j.endDateForApply > :now and " +
-            "j.yearExperience >= :yE and " +
             "c.id = :cityId and " +
             "d.id = :industryId")
     Page<Job> suggestJob(@Param("yE") int yearExperience,

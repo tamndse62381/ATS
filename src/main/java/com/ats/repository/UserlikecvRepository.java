@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface UserlikecvRepository extends JpaRepository<Userslikecv, Integer> {
-    @Query("Select U from Userslikecv u where u.userId = :employerid and u.cvid = :cvid")
+    @Query("Select u from Userslikecv u where u.userId = :userid and u.cvid = :cvid")
     List<Userslikecv> check(@Param("userid") int userid, @Param("cvid") int cvid);
 
     List<Userslikecv> findUserslikecvsByUserId(int EmployerId);

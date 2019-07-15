@@ -225,33 +225,40 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Page<JobDTO> suggestJob(int cvid,Pageable pageable) {
-        LOGGER.info("Begin suggestJob in Job Service with cvId : ", cvid);
-        List<Integer> skillInCvId = null;
+    public Page<JobDTO> suggestJob(int cvId, Pageable pageable) {
+        LOGGER.info("Begin suggestJob in Job Service with cvId : " + cvId);
+        List<Integer> skillInCvId = new ArrayList();
         List<Job> jobList;
 
-        List<Job> suggestJobList = null;
+        List<Job> suggestJobList = new ArrayList<>();
         Page<Job> jobPage;
 
         List<JobDTO> listofDTO;
         Page<JobDTO> pageDTO = null;
         try {
-            Cv cv = cvRepository.findOne(cvid);
+            Cv cv = cvRepository.findOne(cvId);
+            System.out.println("SKILL của CV Ở ĐÂY");
             for (int i = 0; i < cv.getSkillincvsById().size(); i++) {
                 skillInCvId.add(cv.getSkillincvsById().get(i).getSkillId());
+                System.out.println(cv.getSkillincvsById().get(i).getSkillId());
             }
+            Date date = new Date();
+
             jobPage = jobRepository.suggestJob(cv.getYearExperience(),
                     cv.getIndustryId(), cv.getCityId(),
-                    "new", new Date(), pageable);
+                    "new", date, pageable);
 
-            jobList = jobPage.getContent();
-            for (int i = 0; i < jobList.size(); i++) {
-//                List<Integer> skillNeedForJobId = null;
-                List<Skillneedforjob> skillneedforjobs = jobList.get(i).getSkillneedforjobsById();
-                for (int j = 0; j < skillneedforjobs.size(); j++) {
-//                    skillNeedForJobId.add(skillneedforjobs.get(j).getSkillId());
-                    if (skillInCvId.contains(skillneedforjobs.get(j).getSkillId())) {
-                        suggestJobList.add(jobList.get(i));
+            System.out.println("CÓ NHA : " + jobPage.getContent().size());
+
+            for (int i = 0; i < jobPage.getContent().size(); i++) {
+                System.out.println("SKILL CỦA JOB " + i);
+                System.out.println(jobPage.getContent().get(i).getTitle());
+                for (int j = 0; j < jobPage.getContent().get(i).getSkillneedforjobsById().size(); j++) {
+                    System.out.println(jobPage.getContent().get(i).getSkillneedforjobsById().get(j).getSkillId());
+                    if (skillInCvId.contains(jobPage.getContent().get(i).getSkillneedforjobsById().get(j).getSkillId())) {
+                        if (!suggestJobList.contains(jobPage.getContent().get(i))) {
+                            suggestJobList.add(jobPage.getContent().get(i));
+                        }
                     }
                 }
             }
@@ -260,13 +267,14 @@ public class JobServiceImpl implements JobService {
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
             }.getType();
             listofDTO = mapper.map(suggestJobList, targetListType);
-            pageDTO = new PageImpl<>(listofDTO, new PageRequest(10,0) ,listofDTO.size());
+            pageDTO = new PageImpl<>(listofDTO, new PageRequest(10, 1), listofDTO.size());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOGGER.info("End suggestJob in Job Service with cvId : ", cvid);
+        LOGGER.info("End suggestJob in Job Service with cvId : " + cvId);
         return pageDTO;
     }
+
     public RestResponse findListJobValid(int EmployerId) {
         List<Job> listJob = jobRepository.getJobValid(EmployerId, new Timestamp(new Date().getTime()));
         if (listJob == null)
