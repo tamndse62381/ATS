@@ -162,14 +162,13 @@ public class JobServiceImpl implements JobService {
             for (int i = 0; i < listofJob.size(); i++) {
                 if (listofJob.get(i).getStatus().matches("new") &&
                         listofJob.get(i).getEndDateForApply().after(new Date())) {
-                    LOGGER.info("Add a job to listofResult because job is available " + listofJob.get(i).getTitle());
                     listofResult.add(listofJob.get(i).getTitle());
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOGGER.info("End getTop8 in Job Service");
+        LOGGER.info("End getALlJobTitle in Job Service");
         return listofResult;
     }
 
