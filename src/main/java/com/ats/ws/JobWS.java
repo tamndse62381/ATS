@@ -1,9 +1,6 @@
 package com.ats.ws;
 
-import com.ats.dto.JobDTO2;
-import com.ats.dto.JobDTO;
-import com.ats.dto.JobDTO3;
-import com.ats.dto.SkillMasterDTO;
+import com.ats.dto.*;
 import com.ats.entity.*;
 import com.ats.repository.JobRepository;
 import com.ats.service.*;
@@ -300,16 +297,19 @@ public class JobWS {
     @GetMapping(value = "/getSearchComponentAdmin")
     public RestResponse getSearchComponentAdmin() {
         LOGGER.info("Begin getSearchComponentAdmin in JobWS");
-        List<String> companyName = new ArrayList<>();
-        try {
-            for (int i = 0; i < companyService.listAll().size(); i++) {
-                companyName.add(companyService.listAll().get(i).getNameCompany());
+        List<String> listAll = null;
+        List<String> listTitle = jobService.getALlJobTitle();
+        List<CompanyDTO2> companyName = companyService.listAll();
+         try {
+             System.out.println(listTitle.size());
+             System.out.println(companyName.size());
+            for (int i = 0; i < listTitle.size(); i++) {
+                listAll.add(listTitle.get(i));
+            } for (int i = 0; i < companyName.size(); i++) {
+                listAll.add(companyName.get(i).getNameCompany());
             }
-            HashMap<String, List> map = new HashMap<>();
-            map.put("jobTitle", jobService.getALlJobTitle());
-            map.put("companyName", companyName);
 
-            return new RestResponse(true, "Get Search Component Admin Successful", map);
+            return new RestResponse(true, "Get Search Component Admin Successful", listAll);
 
         } catch (Exception e) {
             e.printStackTrace();
