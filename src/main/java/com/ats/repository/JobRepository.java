@@ -78,7 +78,7 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
 
     @Query("Select j from Job j " +
             "INNER JOIN j.companyByCompanyId c " +
-            "where j.status= :status and " +
+            "where j.status LIKE CONCAT('%',LOWER(:status),'%') and " +
             "(j.title LIKE CONCAT('%',LOWER(:search),'%') OR " +
             "c.nameCompany LIKE CONCAT('%',LOWER(:search),'%'))")
     Page<Job> getAll(Pageable pageable, @Param("search") String search, @Param("status") String status);
