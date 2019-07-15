@@ -301,6 +301,19 @@ public class JobServiceImpl implements JobService {
         if (listJob == null)
             return new RestResponse(false, "Không có công việc nào!!", null);
         return new RestResponse(true, "Thành công!!!", listJob);
+    public Page<Job> getAllJob(Pageable pageable) {
+        LOGGER.info("Begin getAllJob in Job Service");
+        Page<Job> listofJob = null;
+        try {
+            LOGGER.info("Begin getAllJob in Job Repository ");
+            listofJob = jobRepository.findAll(pageable);
+
+            LOGGER.info("End getAllJob in Job Repository");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getAllJob in Job Service");
+        return listofJob;
     }
 
 }

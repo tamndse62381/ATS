@@ -36,4 +36,5 @@ public interface JobService {
     RestResponse findListJobValid(int EmployerId);
 
     RestResponse findListJobInValid(int EmployerId);
+    Page<Job> getAllJob(Pageable pageable);
 }

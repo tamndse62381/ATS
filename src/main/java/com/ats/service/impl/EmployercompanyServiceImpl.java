@@ -73,7 +73,6 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
                 ModelMapper mapper = new ModelMapper();
                 employercompany = mapper.map(dto, Employercompany.class);
                 Users users = new Users();
-
                 users.setId(employercompany.getUserId());
 
                 Company company = new Company();
