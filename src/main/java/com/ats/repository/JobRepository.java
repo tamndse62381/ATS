@@ -75,4 +75,11 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
 
     @Query("Select j from Job  j where j.userId = :userid and j.endDateForApply <= :now")
     List<Job> getJobInValid(@Param("userid") int userid, @Param("now") Timestamp now);
+
+    @Query("Select j from Job j " +
+            "INNER JOIN j.companyByCompanyId c " +
+            "where j.status= :status and " +
+            "j.title LIKE CONCAT('%',LOWER(:search),'%') OR " +
+            "c.nameCompany LIKE CONCAT('%',LOWER(:search),'%')")
+    Page<Job> getAll(Pageable pageable, @Param("search") String search, @Param("status") String status);
 }

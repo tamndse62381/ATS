@@ -40,6 +40,8 @@ public class JobWS {
     CityService cityService;
     @Autowired
     IndustryService industryService;
+    @Autowired
+    CompanyService companyService;
 
     private static final Logger LOGGER = LogManager.getLogger(UserWS.class);
 
@@ -254,41 +256,66 @@ public class JobWS {
 
     @GetMapping("/list-valid/{EmployerId}")
     @CrossOrigin(origins = "*")
-    public RestResponse listJobsByEmployerIdValid(@PathVariable(name = "EmployerId") int EmployerId){
+    public RestResponse listJobsByEmployerIdValid(@PathVariable(name = "EmployerId") int EmployerId) {
         return jobService.findListJobValid(EmployerId);
     }
 
     @GetMapping("/list-invalid/{EmployerId}")
     @CrossOrigin(origins = "*")
-    public RestResponse listJobsByEmployerIdInValid(@PathVariable(name = "EmployerId") int EmployerId){
+    public RestResponse listJobsByEmployerIdInValid(@PathVariable(name = "EmployerId") int EmployerId) {
         return jobService.findListJobInValid(EmployerId);
     }
 
     // Test
     @Autowired
     private JobRepository jobRepository;
+
     // Test get
     @GetMapping("/test/get")
     @CrossOrigin("*")
-    public RestResponse testGet(){
+    public RestResponse testGet() {
         return new RestResponse(true, "Thanh cong", jobRepository.findAll());
     }
 
 
-
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getAllJob")
-    public RestResponse getAllJob(@PageableDefault Pageable pageable) {
+    public RestResponse getAllJob(@PageableDefault Pageable pageable,
+                                  @RequestParam("search") String search,
+                                  @RequestParam("status") String status) {
         LOGGER.info("Begin getAllJob in JobWS");
-        pageable = new PageRequest(0,Integer.MAX_VALUE);
+        pageable = new PageRequest(0, Integer.MAX_VALUE);
         Page<Job> listJobs = null;
         try {
-            listJobs = jobService.getAllJob(pageable);
+            listJobs = jobService.getAllJob(pageable, search, status);
             return new RestResponse(true, "Get getAllJob Successful", listJobs);
         } catch (Exception e) {
             e.printStackTrace();
         }
         LOGGER.info("End getAllJob in JobWS");
         return new RestResponse(false, "No Job is Available : ", null);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping(value = "/getSearchComponentAdmin")
+    public RestResponse getSearchComponentAdmin() {
+        LOGGER.info("Begin getSearchComponentAdmin in JobWS");
+        List<String> companyName = new ArrayList<>();
+        try {
+            for (int i = 0; i < companyService.listAll().size(); i++) {
+                companyName.add(companyService.listAll().get(i).getNameCompany());
+            }
+            HashMap<String, List> map = new HashMap<>();
+            map.put("jobTitle", jobService.getALlJobTitle());
+            map.put("companyName", companyName);
+
+            return new RestResponse(true, "Get Search Component Admin Successful", map);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getSearchComponent in JobWS");
+
+        return new RestResponse(false, "Get Search Component Admin Fail ", null);
     }
 }

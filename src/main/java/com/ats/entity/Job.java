@@ -298,7 +298,7 @@ public class Job {
     }
 
     @ManyToOne
-    @JsonManagedReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "CompanyID", referencedColumnName = "ID", nullable = false)
     public Company getCompanyByCompanyId() {
         return companyByCompanyId;

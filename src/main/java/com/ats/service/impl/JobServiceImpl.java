@@ -119,7 +119,7 @@ public class JobServiceImpl implements JobService {
         Page<JobDTO> pageDTO = null;
         try {
             LOGGER.info("Begin searchJob in Job Repository with job name : {} ", job);
-            listofJob = jobRepository.searchJob(job, pageable, "new", new Date(), city, industry);
+            listofJob = jobRepository.searchJob(job, pageable, "approved", new Date(), city, industry);
 
             ModelMapper mapper = new ModelMapper();
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
@@ -181,7 +181,7 @@ public class JobServiceImpl implements JobService {
         Page<JobDTO> pageDTO = null;
         try {
             LOGGER.info("Begin getTop8 in Job Repository ");
-            listofJob = jobRepository.getTop8(pageable, "new", new Date());
+            listofJob = jobRepository.getTop8(pageable, "approved", new Date());
             ModelMapper mapper = new ModelMapper();
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
             }.getType();
@@ -303,12 +303,12 @@ public class JobServiceImpl implements JobService {
         return new RestResponse(true, "Thành công!!!", listJob);
     }
 
-    public Page<Job> getAllJob(Pageable pageable) {
+    public Page<Job> getAllJob(Pageable pageable, String search, String status) {
         LOGGER.info("Begin getAllJob in Job Service");
         Page<Job> listofJob = null;
         try {
             LOGGER.info("Begin getAllJob in Job Repository ");
-            listofJob = jobRepository.findAll(pageable);
+            listofJob = jobRepository.getAll(pageable, search, status);
             LOGGER.info("End getAllJob in Job Repository");
         } catch (Exception e) {
             e.printStackTrace();
