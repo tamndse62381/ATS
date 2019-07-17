@@ -11,6 +11,8 @@ import com.ats.repository.CompanyindustryRepository;
 import com.ats.repository.IndustryRepository;
 import com.ats.service.CompanyService;
 import com.ats.util.RestResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,8 @@ public class CompanyServiceImpl implements CompanyService {
     private CompanyindustryRepository companyindustryRepository;
     @Autowired
     private IndustryRepository industryRepository;
+
+    private static final Logger LOGGER = LogManager.getLogger(CompanyServiceImpl.class);
 
     //Mapping Object
     ModelMapper modelMapper = new ModelMapper();
@@ -83,5 +87,14 @@ public class CompanyServiceImpl implements CompanyService {
             }
         }
         return new RestResponse(true, "Tạo công ty thành công!!!", companyId);
+    }
+
+    @Override
+    public int changeStatus(int id, String newStatus) {
+        LOGGER.info("Begin changeStatus in Job Service with Job id - newStatus : {}", id + newStatus);
+        int success;
+        success = companyRepository.changeStatus(id, newStatus);
+        LOGGER.info("End changeStatus in Job Service with result: {}", success);
+        return success;
     }
 }

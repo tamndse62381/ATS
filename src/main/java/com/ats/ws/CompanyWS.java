@@ -8,6 +8,8 @@ import com.ats.model.FileModel;
 import com.ats.repository.CompanyRepository;
 import com.ats.service.CompanyService;
 import com.ats.util.RestResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,6 +37,8 @@ public class CompanyWS {
     private CompanyRepository companyRepository;
     @Autowired
     private CompanyService companyService;
+
+    private static final Logger LOGGER = LogManager.getLogger(CompanyWS.class);
 
     //Create a new company
     @PostMapping("")
@@ -72,5 +76,23 @@ public class CompanyWS {
         List<CompanyDTO2> company = companyService.listAll();
         return new ResponseEntity< List<CompanyDTO2>>(company, HttpStatus.OK);
     }
+    @CrossOrigin(origins = "*")
+    @PostMapping(value = "/changeCompanyStatus")
+    @ResponseBody
+    public RestResponse changeCompanyStatus(@RequestBody CompanyDTO companyDTO) {
+        LOGGER.info("Begin changeJobStatus in CompanyWS with Search value : {}" + companyDTO.getId());
+        int success;
+        try {
+            success = companyService.changeStatus(companyDTO.getId(), companyDTO.getStatus());
+            if (success > 0) {
+                return new RestResponse(true, "changeStatus Successful with status " + companyDTO.getStatus(), null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End changeJobStatus in CompanyWS with Search value : {}" + companyDTO.getId());
+        return new RestResponse(false, "changeStatus Fail", null);
+    }
+
 
 }

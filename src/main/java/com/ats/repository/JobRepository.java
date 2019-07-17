@@ -28,10 +28,10 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
             "INNER JOIN j.cityByCityId c " +
             "INNER JOIN j.industryByIndustryId d " +
             "WHERE j.status = :status and " +
-            "(j.title LIKE CONCAT('%',LOWER(:search),'%') and " +
-            "j.endDateForApply > :now and " +
             "c.fullName LIKE CONCAT('%',LOWER(:city),'%') and " +
-            "d.name LIKE CONCAT('%',LOWER(:industry),'%') " +
+            "d.name LIKE CONCAT('%',LOWER(:industry),'%') and " +
+            "j.endDateForApply > :now and " +
+            "(j.title LIKE CONCAT('%',LOWER(:search),'%') " +
             "OR m.skillName LIKE CONCAT('%',LOWER(:search),'%'))")
     Page<Job> searchJob(@Param("search") String search, Pageable pageable,
                         @Param("status") String status, @Param("now") Date endDateForApply,
