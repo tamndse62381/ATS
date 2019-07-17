@@ -3,6 +3,7 @@ package com.ats.service.impl;
 import com.ats.dto.SkillMasterDTO;
 import com.ats.entity.Skill;
 import com.ats.entity.Skillmaster;
+import com.ats.entity.Skilltype;
 import com.ats.repository.SkillmasterRepository;
 import com.ats.service.SkillmasterService;
 import org.apache.logging.log4j.LogManager;
@@ -26,9 +27,15 @@ public class SkillmasterServiceImpl implements SkillmasterService {
     private static final Logger LOGGER = LogManager.getLogger(SkillmasterServiceImpl.class);
 
     @Override
-    public boolean createANewSkillMaster(Skillmaster newSkillmaster) {
+    public boolean createANewSkillMaster(SkillMasterDTO skillmasterDTO) {
         try {
-            skillmasterRepository.save(newSkillmaster);
+            Skillmaster newSkillMaster;
+            ModelMapper mapper = new ModelMapper();
+            newSkillMaster = mapper.map(skillmasterDTO,Skillmaster.class);
+            Skilltype skilltype = new Skilltype();
+            skilltype.setId(newSkillMaster.getSkillTypeId());
+            newSkillMaster.setSkilltypeBySkillTypeId(skilltype);
+            skillmasterRepository.save(newSkillMaster);
             return true;
         } catch (RuntimeException e) {
             System.out.println(e);
@@ -48,12 +55,16 @@ public class SkillmasterServiceImpl implements SkillmasterService {
     }
 
     @Override
-    public boolean editASkillmaster(Skillmaster editedSkillmaster, int id) {
+    public boolean editASkillmaster(SkillMasterDTO editedSkillmaster) {
         try {
-            Skillmaster skillmaster = skillmasterRepository.getOne(id);
+            Skillmaster skillmaster = skillmasterRepository.findOne(editedSkillmaster.getId());
+
             if (skillmaster != null) {
                 skillmaster.setSkillName(editedSkillmaster.getSkillName());
-                skillmaster.setSkillTypeId(editedSkillmaster.getSkillTypeId());
+                Skilltype skilltype = new Skilltype();
+                skilltype.setId(editedSkillmaster.getSkillTypeId());
+                skillmaster.setSkilltypeBySkillTypeId(skilltype);
+
                 skillmasterRepository.save(skillmaster);
                 return true;
             }
