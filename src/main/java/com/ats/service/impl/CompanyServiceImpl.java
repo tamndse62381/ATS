@@ -2,6 +2,7 @@ package com.ats.service.impl;
 
 import com.ats.dto.CompanyDTO;
 import com.ats.dto.CompanyDTO2;
+import com.ats.dto.CompanyDTO3;
 import com.ats.dto.CompanyindustryDTO;
 import com.ats.entity.Company;
 import com.ats.entity.Companyindustry;
@@ -16,7 +17,10 @@ import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -56,6 +60,18 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public List<CompanyDTO3> listAllAdmin() {
+        ModelMapper mapper = new ModelMapper();
+        java.lang.reflect.Type targetListType = new TypeToken<List<CompanyDTO3>>() {
+        }.getType();
+        List<CompanyDTO3> listofDTO;
+        List<Company> listCompany = companyRepository.findAll();
+        listofDTO = mapper.map(listCompany, targetListType);
+        return listofDTO;
+    }
+
+
+    @Override
     public RestResponse create(CompanyDTO newCompany) {
         // check name's company
         Company check = companyRepository.findByNameCompany(newCompany.getNameCompany());
@@ -77,7 +93,7 @@ public class CompanyServiceImpl implements CompanyService {
         Company savedCompany = companyRepository.findOne(companyId);
         // mapping Company va industry
         List<CompanyindustryDTO> list = newCompany.getCompanyindustriesById();
-        if (list != null){
+        if (list != null) {
             for (CompanyindustryDTO companyindustryDTO : list) {
                 Companyindustry com = modelMapper.map(companyindustryDTO, Companyindustry.class);
                 com.setCompanyId(companyId);
@@ -96,5 +112,10 @@ public class CompanyServiceImpl implements CompanyService {
         success = companyRepository.changeStatus(id, newStatus);
         LOGGER.info("End changeStatus in Job Service with result: {}", success);
         return success;
+    }
+
+    @Override
+    public Page<Company> findAllCompanyByStatus(String search, String status, Pageable pageable) {
+        return companyRepository.findAll(pageable, search, status);
     }
 }

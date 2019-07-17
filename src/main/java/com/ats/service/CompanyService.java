@@ -2,6 +2,7 @@ package com.ats.service;
 
 import com.ats.dto.CompanyDTO;
 import com.ats.dto.CompanyDTO2;
+import com.ats.dto.CompanyDTO3;
 import com.ats.entity.Company;
 import com.ats.model.FileModel;
 import com.ats.util.RestResponse;
@@ -18,7 +19,11 @@ public interface CompanyService {
 
     List<CompanyDTO2> listAll();
 
+    List<CompanyDTO3> listAllAdmin();
+
     RestResponse create(CompanyDTO newCompany);
 
     int changeStatus(int id , String newStatus);
+
+    Page<Company> findAllCompanyByStatus(String search , String status , Pageable pageable);
 }
