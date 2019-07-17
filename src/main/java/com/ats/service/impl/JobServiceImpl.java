@@ -115,21 +115,22 @@ public class JobServiceImpl implements JobService {
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
             }.getType();
             listofDTO = mapper.map(listofJob.getContent(), targetListType);
-
             System.out.println(listofJob.getTotalPages());
             System.out.println(listofJob.getSize());
             System.out.println(listofJob.getTotalElements());
             System.out.println(listofJob.getNumber());
             System.out.println();
+            if(listofDTO.size() > 0){
+                pageDTO = new PageImpl<>(listofDTO,
+                        new PageRequest(listofJob.getTotalPages(), listofJob.getNumberOfElements()),
+                        listofDTO.size());
+                System.out.println(pageDTO.getTotalPages());
+                System.out.println(pageDTO.getSize());
+                System.out.println(pageDTO.getTotalElements());
+                System.out.println(pageDTO.getNumber());
+            }
 
-            pageDTO = new PageImpl<>(listofDTO,
-                    new PageRequest(listofJob.getTotalPages(), listofJob.getNumberOfElements()),
-                    listofDTO.size());
 
-            System.out.println(pageDTO.getTotalPages());
-            System.out.println(pageDTO.getSize());
-            System.out.println(pageDTO.getTotalElements());
-            System.out.println(pageDTO.getNumber());
             LOGGER.info("End searchJob in Job Repository with job list size : {} ");
         } catch (Exception e) {
             e.printStackTrace();

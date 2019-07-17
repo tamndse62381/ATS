@@ -9,5 +9,6 @@ public class EmployercompanyDTO {
     private int id;
     private int userId;
     private int companyId;
+    private String status;
     private Timestamp createdDate;
 }
