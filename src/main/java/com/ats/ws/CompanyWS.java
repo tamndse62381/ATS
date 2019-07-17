@@ -2,6 +2,7 @@ package com.ats.ws;
 
 import com.ats.dto.CompanyDTO;
 import com.ats.dto.CompanyDTO2;
+import com.ats.dto.CompanyDTO3;
 import com.ats.dto.CompanyindustryDTO;
 import com.ats.entity.Company;
 import com.ats.model.FileModel;
@@ -13,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
@@ -74,8 +76,9 @@ public class CompanyWS {
     @CrossOrigin("")
     public ResponseEntity<List<CompanyDTO2>> getCompanyById() {
         List<CompanyDTO2> company = companyService.listAll();
-        return new ResponseEntity< List<CompanyDTO2>>(company, HttpStatus.OK);
+        return new ResponseEntity<List<CompanyDTO2>>(company, HttpStatus.OK);
     }
+
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/changeCompanyStatus")
     @ResponseBody
@@ -92,6 +95,45 @@ public class CompanyWS {
         }
         LOGGER.info("End changeJobStatus in CompanyWS with Search value : {}" + companyDTO.getId());
         return new RestResponse(false, "changeStatus Fail", null);
+    }
+
+    @GetMapping("/listCompanyAdmin")
+    @CrossOrigin("")
+    public RestResponse getCompanyAdmin() {
+        LOGGER.info("Begin getCompanyAdmin in CompanyWS");
+        try {
+            List<CompanyDTO3> company = companyService.listAllAdmin();
+            LOGGER.info("End getCompanyAdmin in CompanyWS");
+            if (company.size() > 0) {
+                return new RestResponse(true, "Success getCompanyAdmin", company);
+            } else {
+                return new RestResponse(true, "Success getCompanyAdmin is Empty", company);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new RestResponse(false, "Fail  getCompanyAdmin ", null);
+
+    }
+
+    @GetMapping("/getCompanyAdmin")
+    @CrossOrigin("")
+    public RestResponse getCompanyDetail(@RequestParam(value = "search") String search,
+                                         @RequestParam(value = "status") String status,
+                                         @PageableDefault Pageable pageable) {
+        LOGGER.info("Begin getCompanyAdmin in CompanyWS");
+        pageable = new PageRequest(0, Integer.MAX_VALUE);
+        try {
+            Page<Company> company = companyService.findAllCompanyByStatus(search, status, pageable);
+            LOGGER.info("End getCompanyAdmin in CompanyWS");
+            if (company != null) {
+                return new RestResponse(true, "Success getCompanyAdmin ", company);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new RestResponse(false, "Fail getCompanyAdmin ", null);
+
     }
 
 

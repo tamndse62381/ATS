@@ -19,7 +19,7 @@ import java.util.Optional;
 public interface CompanyRepository extends JpaRepository<Company, Integer> {
 
     @Query("Select c from Company c")
-     Page<Company> findAllPaging(Pageable pageable);
+    Page<Company> findAllPaging(Pageable pageable);
 
     Company findCompanyByNameCompany(String nameCompany);
 
@@ -33,4 +33,8 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
     @Modifying
     @Query("UPDATE Company c SET c.status = :newStatus WHERE c.id = :id")
     int changeStatus(@Param("id") int id, @Param("newStatus") String newStatus);
+
+    @Query("select c from Company c where c.status LIKE CONCAT('%',LOWER(:status),'%') and " +
+            "c.nameCompany LIKE CONCAT('%',LOWER(:search),'%')")
+    Page<Company> findAll(Pageable pageable, @Param("search") String search, @Param("status") String status);
 }
