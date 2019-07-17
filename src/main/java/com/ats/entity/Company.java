@@ -163,7 +163,7 @@ public class Company {
 
 
     @ManyToOne
-    @JsonBackReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "CityID", referencedColumnName = "ID", nullable = false)
     public City getCityByCityId() {
         return cityByCityId;
@@ -173,9 +173,9 @@ public class Company {
         this.cityByCityId = cityByCityId;
     }
 
-    @LazyCollection(LazyCollectionOption.FALSE)
+
     @OneToMany(mappedBy = "companyByCompanyId")
-//    @JsonBackReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     public List<Companyindustry> getCompanyindustriesById() {
         return companyindustriesById;
     }
