@@ -90,17 +90,7 @@ public class JobServiceImpl implements JobService {
         Job newJob;
         try {
             newJob = jobRepository.findOne(job.getId());
-
-            newJob.setAddress(job.getAddress());
             newJob.setTitle(job.getTitle());
-            newJob.setAdditionalRequest(job.getAdditionalRequest());
-            newJob.setNumbeOfRecruitment(job.getNumbeOfRecruitment());
-            newJob.setSalaryTo(job.getSalaryTo());
-            newJob.setSalaryFrom(job.getSalaryFrom());
-            newJob.setWorkingType(job.getWorkingtype());
-            newJob.setJobDescription(job.getJobDescription());
-            newJob.setYearExperience(job.getYearExperience());
-
             newJob = jobRepository.save(newJob);
             result = newJob.getId();
             System.out.println("KQ : " + result);
@@ -205,7 +195,6 @@ public class JobServiceImpl implements JobService {
             LOGGER.info("Begin getJobDetail in Job Repository with id : " + id);
             job = jobRepository.findOne(id);
             LOGGER.info("End getJobDetail in Job Repository with id : " + id);
-
             List<Job> listJobOfCompany = jobRepository.getJobByCompanyID(job.getCompanyId(), job.getId());
             List<String> listSkillName = skillService.getSkillName(job.getSkillneedforjobsById());
             String jobLevelName = joblevelService.getJobLevelNameById(job.getJobLevelId());

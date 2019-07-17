@@ -26,17 +26,17 @@ public class SkillmasterWS {
     // CREATE A NEW SKILL DO MAY BAN
     @RequestMapping(value = "/", method = RequestMethod.POST)
     @CrossOrigin(origins = "")
-    public boolean createNewSkillmaster(@RequestBody Skillmaster newSkillmaster){
+    public boolean createNewSkillmaster(@RequestBody SkillMasterDTO newSkillmaster){
         if (skillmasterService.createANewSkillMaster(newSkillmaster))
             return true;
         return false;
     }
 
     // EDIT MOT SKILL IN ONE CV
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/", method = RequestMethod.PUT)
     @CrossOrigin(origins = "")
-    public boolean editASkillmaster(@RequestBody Skillmaster editedSkillmaster, @PathVariable int id){
-           if (skillmasterService.editASkillmaster(editedSkillmaster, id))
+    public boolean editASkillmaster(@RequestBody SkillMasterDTO editedSkillmaster){
+           if (skillmasterService.editASkillmaster(editedSkillmaster))
                return true;
            return false;
     }

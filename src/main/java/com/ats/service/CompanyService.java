@@ -19,4 +19,6 @@ public interface CompanyService {
     List<CompanyDTO2> listAll();
 
     RestResponse create(CompanyDTO newCompany);
+
+    int changeStatus(int id , String newStatus);
 }

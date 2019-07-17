@@ -8,11 +8,11 @@ import java.util.List;
 
 @Service
 public interface SkillmasterService {
-     boolean createANewSkillMaster(Skillmaster skillmaster);
+     boolean createANewSkillMaster(SkillMasterDTO skillmaster);
 
      List<SkillMasterDTO> listAll();
 
-     boolean editASkillmaster(Skillmaster editedSkillmaster, int id);
+     boolean editASkillmaster(SkillMasterDTO editedSkillmaster);
 
      List<Skillmaster> findAllLanguageskill(int id);
 

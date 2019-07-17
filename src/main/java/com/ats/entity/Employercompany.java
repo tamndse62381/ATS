@@ -1,5 +1,7 @@
 package com.ats.entity;
 
+import com.ats.entity.Company;
+import com.ats.entity.Users;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
@@ -12,6 +14,7 @@ public class Employercompany {
     private int userId;
     private int companyId;
     private Timestamp createdDate;
+    private String status;
     private Users usersByUserId;
     private Company companyByCompanyId;
 
@@ -26,7 +29,7 @@ public class Employercompany {
     }
 
     @Basic
-    @Column(name = "UserID", nullable = false , insertable = false , updatable = false)
+    @Column(name = "UserID", nullable = false , insertable = false, updatable = false)
     public int getUserId() {
         return userId;
     }
@@ -36,7 +39,7 @@ public class Employercompany {
     }
 
     @Basic
-    @Column(name = "CompanyID", nullable = false , insertable = false , updatable = false)
+    @Column(name = "CompanyID", nullable = false , insertable = false, updatable = false)
     public int getCompanyId() {
         return companyId;
     }
@@ -55,6 +58,16 @@ public class Employercompany {
         this.createdDate = createdDate;
     }
 
+    @Basic
+    @Column(name = "Status", nullable = true, length = 45)
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -63,16 +76,16 @@ public class Employercompany {
         return id == that.id &&
                 userId == that.userId &&
                 companyId == that.companyId &&
-                Objects.equals(createdDate, that.createdDate);
+                Objects.equals(createdDate, that.createdDate) &&
+                Objects.equals(status, that.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, companyId, createdDate);
+        return Objects.hash(id, userId, companyId, createdDate, status);
     }
 
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "UserID", referencedColumnName = "ID", nullable = false)
     public Users getUsersByUserId() {
         return usersByUserId;
@@ -83,7 +96,6 @@ public class Employercompany {
     }
 
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "CompanyID", referencedColumnName = "ID", nullable = false)
     public Company getCompanyByCompanyId() {
         return companyByCompanyId;

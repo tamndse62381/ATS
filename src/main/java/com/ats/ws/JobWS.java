@@ -40,7 +40,7 @@ public class JobWS {
     @Autowired
     CompanyService companyService;
 
-    private static final Logger LOGGER = LogManager.getLogger(UserWS.class);
+    private static final Logger LOGGER = LogManager.getLogger(JobWS.class);
 
     @ResponseBody
     @CrossOrigin(origins = "*")
