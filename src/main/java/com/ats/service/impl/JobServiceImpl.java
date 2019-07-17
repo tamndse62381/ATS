@@ -229,10 +229,10 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public int changeStatus(int id, String newStatus) {
-        LOGGER.info("Begin changeStatus in Account Service with Account id - newStatus : {}", id + newStatus);
+        LOGGER.info("Begin changeStatus in Job Service with Job id - newStatus : {}", id + newStatus);
         int success;
         success = jobRepository.changeStatus(id, newStatus);
-        LOGGER.info("End changeStatus in Account Service with result: {}", success);
+        LOGGER.info("End changeStatus in Job Service with result: {}", success);
         return success;
     }
 

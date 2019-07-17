@@ -297,15 +297,14 @@ public class JobWS {
     @GetMapping(value = "/getSearchComponentAdmin")
     public RestResponse getSearchComponentAdmin() {
         LOGGER.info("Begin getSearchComponentAdmin in JobWS");
-        List<String> listAll = null;
+        List<String> listAll = new ArrayList<>();
         List<String> listTitle = jobService.getALlJobTitle();
         List<CompanyDTO2> companyName = companyService.listAll();
-         try {
-             System.out.println(listTitle.size());
-             System.out.println(companyName.size());
+        try {
             for (int i = 0; i < listTitle.size(); i++) {
                 listAll.add(listTitle.get(i));
-            } for (int i = 0; i < companyName.size(); i++) {
+            }
+            for (int i = 0; i < companyName.size(); i++) {
                 listAll.add(companyName.get(i).getNameCompany());
             }
 

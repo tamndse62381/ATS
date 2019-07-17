@@ -35,4 +35,5 @@ public class CVDTO implements Serializable {
     private List<ProjectorproductworkedDTO> projectorproductworkedsById;
     private List<SocialactivitiesDTO> socialactivitiesById;
     private List<WorkexperienceDTO> workexperiencesById;
+    private List<ListSkillDTO> skillincvsById;
 }
