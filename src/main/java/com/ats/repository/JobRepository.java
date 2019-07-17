@@ -27,12 +27,12 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
             "INNER JOIN a.skillmasterBySkillMasterId m " +
             "INNER JOIN j.cityByCityId c " +
             "INNER JOIN j.industryByIndustryId d " +
-            "WHERE j.title LIKE CONCAT('%',LOWER(:search),'%') and " +
-            "j.status = :status and " +
+            "WHERE j.status = :status and " +
+            "(j.title LIKE CONCAT('%',LOWER(:search),'%') and " +
             "j.endDateForApply > :now and " +
             "c.fullName LIKE CONCAT('%',LOWER(:city),'%') and " +
             "d.name LIKE CONCAT('%',LOWER(:industry),'%') " +
-            "OR m.skillName LIKE CONCAT('%',LOWER(:search),'%')")
+            "OR m.skillName LIKE CONCAT('%',LOWER(:search),'%'))")
     Page<Job> searchJob(@Param("search") String search, Pageable pageable,
                         @Param("status") String status, @Param("now") Date endDateForApply,
                         @Param("city") String city, @Param("industry") String industry);
@@ -78,7 +78,7 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
 
     @Query("Select j from Job j " +
             "INNER JOIN j.companyByCompanyId c " +
-            "where j.status= :status and " +
+            "where j.status LIKE CONCAT('%',LOWER(:status),'%') and " +
             "(j.title LIKE CONCAT('%',LOWER(:search),'%') OR " +
             "c.nameCompany LIKE CONCAT('%',LOWER(:search),'%'))")
     Page<Job> getAll(Pageable pageable, @Param("search") String search, @Param("status") String status);
