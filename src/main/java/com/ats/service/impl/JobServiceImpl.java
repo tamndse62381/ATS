@@ -205,12 +205,7 @@ public class JobServiceImpl implements JobService {
             LOGGER.info("Begin getJobDetail in Job Repository with id : " + id);
             job = jobRepository.findOne(id);
             LOGGER.info("End getJobDetail in Job Repository with id : " + id);
-            if (job != null) {
-                if (!job.getStatus().matches("new") ||
-                        !job.getEndDateForApply().after(new Date())) {
-                    job = null;
-                }
-            }
+
             List<Job> listJobOfCompany = jobRepository.getJobByCompanyID(job.getCompanyId(), job.getId());
             List<String> listSkillName = skillService.getSkillName(job.getSkillneedforjobsById());
             String jobLevelName = joblevelService.getJobLevelNameById(job.getJobLevelId());

@@ -178,7 +178,7 @@ public class CVServiceImpl implements CVService {
 
     @Override
     public RestResponse edit(CVDTO editedCv) {
-        Cv cv = cvRepository.findOne(editedCv.WgetId());
+        Cv cv = cvRepository.findOne(editedCv.getId());
         if (cv == null)
             return new RestResponse(false,"Không thành công!!!", null);
         List<Skillincv> listOldSkill = skillincvRepository.findSkillincvsByCvid(editedCv.getId());
