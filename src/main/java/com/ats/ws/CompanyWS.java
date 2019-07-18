@@ -117,7 +117,7 @@ public class CompanyWS {
     }
 
     @GetMapping("/getCompanyAdmin")
-    @CrossOrigin("")
+    @CrossOrigin("*")
     public RestResponse getCompanyDetail(@RequestParam(value = "search") String search,
                                          @RequestParam(value = "status") String status,
                                          @PageableDefault Pageable pageable) {
