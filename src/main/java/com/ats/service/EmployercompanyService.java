@@ -1,6 +1,7 @@
 package com.ats.service;
 
 import com.ats.dto.EmployercompanyDTO;
+import com.ats.entity.Employercompany;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,5 +13,5 @@ public interface EmployercompanyService {
 
     int findCompanyById(int id);
 
-    int findCompanyByUserId(int userId);
+    EmployercompanyDTO findCompanyByUserId(int userId);
 }
