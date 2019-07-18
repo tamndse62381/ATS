@@ -97,28 +97,9 @@ public class CompanyWS {
         return new RestResponse(false, "changeStatus Fail", null);
     }
 
-    @GetMapping("/listCompanyAdmin")
-    @CrossOrigin("")
-    public RestResponse getCompanyAdmin() {
-        LOGGER.info("Begin getCompanyAdmin in CompanyWS");
-        try {
-            List<CompanyDTO3> company = companyService.listAllAdmin();
-            LOGGER.info("End getCompanyAdmin in CompanyWS");
-            if (company.size() > 0) {
-                return new RestResponse(true, "Success getCompanyAdmin", company);
-            } else {
-                return new RestResponse(true, "Success getCompanyAdmin is Empty", company);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new RestResponse(false, "Fail  getCompanyAdmin ", null);
-
-    }
-
     @GetMapping("/getCompanyAdmin")
-    @CrossOrigin("")
-    public RestResponse getCompanyDetail(@RequestParam(value = "search") String search,
+    @CrossOrigin("*")
+    public RestResponse getCompanyAdmin(@RequestParam(value = "search") String search,
                                          @RequestParam(value = "status") String status,
                                          @PageableDefault Pageable pageable) {
         LOGGER.info("Begin getCompanyAdmin in CompanyWS");
