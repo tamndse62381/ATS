@@ -21,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -53,9 +54,18 @@ public class CompanyServiceImpl implements CompanyService {
         ModelMapper mapper = new ModelMapper();
         java.lang.reflect.Type targetListType = new TypeToken<List<CompanyDTO2>>() {
         }.getType();
-        List<CompanyDTO2> listofDTO;
+        List<CompanyDTO2> listofDTO = null;
         List<Company> listCompany = companyRepository.findAll();
-        listofDTO = mapper.map(listCompany, targetListType);
+        List<Company> tempCompanyList = new ArrayList<>();
+        for (int i = 0; i < listCompany.size(); i++) {
+            if (listCompany.get(i).getStatus().equals("approved")){
+                tempCompanyList.add(listCompany.get(i));
+            }
+        }
+        if (tempCompanyList.size() > 0) {
+            listofDTO = mapper.map(tempCompanyList, targetListType);
+        }
+
         return listofDTO;
     }
 
