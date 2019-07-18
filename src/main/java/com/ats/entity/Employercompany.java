@@ -14,6 +14,7 @@ public class Employercompany {
     private int userId;
     private int companyId;
     private Timestamp createdDate;
+    private String status;
     private Users usersByUserId;
     private Company companyByCompanyId;
 
@@ -57,6 +58,16 @@ public class Employercompany {
         this.createdDate = createdDate;
     }
 
+    @Basic
+    @Column(name = "Status", nullable = true, length = 45)
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -65,13 +76,13 @@ public class Employercompany {
         return id == that.id &&
                 userId == that.userId &&
                 companyId == that.companyId &&
-                Objects.equals(createdDate, that.createdDate);
-
+                Objects.equals(createdDate, that.createdDate) &&
+                Objects.equals(status, that.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, companyId, createdDate);
+        return Objects.hash(id, userId, companyId, createdDate, status);
     }
 
     @ManyToOne

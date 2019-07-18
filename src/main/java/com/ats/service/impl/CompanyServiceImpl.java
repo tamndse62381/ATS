@@ -107,15 +107,17 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public int changeStatus(int id, String newStatus) {
-        LOGGER.info("Begin changeStatus in Job Service with Job id - newStatus : {}", id + newStatus);
+        LOGGER.info("Begin changeStatus in Company Service with Job id - newStatus : {}", id + newStatus);
         int success;
         success = companyRepository.changeStatus(id, newStatus);
-        LOGGER.info("End changeStatus in Job Service with result: {}", success);
+        LOGGER.info("End changeStatus in Company Service with result: {}", success);
         return success;
     }
 
     @Override
     public Page<Company> findAllCompanyByStatus(String search, String status, Pageable pageable) {
+        LOGGER.info("Begin changeStatus in Company Service with search value - newStatus : {}", search + status);
         return companyRepository.findAll(pageable, search, status);
+
     }
 }
