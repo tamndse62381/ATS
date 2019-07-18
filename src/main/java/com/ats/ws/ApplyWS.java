@@ -26,10 +26,11 @@ public class ApplyWS {
     }
 
     // edit status - confirm
-    @RequestMapping(value = "/confirm/{applyid}",method = RequestMethod.GET)
+    @RequestMapping(value = "/confirm/{jobid}/{cvid}",method = RequestMethod.GET)
     @CrossOrigin(origins = "*")
-    public RestResponse confirm(@PathVariable(name = "applyid") int applyid){
-        return applyService.confirm(applyid);
+    public RestResponse confirm(@PathVariable(name = "jobid") int jobid,
+                                @PathVariable(name = "cvid") int cvid){
+        return applyService.confirm(jobid);
     }
 
     // edit status - deny
