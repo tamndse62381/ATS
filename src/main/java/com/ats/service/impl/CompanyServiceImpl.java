@@ -91,7 +91,7 @@ public class CompanyServiceImpl implements CompanyService {
         company = modelMapper.map(newCompany, Company.class);
         company.setEmail(EMAIL);
         company.setCityByCityId(cityRepository.findOne(newCompany.getCityId()));
-        company.setStatus("1");
+        company.setStatus(newCompany.getStatus());
         company.setCreatedDate(new Timestamp(new Date().getTime()));
         companyRepository.save(company);
         Company changeCompany = companyRepository.findByEmail(EMAIL);
