@@ -1,6 +1,7 @@
 package com.ats.ws;
 
 import com.ats.dto.EmployercompanyDTO;
+import com.ats.entity.Employercompany;
 import com.ats.service.CompanyService;
 import com.ats.service.EmployercompanyService;
 import com.ats.util.RestResponse;
@@ -63,14 +64,14 @@ public class EmployercompanyWS {
     public RestResponse getCompany(@RequestBody EmployercompanyDTO dto) {
         LOGGER.info("Begin addNewEmployerCompany in EmployercompanyWS with Job id : {}" + dto.getUserId());
         try {
-            int result = employercompanyService.findCompanyByUserId(dto.getUserId());
-            if (result > -1) {
-                return new RestResponse(true, "Get Company Id Successful", result);
+           EmployercompanyDTO employercompanyDTO = employercompanyService.findCompanyByUserId(dto.getUserId());
+            if (employercompanyDTO != null) {
+                return new RestResponse(true, "Get Employer Company Successful", employercompanyDTO);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new RestResponse(false, "Fail To Create New Employer Company ", null);
+        return new RestResponse(false, "Fail Get Employer Company ", null);
     }
 
 

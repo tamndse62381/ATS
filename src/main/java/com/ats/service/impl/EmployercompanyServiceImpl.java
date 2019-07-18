@@ -112,18 +112,18 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
     }
 
     @Override
-    public int findCompanyByUserId(int userId) {
+    public EmployercompanyDTO findCompanyByUserId(int userId) {
         LOGGER.info("Begin findCompanyByUserId in Employercompany Service with User id : " + userId);
-        int result = -1;
+        Employercompany employercompany ;
+        EmployercompanyDTO employercompanyDTO = null;
+        ModelMapper modelMapper = new ModelMapper();
         try {
-            Employercompany employercompany = employercompanyRepository.findCompanyByUserId(userId);
-            if (employercompany != null) {
-                result = employercompany.getCompanyId();
-            }
+            employercompany  = employercompanyRepository.findCompanyByUserId(userId);
+            employercompanyDTO = modelMapper.map(employercompany,EmployercompanyDTO.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
         LOGGER.info("End findCompanyByUserId in Employercompany Service with User id : " + userId);
-        return result;
+        return employercompanyDTO;
     }
 }
