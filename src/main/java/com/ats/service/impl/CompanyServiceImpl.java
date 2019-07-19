@@ -132,6 +132,7 @@ public class CompanyServiceImpl implements CompanyService {
                 search + status);
         Page<Company> companyPage = null;
         List<CompanyDTO3> companyDTO3List = null;
+        List<CompanyDTO3> correctCompanyDTO3List = new ArrayList<>();
         Page<CompanyDTO3> companyDTO3Page = null;
         try {
             companyPage = companyRepository.findAll(pageable, search, status);
@@ -148,11 +149,18 @@ public class CompanyServiceImpl implements CompanyService {
                             companyDTO3List.get(i).setUsersEmail(companyPage.
                                     getContent().get(i).getEmployercompaniesById().get(j).getUsersByUserId().getEmail());
                         }
-
                     }
                 }
             }
-            companyDTO3Page = new PageImpl<>(companyDTO3List, new PageRequest(companyPage.getTotalPages(), companyPage.getSize()), companyDTO3List.size());
+            for (int i = 0; i < companyDTO3List.size(); i++) {
+                if(correctCompanyDTO3List.contains(companyDTO3List.get(i))){
+                    correctCompanyDTO3List.add(companyDTO3List.get(i));
+                }
+
+            }
+            companyDTO3Page = new PageImpl<>(correctCompanyDTO3List,
+                    new PageRequest(companyPage.getTotalPages(), companyPage.getSize()),
+                    correctCompanyDTO3List.size());
         } catch (Exception e) {
             e.printStackTrace();
         }
