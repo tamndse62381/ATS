@@ -153,7 +153,7 @@ public class CompanyServiceImpl implements CompanyService {
                 }
             }
             for (int i = 0; i < companyDTO3List.size(); i++) {
-                if(correctCompanyDTO3List.contains(companyDTO3List.get(i))){
+                if(!correctCompanyDTO3List.contains(companyDTO3List.get(i))){
                     correctCompanyDTO3List.add(companyDTO3List.get(i));
                 }
 
