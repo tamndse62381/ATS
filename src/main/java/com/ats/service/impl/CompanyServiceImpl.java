@@ -18,6 +18,8 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -58,7 +60,7 @@ public class CompanyServiceImpl implements CompanyService {
         List<Company> listCompany = companyRepository.findAll();
         List<Company> tempCompanyList = new ArrayList<>();
         for (int i = 0; i < listCompany.size(); i++) {
-            if (listCompany.get(i).getStatus().equals("approved")){
+            if (listCompany.get(i).getStatus().equals("approved")) {
                 tempCompanyList.add(listCompany.get(i));
             }
         }
@@ -125,9 +127,39 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Page<Company> findAllCompanyByStatus(String search, String status, Pageable pageable) {
-        LOGGER.info("Begin changeStatus in Company Service with search value - newStatus : {}", search + status);
-        return companyRepository.findAll(pageable, search, status);
+    public Page<CompanyDTO3> findAllCompanyByStatus(String search, String status, Pageable pageable) {
+        LOGGER.info("Begin findAllCompanyByStatus in Company Service with search value - newStatus : {}",
+                search + status);
+        Page<Company> companyPage = null;
+        List<CompanyDTO3> companyDTO3List = null;
+        Page<CompanyDTO3> companyDTO3Page = null;
+        try {
+            companyPage = companyRepository.findAll(pageable, search, status);
+            List<String> userOfMainEmployer = new ArrayList<>();
+
+            ModelMapper mapper = new ModelMapper();
+            java.lang.reflect.Type targetListType = new TypeToken<List<CompanyDTO3>>() {
+            }.getType();
+            companyDTO3List = mapper.map(companyPage.getContent(), targetListType);
+            for (int i = 0; i < companyPage.getContent().size(); i++) {
+                for (int j = 0; j < companyPage.getContent().get(i).getEmployercompaniesById().size(); j++) {
+                    if (companyPage.getContent().get(i).getEmployercompaniesById().get(j).getUsersByUserId().getRoleId() == 2) {
+                        if(companyDTO3List.get(i).getId() == companyPage.getContent().get(i).getId()){
+                            companyDTO3List.get(i).setUsersEmail(companyPage.
+                                    getContent().get(i).getEmployercompaniesById().get(j).getUsersByUserId().getEmail());
+                        }
+
+                    }
+                }
+            }
+            companyDTO3Page = new PageImpl<>(companyDTO3List, new PageRequest(companyPage.getTotalPages(), companyPage.getSize()), companyDTO3List.size());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        LOGGER.info("End findAllCompanyByStatus in Company Service with search value - newStatus : {}",
+                search + status);
+        return companyDTO3Page;
 
     }
 }

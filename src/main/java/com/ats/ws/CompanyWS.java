@@ -27,10 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.swing.text.html.parser.Entity;
 import javax.validation.Valid;
 import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/company")
@@ -105,10 +102,11 @@ public class CompanyWS {
         LOGGER.info("Begin getCompanyAdmin in CompanyWS");
         pageable = new PageRequest(0, Integer.MAX_VALUE);
         try {
-            Page<Company> company = companyService.findAllCompanyByStatus(search, status, pageable);
+            Page<CompanyDTO3> company = companyService.findAllCompanyByStatus(search, status, pageable);
+
             LOGGER.info("End getCompanyAdmin in CompanyWS");
             if (company != null) {
-                return new RestResponse(true, "Success getCompanyAdmin ", company);
+                return new RestResponse(true, "Success getCompanyAdmin : " , company);
             }
         } catch (Exception e) {
             e.printStackTrace();

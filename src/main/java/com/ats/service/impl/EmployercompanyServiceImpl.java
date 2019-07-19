@@ -140,7 +140,7 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
 
     @Override
     public int changeStatus(EmployercompanyDTO employercompanyDTO) {
-        LOGGER.info("Begin findCompanyByUserId in Employercompany Service with User id : " + employercompanyDTO.getUserId());
+        LOGGER.info("Begin changeStatus in Employercompany Service with User id : " + employercompanyDTO.getUserId());
         int result = -1;
         try {
             if (employercompanyDTO.getStatus().equals("approved")) {
@@ -148,13 +148,13 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
                 if (result > -1) {
                     usersService.changeRole(employercompanyDTO.getUserId(), 3);
                 }
-            } else if (employercompanyDTO.getStatus().equals("denied")) {
+            } else if (employercompanyDTO.getStatus().equals("deny")) {
                 result = employercompanyRepository.changeStatus(employercompanyDTO.getUserId(), employercompanyDTO.getStatus());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOGGER.info("Begin findCompanyByUserId in Employercompany Service with User id : " + employercompanyDTO.getUserId());
+        LOGGER.info("End changeStatus in Employercompany Service with User id : " + employercompanyDTO.getUserId());
         return result;
     }
 

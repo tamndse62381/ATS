@@ -185,7 +185,7 @@ public class Company {
     }
 
     @OneToMany(mappedBy = "companyByCompanyId")
-    @JsonBackReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     public List<Employercompany> getEmployercompaniesById() {
         return employercompaniesById;
     }
