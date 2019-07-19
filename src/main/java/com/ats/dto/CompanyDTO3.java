@@ -8,6 +8,8 @@ import java.sql.Timestamp;
 public class CompanyDTO3 {
     private int id;
     private String nameCompany;
+    private String usersEmail;
+    private String companyEmail;
     private int cityId;
     private String cityName;
     private String address;

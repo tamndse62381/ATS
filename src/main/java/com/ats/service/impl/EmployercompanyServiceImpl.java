@@ -140,7 +140,7 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
 
     @Override
     public int changeStatus(EmployercompanyDTO employercompanyDTO) {
-        LOGGER.info("Begin findCompanyByUserId in Employercompany Service with User id : " + employercompanyDTO.getUserId());
+        LOGGER.info("Begin changeStatus in Employercompany Service with User id : " + employercompanyDTO.getUserId());
         int result = -1;
         try {
             System.out.println(employercompanyDTO.getStatus() + "," + employercompanyDTO.getUserId());
@@ -155,7 +155,7 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOGGER.info("Begin findCompanyByUserId in Employercompany Service with User id : " + employercompanyDTO.getUserId());
+        LOGGER.info("End changeStatus in Employercompany Service with User id : " + employercompanyDTO.getUserId());
         return result;
     }
 

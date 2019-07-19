@@ -3,6 +3,9 @@ package com.ats.entity;
 import com.ats.entity.Company;
 import com.ats.entity.Users;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -86,6 +89,7 @@ public class Employercompany {
     }
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "UserID", referencedColumnName = "ID", nullable = false)
     public Users getUsersByUserId() {
         return usersByUserId;
@@ -96,6 +100,7 @@ public class Employercompany {
     }
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "CompanyID", referencedColumnName = "ID", nullable = false)
     public Company getCompanyByCompanyId() {
         return companyByCompanyId;

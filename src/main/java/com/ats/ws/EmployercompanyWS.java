@@ -116,5 +116,4 @@ public class EmployercompanyWS {
         return new RestResponse(false, "Fail getAllEmployerCompanyByStatus", null);
     }
 
-
 }
