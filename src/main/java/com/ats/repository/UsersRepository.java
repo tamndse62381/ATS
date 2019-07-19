@@ -2,7 +2,10 @@ package com.ats.repository;
 
 import java.util.Date;
 import java.util.Optional;
+
 import com.ats.entity.Users;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -42,4 +45,12 @@ public interface UsersRepository extends JpaRepository<Users, Integer> {
     int changeStatus(@Param("id") int id, @Param("newStatus") String newStatus);
 
     Optional<Users> findById(int id);
+
+    @Query("select u from Users u where " +
+            "u.status LIKE CONCAT('%',LOWER(:status),'%') and " +
+            "(u.email LIKE CONCAT('%',LOWER(:search),'%') or " +
+            "u.fullName LIKE CONCAT('%',LOWER(:search),'%'))")
+    Page<Users> findAll(Pageable pageable,
+                        @Param("search") String search,
+                        @Param("status") String status);
 }

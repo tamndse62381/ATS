@@ -17,6 +17,8 @@ import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -199,6 +201,21 @@ public class UsersServiceImpl implements UsersService {
         success = usersRepository.changeRole(id, role);
         LOGGER.info("End changeRole in User Service with result: {}", success);
         return success;
+    }
+
+    @Override
+    public Page<Users> getAllUser(Pageable pageable, String search, String status) {
+        LOGGER.info("Begin getAllUser in User Service ");
+
+        Page<Users> usersPage = null;
+        try {
+            usersPage = usersRepository.findAll(pageable, search, status);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        LOGGER.info("End getAllUser in User Service ");
+        return usersPage;
     }
 
     @Override
