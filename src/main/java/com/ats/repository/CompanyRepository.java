@@ -34,7 +34,11 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
     @Query("UPDATE Company c SET c.status = :newStatus WHERE c.id = :id")
     int changeStatus(@Param("id") int id, @Param("newStatus") String newStatus);
 
-    @Query("select c from Company c where c.status LIKE CONCAT('%',LOWER(:status),'%') and " +
-            "c.nameCompany LIKE CONCAT('%',LOWER(:search),'%')")
+    @Query("select c from Company c " +
+            "INNER JOIN c.employercompaniesById e " +
+            "INNER JOIN e.usersByUserId u " +
+            "where c.status LIKE CONCAT('%',LOWER(:status),'%') and " +
+            "(c.nameCompany LIKE CONCAT('%',LOWER(:search),'%') or " +
+            "u.email LIKE CONCAT('%',LOWER(:search),'%'))")
     Page<Company> findAll(Pageable pageable, @Param("search") String search, @Param("status") String status);
 }

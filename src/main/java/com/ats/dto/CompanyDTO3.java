@@ -10,6 +10,7 @@ public class CompanyDTO3 {
     private String nameCompany;
     private String usersEmail;
     private String companyEmail;
+    private String telephoneNumber;
     private int cityId;
     private String cityName;
     private String address;
