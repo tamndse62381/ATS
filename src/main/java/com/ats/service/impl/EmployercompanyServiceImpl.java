@@ -6,6 +6,7 @@ import com.ats.entity.Company;
 import com.ats.entity.Employercompany;
 import com.ats.entity.Users;
 import com.ats.repository.EmployercompanyRepository;
+import com.ats.repository.UsersRepository;
 import com.ats.service.CompanyService;
 import com.ats.service.EmployercompanyService;
 import com.ats.service.UsersService;
@@ -33,6 +34,8 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
     CompanyService companyService;
     @Autowired
     UsersService usersService;
+    @Autowired
+    UsersRepository usersRepository;
 
 
     private static final Logger LOGGER = LogManager.getLogger(EmployercompanyServiceImpl.class);
@@ -168,8 +171,10 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
         java.lang.reflect.Type targetListType = new TypeToken<List<EmployercompanyDTO2>>() {
         }.getType();
 
+        Employercompany employercompany = employercompanyRepository.findByUserId(userId);
+        System.out.println(employercompany.getCompanyId());
         try {
-            employercompanyPage = employercompanyRepository.getAll(pageable, search, status, userId);
+            employercompanyPage = employercompanyRepository.getAll(pageable, search, status, employercompany.getCompanyId());
 
             listofDTO = mapper.map(employercompanyPage.getContent(), targetListType);
             employercompanyDTO2Page = new PageImpl<>(
