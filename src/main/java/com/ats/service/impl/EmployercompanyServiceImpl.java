@@ -143,12 +143,13 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
         LOGGER.info("Begin findCompanyByUserId in Employercompany Service with User id : " + employercompanyDTO.getUserId());
         int result = -1;
         try {
+            System.out.println(employercompanyDTO.getStatus() + "," + employercompanyDTO.getUserId());
             if (employercompanyDTO.getStatus().equals("approved")) {
                 result = employercompanyRepository.changeStatus(employercompanyDTO.getUserId(), employercompanyDTO.getStatus());
                 if (result > -1) {
                     usersService.changeRole(employercompanyDTO.getUserId(), 3);
                 }
-            } else if (employercompanyDTO.getStatus().equals("denied")) {
+            } else if (employercompanyDTO.getStatus().equals("deny")) {
                 result = employercompanyRepository.changeStatus(employercompanyDTO.getUserId(), employercompanyDTO.getStatus());
             }
         } catch (Exception e) {

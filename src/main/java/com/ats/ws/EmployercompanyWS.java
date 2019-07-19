@@ -102,6 +102,9 @@ public class EmployercompanyWS {
                                                       @RequestParam(value = "userId") int userId,
                                                       @PageableDefault Pageable pageable) {
         LOGGER.info("Begin getAllEmployerCompanyByStatus in EmployercompanyWS with search value : " + search);
+        System.out.println(search);
+        System.out.println(status);
+        System.out.println(userId);
         try {
             Page<EmployercompanyDTO2> employercompanyPage = employercompanyService.getAllEmployerCompanyByUserId(search, status, userId, pageable);
             if (employercompanyPage.getContent().size() > 0) {

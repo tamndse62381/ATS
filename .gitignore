@@ -29,3 +29,7 @@ src/main/resources/application.properties
 src/main/resources/application.properties
 src/main/java/com/ats/service/impl/CompanyServiceImpl.java
 *.properties
+src/main/java/com/ats/ws/EmployercompanyWS.java
+src/main/java/com/ats/service/impl/EmployercompanyServiceImpl.java
+*.java
+*.java
