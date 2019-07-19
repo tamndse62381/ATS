@@ -10,6 +10,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Repository
 public interface EmployercompanyRepository extends JpaRepository<Employercompany,Integer> {
 
@@ -24,11 +26,13 @@ public interface EmployercompanyRepository extends JpaRepository<Employercompany
     @Query("Select e from Employercompany e " +
             "INNER JOIN e.usersByUserId u " +
             "where e.status LIKE CONCAT('%',LOWER(:status),'%') and " +
-            "e.userId = :userId and "+
+            "e.companyId = :companyId and "+
             "(u.fullName LIKE CONCAT('%',LOWER(:search),'%') OR " +
             "u.email LIKE CONCAT('%',LOWER(:search),'%'))")
     Page<Employercompany> getAll(Pageable pageable,
                                  @Param("search") String search,
                                  @Param("status") String status,
-                                 @Param("userId") int userId);
+                                 @Param("companyId") int companyId);
+
+    Employercompany findByUserId(int userId);
 }
