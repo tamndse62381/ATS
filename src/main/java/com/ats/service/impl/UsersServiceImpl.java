@@ -54,7 +54,7 @@ public class UsersServiceImpl implements UsersService {
         modelMapper = new ModelMapper();
         if (email != null) {
             usersDTO = findUserByEmail(email);
-            reTurnUsersDTO.setEmail("Account not Existed !! ");
+            reTurnUsersDTO.setEmail("Account not Existed Or Banned!! ");
             if (usersDTO != null) {
                 reTurnUsersDTO.setEmail("Wrong password !! ");
                 if (passwordUtil.compare(password, usersDTO.getPassword())) {
@@ -127,7 +127,7 @@ public class UsersServiceImpl implements UsersService {
         Users users;
         if (email != null) {
             users = usersRepository.findAccountByEmail(email);
-            if (users != null) {
+            if (users != null && users.getStatus().equals("new")) {
                 usersDTO = modelMapper.map(users, UsersDTO.class);
             }
         }
