@@ -8,6 +8,9 @@ import com.ats.util.RestResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -90,5 +93,15 @@ public class CVWS {
     @CrossOrigin(origins = "*")
     public RestResponse setMainCV(@PathVariable int id){
         return cvService.setMainCv(id);
+    }
+
+    // search Cv
+    @GetMapping("/search/{listSkill}/{cityId}/{industryId}")
+    @CrossOrigin(origins = "*")
+    public Page<Cv> searchCv(@PathVariable(name = "listSkill") String listSkill,
+                             @PathVariable(name = "cityId") int cityId,
+                             @PathVariable(name = "industryId") int industryId,
+                             @PageableDefault Pageable pageable){
+        return cvService.searchCv(listSkill, cityId, industryId, pageable);
     }
 }
