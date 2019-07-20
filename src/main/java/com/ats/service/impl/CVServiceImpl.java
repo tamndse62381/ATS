@@ -7,6 +7,9 @@ import com.ats.service.*;
 import com.ats.util.RestResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -318,6 +321,18 @@ public class CVServiceImpl implements CVService {
         cv.setIsActive(1);
         cvRepository.save(cv);
         return new RestResponse(true, "Cập nhật thành công!!!", null);
+    }
+
+    @Override
+    public Page<Cv> searchCv(String skillstring, int cityId, int industryId, Pageable pageable) {
+        Page<Cv> listCv;
+        try {
+            listCv = cvRepository.searchCv(skillstring, pageable, cityId, industryId);
+            return listCv;
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private boolean checkIsActive(int userId){

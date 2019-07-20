@@ -1,7 +1,8 @@
 package com.ats.repository;
 
-import com.ats.entity.Countcv;
+import org.springframework.data.domain.Page;
 import com.ats.entity.Cv;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,4 +27,17 @@ public interface CVRepository extends JpaRepository<Cv, Integer> {
     List<Cv> findByUserIdAndStatus(int id, String status);
 
     List<Cv> findByUserId(int id);
+
+
+    @Query("select c from Cv  c " +
+            "inner join c.skillincvsById s " +
+            "inner join s.skillBySkillId a " +
+            "inner join a.skillmasterBySkillMasterId m " +
+            "inner join c.cityByCityId ci " +
+            "inner join c.industryByIndustryId i where c.status = 1 " +
+            "and ci.id = :city " +
+            "and i.id = :industry " +
+            "or m.skillName in (:skillstring)")
+    Page<Cv> searchCv(@Param("skillstring") String skillstring, Pageable pageable,
+                      @Param("city") int city, @Param("industry") int industry);
 }
