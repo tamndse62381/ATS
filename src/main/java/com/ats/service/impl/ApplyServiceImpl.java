@@ -43,8 +43,8 @@ public class ApplyServiceImpl implements ApplyService{
     }
 
     @Override
-    public RestResponse confirm(int ApplyId) {
-        Apply apply = applyRepository.findOne(ApplyId);
+    public RestResponse confirm(int JobId, int CvId) {
+        Apply apply = applyRepository.findForCheck(CvId, JobId);
         if (apply == null)
             return new RestResponse(false, "Có lỗi xảy ra. Vui lòng thử lại!!!", null);
         apply.setStatus("2");
@@ -54,8 +54,8 @@ public class ApplyServiceImpl implements ApplyService{
     }
 
     @Override
-    public RestResponse deny(int ApplyId) {
-        Apply apply = applyRepository.findOne(ApplyId);
+    public RestResponse deny(int JobId, int CvId) {
+        Apply apply = applyRepository.findForCheck(CvId, JobId);
         if (apply == null)
             return new RestResponse(false, "Có lỗi xảy ra. Vui lòng thử lại!!!", null);
         apply.setStatus("3");

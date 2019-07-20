@@ -30,14 +30,15 @@ public class ApplyWS {
     @CrossOrigin(origins = "*")
     public RestResponse confirm(@PathVariable(name = "jobid") int jobid,
                                 @PathVariable(name = "cvid") int cvid){
-        return applyService.confirm(jobid);
+        return applyService.confirm(jobid, cvid);
     }
 
     // edit status - deny
-    @RequestMapping(value = "/deny/{applyid}", method = RequestMethod.GET)
+    @RequestMapping(value = "/deny/{jobid}/{cvid}", method = RequestMethod.GET)
     @CrossOrigin("*")
-    public RestResponse deny(@PathVariable(name = "applyid") int applyid){
-        return applyService.deny(applyid);
+    public RestResponse deny(@PathVariable(name = "jobid") int jobid,
+                             @PathVariable(name = "cvid") int cvid){
+        return applyService.deny(jobid, cvid);
     }
 
     // check

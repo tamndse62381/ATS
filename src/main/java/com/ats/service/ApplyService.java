@@ -5,9 +5,9 @@ import com.ats.util.RestResponse;
 public interface ApplyService {
     RestResponse create(int CvId, int JobID);
 
-    RestResponse confirm(int ApplyId);
+    RestResponse confirm(int JobId, int CvId);
 
-    RestResponse deny(int ApplyId);
+    RestResponse deny(int JobId, int CvId);
 
     boolean check(int JobSeekerID, int JobID);
 
