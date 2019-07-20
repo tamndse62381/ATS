@@ -37,7 +37,7 @@ public interface CVRepository extends JpaRepository<Cv, Integer> {
             "inner join c.industryByIndustryId i where c.status = 1 " +
             "and ci.id = :city " +
             "and i.id = :industry " +
-            "or m.skillName in (:skillstring)")
+            "or m.skillName in (:skillstring) order by c.lastModify desc    ")
     Page<Cv> searchCv(@Param("skillstring") String skillstring, Pageable pageable,
                       @Param("city") int city, @Param("industry") int industry);
 }
