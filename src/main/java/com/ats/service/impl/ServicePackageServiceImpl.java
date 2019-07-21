@@ -77,11 +77,11 @@ public class ServicePackageServiceImpl implements ServicePackageService {
     }
 
     @Override
-    public Page<Servicepackage> getAllServicePack(Pageable pageable) {
+    public Page<Servicepackage> getAllServicePack(Pageable pageable, String search, String status) {
         LOGGER.info("Begin Get All Service Pack in ServicePackage Service ");
         Page<Servicepackage> servicepackages = null;
         try {
-            servicepackages = servicepackageRepository.findAll(pageable);
+            servicepackages = servicepackageRepository.findAllBySearch(pageable, search, status);
         } catch (Exception e) {
             e.printStackTrace();
         }

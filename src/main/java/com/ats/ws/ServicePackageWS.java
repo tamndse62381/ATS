@@ -82,11 +82,13 @@ public class ServicePackageWS {
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getAll")
     @ResponseBody
-    public RestResponse getAllServicePack(@PageableDefault Pageable pageable) {
+    public RestResponse getAllServicePack(@PageableDefault Pageable pageable,
+                                          @RequestParam(value = "search") String search,
+                                          @RequestParam(value = "status") String status) {
         LOGGER.info("Begin getAll Service Pack in ServicePackage WS ");
         Page<Servicepackage> servicepackagePage;
         try {
-            servicepackagePage = servicePackageService.getAllServicePack(pageable);
+            servicepackagePage = servicePackageService.getAllServicePack(pageable, search, status);
             if (servicepackagePage.getContent().size() > 0) {
                 return new RestResponse(true, "getAll ServicePack Successfull", servicepackagePage);
             }

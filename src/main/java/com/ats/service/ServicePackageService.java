@@ -12,9 +12,9 @@ public interface ServicePackageService {
 
     int updateServicePack(ServicePackageDTO servicePackageDTO);
 
-    int changeServicePackStatus(int id , String newStatus);
+    int changeServicePackStatus(int id, String newStatus);
 
-    Page<Servicepackage> getAllServicePack(Pageable pageable);
+    Page<Servicepackage> getAllServicePack(Pageable pageable, String search, String status);
 
     Servicepackage getServicePackDetail(int id);
 }
