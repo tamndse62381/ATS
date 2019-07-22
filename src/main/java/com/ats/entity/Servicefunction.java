@@ -1,5 +1,6 @@
 package com.ats.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -49,7 +50,7 @@ public class Servicefunction {
     }
 
     @OneToMany(mappedBy = "servicefunctionByServiceFunctionId")
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonBackReference
     public List<Functionpackage> getFunctionpackagesById() {
         return functionpackagesById;
     }
