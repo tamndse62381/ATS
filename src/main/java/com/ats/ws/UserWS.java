@@ -18,6 +18,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
@@ -250,6 +251,7 @@ public class UserWS {
                                    @RequestParam(value = "status") String status){
         LOGGER.info("Begin getAllUser in UserWS");
         Page<Users> usersPage;
+        pageable = new PageRequest(0, Integer.MAX_VALUE);
         try {
             usersPage = usersService.getAllUser(pageable,search,status);
             LOGGER.info("End getAllUser in UserWS");

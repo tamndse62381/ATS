@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
@@ -87,6 +88,7 @@ public class ServicePackageWS {
                                           @RequestParam(value = "status") String status) {
         LOGGER.info("Begin getAll Service Pack in ServicePackage WS ");
         Page<Servicepackage> servicepackagePage;
+        pageable = new PageRequest(0, Integer.MAX_VALUE);
         try {
             servicepackagePage = servicePackageService.getAllServicePack(pageable, search, status);
             if (servicepackagePage.getContent().size() > 0) {

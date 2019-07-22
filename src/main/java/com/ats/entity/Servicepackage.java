@@ -1,6 +1,8 @@
 package com.ats.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -18,7 +20,8 @@ public class Servicepackage {
     private String description;
     private Date createdDate;
     private Double price;
-    private Collection<Receipts> receiptsById;
+    private List<Functionpackage> functionpackagesById;
+    private List<Receipts> receiptsById;
 
     @Id
     @Column(name = "ID", nullable = false)
@@ -51,7 +54,7 @@ public class Servicepackage {
     }
 
     @Basic
-    @Column(name = "Duration", nullable = true)
+    @Column(name = "Duration", nullable = true, length = 50)
     public String getDuration() {
         return duration;
     }
@@ -110,12 +113,22 @@ public class Servicepackage {
     }
 
     @OneToMany(mappedBy = "servicepackageByServicePackageId")
-    @JsonBackReference
-    public Collection<Receipts> getReceiptsById() {
+    @LazyCollection(LazyCollectionOption.FALSE)
+    public List<Functionpackage> getFunctionpackagesById() {
+        return functionpackagesById;
+    }
+
+    public void setFunctionpackagesById(List<Functionpackage> functionpackagesById) {
+        this.functionpackagesById = functionpackagesById;
+    }
+
+    @OneToMany(mappedBy = "servicepackageByServicePackageId")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    public List<Receipts> getReceiptsById() {
         return receiptsById;
     }
 
-    public void setReceiptsById(Collection<Receipts> receiptsById) {
+    public void setReceiptsById(List<Receipts> receiptsById) {
         this.receiptsById = receiptsById;
     }
 }
