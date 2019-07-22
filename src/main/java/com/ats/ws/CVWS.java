@@ -104,4 +104,11 @@ public class CVWS {
                              @PageableDefault Pageable pageable){
         return cvService.searchCv(listSkill, cityId, industryId, pageable);
     }
+
+    // suggest cv for 1 Job
+    @GetMapping("/suggest/{JobId}")
+    @CrossOrigin(origins = "*")
+    public RestResponse suggest(@PathVariable(name = "JobId") int JobId){
+        return null;
+    }
 }

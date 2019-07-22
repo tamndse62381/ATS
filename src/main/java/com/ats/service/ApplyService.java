@@ -14,4 +14,6 @@ public interface ApplyService {
     RestResponse listJob(int JobSeekerId);
 
     RestResponse listCv(int JobId);
+
+    RestResponse checkStatusApply(int CvId, int JobId);
 }

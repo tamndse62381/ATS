@@ -104,4 +104,12 @@ public class ApplyServiceImpl implements ApplyService{
         }
         return new RestResponse(true, "Thành công!!!", listCv);
     }
+
+    @Override
+    public RestResponse checkStatusApply(int CvId, int JobId) {
+        Apply apply = applyRepository.findForCheck(CvId, JobId);
+        if (apply != null)
+            return new RestResponse(false, "Có lỗi xảy ra vui lòng thử lại!!!", null);
+        return new RestResponse(true, "Thành công!!!", apply.getStatus());
+    }
 }

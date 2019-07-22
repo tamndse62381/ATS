@@ -63,4 +63,12 @@ public class ApplyWS {
     public RestResponse getListCvAppliedForOneJob(@PathVariable(name = "jobid") int JobId){
         return applyService.listCv(JobId);
     }
+
+    // check Status appy
+    @PostMapping("/checkstatus/{CvId}/{JobId}")
+    @CrossOrigin("*")
+    public RestResponse checkStatusApply(@PathVariable(name = "CvId") int CvId,
+                                         @PathVariable(name = "JobId") int JobId){
+        return applyService.checkStatusApply(CvId, JobId);
+    }
 }

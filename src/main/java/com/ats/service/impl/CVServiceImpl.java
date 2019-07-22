@@ -51,6 +51,8 @@ public class CVServiceImpl implements CVService {
     private EducationRepository educationRepository;
     @Autowired
     private ProjectorproductworkedRepository projectorproductworkedRepository;
+    @Autowired
+    private JobRepository jobRepository;
 
     //Mapping Object
     ModelMapper modelMapper = new ModelMapper();
@@ -332,6 +334,15 @@ public class CVServiceImpl implements CVService {
         } catch(Exception e){
             e.printStackTrace();
         }
+        return null;
+    }
+
+    @Override
+    public Page<Cv> suggest(int JobId, Pageable pageable) {
+        Job job = jobRepository.findOne(JobId);
+        if (job == null)
+            return null;
+        String listSkill = job.getSkillneedforjobsById().toString();
         return null;
     }
 
