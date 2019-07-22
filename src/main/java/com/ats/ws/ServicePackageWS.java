@@ -1,6 +1,7 @@
 package com.ats.ws;
 
 import com.ats.dto.ServicePackageDTO;
+import com.ats.dto.ServicePackageDTO2;
 import com.ats.entity.Servicepackage;
 import com.ats.service.FunctionPackageService;
 import com.ats.service.ServicePackageService;
@@ -114,7 +115,7 @@ public class ServicePackageWS {
     @ResponseBody
     public RestResponse getServicePackDetail(@RequestParam(value = "id") int id) {
         LOGGER.info("Begin getServicePackDetail Service Pack in ServicePackage WS ");
-        Servicepackage servicepackage;
+        ServicePackageDTO2 servicepackage;
         try {
             servicepackage = servicePackageService.getServicePackDetail(id);
             if (servicepackage != null) {

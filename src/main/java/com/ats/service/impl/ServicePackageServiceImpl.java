@@ -1,8 +1,11 @@
 package com.ats.service.impl;
 
 import com.ats.dto.ServicePackageDTO;
+import com.ats.dto.ServicePackageDTO2;
 import com.ats.entity.Servicepackage;
+import com.ats.repository.FunctionPackageRepository;
 import com.ats.repository.ServicepackageRepository;
+import com.ats.service.FunctionPackageService;
 import com.ats.service.ServicePackageService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,11 +15,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ServicePackageServiceImpl implements ServicePackageService {
 
     @Autowired
     ServicepackageRepository servicepackageRepository;
+    @Autowired
+    FunctionPackageRepository functionPackageRepository;
 
     private static final Logger LOGGER = LogManager.getLogger(ServicePackageServiceImpl.class);
 
@@ -90,15 +98,25 @@ public class ServicePackageServiceImpl implements ServicePackageService {
     }
 
     @Override
-    public Servicepackage getServicePackDetail(int id) {
+    public ServicePackageDTO2 getServicePackDetail(int id) {
         LOGGER.info("Begin Get All Service Pack in ServicePackage Service ");
         Servicepackage servicepackages = null;
+        ModelMapper mapper = new ModelMapper();
+        ServicePackageDTO2 servicePackageDTO = null;
+        List<String> functionList = new ArrayList<>();
         try {
             servicepackages = servicepackageRepository.findOne(id);
+
+            servicePackageDTO = mapper.map(servicepackages, ServicePackageDTO2.class);
+            for (int i = 0; i < servicepackages.getFunctionpackagesById().size(); i++) {
+                functionList.add(servicepackages.getFunctionpackagesById().get(i).
+                        getServicefunctionByServiceFunctionId().getFunctionName());
+            }
+            servicePackageDTO.setListFunction(functionList);
         } catch (Exception e) {
             e.printStackTrace();
         }
         LOGGER.info("End Get All Service Pack in ServicePackage Service ");
-        return servicepackages;
+        return servicePackageDTO;
     }
 }
