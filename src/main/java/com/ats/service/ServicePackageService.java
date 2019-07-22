@@ -1,6 +1,7 @@
 package com.ats.service;
 
 import com.ats.dto.ServicePackageDTO;
+import com.ats.dto.ServicePackageDTO2;
 import com.ats.entity.Servicepackage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,5 +17,5 @@ public interface ServicePackageService {
 
     Page<Servicepackage> getAllServicePack(Pageable pageable, String search, String status);
 
-    Servicepackage getServicePackDetail(int id);
+    ServicePackageDTO2 getServicePackDetail(int id);
 }
