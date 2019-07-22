@@ -243,7 +243,7 @@ public class JobServiceImpl implements JobService {
 
             jobPage = jobRepository.suggestJob(cv.getYearExperience(),
                     cv.getIndustryId(), cv.getCityId(),
-                    "new", date, pageable);
+                    "approved", date, pageable);
 
             System.out.println("CÓ NHA : " + jobPage.getContent().size());
 

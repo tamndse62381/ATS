@@ -14,6 +14,7 @@ public class Servicefunction {
     private List<Functionpackage> functionpackagesById;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     public int getId() {
         return id;
