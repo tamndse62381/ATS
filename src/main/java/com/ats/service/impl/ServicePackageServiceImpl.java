@@ -30,7 +30,7 @@ public class ServicePackageServiceImpl implements ServicePackageService {
             servicepackage = mapper.map(servicePackageDTO, Servicepackage.class);
             if (servicepackage != null) {
                 servicepackage = servicepackageRepository.save(servicepackage);
-                result = 1;
+                result = servicepackage.getId();
             }
 
         } catch (Exception e) {
