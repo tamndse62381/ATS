@@ -1,19 +1,28 @@
 package com.ats.service.impl;
 
 import com.ats.dto.EmployercompanyDTO;
+import com.ats.dto.EmployercompanyDTO2;
 import com.ats.entity.Company;
 import com.ats.entity.Employercompany;
 import com.ats.entity.Users;
 import com.ats.repository.EmployercompanyRepository;
+import com.ats.repository.UsersRepository;
 import com.ats.service.CompanyService;
 import com.ats.service.EmployercompanyService;
 import com.ats.service.UsersService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -25,6 +34,8 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
     CompanyService companyService;
     @Autowired
     UsersService usersService;
+    @Autowired
+    UsersRepository usersRepository;
 
 
     private static final Logger LOGGER = LogManager.getLogger(EmployercompanyServiceImpl.class);
@@ -82,7 +93,7 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
                 employercompany.setUsersByUserId(users);
 
                 employercompany = employercompanyRepository.save(employercompany);
-                usersService.changeRole(employercompany.getUserId(),3 );
+                usersService.changeRole(employercompany.getUserId(), 3);
                 if (employercompany != null) {
                     result = true;
                 }
@@ -112,18 +123,67 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
     }
 
     @Override
-    public int findCompanyByUserId(int userId) {
+    public EmployercompanyDTO findCompanyByUserId(int userId) {
         LOGGER.info("Begin findCompanyByUserId in Employercompany Service with User id : " + userId);
-        int result = -1;
+        Employercompany employercompany;
+        EmployercompanyDTO employercompanyDTO = null;
+        ModelMapper modelMapper = new ModelMapper();
         try {
-            Employercompany employercompany = employercompanyRepository.findCompanyByUserId(userId);
-            if (employercompany != null) {
-                result = employercompany.getCompanyId();
-            }
+            employercompany = employercompanyRepository.findCompanyByUserId(userId);
+            employercompanyDTO = modelMapper.map(employercompany, EmployercompanyDTO.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
         LOGGER.info("End findCompanyByUserId in Employercompany Service with User id : " + userId);
+        return employercompanyDTO;
+    }
+
+    @Override
+    public int changeStatus(EmployercompanyDTO employercompanyDTO) {
+        LOGGER.info("Begin changeStatus in Employercompany Service with User id : " + employercompanyDTO.getUserId());
+        int result = -1;
+        try {
+            if (employercompanyDTO.getStatus().equals("approved")) {
+                result = employercompanyRepository.changeStatus(employercompanyDTO.getUserId(), employercompanyDTO.getStatus());
+                if (result > -1) {
+                    usersService.changeRole(employercompanyDTO.getUserId(), 3);
+                }
+            } else if (employercompanyDTO.getStatus().equals("deny")) {
+                result = employercompanyRepository.changeStatus(employercompanyDTO.getUserId(), employercompanyDTO.getStatus());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End changeStatus in Employercompany Service with User id : " + employercompanyDTO.getUserId());
         return result;
+    }
+
+    @Override
+    public Page<EmployercompanyDTO2> getAllEmployerCompanyByUserId(String search,
+                                                                   String status,
+                                                                   int userId,
+                                                                   Pageable pageable) {
+        LOGGER.info("Begin getAllEmployerCompanyByUserId in Employercompany Service with User id : " + userId);
+        Page<Employercompany> employercompanyPage;
+        Page<EmployercompanyDTO2> employercompanyDTO2Page = null;
+        List<EmployercompanyDTO2> listofDTO;
+        ModelMapper mapper = new ModelMapper();
+        java.lang.reflect.Type targetListType = new TypeToken<List<EmployercompanyDTO2>>() {
+        }.getType();
+
+        Employercompany employercompany = employercompanyRepository.findByUserId(userId);
+        System.out.println(employercompany.getCompanyId());
+        try {
+            employercompanyPage = employercompanyRepository.getAll(pageable, search, status, employercompany.getCompanyId());
+
+            listofDTO = mapper.map(employercompanyPage.getContent(), targetListType);
+            employercompanyDTO2Page = new PageImpl<>(
+                    listofDTO,
+                    new PageRequest(employercompanyPage.getTotalPages(), employercompanyPage.getSize()), listofDTO.size());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getAllEmployerCompanyByUserId in Employercompany Service with User id : " + userId);
+        return employercompanyDTO2Page;
     }
 }

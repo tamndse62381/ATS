@@ -3,6 +3,9 @@ package com.ats.service;
 
 import com.ats.dto.UsersDTO;
 import com.ats.dto.UsersDTO2;
+import com.ats.entity.Users;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +28,9 @@ public interface UsersService {
 
     int updateUser(UsersDTO dto);
 
-    int changeRole(int id , int role);
+    int changeRole(int id, int role);
+
+    Page<Users> getAllUser(Pageable pageable, String search, String status);
 
 
 }
