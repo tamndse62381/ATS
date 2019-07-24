@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -114,26 +115,8 @@ public class JobServiceImpl implements JobService {
             listofJob = jobRepository.searchJob(job, pageable, "approved", new Date(), city, industry);
 
             ModelMapper mapper = new ModelMapper();
-<<<<<<< Updated upstream
-            java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
-            }.getType();
-            listofDTO = mapper.map(listofJob.getContent(), targetListType);
-            System.out.println(listofJob.getTotalPages());
-            System.out.println(listofJob.getSize());
-            System.out.println(listofJob.getTotalElements());
-            System.out.println(listofJob.getNumber());
-            System.out.println();
-            if(listofDTO.size() > 0){
-                pageDTO = new PageImpl<>(listofDTO,
-                        new PageRequest(listofJob.getTotalPages(), listofJob.getNumberOfElements()),
-                        listofDTO.size());
-                System.out.println(pageDTO.getTotalPages());
-                System.out.println(pageDTO.getSize());
-                System.out.println(pageDTO.getTotalElements());
-                System.out.println(pageDTO.getNumber());
-            }
-=======
-            pageDTO = pageOfJob.map(new Converter<Job, JobDTO>() {
+
+            pageDTO = listofJob.map(new Converter<Job, JobDTO>() {
                 @Override
                 public JobDTO convert(Job job) {
                     JobDTO dto;
@@ -141,8 +124,6 @@ public class JobServiceImpl implements JobService {
                     return dto;
                 }
             });
-
->>>>>>> Stashed changes
 
             LOGGER.info("End searchJob in Job Repository with job list size : {} ");
         } catch (Exception e) {
@@ -255,24 +236,8 @@ public class JobServiceImpl implements JobService {
                 System.out.println(cv.getSkillincvsById().get(i).getSkillId());
                 System.out.println(cv.getSkillincvsById().get(i).getSkillBySkillId().getSkillmasterBySkillMasterId().getSkillName());
             }
+
             Date date = new Date();
-<<<<<<< Updated upstream
-
-            jobPage = jobRepository.suggestJob(cv.getYearExperience(),
-                    cv.getIndustryId(), cv.getCityId(),
-                    "new", date, pageable);
-
-            System.out.println("CÓ NHA : " + jobPage.getContent().size());
-
-            for (int i = 0; i < jobPage.getContent().size(); i++) {
-                System.out.println("SKILL CỦA JOB " + i);
-                System.out.println(jobPage.getContent().get(i).getTitle());
-                for (int j = 0; j < jobPage.getContent().get(i).getSkillneedforjobsById().size(); j++) {
-                    System.out.println(jobPage.getContent().get(i).getSkillneedforjobsById().get(j).getSkillId());
-                    if (skillInCvId.contains(jobPage.getContent().get(i).getSkillneedforjobsById().get(j).getSkillId())) {
-                        if (!suggestJobList.contains(jobPage.getContent().get(i))) {
-                            suggestJobList.add(jobPage.getContent().get(i));
-=======
             String cityName = cv.getCityByCityId().getFullName();
             String industryName = cv.getIndustryByIndustryId().getName();
 
@@ -289,7 +254,6 @@ public class JobServiceImpl implements JobService {
                     if (skillInCvId.contains(jobList.get(i).getSkillneedforjobsById().get(j).getSkillId())) {
                         if (!suggestJobList.contains(jobList.get(i))) {
                             suggestJobList.add(jobList.get(i));
->>>>>>> Stashed changes
                         }
                     }
                 }
@@ -372,7 +336,7 @@ public class JobServiceImpl implements JobService {
             }.getType();
             listofDTO = mapper.map(suggestJobList, targetListType);
 
-            pageDTO = new PageImpl<>(listofDTO, new PageRequest(1, 10), listofDTO.size());
+            pageDTO = new PageImpl<>(listofDTO, new PageRequest(0, 10), listofDTO.size());
         } catch (Exception e) {
             e.printStackTrace();
         }
