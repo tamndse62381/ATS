@@ -13,7 +13,7 @@ public class UserlikecvWS {
 
     // Create
     @PostMapping("/create/{EmployerId}/{CvId}")
-    @CrossOrigin(origins = "")
+    @CrossOrigin(origins = "*")
     public RestResponse create(@PathVariable(name = "EmployerId") int EmployerId,
                                @PathVariable(name = "CvId") int CvId){
         return userlikecvService.create(EmployerId, CvId);
