@@ -108,7 +108,6 @@ public class JobServiceImpl implements JobService {
     public Page<JobDTO> searchJob(String job, String city, String industry, Pageable pageable) {
         LOGGER.info("Begin searchJob in Job Service with job name : {} ", job);
         Page<Job> pageOfJob;
-        List<JobDTO> listofDTO;
         Page<JobDTO> pageDTO = null;
         try {
             LOGGER.info("Begin searchJob in Job Repository with job name : {} ", job);
@@ -120,16 +119,6 @@ public class JobServiceImpl implements JobService {
                 public JobDTO convert(Job job) {
                     JobDTO dto;
                     dto = mapper.map(job,JobDTO.class);
-                    return dto;
-                }
-            });
-
-
-            pageDTO = listofJob.map(new Converter<Job, JobDTO>() {
-                @Override
-                public JobDTO convert(Job job) {
-                    JobDTO dto;
-                    dto = mapper.map(job, JobDTO.class);
                     return dto;
                 }
             });
@@ -247,11 +236,6 @@ public class JobServiceImpl implements JobService {
             }
             Date date = new Date();
 
-            jobPage = jobRepository.suggestJob(cv.getYearExperience(),
-                    cv.getIndustryId(), cv.getCityId(),
-                    "approved", date, pageable);
-
-            Date date = new Date();
             String cityName = cv.getCityByCityId().getFullName();
             String industryName = cv.getIndustryByIndustryId().getName();
 
