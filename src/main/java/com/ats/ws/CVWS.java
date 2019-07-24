@@ -108,7 +108,8 @@ public class CVWS {
     // suggest cv for 1 Job
     @GetMapping("/suggest/{JobId}")
     @CrossOrigin(origins = "*")
-    public RestResponse suggest(@PathVariable(name = "JobId") int JobId){
-        return null;
+    public Page<Cv> suggest(@PathVariable(name = "JobId") int JobId,
+                            @PageableDefault Pageable pageable){
+        return cvService.suggest(JobId, pageable);
     }
 }
