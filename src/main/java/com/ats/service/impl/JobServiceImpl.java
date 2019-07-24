@@ -107,14 +107,23 @@ public class JobServiceImpl implements JobService {
     @Override
     public Page<JobDTO> searchJob(String job, String city, String industry, Pageable pageable) {
         LOGGER.info("Begin searchJob in Job Service with job name : {} ", job);
-        Page<Job> listofJob;
+        Page<Job> pageOfJob;
         List<JobDTO> listofDTO;
         Page<JobDTO> pageDTO = null;
         try {
             LOGGER.info("Begin searchJob in Job Repository with job name : {} ", job);
-            listofJob = jobRepository.searchJob(job, pageable, "approved", new Date(), city, industry);
+            pageOfJob = jobRepository.searchJob(job, pageable, "approved", new Date(), city, industry);
 
             ModelMapper mapper = new ModelMapper();
+            pageDTO = pageOfJob.map(new Converter<Job, JobDTO>() {
+                @Override
+                public JobDTO convert(Job job) {
+                    JobDTO dto;
+                    dto = mapper.map(job,JobDTO.class);
+                    return dto;
+                }
+            });
+
 
             pageDTO = listofJob.map(new Converter<Job, JobDTO>() {
                 @Override
@@ -236,6 +245,11 @@ public class JobServiceImpl implements JobService {
                 System.out.println(cv.getSkillincvsById().get(i).getSkillId());
                 System.out.println(cv.getSkillincvsById().get(i).getSkillBySkillId().getSkillmasterBySkillMasterId().getSkillName());
             }
+            Date date = new Date();
+
+            jobPage = jobRepository.suggestJob(cv.getYearExperience(),
+                    cv.getIndustryId(), cv.getCityId(),
+                    "approved", date, pageable);
 
             Date date = new Date();
             String cityName = cv.getCityByCityId().getFullName();

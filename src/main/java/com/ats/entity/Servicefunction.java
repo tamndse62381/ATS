@@ -1,7 +1,7 @@
 package com.ats.entity;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,9 +11,11 @@ import java.util.Objects;
 public class Servicefunction {
     private int id;
     private String functionName;
-    private List<Functionpackage> functionpackagesById;
+    private String status;
+    private List<Servicepackage> servicepackagesById;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     public int getId() {
         return id;
@@ -33,13 +35,24 @@ public class Servicefunction {
         this.functionName = functionName;
     }
 
+    @Basic
+    @Column(name = "Status", nullable = true, length = 45)
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Servicefunction that = (Servicefunction) o;
         return id == that.id &&
-                Objects.equals(functionName, that.functionName);
+                Objects.equals(functionName, that.functionName) &&
+                Objects.equals(status, that.status);
     }
 
     @Override
@@ -47,13 +60,13 @@ public class Servicefunction {
         return Objects.hash(id, functionName);
     }
 
-    @OneToMany(mappedBy = "servicefunctionByServiceFunctionId")
-    @LazyCollection(LazyCollectionOption.FALSE)
-    public List<Functionpackage> getFunctionpackagesById() {
-        return functionpackagesById;
+    @OneToMany(mappedBy = "servicefunctionByFunctionId")
+    @JsonBackReference
+    public List<Servicepackage> getServicepackagesById() {
+        return servicepackagesById;
     }
 
-    public void setFunctionpackagesById(List<Functionpackage> functionpackagesById) {
-        this.functionpackagesById = functionpackagesById;
+    public void setServicepackagesById(List<Servicepackage> servicepackagesById) {
+        this.servicepackagesById = servicepackagesById;
     }
 }
