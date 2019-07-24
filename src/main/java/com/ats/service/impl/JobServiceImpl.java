@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -104,31 +105,23 @@ public class JobServiceImpl implements JobService {
     @Override
     public Page<JobDTO> searchJob(String job, String city, String industry, Pageable pageable) {
         LOGGER.info("Begin searchJob in Job Service with job name : {} ", job);
-        Page<Job> listofJob;
+        Page<Job> pageOfJob;
         List<JobDTO> listofDTO;
         Page<JobDTO> pageDTO = null;
         try {
             LOGGER.info("Begin searchJob in Job Repository with job name : {} ", job);
-            listofJob = jobRepository.searchJob(job, pageable, "approved", new Date(), city, industry);
+            pageOfJob = jobRepository.searchJob(job, pageable, "approved", new Date(), city, industry);
 
             ModelMapper mapper = new ModelMapper();
-            java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
-            }.getType();
-            listofDTO = mapper.map(listofJob.getContent(), targetListType);
-            System.out.println(listofJob.getTotalPages());
-            System.out.println(listofJob.getSize());
-            System.out.println(listofJob.getTotalElements());
-            System.out.println(listofJob.getNumber());
-            System.out.println();
-            if(listofDTO.size() > 0){
-                pageDTO = new PageImpl<>(listofDTO,
-                        new PageRequest(listofJob.getTotalPages(), listofJob.getNumberOfElements()),
-                        listofDTO.size());
-                System.out.println(pageDTO.getTotalPages());
-                System.out.println(pageDTO.getSize());
-                System.out.println(pageDTO.getTotalElements());
-                System.out.println(pageDTO.getNumber());
-            }
+            pageDTO = pageOfJob.map(new Converter<Job, JobDTO>() {
+                @Override
+                public JobDTO convert(Job job) {
+                    JobDTO dto;
+                    dto = mapper.map(job,JobDTO.class);
+                    return dto;
+                }
+            });
+
 
 
             LOGGER.info("End searchJob in Job Repository with job list size : {} ");

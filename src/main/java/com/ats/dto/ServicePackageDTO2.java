@@ -13,5 +13,5 @@ public class ServicePackageDTO2 {
     private String description;
     private Date createdDate;
     private Double price;
-    List<String> listFunction;
+    private String functionName;
 }
