@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -342,8 +343,33 @@ public class CVServiceImpl implements CVService {
         Job job = jobRepository.findOne(JobId);
         if (job == null)
             return null;
-        String listSkill = job.getSkillneedforjobsById().toString();
-        return null;
+        int cityId = job.getCityId();
+        int industryId = job.getIndustryId();
+        List<Skill> listSkill = new ArrayList<>();
+        for (Skillneedforjob skillneedforjob : job.getSkillneedforjobsById()) {
+            listSkill.add(skillneedforjob.getSkillBySkillId());
+        }
+        List<Skillmaster> listSkillMaster = new ArrayList<>();
+        for (Skill skill : listSkill) {
+            listSkillMaster.add(skill.getSkillmasterBySkillMasterId());
+        }
+        String listSkillName = "";
+        int i = 0;
+        for (Skillmaster skillmaster : listSkillMaster) {
+            if (i < listSkillMaster.size() - 1){
+                listSkillName = listSkillName + skillmaster.getSkillName() + ",";
+                i++;
+            } else {
+                listSkillName = listSkillName  + skillmaster.getSkillName();
+            }
+        }
+        try {
+            Page<Cv> listCv = cvRepository.searchCv(listSkillName ,pageable, cityId, industryId);
+            return listCv;
+        } catch (RuntimeException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private boolean checkIsActive(int userId){
