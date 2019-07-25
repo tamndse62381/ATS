@@ -57,11 +57,11 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
             "WHERE j.status = :status and " +
             "j.yearExperience <= :yE and " +
             "j.endDateForApply > :now and " +
-            "c.id = :cityId and " +
-            "d.id = :industryId")
+            "c.fullName LIKE CONCAT('%',LOWER(:cityId),'%') and " +
+            "d.name LIKE CONCAT('%',LOWER(:industryId),'%')")
     Page<Job> suggestJob(@Param("yE") int yearExperience,
-                         @Param("industryId") int industryId,
-                         @Param("cityId") int city,
+                         @Param("industryId") String industryId,
+                         @Param("cityId") String city,
                          @Param("status") String status,
                          @Param("now") Date now,
                          Pageable pageable);

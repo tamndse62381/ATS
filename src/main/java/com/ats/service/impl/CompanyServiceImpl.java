@@ -18,9 +18,12 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -53,9 +56,18 @@ public class CompanyServiceImpl implements CompanyService {
         ModelMapper mapper = new ModelMapper();
         java.lang.reflect.Type targetListType = new TypeToken<List<CompanyDTO2>>() {
         }.getType();
-        List<CompanyDTO2> listofDTO;
+        List<CompanyDTO2> listofDTO = null;
         List<Company> listCompany = companyRepository.findAll();
-        listofDTO = mapper.map(listCompany, targetListType);
+        List<Company> tempCompanyList = new ArrayList<>();
+        for (int i = 0; i < listCompany.size(); i++) {
+            if (listCompany.get(i).getStatus().equals("approved")) {
+                tempCompanyList.add(listCompany.get(i));
+            }
+        }
+        if (tempCompanyList.size() > 0) {
+            listofDTO = mapper.map(tempCompanyList, targetListType);
+        }
+
         return listofDTO;
     }
 
@@ -81,7 +93,7 @@ public class CompanyServiceImpl implements CompanyService {
         company = modelMapper.map(newCompany, Company.class);
         company.setEmail(EMAIL);
         company.setCityByCityId(cityRepository.findOne(newCompany.getCityId()));
-        company.setStatus("1");
+        company.setStatus(newCompany.getStatus());
         company.setCreatedDate(new Timestamp(new Date().getTime()));
         companyRepository.save(company);
         Company changeCompany = companyRepository.findByEmail(EMAIL);
@@ -107,15 +119,55 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public int changeStatus(int id, String newStatus) {
-        LOGGER.info("Begin changeStatus in Job Service with Job id - newStatus : {}", id + newStatus);
+        LOGGER.info("Begin changeStatus in Company Service with Job id - newStatus : {}", id + newStatus);
         int success;
         success = companyRepository.changeStatus(id, newStatus);
-        LOGGER.info("End changeStatus in Job Service with result: {}", success);
+        LOGGER.info("End changeStatus in Company Service with result: {}", success);
         return success;
     }
 
     @Override
-    public Page<Company> findAllCompanyByStatus(String search, String status, Pageable pageable) {
-        return companyRepository.findAll(pageable, search, status);
+    public Page<CompanyDTO3> findAllCompanyByStatus(String search, String status, Pageable pageable) {
+        LOGGER.info("Begin findAllCompanyByStatus in Company Service with search value - newStatus : {}",
+                search + status);
+        Page<Company> companyPage = null;
+        List<CompanyDTO3> companyDTO3List = null;
+        List<CompanyDTO3> correctCompanyDTO3List = new ArrayList<>();
+        Page<CompanyDTO3> companyDTO3Page = null;
+        try {
+            companyPage = companyRepository.findAll(pageable, search, status);
+            List<String> userOfMainEmployer = new ArrayList<>();
+
+            ModelMapper mapper = new ModelMapper();
+            java.lang.reflect.Type targetListType = new TypeToken<List<CompanyDTO3>>() {
+            }.getType();
+            companyDTO3List = mapper.map(companyPage.getContent(), targetListType);
+            for (int i = 0; i < companyPage.getContent().size(); i++) {
+                for (int j = 0; j < companyPage.getContent().get(i).getEmployercompaniesById().size(); j++) {
+                    if (companyPage.getContent().get(i).getEmployercompaniesById().get(j).getUsersByUserId().getRoleId() == 2) {
+                        if(companyDTO3List.get(i).getId() == companyPage.getContent().get(i).getId()){
+                            companyDTO3List.get(i).setUsersEmail(companyPage.
+                                    getContent().get(i).getEmployercompaniesById().get(j).getUsersByUserId().getEmail());
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i < companyDTO3List.size(); i++) {
+                if(!correctCompanyDTO3List.contains(companyDTO3List.get(i))){
+                    correctCompanyDTO3List.add(companyDTO3List.get(i));
+                }
+
+            }
+            companyDTO3Page = new PageImpl<>(correctCompanyDTO3List,
+                    new PageRequest(companyPage.getTotalPages(), companyPage.getSize()),
+                    correctCompanyDTO3List.size());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        LOGGER.info("End findAllCompanyByStatus in Company Service with search value - newStatus : {}",
+                search + status);
+        return companyDTO3Page;
+
     }
 }

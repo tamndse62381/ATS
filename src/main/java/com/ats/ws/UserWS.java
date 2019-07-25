@@ -10,12 +10,17 @@ import com.ats.dto.UsersDTO2;
 import com.ats.entity.City;
 import com.ats.entity.Company;
 import com.ats.entity.Joblevel;
+import com.ats.entity.Users;
 import com.ats.service.CityService;
 import com.ats.service.CompanyService;
 import com.ats.service.JoblevelService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import com.ats.dto.UsersDTO;
 import com.ats.service.UsersService;
@@ -109,7 +114,7 @@ public class UserWS {
     }
 
     @ResponseBody
-    @CrossOrigin(origins = "localhost:8090")
+    @CrossOrigin(origins = "*")
     @PostMapping(value = "/changePassword", produces = "application/json;charset=UTF-8")
     public RestResponse changePassword(@RequestBody UsersDTO usersDTO) {
         LOGGER.info("Begin changePassword in UserWS with Account id {}" + usersDTO.getId());
@@ -127,7 +132,7 @@ public class UserWS {
     }
 
     @ResponseBody
-    @CrossOrigin(origins = "localhost:8090")
+    @CrossOrigin(origins = "*")
     @PostMapping(value = "/changeUserStatus", produces = "application/json;charset=UTF-8")
     public RestResponse changeStatus(@RequestBody UsersDTO usersDTO) {
         LOGGER.info("Begin changeStatus in UserWS with Account id : {}" + usersDTO.getId());
@@ -145,7 +150,7 @@ public class UserWS {
     }
 
     @ResponseBody
-    @CrossOrigin(origins = "http://localhost:8090")
+    @CrossOrigin(origins = "*")
     @PostMapping(value = "/registrationGoogle")
     public RestResponse registrationGoogle(@RequestBody UsersDTO usersDTO) {
         LOGGER.info("Begin Registration in UserWS with email - password - fullname: {}",
@@ -176,7 +181,7 @@ public class UserWS {
         return new RestResponse(false, "Fail Create To Account", null);
     }
 
-    @CrossOrigin(origins = "http://localhost:8090")
+    @CrossOrigin(origins = "*")
     @PostMapping(value = "/loginGoogle")
     @ResponseBody
     public RestResponse loginGoogle(@RequestBody UsersDTO usersDTO) {
@@ -219,7 +224,7 @@ public class UserWS {
     }
 
     @ResponseBody
-    @CrossOrigin(origins = "http://localhost:8090")
+    @CrossOrigin(origins = "*")
     @PostMapping(value = "/updateUser")
     public RestResponse updateUser(@RequestBody UsersDTO usersDTO) {
         LOGGER.info("Begin updateUser in UserWS with email - password - fullname: ", usersDTO.getFullname());
@@ -236,5 +241,28 @@ public class UserWS {
             e.printStackTrace();
         }
         return new RestResponse(false, "Fail Update To User", null);
+    }
+
+    @ResponseBody
+    @CrossOrigin(origins = "*")
+    @GetMapping(value = "/getAllUser")
+    public RestResponse getAllUser(@RequestParam(value ="search") String search,
+                                   @PageableDefault Pageable pageable,
+                                   @RequestParam(value = "status") String status){
+        LOGGER.info("Begin getAllUser in UserWS");
+        Page<Users> usersPage;
+        pageable = new PageRequest(0, Integer.MAX_VALUE);
+        try {
+            usersPage = usersService.getAllUser(pageable,search,status);
+            LOGGER.info("End getAllUser in UserWS");
+            if (usersPage.getContent().size() > 0) {
+                return new RestResponse(true, "getAllUser Successful", usersPage);
+            } else {
+                return new RestResponse(true, "getAllUser Successful No Data", null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new RestResponse(false, "Fail getAllUser in UserWS", null);
     }
 }
