@@ -1,9 +1,13 @@
 package com.ats.ws;
 
 import com.ats.entity.Apply;
+import com.ats.entity.Cv;
 import com.ats.service.ApplyService;
 import com.ats.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -60,8 +64,9 @@ public class ApplyWS {
     // get List Cv applied for one Job
         @GetMapping("/cv-applied/{jobid}")
     @CrossOrigin(origins = "*")
-    public RestResponse getListCvAppliedForOneJob(@PathVariable(name = "jobid") int JobId){
-        return applyService.listCv(JobId);
+    public Page<Cv> getListCvAppliedForOneJob(@PathVariable(name = "jobid") int JobId,
+                                              @PageableDefault(size = 5) Pageable pageable){
+        return applyService.listCv(JobId, pageable);
     }
 
     // check Status appy
