@@ -3,7 +3,6 @@ package com.ats.ws;
 import com.ats.dto.ServicePackageDTO;
 import com.ats.dto.ServicePackageDTO2;
 import com.ats.entity.Servicepackage;
-import com.ats.service.FunctionPackageService;
 import com.ats.service.ServicePackageService;
 import com.ats.util.RestResponse;
 import org.apache.logging.log4j.LogManager;
@@ -22,8 +21,6 @@ import java.util.Date;
 public class ServicePackageWS {
     @Autowired
     ServicePackageService servicePackageService;
-    @Autowired
-    FunctionPackageService functionPackageService;
 
     private static final Logger LOGGER = LogManager.getLogger(ServicePackageWS.class);
 
@@ -37,9 +34,7 @@ public class ServicePackageWS {
             servicePackageDTO.setCreatedDate(new Date());
             result = servicePackageService.createServicePack(servicePackageDTO);
             System.out.println(result);
-            System.out.println(servicePackageDTO.getListFunction());
-            boolean finish = functionPackageService.createNewFunctionPackage(result,servicePackageDTO.getListFunction());
-            System.out.println(finish);
+            System.out.println(servicePackageDTO.getFunctionId());
             if (result > -1) {
                 return new RestResponse(true, "createServicePack Successfull", null);
             }

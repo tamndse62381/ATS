@@ -20,8 +20,9 @@ public class Servicepackage {
     private String description;
     private Date createdDate;
     private Double price;
-    private List<Functionpackage> functionpackagesById;
     private List<Receipts> receiptsById;
+    private Servicefunction servicefunctionByFunctionId;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -113,14 +114,14 @@ public class Servicepackage {
         return Objects.hash(id, name, status, duration, description, createdDate, price);
     }
 
-    @OneToMany(mappedBy = "servicepackageByServicePackageId")
-    @LazyCollection(LazyCollectionOption.FALSE)
-    public List<Functionpackage> getFunctionpackagesById() {
-        return functionpackagesById;
+    @ManyToOne
+    @JoinColumn(name = "FunctionId", referencedColumnName = "id")
+    public Servicefunction getServicefunctionByFunctionId() {
+        return servicefunctionByFunctionId;
     }
 
-    public void setFunctionpackagesById(List<Functionpackage> functionpackagesById) {
-        this.functionpackagesById = functionpackagesById;
+    public void setServicefunctionByFunctionId(Servicefunction servicefunctionByFunctionId) {
+        this.servicefunctionByFunctionId = servicefunctionByFunctionId;
     }
 
     @OneToMany(mappedBy = "servicepackageByServicePackageId")

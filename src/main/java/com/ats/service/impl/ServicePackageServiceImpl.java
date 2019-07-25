@@ -2,10 +2,9 @@ package com.ats.service.impl;
 
 import com.ats.dto.ServicePackageDTO;
 import com.ats.dto.ServicePackageDTO2;
+import com.ats.entity.Servicefunction;
 import com.ats.entity.Servicepackage;
-import com.ats.repository.FunctionPackageRepository;
 import com.ats.repository.ServicepackageRepository;
-import com.ats.service.FunctionPackageService;
 import com.ats.service.ServicePackageService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,8 +22,6 @@ public class ServicePackageServiceImpl implements ServicePackageService {
 
     @Autowired
     ServicepackageRepository servicepackageRepository;
-    @Autowired
-    FunctionPackageRepository functionPackageRepository;
 
     private static final Logger LOGGER = LogManager.getLogger(ServicePackageServiceImpl.class);
 
@@ -36,6 +33,9 @@ public class ServicePackageServiceImpl implements ServicePackageService {
         Servicepackage servicepackage;
         try {
             servicepackage = mapper.map(servicePackageDTO, Servicepackage.class);
+            Servicefunction servicefunction = new Servicefunction();
+            servicefunction.setId(servicePackageDTO.getFunctionId());
+            servicepackage.setServicefunctionByFunctionId(servicefunction);
             if (servicepackage != null) {
                 servicepackage = servicepackageRepository.save(servicepackage);
                 result = servicepackage.getId();
@@ -99,24 +99,19 @@ public class ServicePackageServiceImpl implements ServicePackageService {
 
     @Override
     public ServicePackageDTO2 getServicePackDetail(int id) {
-        LOGGER.info("Begin Get All Service Pack in ServicePackage Service ");
+        LOGGER.info("Begin Get Service Pack in ServicePackage Service Id : " + id);
         Servicepackage servicepackages = null;
         ModelMapper mapper = new ModelMapper();
         ServicePackageDTO2 servicePackageDTO = null;
-        List<String> functionList = new ArrayList<>();
         try {
             servicepackages = servicepackageRepository.findOne(id);
 
             servicePackageDTO = mapper.map(servicepackages, ServicePackageDTO2.class);
-            for (int i = 0; i < servicepackages.getFunctionpackagesById().size(); i++) {
-                functionList.add(servicepackages.getFunctionpackagesById().get(i).
-                        getServicefunctionByServiceFunctionId().getFunctionName());
-            }
-            servicePackageDTO.setListFunction(functionList);
+            servicePackageDTO.setFunctionName(servicepackages.getServicefunctionByFunctionId().getFunctionName());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOGGER.info("End Get All Service Pack in ServicePackage Service ");
+        LOGGER.info("End Get Service Pack in ServicePackage Service Id : " + id);
         return servicePackageDTO;
     }
 }
