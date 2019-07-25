@@ -1,6 +1,9 @@
 package com.ats.service;
 
+import com.ats.entity.Cv;
 import com.ats.util.RestResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface ApplyService {
     RestResponse create(int CvId, int JobID);
@@ -13,7 +16,7 @@ public interface ApplyService {
 
     RestResponse listJob(int JobSeekerId);
 
-    RestResponse listCv(int JobId);
+    Page<Cv> listCv(int JobId, Pageable pageable);
 
     RestResponse checkStatusApply(int CvId, int JobId);
 }
