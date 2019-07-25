@@ -35,9 +35,19 @@ public interface CVRepository extends JpaRepository<Cv, Integer> {
             "inner join a.skillmasterBySkillMasterId m " +
             "inner join c.cityByCityId ci " +
             "inner join c.industryByIndustryId i where c.status = 1 " +
-            "and ci.id = :city " +
-            "and i.id = :industry " +
+            "and ci.fullName LIKE CONCAT('%',LOWER(:city),'%')" +
+            "and i.name LIKE CONCAT('%',LOWER(:industry),'%') " +
             "or m.skillName in (:skillstring) order by c.lastModify desc")
     Page<Cv> searchCv(@Param("skillstring") String skillstring, Pageable pageable,
-                      @Param("city") int city, @Param("industry") int industry);
+                      @Param("city") String city, @Param("industry") String industry);
+
+
+    @Query("select c from Cv  c " +
+            "inner join c.cityByCityId ci " +
+            "inner join c.industryByIndustryId i where c.status = 1 " +
+            "and ci.fullName LIKE CONCAT('%',LOWER(:city),'%')" +
+            "and i.name LIKE CONCAT('%',LOWER(:industry),'%') " +
+            "order by c.lastModify desc")
+    Page<Cv> searchWithoutSkill(Pageable pageable,
+                      @Param("city") String city, @Param("industry") String industry);
 }

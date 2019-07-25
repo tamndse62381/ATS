@@ -30,7 +30,7 @@ public interface CVService {
 
     RestResponse setMainCv(int id);
 
-    Page<Cv> searchCv(String skillstring, int cityId, int industryId, Pageable pageable);
+    Page<Cv> searchCv(String skillstring, String cityId, String industryId, Pageable pageable);
 
     Page<Cv> suggest(int JobId, Pageable pageable);
 }

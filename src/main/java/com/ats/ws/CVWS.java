@@ -99,10 +99,10 @@ public class CVWS {
     @GetMapping("/search/{listSkill}/{cityId}/{industryId}")
     @CrossOrigin(origins = "*")
     public Page<Cv> searchCv(@PathVariable(name = "listSkill") String listSkill,
-                             @PathVariable(name = "cityId") int cityId,
-                             @PathVariable(name = "industryId") int industryId,
+                             @PathVariable(name = "cityId") String cityName,
+                             @PathVariable(name = "industryId") String industryName,
                              @PageableDefault Pageable pageable){
-        return cvService.searchCv(listSkill, cityId, industryId, pageable);
+        return cvService.searchCv(listSkill, cityName, industryName, pageable);
     }
 
     // suggest cv for 1 Job

@@ -8,7 +8,6 @@ import com.ats.repository.JobseekerlikejobRespository;
 import com.ats.repository.UsersRepository;
 import com.ats.service.JobseekerlikejobService;
 import com.ats.util.RestResponse;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +28,7 @@ public class JobseekerlikejobServiceImpl implements JobseekerlikejobService {
     @Override
     public boolean check(int JobSeekerId, int Jobid) {
         List<Jobseekerlikejob> jobseekerlikejob = jobseekerlikejobRespository.findByUserIdAndJobId(JobSeekerId, Jobid);
-        if (jobseekerlikejob == null)
+        if (jobseekerlikejob.size() == 0)
             return true;
         return false;
     }

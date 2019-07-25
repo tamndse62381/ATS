@@ -28,7 +28,7 @@ public class UserlikecvServiceImpl implements UserlikecvService {
     @Override
     public boolean check(int EmployerId, int Cvid) {
         List<Userslikecv> userslikecv = userlikecvRepository.check(EmployerId, Cvid);
-        if (userslikecv == null)
+        if (userslikecv.size() ==  0)
             return true;
         return false;
     }

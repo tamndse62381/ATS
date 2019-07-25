@@ -15,6 +15,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class CVServiceImpl implements CVService {
@@ -93,7 +95,7 @@ public class CVServiceImpl implements CVService {
             Cv changeEmailCv = getCvByEmail();
             int CVID = changeEmailCv.getId();
             changeEmailCv.setEmail(newCV.getEmail());
-
+            cvRepository.save(changeEmailCv);
             // Save vo
             Cv saveCv = cvRepository.findOne(CVID);
             // mapping Certification
@@ -327,11 +329,33 @@ public class CVServiceImpl implements CVService {
     }
 
     @Override
-    public Page<Cv> searchCv(String skillstring, int cityId, int industryId, Pageable pageable) {
+    public Page<Cv> searchCv(String skillstring, String city, String industry, Pageable pageable) {
         Page<Cv> listCv;
         try {
-            listCv = cvRepository.searchCv(skillstring, pageable, cityId, industryId);
-            return listCv;
+            if (skillstring.equals("0")){
+                listCv = cvRepository.searchWithoutSkill(pageable, city, industry);
+                return listCv;
+            } else {
+                List<Integer> list = new ArrayList<>();
+                Pattern pattern = Pattern.compile("\\d+");
+                Matcher matcher = pattern.matcher(skillstring);
+                while (matcher.find()) {
+                    list.add(Integer.parseInt(matcher.group()));
+                }
+                String skillName = "";
+                int i = 0;
+                for (Integer integer : list) {
+                    Skillmaster skillmaster = skillmasterRepository.findOne(integer);
+                    if (i < list.size() - 1){
+                        skillName = skillName + skillmaster.getSkillName() + ",";
+                        i++;
+                    } else {
+                        skillName = skillName  + skillmaster.getSkillName();
+                    }
+                }
+                listCv = cvRepository.searchCv(skillstring, pageable, city, industry);
+                return listCv;
+            }
         } catch(Exception e){
             e.printStackTrace();
         }
@@ -343,8 +367,8 @@ public class CVServiceImpl implements CVService {
         Job job = jobRepository.findOne(JobId);
         if (job == null)
             return null;
-        int cityId = job.getCityId();
-        int industryId = job.getIndustryId();
+        String cityName = job.getCityByCityId().getFullName();
+        String industryName = job.getIndustryByIndustryId().getName();
         List<Skill> listSkill = new ArrayList<>();
         for (Skillneedforjob skillneedforjob : job.getSkillneedforjobsById()) {
             listSkill.add(skillneedforjob.getSkillBySkillId());
@@ -364,7 +388,7 @@ public class CVServiceImpl implements CVService {
             }
         }
         try {
-            Page<Cv> listCv = cvRepository.searchCv(listSkillName ,pageable, cityId, industryId);
+            Page<Cv> listCv = cvRepository.searchCv(listSkillName ,pageable, cityName, industryName);
             return listCv;
         } catch (RuntimeException e){
             e.printStackTrace();
