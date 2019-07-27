@@ -14,6 +14,8 @@ public interface EmployercompanyService {
 
     boolean createNewEmployerExistedCompany(EmployercompanyDTO dto);
 
+    boolean changeUserStatusAfterApproved(int companyId);
+
     int findCompanyById(int id);
 
     EmployercompanyDTO findCompanyByUserId(int userId);

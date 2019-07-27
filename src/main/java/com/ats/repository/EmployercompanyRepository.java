@@ -18,6 +18,9 @@ public interface EmployercompanyRepository extends JpaRepository<Employercompany
     @Query("Select b from Employercompany b where b.userId = :userId")
     Employercompany findCompanyByUserId(@Param("userId") int userId);
 
+    @Query("Select b from Employercompany b where b.companyId = :companyId")
+    Employercompany findUserByCompanyId(@Param("companyId") int companyId);
+
     @Transactional
     @Modifying
     @Query("UPDATE Employercompany b SET b.status = :newStatus WHERE b.userId = :id")

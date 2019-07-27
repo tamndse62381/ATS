@@ -107,6 +107,26 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
     }
 
     @Override
+    public boolean changeUserStatusAfterApproved(int companyId) {
+        LOGGER.info("Begin changeUserStatusAfterApproved in Employercompany Service with Company id : {}" + companyId );
+        Employercompany employercompany;
+        boolean result = false;
+        try {
+            employercompany = employercompanyRepository.findUserByCompanyId(companyId);
+            if (employercompany != null) {
+                usersService.changeRole(employercompany.getUserId(), 2);
+                if (employercompany != null) {
+                    result = true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End changeUserStatusAfterApproved in Employercompany Service with Company id : {}" + companyId);
+        return result;
+    }
+
+    @Override
     public int findCompanyById(int id) {
         LOGGER.info("Begin findCompanyById in Employercompany Service with Company id : " + id);
         int result = -1;

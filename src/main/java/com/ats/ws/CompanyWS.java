@@ -8,6 +8,7 @@ import com.ats.entity.Company;
 import com.ats.model.FileModel;
 import com.ats.repository.CompanyRepository;
 import com.ats.service.CompanyService;
+import com.ats.service.EmployercompanyService;
 import com.ats.util.RestResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,6 +37,8 @@ public class CompanyWS {
     private CompanyRepository companyRepository;
     @Autowired
     private CompanyService companyService;
+    @Autowired
+    private EmployercompanyService employercompanyService;
 
     private static final Logger LOGGER = LogManager.getLogger(CompanyWS.class);
 
@@ -84,6 +87,10 @@ public class CompanyWS {
         int success;
         try {
             success = companyService.changeStatus(companyDTO.getId(), companyDTO.getStatus());
+            if (companyDTO.getStatus().equals("approved")) {
+                employercompanyService.changeUserStatusAfterApproved(companyDTO.getId());
+            }
+
             if (success > 0) {
                 return new RestResponse(true, "changeStatus Successful with status " + companyDTO.getStatus(), null);
             }
@@ -97,8 +104,8 @@ public class CompanyWS {
     @GetMapping("/getCompanyAdmin")
     @CrossOrigin("*")
     public RestResponse getCompanyAdmin(@RequestParam(value = "search") String search,
-                                         @RequestParam(value = "status") String status,
-                                         @PageableDefault Pageable pageable) {
+                                        @RequestParam(value = "status") String status,
+                                        @PageableDefault Pageable pageable) {
         LOGGER.info("Begin getCompanyAdmin in CompanyWS");
         pageable = new PageRequest(0, Integer.MAX_VALUE);
         try {
@@ -106,7 +113,7 @@ public class CompanyWS {
 
             LOGGER.info("End getCompanyAdmin in CompanyWS");
             if (company != null) {
-                return new RestResponse(true, "Success getCompanyAdmin : " , company);
+                return new RestResponse(true, "Success getCompanyAdmin : ", company);
             }
         } catch (Exception e) {
             e.printStackTrace();
