@@ -2,6 +2,7 @@ package com.ats.ws;
 
 import com.ats.dto.EmployercompanyDTO;
 import com.ats.dto.EmployercompanyDTO2;
+import com.ats.entity.Company;
 import com.ats.entity.Employercompany;
 import com.ats.service.CompanyService;
 import com.ats.service.EmployercompanyService;
@@ -22,6 +23,8 @@ import java.util.Date;
 public class EmployercompanyWS {
     @Autowired
     EmployercompanyService employercompanyService;
+    @Autowired
+    CompanyService companyService;
 
     private static final Logger LOGGER = LogManager.getLogger(EmployercompanyWS.class);
 
@@ -76,6 +79,23 @@ public class EmployercompanyWS {
             e.printStackTrace();
         }
         return new RestResponse(false, "Fail Get Employer Company ", null);
+    }
+
+    @ResponseBody
+    @CrossOrigin(origins = "*")
+    @PostMapping(value = "/getCompanyByUserId")
+    public RestResponse getCompanyByUserId(@RequestBody EmployercompanyDTO dto) {
+        LOGGER.info("Begin addNewEmployerCompany in EmployercompanyWS with User id : {}" + dto.getUserId());
+        try {
+            EmployercompanyDTO employercompanyDTO = employercompanyService.findCompanyByUserId(dto.getUserId());
+            Company company = companyService.findComanyByID(employercompanyDTO.getCompanyId());
+            if (company != null) {
+                return new RestResponse(true, "Get Company Successful", company);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new RestResponse(false, "Fail Get Company ", null);
     }
 
     @ResponseBody
