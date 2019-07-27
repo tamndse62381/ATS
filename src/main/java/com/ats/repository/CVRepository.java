@@ -50,4 +50,6 @@ public interface CVRepository extends JpaRepository<Cv, Integer> {
             "order by c.lastModify desc")
     Page<Cv> searchWithoutSkill(Pageable pageable,
                       @Param("city") String city, @Param("industry") String industry);
+
+    int countCvsByUserIdAndStatus(int JobSeekerId, String status);
 }

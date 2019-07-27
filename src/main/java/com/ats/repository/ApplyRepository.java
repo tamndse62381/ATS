@@ -20,4 +20,6 @@ public interface ApplyRepository extends JpaRepository<Apply, Integer> {
     List<Apply> findAppliesByCvid(int Cvid);
 
     List<Apply> findAppliesByJobId(int JobId);
+
+    List<Apply> findAppliesByJobIdAndStatus(int JobId, String status);
 }

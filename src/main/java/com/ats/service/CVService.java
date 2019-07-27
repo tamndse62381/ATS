@@ -33,4 +33,10 @@ public interface CVService {
     Page<Cv> searchCv(String skillstring, String cityId, String industryId, Pageable pageable);
 
     Page<Cv> suggest(int JobId, Pageable pageable);
+
+    Page<Cv> listCvConfirmed (int EmployerId, Pageable pageable);
+
+    Page<Cv> listCvDenied (int EmployerId, Pageable pageable);
+
+    boolean check(int JobSeekerId);
 }

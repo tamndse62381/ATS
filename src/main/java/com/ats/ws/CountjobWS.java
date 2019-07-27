@@ -22,7 +22,6 @@ public class CountjobWS {
         return countjobService.countAccessTimes(id);
     }
 
-
     // Count in one months
     @GetMapping("count-month/{id}")
     @CrossOrigin("*")
