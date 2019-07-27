@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -19,7 +20,7 @@ public interface EmployercompanyRepository extends JpaRepository<Employercompany
     Employercompany findCompanyByUserId(@Param("userId") int userId);
 
     @Query("Select b from Employercompany b where b.companyId = :companyId")
-    Employercompany findUserByCompanyId(@Param("companyId") int companyId);
+    List<Employercompany> findUserByCompanyId(@Param("companyId") int companyId);
 
     @Transactional
     @Modifying
