@@ -61,8 +61,6 @@ public class CVServiceImpl implements CVService {
 
     //Mapping Object
     ModelMapper modelMapper = new ModelMapper();
-    // Conts
-    private static String EMAIL = "1101010001001101000000000000";
 
     @Override
     public RestResponse getCVByCVID(int id) {
@@ -73,15 +71,9 @@ public class CVServiceImpl implements CVService {
     }
 
     @Override
-    public Cv getCvByEmail() {
-        return cvRepository.findCVByEmail(EMAIL);
-    }
-
-    @Override
     public RestResponse create(CVDTO newCV) {
         try {
             Cv cv = modelMapper.map(newCV, Cv.class);
-            cv.setEmail(EMAIL);
             cv.setCityByCityId(cityRepository.findOne(newCV.getCityId()));
             cv.setIndustryByIndustryId(industryRepository.findOne(newCV.getIndustryId()));
             cv.setUsersByUserId(usersRepository.findOne(newCV.getUserId()));
@@ -92,13 +84,9 @@ public class CVServiceImpl implements CVService {
                 cv.setIsActive(0);
             cv.setStatus("1");
             cv.setCreatedDate(new Timestamp(new Date().getTime()));
-            cvRepository.save(cv);
-            Cv changeEmailCv = getCvByEmail();
-            int CVID = changeEmailCv.getId();
-            changeEmailCv.setEmail(newCV.getEmail());
-            cvRepository.save(changeEmailCv);
-            // Save vo
+            int CVID = cvRepository.save(cv).getId();
             Cv saveCv = cvRepository.findOne(CVID);
+
             // mapping Certification
             List<CertificationDTO> listCer = newCV.getCertificationsById();
             if (listCer != null){
