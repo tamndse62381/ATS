@@ -16,8 +16,6 @@ import java.net.MalformedURLException;
 public interface CVService {
     RestResponse getCVByCVID(int id);
 
-    Cv getCvByEmail();
-
     RestResponse create(CVDTO newCV);
 
     RestResponse edit(CVDTO editedCv);
