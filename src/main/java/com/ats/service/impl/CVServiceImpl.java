@@ -58,6 +58,8 @@ public class CVServiceImpl implements CVService {
     private JobRepository jobRepository;
     @Autowired
     private ApplyRepository applyRepository;
+    @Autowired
+    private UserlikecvRepository userlikecvRepository;
 
     //Mapping Object
     ModelMapper modelMapper = new ModelMapper();
@@ -327,8 +329,18 @@ public class CVServiceImpl implements CVService {
             }
         }
         try {
-            Page<Cv> listCv = cvRepository.searchCv(listSkillName ,pageable, cityName, industryName);
-            return listCv;
+            // get ListCv liked by this Employer
+            List<Userslikecv> listUserslikecv = userlikecvRepository.findUserslikecvsByUserId(job.getUserId());
+            List<Cv> listLikedCv = new ArrayList<>();
+            if (listUserslikecv != null){
+                for (Userslikecv userslikecv : listUserslikecv) {
+                    listLikedCv.add(userslikecv.getCvByCvid());
+                }
+            }
+            List<Cv> listCv = cvRepository.searchListCv(listSkillName, cityName, industryName);
+            listCv.removeAll(listLikedCv);
+            Page<Cv> pageCv = new PageImpl<>(listCv, pageable, listCv.size());
+            return pageCv;
         } catch (RuntimeException e){
             e.printStackTrace();
             return null;
