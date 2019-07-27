@@ -387,7 +387,7 @@ public class CVServiceImpl implements CVService {
     }
 
     private List<Cv> getByJobIdAndStatus(int EmployerId, String status){
-        List<Job> listJob = jobRepository.getJobsByStatusAAndUserId("approved", EmployerId);
+        List<Job> listJob = jobRepository.findJobsByStatusAndUserId("approved", EmployerId);
         if (listJob.size() == 0) return null;
         List<Cv> listCv = new ArrayList<>();
         for (Job job : listJob) {

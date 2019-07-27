@@ -22,8 +22,6 @@ public class ApplyServiceImpl implements ApplyService{
     @Autowired
     private ApplyRepository applyRepository;
     @Autowired
-    private UsersRepository usersRepository;
-    @Autowired
     private JobRepository jobRepository;
     @Autowired
     private CVRepository cvRepository;
