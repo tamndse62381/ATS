@@ -82,6 +82,7 @@ public class EmployercompanyWS {
     }
 
     @ResponseBody
+    @CrossOrigin(origins = "*")
     @PostMapping(value = "/getCompanyByUserId")
     public RestResponse getCompanyByUserId(@RequestBody EmployercompanyDTO dto) {
         LOGGER.info("Begin addNewEmployerCompany in EmployercompanyWS with User id : {}" + dto.getUserId());
