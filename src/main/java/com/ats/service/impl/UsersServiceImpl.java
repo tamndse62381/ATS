@@ -8,8 +8,10 @@ import com.ats.dto.JobDTO;
 import com.ats.dto.JobDTO3;
 import com.ats.dto.UsersDTO;
 import com.ats.dto.UsersDTO2;
+import com.ats.entity.Job;
 import com.ats.entity.Users;
 import com.ats.repository.UsersRepository;
+import com.ats.service.JobService;
 import com.ats.service.RoleService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,6 +37,8 @@ public class UsersServiceImpl implements UsersService {
     private UsersRepository usersRepository;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private JobService jobService;
     @Autowired
     TokenAuthenticationService tokenService;
 
@@ -223,6 +227,28 @@ public class UsersServiceImpl implements UsersService {
         LOGGER.info("Begin changeStatus in User Service with User id - newStatus : {}", id + newStatus);
         int success;
         success = usersRepository.changeStatus(id, newStatus);
+        if (newStatus.equals("ban") || newStatus.equals("active ban")){
+            Users users = usersRepository.findOne(id);
+            List<Job> jobList = users.getJobsById();
+            for (int i = 0; i < jobList.size(); i++) {
+                if (jobList.get(i).getStatus().equals("new") ||
+                        jobList.get(i).getStatus().equals("approved")) {
+                    jobService.changeStatus(jobList.get(i).getId(), jobList.get(i).getStatus() + " ban");
+                }
+            }
+        }
+        if (newStatus.equals("active")) {
+            Users users = usersRepository.findOne(id);
+            List<Job> jobList = users.getJobsById();
+            for (int i = 0; i < jobList.size(); i++) {
+                if (jobList.get(i).getStatus().equals("new ban")) {
+                    jobService.changeStatus(jobList.get(i).getId(), "new");
+                }
+                if (jobList.get(i).getStatus().equals("approved ban")) {
+                    jobService.changeStatus(jobList.get(i).getId(), "approved");
+                }
+            }
+        }
         LOGGER.info("End changeStatus in User Service with result: {}", success);
         return success;
     }

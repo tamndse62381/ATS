@@ -6,11 +6,10 @@ import com.ats.dto.CompanyDTO3;
 import com.ats.dto.CompanyindustryDTO;
 import com.ats.entity.Company;
 import com.ats.entity.Companyindustry;
-import com.ats.repository.CityRepository;
-import com.ats.repository.CompanyRepository;
-import com.ats.repository.CompanyindustryRepository;
-import com.ats.repository.IndustryRepository;
+import com.ats.entity.Users;
+import com.ats.repository.*;
 import com.ats.service.CompanyService;
+import com.ats.service.UsersService;
 import com.ats.util.RestResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,6 +21,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +38,8 @@ public class CompanyServiceImpl implements CompanyService {
     private CompanyindustryRepository companyindustryRepository;
     @Autowired
     private IndustryRepository industryRepository;
+    @Autowired
+    private UsersService usersService;
 
     private static final Logger LOGGER = LogManager.getLogger(CompanyServiceImpl.class);
 
@@ -119,9 +121,37 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public int changeStatus(int id, String newStatus) {
-        LOGGER.info("Begin changeStatus in Company Service with Job id - newStatus : {}", id + newStatus);
+        LOGGER.info("Begin changeStatus in Company Service with Job id - newStatus : {}", id + "-" + newStatus);
         int success;
         success = companyRepository.changeStatus(id, newStatus);
+        Company company = companyRepository.findOne(id);
+        List<Users> usersList = new ArrayList<>();
+        System.out.println(company.getEmployercompaniesById().get(0).getUserId());
+        System.out.println(newStatus);
+        for (int i = 0; i < company.getEmployercompaniesById().size(); i++) {
+            usersList.add(company.getEmployercompaniesById().get(i).getUsersByUserId());
+        }
+        System.out.println(usersList.size());
+        if (newStatus.equals("ban")) {
+            for (int i = 0; i < usersList.size(); i++) {
+                if (usersList.get(i).getStatus().equals("active")) {
+                    for (int j = 0; j < usersList.get(i).getJobsById().size(); j++) {
+                        usersService.changeStatus(usersList.get(i).getId(),
+                                usersList.get(i).getStatus() + " ban");
+                    }
+                }
+            }
+        }
+        if (newStatus.equals("approved")) {
+            for (int i = 0; i < usersList.size(); i++) {
+                if (usersList.get(i).getStatus().equals("active ban")) {
+                    for (int j = 0; j < usersList.get(i).getJobsById().size(); j++) {
+                        usersService.changeStatus(usersList.get(i).getId(), "active");
+                    }
+                }
+            }
+        }
+
         LOGGER.info("End changeStatus in Company Service with result: {}", success);
         return success;
     }
@@ -145,7 +175,7 @@ public class CompanyServiceImpl implements CompanyService {
             for (int i = 0; i < companyPage.getContent().size(); i++) {
                 for (int j = 0; j < companyPage.getContent().get(i).getEmployercompaniesById().size(); j++) {
                     if (companyPage.getContent().get(i).getEmployercompaniesById().get(j).getUsersByUserId().getRoleId() == 2) {
-                        if(companyDTO3List.get(i).getId() == companyPage.getContent().get(i).getId()){
+                        if (companyDTO3List.get(i).getId() == companyPage.getContent().get(i).getId()) {
                             companyDTO3List.get(i).setUsersEmail(companyPage.
                                     getContent().get(i).getEmployercompaniesById().get(j).getUsersByUserId().getEmail());
                         }
@@ -153,7 +183,7 @@ public class CompanyServiceImpl implements CompanyService {
                 }
             }
             for (int i = 0; i < companyDTO3List.size(); i++) {
-                if(!correctCompanyDTO3List.contains(companyDTO3List.get(i))){
+                if (!correctCompanyDTO3List.contains(companyDTO3List.get(i))) {
                     correctCompanyDTO3List.add(companyDTO3List.get(i));
                 }
 
