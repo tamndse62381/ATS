@@ -21,7 +21,7 @@ public class Servicepackage {
     private Date createdDate;
     private Double price;
     private List<Receipts> receiptsById;
-    private Servicefunction servicefunctionByFunctionId;
+
 
 
     @Id
@@ -114,15 +114,6 @@ public class Servicepackage {
         return Objects.hash(id, name, status, duration, description, createdDate, price);
     }
 
-    @ManyToOne
-    @JoinColumn(name = "FunctionId", referencedColumnName = "id")
-    public Servicefunction getServicefunctionByFunctionId() {
-        return servicefunctionByFunctionId;
-    }
-
-    public void setServicefunctionByFunctionId(Servicefunction servicefunctionByFunctionId) {
-        this.servicefunctionByFunctionId = servicefunctionByFunctionId;
-    }
 
     @OneToMany(mappedBy = "servicepackageByServicePackageId")
     @LazyCollection(LazyCollectionOption.FALSE)

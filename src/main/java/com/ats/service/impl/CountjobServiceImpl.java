@@ -49,8 +49,7 @@ public class CountjobServiceImpl implements CountjobService{
         int count = 0;
         for (Job job : listJob) {
             count =+ countjobRepository.countCountjobsByJobId(job.getId());
-            return count;
         }
-        return 0;
+        return count;
     }
 }
