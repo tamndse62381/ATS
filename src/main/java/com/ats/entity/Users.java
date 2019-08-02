@@ -3,6 +3,8 @@ package com.ats.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -121,7 +123,7 @@ public class Users implements Serializable {
     }
 
     @Basic
-    @Column(name = "JobLevelID", nullable = true )
+    @Column(name = "JobLevelID", nullable = true)
     public Integer getJobLevelId() {
         return jobLevelId;
     }
@@ -141,7 +143,7 @@ public class Users implements Serializable {
     }
 
     @Basic
-    @Column(name = "CityID", nullable = true )
+    @Column(name = "CityID", nullable = true)
     public Integer getCityId() {
         return cityId;
     }
@@ -271,7 +273,6 @@ public class Users implements Serializable {
     }
 
 
-
     @OneToMany(mappedBy = "usersByUserId")
     @JsonBackReference
     public List<Employercompany> getEmployercompaniesById() {
@@ -283,7 +284,7 @@ public class Users implements Serializable {
     }
 
     @OneToMany(mappedBy = "usersByUserId")
-    @JsonBackReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     public List<Job> getJobsById() {
         return jobsById;
     }

@@ -33,6 +33,10 @@ public interface JobService {
 
     Page<JobDTO> suggestJob(int cvid , Pageable pageable);
 
+    Page<JobDTO> suggestJobByJobId(int jobid , Pageable pageable);
+
+    Page<JobDTO> suggestJobByUserId(int userid , Pageable pageable);
+
     RestResponse findListJobValid(int EmployerId);
 
     RestResponse findListJobInValid(int EmployerId);

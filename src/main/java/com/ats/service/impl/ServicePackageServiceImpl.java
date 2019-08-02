@@ -2,7 +2,6 @@ package com.ats.service.impl;
 
 import com.ats.dto.ServicePackageDTO;
 import com.ats.dto.ServicePackageDTO2;
-import com.ats.entity.Servicefunction;
 import com.ats.entity.Servicepackage;
 import com.ats.repository.ServicepackageRepository;
 import com.ats.service.ServicePackageService;
@@ -13,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class ServicePackageServiceImpl implements ServicePackageService {
@@ -33,9 +29,6 @@ public class ServicePackageServiceImpl implements ServicePackageService {
         Servicepackage servicepackage;
         try {
             servicepackage = mapper.map(servicePackageDTO, Servicepackage.class);
-            Servicefunction servicefunction = new Servicefunction();
-            servicefunction.setId(servicePackageDTO.getFunctionId());
-            servicepackage.setServicefunctionByFunctionId(servicefunction);
             if (servicepackage != null) {
                 servicepackage = servicepackageRepository.save(servicepackage);
                 result = servicepackage.getId();
@@ -107,7 +100,7 @@ public class ServicePackageServiceImpl implements ServicePackageService {
             servicepackages = servicepackageRepository.findOne(id);
 
             servicePackageDTO = mapper.map(servicepackages, ServicePackageDTO2.class);
-            servicePackageDTO.setFunctionName(servicepackages.getServicefunctionByFunctionId().getFunctionName());
+
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -93,7 +93,6 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
                 employercompany.setUsersByUserId(users);
 
                 employercompany = employercompanyRepository.save(employercompany);
-                usersService.changeRole(employercompany.getUserId(), 3);
                 if (employercompany != null) {
                     result = true;
                 }
@@ -108,16 +107,18 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
 
     @Override
     public boolean changeUserStatusAfterApproved(int companyId) {
-        LOGGER.info("Begin changeUserStatusAfterApproved in Employercompany Service with Company id : {}" + companyId );
-        Employercompany employercompany;
+        LOGGER.info("Begin changeUserStatusAfterApproved in Employercompany Service with Company id : {}" + companyId);
+        List<Employercompany> employercompany;
         boolean result = false;
         try {
             employercompany = employercompanyRepository.findUserByCompanyId(companyId);
+            System.out.println(employercompany.get(0).getUserId());
+            if (employercompany != null && employercompany.size() == 1) {
+                usersService.changeRole(employercompany.get(0).getUserId(), 2);
+
+            }
             if (employercompany != null) {
-                usersService.changeRole(employercompany.getUserId(), 2);
-                if (employercompany != null) {
-                    result = true;
-                }
+                result = true;
             }
         } catch (Exception e) {
             e.printStackTrace();

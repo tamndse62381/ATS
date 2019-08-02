@@ -114,6 +114,21 @@ public class JobWS {
     }
 
     @CrossOrigin(origins = "*")
+    @GetMapping(value = "/suggestJobByJobId")
+    @ResponseBody
+    public RestResponse suggestJobByJobId(@RequestParam(value = "jobId") int jobId, @PageableDefault Pageable pageable) {
+        LOGGER.info("Begin suggestJob in JobWS  with jobId : " + jobId);
+        Page<JobDTO> listJob = null;
+        try {
+            listJob = jobService.suggestJobByJobId(jobId, pageable);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End suggestJob in JobWS  with cvId : " + jobId);
+        return new RestResponse(true, "suggestJob Successfull", listJob);
+    }
+
+    @CrossOrigin(origins = "*")
     @GetMapping(value = "/suggest")
     @ResponseBody
     public RestResponse suggestJob(@RequestParam(value = "cvId") int cvId, @PageableDefault Pageable pageable) {
@@ -127,6 +142,23 @@ public class JobWS {
         LOGGER.info("End suggestJob in JobWS  with cvId : " + cvId);
         return new RestResponse(true, "suggestJob Successfull", listJob);
     }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping(value = "/suggestJobByUserId")
+    @ResponseBody
+    public RestResponse suggestJobByUserId(@RequestParam(value = "userId") int userId, @PageableDefault Pageable pageable) {
+        LOGGER.info("Begin suggestJob in JobWS  userId jobId : " + userId);
+        Page<JobDTO> listJob = null;
+        try {
+            listJob = jobService.suggestJobByUserId(userId, pageable);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End suggestJob in JobWS  with userId : " + userId);
+        return new RestResponse(true, "suggestJob Successfull", listJob);
+    }
+
+
 
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/changeJobStatus")

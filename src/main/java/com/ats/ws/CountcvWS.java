@@ -26,7 +26,6 @@ public class CountcvWS {
     @GetMapping("/count-month/{id}")
     @CrossOrigin("*")
     public RestResponse countMonth(@PathVariable int id){
-
         return null;
     }
 
