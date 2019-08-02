@@ -50,12 +50,9 @@ public class JobWS {
         int result = 0;
 
         Date dt = new Date();
-        Calendar c = Calendar.getInstance();
-        c.setTime(dt);
+
         try {
             job.setCreatedDate(dt);
-            c.add(Calendar.DATE, 30);
-            job.setEndDateForApply(c.getTime());
             job.setStatus("new");
             result = jobService.createJob(job);
             List<Integer> listSkillId = new ArrayList<>();
@@ -159,7 +156,6 @@ public class JobWS {
     }
 
 
-
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/changeJobStatus")
     @ResponseBody
@@ -195,11 +191,12 @@ public class JobWS {
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getJobDetail", produces = "application/json;charset=UTF-8")
-    public RestResponse getJobDetail(@RequestParam("id") int id) {
+    public RestResponse getJobDetail(@RequestParam("id") int id,
+                                     @RequestParam("userId") int userId) {
         LOGGER.info("Begin getJobDetail in JobWS with id " + id);
         JobDTO3 job;
         try {
-            job = jobService.getJobDetail(id);
+            job = jobService.getJobDetail(id, userId);
             System.out.println(job.getCreatedDate());
             System.out.println(job.getEndDateForApply());
             LOGGER.info("End getJobDetail in JobWS with id " + id);
