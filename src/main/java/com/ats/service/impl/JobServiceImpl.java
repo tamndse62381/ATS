@@ -221,7 +221,7 @@ public class JobServiceImpl implements JobService {
         c.setTime(dt);
         c.add(Calendar.DATE, 30);
         job.setEndDateForApply(new Timestamp(c.getTimeInMillis()));
-//        job.setStatus(newStatus);
+        job.setStatus(newStatus);
         jobRepository.save(job);
         LOGGER.info("End changeStatus in Job Service with result: {}", success);
         return success;
@@ -607,20 +607,18 @@ public class JobServiceImpl implements JobService {
                 }
             }
             System.out.println("SIZE ở đây : " + suggestJobList.size());
-            List<Job> trueList = new ArrayList<>();
-            for (int i = 0; i < suggestJobList.size(); i++) {
-                for (int j = 0; j < jobs.size(); j++) {
-                    if(!suggestJobList.contains(jobs.get(j))){
-                        trueList.add(suggestJobList.get(i));
-                    }
+            System.out.println("đã apply : " + jobs.size());
+            for (int i = 0; i < jobs.size(); i++) {
+                if (suggestJobList.contains(jobs.get(i))) {
+                    suggestJobList.remove(jobs.get(i));
                 }
-
             }
-            System.out.println("SIZE ở đây : " + trueList.size());
+
+
             ModelMapper mapper = new ModelMapper();
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
             }.getType();
-            listofDTO = mapper.map(trueList, targetListType);
+            listofDTO = mapper.map(suggestJobList, targetListType);
 
             pageDTO = new PageImpl<>(listofDTO, new PageRequest(0, 10), listofDTO.size());
         } catch (Exception e) {
