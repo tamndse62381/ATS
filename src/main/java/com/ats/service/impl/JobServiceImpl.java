@@ -46,6 +46,10 @@ public class JobServiceImpl implements JobService {
     UsersRepository usersRepository;
     @Autowired
     CountjobService countjobService;
+    @Autowired
+    ApplyService applyService;
+    @Autowired
+    ApplyRepository applyRepository;
 
     private static final Logger LOGGER = LogManager.getLogger(JobServiceImpl.class);
 
@@ -496,6 +500,11 @@ public class JobServiceImpl implements JobService {
                     cv = cvRepository.findOne(users.getCvsById().get(i).getId());
                 }
             }
+            List<Apply> applies = applyRepository.findAppliesByCvid(cv.getId());
+            List<Job> jobs = new ArrayList<>();
+            for (int i = 0; i < applies.size(); i++) {
+                jobs.add(applies.get(i).getJobByJobId());
+            }
             System.out.println("SKILL của CV Ở ĐÂY");
             for (int i = 0; i < cv.getSkillincvsById().size(); i++) {
                 skillInCvName.add(cv.getSkillincvsById().get(i).getSkillBySkillId().getSkillmasterBySkillMasterId().getSkillName());
@@ -598,11 +607,20 @@ public class JobServiceImpl implements JobService {
                 }
             }
             System.out.println("SIZE ở đây : " + suggestJobList.size());
+            List<Job> trueList = new ArrayList<>();
+            for (int i = 0; i < suggestJobList.size(); i++) {
+                for (int j = 0; j < jobs.size(); j++) {
+                    if(!suggestJobList.contains(jobs.get(j))){
+                        trueList.add(suggestJobList.get(i));
+                    }
+                }
 
+            }
+            System.out.println("SIZE ở đây : " + trueList.size());
             ModelMapper mapper = new ModelMapper();
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
             }.getType();
-            listofDTO = mapper.map(suggestJobList, targetListType);
+            listofDTO = mapper.map(trueList, targetListType);
 
             pageDTO = new PageImpl<>(listofDTO, new PageRequest(0, 10), listofDTO.size());
         } catch (Exception e) {

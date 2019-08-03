@@ -133,11 +133,14 @@ public class JobWS {
         Page<JobDTO> listJob = null;
         try {
             listJob = jobService.suggestJob(cvId, pageable);
+            if (listJob.getContent().size() > 0) {
+                return new RestResponse(true, "suggestJob Successfull", listJob);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         LOGGER.info("End suggestJob in JobWS  with cvId : " + cvId);
-        return new RestResponse(true, "suggestJob Successfull", listJob);
+        return new RestResponse(false, "suggestJob Fail", null);
     }
 
     @CrossOrigin(origins = "*")

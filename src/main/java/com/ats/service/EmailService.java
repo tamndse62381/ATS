@@ -3,6 +3,8 @@ package com.ats.service;
 import com.ats.entity.Users;
 import com.ats.repository.UsersRepository;
 import org.apache.catalina.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -19,7 +21,6 @@ public class EmailService {
     private JavaMailSender javaMailSender;
     @Autowired
     private UsersRepository usersRepository;
-
 
     String footer =
             "<p style='font-size:150%;font-family:verdana;'>" +
@@ -44,6 +45,8 @@ public class EmailService {
                     "<p>Website: www.globalcybersoft.com</p>" +
                     "<p>We Make it Happen. Better.</p></p>";
 
+    private static final Logger LOGGER = LogManager.getLogger(EmailService.class);
+
     @Autowired
     private EmailService(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
@@ -51,6 +54,7 @@ public class EmailService {
 
     public void sendEmail(String email, String jobTitle, String userFullname, String result) {
         try {
+            LOGGER.info("Begin SendEmail in EmailService with Email : " + email);
             MimeMessage message = javaMailSender.createMimeMessage();
             boolean multipart = true;
             String subject = "";
@@ -70,11 +74,11 @@ public class EmailService {
 
 
             if (result.equals("confirm")) {
-                message.setContent(confirm + footer, "text/html/css");
+                message.setContent(confirm + footer, "text/html");
                 subject = "Confirm Mail";
             }
             if (result.equals("deny")) {
-                message.setContent(deny + footer, "text/html/css");
+                message.setContent(deny + footer, "text/html");
                 subject = "Deny Mail";
             }
             if (result.equals("apply")) {
@@ -84,10 +88,34 @@ public class EmailService {
 
             helper.setTo(email);
             helper.setSubject(subject);
+
             this.javaMailSender.send(message);
+            LOGGER.info("End SendEmail in EmailService with Email : " + email);
         } catch (MessagingException ex) {
             ex.printStackTrace();
         }
 
+    }
+
+    public void sendActiveUserEmail(String token, String email) {
+        try {
+            LOGGER.info("Begin sendActiveUserEmail in EmailService with Email : " + email);
+            MimeMessage message = javaMailSender.createMimeMessage();
+            boolean multipart = true;
+            String subject = "Complete Registration";
+            MimeMessageHelper helper = new MimeMessageHelper(message, multipart, "UTF-8");
+
+            String confirm = "<p>&#272;&ecirc;&#777; ki&#769;ch hoa&#803;t ta&#768;i " +
+                    "khoa&#777;n, xin ba&#803;n click va&#768;o &#273;&#432;&#417;&#768;ng link: </p>" +
+                    "http://localhost:8080/user/confirmUser?token=" + token;
+            message.setContent(confirm, "text/html");
+
+            helper.setTo(email);
+            helper.setSubject(subject);
+            this.javaMailSender.send(message);
+            LOGGER.info("End sendActiveUserEmail in EmailService with Email : " + email);
+        } catch (MessagingException ex) {
+            ex.printStackTrace();
+        }
     }
 }
