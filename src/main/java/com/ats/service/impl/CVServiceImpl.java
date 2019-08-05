@@ -7,16 +7,10 @@ import com.ats.service.*;
 import com.ats.util.RestResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 public class CVServiceImpl implements CVService {
@@ -54,15 +48,11 @@ public class CVServiceImpl implements CVService {
     private EducationRepository educationRepository;
     @Autowired
     private ProjectorproductworkedRepository projectorproductworkedRepository;
-    @Autowired
-    private JobRepository jobRepository;
-    @Autowired
-    private ApplyRepository applyRepository;
-    @Autowired
-    private UserlikecvRepository userlikecvRepository;
 
     //Mapping Object
     ModelMapper modelMapper = new ModelMapper();
+    // Conts
+    private static String EMAIL = "1101010001001101000000000000";
 
     @Override
     public RestResponse getCVByCVID(int id) {
@@ -73,12 +63,19 @@ public class CVServiceImpl implements CVService {
     }
 
     @Override
+    public Cv getCvByEmail() {
+        return cvRepository.findCVByEmail(EMAIL);
+    }
+
+    @Override
     public RestResponse create(CVDTO newCV) {
         try {
             Cv cv = modelMapper.map(newCV, Cv.class);
+            cv.setEmail(EMAIL);
             cv.setCityByCityId(cityRepository.findOne(newCV.getCityId()));
             cv.setIndustryByIndustryId(industryRepository.findOne(newCV.getIndustryId()));
             cv.setUsersByUserId(usersRepository.findOne(newCV.getUserId()));
+
             // check đã có CV nào được Active tìm việc chưa
             if (checkIsActive(newCV.getUserId()))
                 cv.setIsActive(1);
@@ -86,9 +83,13 @@ public class CVServiceImpl implements CVService {
                 cv.setIsActive(0);
             cv.setStatus("1");
             cv.setCreatedDate(new Timestamp(new Date().getTime()));
-            int CVID = cvRepository.save(cv).getId();
-            Cv saveCv = cvRepository.findOne(CVID);
+            cvRepository.save(cv);
+            Cv changeEmailCv = getCvByEmail();
+            int CVID = changeEmailCv.getId();
+            changeEmailCv.setEmail(newCV.getEmail());
 
+            // Save vo
+            Cv saveCv = cvRepository.findOne(CVID);
             // mapping Certification
             List<CertificationDTO> listCer = newCV.getCertificationsById();
             if (listCer != null){
@@ -140,290 +141,6 @@ public class CVServiceImpl implements CVService {
                 }
             }
             // mapping skill
-            addSkill(newCV, saveCv);
-            return new RestResponse(true, "Bạn đã tạo CV thành công!!!", CVID);
-        } catch (RuntimeException e){
-            System.out.println(e);
-        }
-        return new RestResponse(false, "Tạo CV không thành công. Vui lòng thử lại!!!", null);
-    }
-
-    @Override
-    public RestResponse edit(CVDTO editedCv) {
-        try {
-            Cv cv = cvRepository.findOne(editedCv.getId());
-            if (cv == null)
-                return new RestResponse(false,"Không thành công!!!", null);
-            List<Skillincv> listOldSkill = skillincvRepository.findSkillincvsByCvid(editedCv.getId());
-            skillincvRepository.delete(listOldSkill);
-            Cv editCv = modelMapper.map(editedCv, Cv.class);
-            editCv.setCityByCityId(cityRepository.findOne(editedCv.getCityId()));
-            editCv.setIndustryByIndustryId(industryRepository.findOne(editedCv.getIndustryId()));
-            editCv.setUsersByUserId(usersRepository.findOne(editedCv.getUserId()));
-            Cv saveCv = cvRepository.saveAndFlush(editCv);
-            int CVID = saveCv.getId();
-
-
-            List<CertificationDTO> listCer = editedCv.getCertificationsById();
-            if (listCer != null){
-                for (CertificationDTO certificationDTO : listCer) {
-                    Certification cer = modelMapper.map(certificationDTO, Certification.class);
-                    cer.setCvid(CVID);
-                    cer.setCvByCvid(saveCv);
-                    certificationRepository.save(cer);
-                }
-            }
-
-            List<EducationDTO> listEdu = editedCv.getEducationsById();
-            if (listEdu != null) {
-                for (EducationDTO educationDTO : listEdu) {
-                    Education edu = modelMapper.map(educationDTO, Education.class);
-                    edu.setCvid(CVID);
-                    edu.setCvByCvid(saveCv);
-                    educationRepository.save(edu);
-                }
-            }
-
-            List<SocialactivitiesDTO> listAct = editedCv.getSocialactivitiesById();
-            if (listAct != null){
-                for (SocialactivitiesDTO socialactivitiesDTO : listAct) {
-                    Socialactivities soc = modelMapper.map(socialactivitiesDTO, Socialactivities.class);
-                    soc.setCvid(CVID);
-                    soc.setCvByCvid(saveCv);
-                    socialactivityRepository.save(soc);
-                }
-            }
-
-            List<WorkexperienceDTO> listWor = editedCv.getWorkexperiencesById();
-            if (listWor != null){
-                for (WorkexperienceDTO workexperienceDTO : listWor) {
-                    Workexperience wor = modelMapper.map(workexperienceDTO, Workexperience.class);
-                    wor.setCvid(CVID);
-                    wor.setCvByCvid(saveCv);
-                    workexperienceRepository.save(wor);
-                }
-            }
-
-            List<ProjectorproductworkedDTO> listPro = editedCv.getProjectorproductworkedsById();
-            if (listPro != null){
-                for (ProjectorproductworkedDTO projectorproductworkedDTO : listPro) {
-                    Projectorproductworked pro = modelMapper.map(projectorproductworkedDTO, Projectorproductworked.class);
-                    pro.setCvid(CVID);
-                    pro.setCvByCvid(saveCv);
-                    projectorproductworkedRepository.save(pro);
-                }
-            }
-            addSkill(editedCv, saveCv);
-            return new RestResponse(true, "Chỉnh sửa thành công!!!", null);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return new RestResponse(false, "Có lỗi xãy ra. Vui lòng thử lại!!!", null);
-    }
-
-    @Override
-    public RestResponse delete(int id) {
-        Cv cv = cvRepository.findOne(id);
-        if (cv == null)
-            return new RestResponse(false, "Không tìm thấy CV có Id: " + id, null);
-        cv.setStatus("2");
-        cv.setIsActive(0);
-        cvRepository.save(cv);
-        return new RestResponse(true, "Đã xoá CV thành công!!!", null);
-    }
-
-    @Override
-    public RestResponse getlistCvByUserId(int id) {
-        Users user = usersRepository.findOne(id);
-        if (user == null)
-            return new RestResponse(false, "Không tìm thấy người dùng có ID là: " + id, null);
-        List<Cv> list =  cvRepository.findByUserIdAndStatus(id, "1");
-        if (list == null)
-            return new RestResponse(false, "Bạn chưa tạo CV!!!", null);
-        return new RestResponse(true, "", list);
-    }
-
-    @Override
-    public List<CVMobileDTO> getListCvByUserIdMobile(int id) {
-        List<CVMobileDTO> listMobileCv = new ArrayList<>();
-         List<Cv> listCv = cvRepository.findByUserIdAndStatus(id, "1");
-         if (listCv != null){
-             for (Cv cv : listCv) {
-                 CVMobileDTO cvMobile = new CVMobileDTO();
-                 cvMobile.setId(cv.getId());
-                 cvMobile.setUserId(cv.getUserId());
-                 cvMobile.setTitle(cv.getTitle());
-                 cvMobile.setFullName(cv.getFirstName() + " " + cv.getLastName());
-                 cvMobile.setCityName(cv.getCityByCityId().getFullName());
-                 cvMobile.setIndustryName(cv.getIndustryByIndustryId().getName());
-                 cvMobile.setIsActive(cv.getIsActive());
-                 listMobileCv.add(cvMobile);
-             }
-             return listMobileCv;
-         }
-         return null;
-    }
-
-    @Override
-    public RestResponse checkActive(int id) {
-        List<Cv> list1 = cvRepository.findByUserId(id);
-        if (list1 == null)
-            return new RestResponse(true, "Bạn chưa tạo CV nào!!!", null);
-        List<Cv> list = cvRepository.checkActive(id, 1);
-        if (list == null)
-            return new RestResponse(true, "Bạn chưa chọn CV nào là Cv chính của mình. Hãy đặt CV chính để không bỏ lỡ cơ hội tìm việc nhé!!!", null);
-        return null;
-    }
-
-    @Override
-    public RestResponse setMainCv(int id) {
-        Cv cv = cvRepository.findOne(id);
-        if (cv == null)
-            return new RestResponse(false, "Có lỗi!!!!", null);
-        List<Cv> list = cvRepository.findByUserId(cv.getUserId());
-        for (Cv cv1 : list) {
-            cv1.setIsActive(0);
-            cvRepository.save(cv1);
-        }
-        cv.setIsActive(1);
-        cvRepository.save(cv);
-        return new RestResponse(true, "Cập nhật thành công!!!", null);
-    }
-
-    @Override
-    public Page<Cv> searchCv(String skillstring, String city, String industry, Pageable pageable) {
-        Page<Cv> listCv;
-        try {
-            if (skillstring.equals("0")){
-                listCv = cvRepository.searchWithoutSkill(pageable, city, industry);
-                return listCv;
-            } else {
-                List<Integer> list = new ArrayList<>();
-                Pattern pattern = Pattern.compile("\\d+");
-                Matcher matcher = pattern.matcher(skillstring);
-                while (matcher.find()) {
-                    list.add(Integer.parseInt(matcher.group()));
-                }
-                String skillName = "";
-                int i = 0;
-                for (Integer integer : list) {
-                    Skillmaster skillmaster = skillmasterRepository.findOne(integer);
-                    if (i < list.size() - 1){
-                        skillName = skillName + skillmaster.getSkillName() + ",";
-                        i++;
-                    } else {
-                        skillName = skillName  + skillmaster.getSkillName();
-                    }
-                }
-                listCv = cvRepository.searchCv(skillstring, pageable, city, industry);
-                return listCv;
-            }
-        } catch(Exception e){
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
-    public Page<Cv> suggest(int JobId, Pageable pageable) {
-        Job job = jobRepository.findOne(JobId);
-        if (job == null)
-            return null;
-        String cityName = job.getCityByCityId().getFullName();
-        String industryName = job.getIndustryByIndustryId().getName();
-        List<Skill> listSkill = new ArrayList<>();
-        for (Skillneedforjob skillneedforjob : job.getSkillneedforjobsById()) {
-            listSkill.add(skillneedforjob.getSkillBySkillId());
-        }
-        List<Skillmaster> listSkillMaster = new ArrayList<>();
-        for (Skill skill : listSkill) {
-            listSkillMaster.add(skill.getSkillmasterBySkillMasterId());
-        }
-        String listSkillName = "";
-        int i = 0;
-        for (Skillmaster skillmaster : listSkillMaster) {
-            if (i < listSkillMaster.size() - 1){
-                listSkillName = listSkillName + skillmaster.getSkillName() + ",";
-                i++;
-            } else {
-                listSkillName = listSkillName  + skillmaster.getSkillName();
-            }
-        }
-        try {
-            // get ListCv liked by this Employer
-            List<Userslikecv> listUserslikecv = userlikecvRepository.findUserslikecvsByUserId(job.getUserId());
-            List<Cv> listLikedCv = new ArrayList<>();
-            if (listUserslikecv != null){
-                for (Userslikecv userslikecv : listUserslikecv) {
-                    listLikedCv.add(userslikecv.getCvByCvid());
-                }
-            }
-            List<Cv> listCv = cvRepository.searchListCv(listSkillName, cityName, industryName);
-            listCv.removeAll(listLikedCv);
-            Page<Cv> pageCv = new PageImpl<>(listCv, pageable, listCv.size());
-            return pageCv;
-        } catch (RuntimeException e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @Override
-    public Page<Cv> listCvConfirmed(int EmployerId, Pageable pageable) {
-        try {
-            List<Cv> listCv = getByJobIdAndStatus(EmployerId, "2");
-            Page<Cv> pageCv = new PageImpl<>(listCv, pageable, listCv.size());
-            return pageCv;
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
-    public Page<Cv> listCvDenied(int EmployerId, Pageable pageable) {
-        try {
-            List<Cv> listCv = getByJobIdAndStatus(EmployerId, "3");
-            Page<Cv> pageCv = new PageImpl<>(listCv, pageable, listCv.size());
-            return pageCv;
-        } catch(Exception e){
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
-    public boolean check(int JobSeekerId) {
-        int count = cvRepository.countCvsByUserIdAndStatus(JobSeekerId, "1");
-        if (count >= 5)
-            return false;
-        return true;
-    }
-
-    private boolean checkIsActive(int userId){
-        List<Cv> list = cvRepository.checkIsActive(userId, 1);
-        if (list.isEmpty())
-            return true;
-        return false;
-    }
-
-    private List<Cv> getByJobIdAndStatus(int EmployerId, String status){
-        List<Job> listJob = jobRepository.findJobsByStatusAndUserId("approved", EmployerId);
-        if (listJob.size() == 0) return null;
-        List<Cv> listCv = new ArrayList<>();
-        for (Job job : listJob) {
-            List<Apply> listApply = applyRepository.findAppliesByJobIdAndStatus(job.getId(), status);
-            if (listApply != null){
-                for (Apply apply : listApply) {
-                    listCv.add(apply.getCvByCvid());
-                }
-            }
-        }
-        return listCv;
-    }
-
-    private void addSkill(CVDTO newCV, Cv saveCv){
-        try {
             List<ListSkillDTO> listSkill = newCV.getSkillincvsById();
             if (listSkill != null){
                 for (ListSkillDTO listSkillDTO : listSkill) {
@@ -452,8 +169,161 @@ public class CVServiceImpl implements CVService {
                     }
                 }
             }
-        } catch (Exception e){
-            e.printStackTrace();
+            return new RestResponse(true, "Bạn đã tạo CV thành công!!!", CVID);
+        } catch (RuntimeException e){
+            System.out.println(e);
         }
+        return new RestResponse(false, "Tạo CV không thành công. Vui lòng thử lại!!!", null);
+    }
+
+    @Override
+    public RestResponse edit(CVDTO editedCv) {
+        Cv cv = cvRepository.findOne(editedCv.getId());
+        if (cv == null)
+            return new RestResponse(false,"Không thành công!!!", null);
+        List<Skillincv> listOldSkill = skillincvRepository.findSkillincvsByCvid(editedCv.getId());
+        skillincvRepository.delete(listOldSkill);
+        Cv editCv = modelMapper.map(editedCv, Cv.class);
+        editCv.setCityByCityId(cityRepository.findOne(editedCv.getCityId()));
+        editCv.setIndustryByIndustryId(industryRepository.findOne(editedCv.getIndustryId()));
+        editCv.setUsersByUserId(usersRepository.findOne(editedCv.getUserId()));
+        Cv saveCv = cvRepository.saveAndFlush(editCv);
+        int CVID = saveCv.getId();
+
+
+        List<CertificationDTO> listCer = editedCv.getCertificationsById();
+        if (listCer != null){
+            for (CertificationDTO certificationDTO : listCer) {
+                Certification cer = modelMapper.map(certificationDTO, Certification.class);
+                cer.setCvid(CVID);
+                cer.setCvByCvid(saveCv);
+                certificationRepository.save(cer);
+            }
+        }
+
+        List<EducationDTO> listEdu = editedCv.getEducationsById();
+        if (listEdu != null) {
+            for (EducationDTO educationDTO : listEdu) {
+                Education edu = modelMapper.map(educationDTO, Education.class);
+                edu.setCvid(CVID);
+                edu.setCvByCvid(saveCv);
+                educationRepository.save(edu);
+            }
+        }
+
+        List<SocialactivitiesDTO> listAct = editedCv.getSocialactivitiesById();
+        if (listAct != null){
+            for (SocialactivitiesDTO socialactivitiesDTO : listAct) {
+                Socialactivities soc = modelMapper.map(socialactivitiesDTO, Socialactivities.class);
+                soc.setCvid(CVID);
+                soc.setCvByCvid(saveCv);
+                socialactivityRepository.save(soc);
+            }
+        }
+
+        List<WorkexperienceDTO> listWor = editedCv.getWorkexperiencesById();
+        if (listWor != null){
+            for (WorkexperienceDTO workexperienceDTO : listWor) {
+                Workexperience wor = modelMapper.map(workexperienceDTO, Workexperience.class);
+                wor.setCvid(CVID);
+                wor.setCvByCvid(saveCv);
+                workexperienceRepository.save(wor);
+            }
+        }
+
+        List<ProjectorproductworkedDTO> listPro = editedCv.getProjectorproductworkedsById();
+        if (listPro != null){
+            for (ProjectorproductworkedDTO projectorproductworkedDTO : listPro) {
+                Projectorproductworked pro = modelMapper.map(projectorproductworkedDTO, Projectorproductworked.class);
+                pro.setCvid(CVID);
+                pro.setCvByCvid(saveCv);
+                projectorproductworkedRepository.save(pro);
+            }
+        }
+
+        List<ListSkillDTO> listSkill = editedCv.getSkillincvsById();
+        if (listSkill != null){
+            for (ListSkillDTO listSkillDTO : listSkill) {
+                Skill skill = skillRepository.findSkillbySkillLevel(listSkillDTO.getSkillLevel(), listSkillDTO.getSkillMasterId());
+                if (skill != null){
+                    Skillincv skillInCv = new Skillincv();
+                    skillInCv.setCvid(saveCv.getId());
+                    skillInCv.setCvByCvid(saveCv);
+                    skillInCv.setSkillId(skill.getId());
+                    skillInCv.setSkillBySkillId(skill);
+                    skillincvRepository.save(skillInCv);
+                } else {
+                    Skillmaster skillMaster = skillmasterRepository.findOne(listSkillDTO.getSkillMasterId());
+                    Skill newSkill = new Skill();
+                    newSkill.setSkillLevel(listSkillDTO.getSkillLevel());
+                    newSkill.setSkillMasterId(listSkillDTO.getSkillMasterId());
+                    newSkill.setSkillmasterBySkillMasterId(skillMaster);
+                    Skill skillSaved = skillRepository.saveAndFlush(newSkill);
+
+                    Skillincv skillincv = new Skillincv();
+                    skillincv.setCvid(saveCv.getId());
+                    skillincv.setCvByCvid(saveCv);
+                    skillincv.setSkillId(skillSaved.getId());
+                    skillincv.setSkillBySkillId(skillSaved);
+                    skillincvRepository.save(skillincv);
+                }
+            }
+        }
+        return new RestResponse(true, "Chỉnh sửa thành công!!!", null);
+    }
+
+    @Override
+    public RestResponse delete(int id) {
+        Cv cv = cvRepository.findOne(id);
+        if (cv == null)
+            return new RestResponse(false, "Không tìm thấy CV có Id: " + id, null);
+        cv.setStatus("2");
+        cv.setIsActive(0);
+        cvRepository.save(cv);
+        return new RestResponse(true, "Đã xoá CV thành công!!!", null);
+    }
+
+    @Override
+    public RestResponse getlistCvByUserId(int id) {
+        Users user = usersRepository.findOne(id);
+        if (user == null)
+            return new RestResponse(false, "Không tìm thấy người dùng có ID là: " + id, null);
+        List<Cv> list =  cvRepository.findByUserIdAndStatus(id, "1");
+        if (list == null)
+            return new RestResponse(false, "Bạn chưa tạo CV!!!", null);
+        return new RestResponse(true, "", list);
+    }
+
+    @Override
+    public RestResponse checkActive(int id) {
+        List<Cv> list1 = cvRepository.findByUserId(id);
+        if (list1 == null)
+            return new RestResponse(true, "Bạn chưa tạo CV nào!!!", null);
+        List<Cv> list = cvRepository.checkActive(id, 1);
+        if (list == null)
+            return new RestResponse(true, "Bạn chưa chọn CV nào là Cv chính của mình. Hãy đặt CV chính để không bỏ lỡ cơ hội tìm việc nhé!!!", null);
+        return null;
+    }
+
+    @Override
+    public RestResponse setMainCv(int id) {
+        Cv cv = cvRepository.findOne(id);
+        if (cv == null)
+            return new RestResponse(false, "Có lỗi!!!!", null);
+        List<Cv> list = cvRepository.findByUserId(cv.getUserId());
+        for (Cv cv1 : list) {
+            cv1.setIsActive(0);
+            cvRepository.save(cv1);
+        }
+        cv.setIsActive(1);
+        cvRepository.save(cv);
+        return new RestResponse(true, "Cập nhật thành công!!!", null);
+    }
+
+    private boolean checkIsActive(int userId){
+        List<Cv> list = cvRepository.checkIsActive(userId, 1);
+        if (list.isEmpty())
+            return true;
+        return false;
     }
 }

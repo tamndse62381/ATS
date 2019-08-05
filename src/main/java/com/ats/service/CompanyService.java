@@ -26,6 +26,4 @@ public interface CompanyService {
     int changeStatus(int id , String newStatus);
 
     Page<CompanyDTO3> findAllCompanyByStatus(String search , String status , Pageable pageable);
-
-    List<Company> getFiveCompany();
 }

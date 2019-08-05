@@ -28,7 +28,7 @@ public class UserlikecvServiceImpl implements UserlikecvService {
     @Override
     public boolean check(int EmployerId, int Cvid) {
         List<Userslikecv> userslikecv = userlikecvRepository.check(EmployerId, Cvid);
-        if (userslikecv.size() ==  0)
+        if (userslikecv == null)
             return true;
         return false;
     }
@@ -37,7 +37,7 @@ public class UserlikecvServiceImpl implements UserlikecvService {
     public RestResponse create(int EmployerId, int CvId) {
         Users users = usersRepository.findOne(EmployerId);
         Cv cv = cvRepository.findOne(CvId);
-        if (users == null || cv == null)
+        if (users != null || cv != null)
             return new RestResponse(false, "Có lỗi xảy ra. Vui lòng thử lại!!!", null);
         Userslikecv userslikecv = new Userslikecv();
         userslikecv.setCvid(CvId);

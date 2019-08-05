@@ -36,6 +36,11 @@ public interface UsersRepository extends JpaRepository<Users, Integer> {
 
     @Transactional
     @Modifying
+    @Query("UPDATE Users b SET b.password = :newPassword WHERE b.accessToken = :token")
+    int forgotPassword(@Param("token") String token, @Param("newPassword") String newPassword);
+
+    @Transactional
+    @Modifying
     @Query("UPDATE Users b SET b.roleId = :role WHERE b.id = :id")
     int changeRole(@Param("id") int id, @Param("role") int role);
 
@@ -43,6 +48,11 @@ public interface UsersRepository extends JpaRepository<Users, Integer> {
     @Modifying
     @Query("UPDATE Users b SET b.status = :newStatus WHERE b.id = :id")
     int changeStatus(@Param("id") int id, @Param("newStatus") String newStatus);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Users b SET b.status = :newStatus WHERE b.accessToken = :token")
+    int confirmUser(@Param("token") String token, @Param("newStatus") String newStatus);
 
     Optional<Users> findById(int id);
 
