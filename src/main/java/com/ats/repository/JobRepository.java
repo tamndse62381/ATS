@@ -41,6 +41,12 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
             "order by b.createdDate desc")
     Page<Job> getTop8(Pageable pageable, @Param("status") String status, @Param("now") Date endDateForApply);
 
+    @Query("Select b from Job b " +
+            "where b.status = :status and " +
+            "b.endDateForApply > :now " +
+            "order by b.createdDate desc")
+    List<Job> getTop8Mobile(@Param("status") String status, @Param("now") Date endDateForApply);
+
     @Query("Select b from Job b where b.companyId = :companyId and b.id <> :jobId")
     List<Job> getJobByCompanyID(@Param("companyId") int companyId, @Param("jobId") int jobId);
 
