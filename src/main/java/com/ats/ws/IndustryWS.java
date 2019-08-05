@@ -18,7 +18,7 @@ public class IndustryWS {
     private IndustryService industryService;
 
     @RequestMapping(method = RequestMethod.GET)
-    @CrossOrigin(origins = "http://localhost:8090")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<List<Industry>> getAll() {
         List<Industry> industryList = industryService.getAll();
         return ResponseEntity.ok().body(industryList);

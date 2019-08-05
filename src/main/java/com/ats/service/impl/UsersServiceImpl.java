@@ -63,7 +63,7 @@ public class UsersServiceImpl implements UsersService {
                 reTurnUsersDTO.setEmail("Wrong password !! ");
                 if (passwordUtil.compare(password, usersDTO.getPassword())) {
 
-                    if (usersDTO.getStatus().matches("new")) {
+                    if (usersDTO.getStatus().matches("active")) {
                         Date lastLoginDate = new Date();
                         usersRepository.editAccountLastLogin(lastLoginDate, usersDTO.getEmail(), usersDTO.getAccessToken());
                         reTurnUsersDTO = new UsersDTO(usersDTO.getId(), usersDTO.getFullname(),
@@ -131,7 +131,7 @@ public class UsersServiceImpl implements UsersService {
         Users users;
         if (email != null) {
             users = usersRepository.findAccountByEmail(email);
-            if (users != null && users.getStatus().equals("new")) {
+            if (users != null && users.getStatus().equals("active")) {
                 usersDTO = modelMapper.map(users, UsersDTO.class);
             }
         }
