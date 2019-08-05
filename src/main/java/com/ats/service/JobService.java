@@ -27,14 +27,9 @@ public interface JobService {
 
     Page<JobDTO> getTop8(Pageable pageable);
 
-<<<<<<< HEAD
-    JobDTO3 getJobDetail(int id);
-=======
-    List<JobDTO> getTop8Mobile();
 
-    
+
     JobDTO3 getJobDetail(int id, int userId);
->>>>>>> parent of ab7f401... Revert "Merge branch 'tamnd'"
 
     int changeStatus(int id, String newStatus);
 

@@ -3,11 +3,10 @@ package com.ats.service;
 import com.ats.entity.Users;
 import com.ats.repository.UsersRepository;
 import org.apache.catalina.User;
-<<<<<<< HEAD
-=======
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
->>>>>>> parent of ab7f401... Revert "Merge branch 'tamnd'"
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;

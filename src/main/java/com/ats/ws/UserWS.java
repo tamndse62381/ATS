@@ -81,7 +81,7 @@ public class UserWS {
             usersDTO.setAccessToken(tokenString);
             usersDTO.setLastLogin(date);
             usersDTO.setCreatedDate(date);
-            usersDTO.setStatus("new");
+            usersDTO.setStatus("onhold");
             result = usersService.registration(usersDTO);
             LOGGER.info("End Registration in UserWS with email - password - fullname: {}",
                     usersDTO.getEmail() + " - " + usersDTO.getPassword() + " - " + usersDTO.getFullname());

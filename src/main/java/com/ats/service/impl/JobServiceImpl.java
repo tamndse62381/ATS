@@ -183,30 +183,10 @@ public class JobServiceImpl implements JobService {
         return pageDTO;
     }
 
-    @Override
-<<<<<<< HEAD
-    public JobDTO3 getJobDetail(int id) {
-=======
-    public List<JobDTO> getTop8Mobile() {
-        List<Job> listofJob = null;
-        List<JobDTO> listofDTO = null;
-        try {
-            LOGGER.info("Begin getTop8 in Job Repository ");
-            listofJob = jobRepository.getTop8Mobile("approved", new Date());
-            ModelMapper mapper = new ModelMapper();
-            java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
-            }.getType();
-            listofDTO = mapper.map(listofJob, targetListType);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        LOGGER.info("End getTop8 in Job Service");
-        return listofDTO;
-    }
+
 
     @Override
     public JobDTO3 getJobDetail(int id, int userId) {
->>>>>>> parent of ab7f401... Revert "Merge branch 'tamnd'"
         LOGGER.info("Begin getJobDetail in Job Service with id : " + id);
         Job job;
         JobDTO3 jobDTO = null;
