@@ -1,6 +1,8 @@
 package com.ats.service;
 
+import com.ats.entity.Users;
 import com.ats.repository.UsersRepository;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;

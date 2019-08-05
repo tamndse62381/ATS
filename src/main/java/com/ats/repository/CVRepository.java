@@ -1,8 +1,7 @@
 package com.ats.repository;
 
-import org.springframework.data.domain.Page;
+import com.ats.entity.Countcv;
 import com.ats.entity.Cv;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -27,41 +26,4 @@ public interface CVRepository extends JpaRepository<Cv, Integer> {
     List<Cv> findByUserIdAndStatus(int id, String status);
 
     List<Cv> findByUserId(int id);
-
-
-    @Query("select c from Cv  c " +
-            "inner join c.skillincvsById s " +
-            "inner join s.skillBySkillId a " +
-            "inner join a.skillmasterBySkillMasterId m " +
-            "inner join c.cityByCityId ci " +
-            "inner join c.industryByIndustryId i where c.status = 1 " +
-            "and ci.fullName LIKE CONCAT('%',LOWER(:city),'%')" +
-            "and i.name LIKE CONCAT('%',LOWER(:industry),'%') " +
-            "or m.skillName in (:skillstring) order by c.lastModify desc")
-    Page<Cv> searchCv(@Param("skillstring") String skillstring, Pageable pageable,
-                      @Param("city") String city, @Param("industry") String industry);
-
-    // test
-    @Query("select c from Cv  c " +
-            "inner join c.skillincvsById s " +
-            "inner join s.skillBySkillId a " +
-            "inner join a.skillmasterBySkillMasterId m " +
-            "inner join c.cityByCityId ci " +
-            "inner join c.industryByIndustryId i where c.status = 1 " +
-            "and ci.fullName LIKE CONCAT('%',LOWER(:city),'%')" +
-            "and i.name LIKE CONCAT('%',LOWER(:industry),'%') " +
-            "or m.skillName in (:skillstring) order by c.lastModify desc")
-    List<Cv> searchListCv(@Param("skillstring") String skillstring,
-                          @Param("city") String city, @Param("industry") String industry);
-
-    @Query("select c from Cv  c " +
-            "inner join c.cityByCityId ci " +
-            "inner join c.industryByIndustryId i where c.status = 1 " +
-            "and ci.fullName LIKE CONCAT('%',LOWER(:city),'%')" +
-            "and i.name LIKE CONCAT('%',LOWER(:industry),'%') " +
-            "order by c.lastModify desc")
-    Page<Cv> searchWithoutSkill(Pageable pageable,
-                      @Param("city") String city, @Param("industry") String industry);
-
-    int countCvsByUserIdAndStatus(int JobSeekerId, String status);
 }
