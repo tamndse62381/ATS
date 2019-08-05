@@ -179,7 +179,7 @@ public class JobWS {
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getJobDetail/moblie", produces = "application/json;charset=UTF-8")
-    public JobDTO3 getJobDetailMobile(@RequestParam("id") int id) {
+    public RestResponse getJobDetailMobile(@RequestParam("id") int id) {
         LOGGER.info("Begin getJobDetail in JobWS with id " + id);
         JobDTO3 job;
         try {
@@ -188,7 +188,7 @@ public class JobWS {
             System.out.println(job.getEndDateForApply());
             LOGGER.info("End getJobDetail in JobWS with id " + id);
             if (job != null) {
-                return job;
+                return new RestResponse(true, "Succesful", job);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -198,7 +198,7 @@ public class JobWS {
 
     // Get Top 8 for mobile
     @GetMapping(value = "/getTop8/mobile")
-    public List<JobDTO> getTop8Mobile(){
+    public List<JobDTO> getTop8Mobile() {
         List<JobDTO> listJobs = null;
         try {
             listJobs = jobService.getTop8Mobile();
