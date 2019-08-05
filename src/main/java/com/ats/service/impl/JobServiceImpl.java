@@ -179,6 +179,24 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    public List<JobDTO> getTop8Mobile() {
+        List<Job> listofJob = null;
+        List<JobDTO> listofDTO = null;
+        try {
+            LOGGER.info("Begin getTop8 in Job Repository ");
+            listofJob = jobRepository.getTop8Mobile("approved", new Date());
+            ModelMapper mapper = new ModelMapper();
+            java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
+            }.getType();
+            listofDTO = mapper.map(listofJob, targetListType);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getTop8 in Job Service");
+        return listofDTO;
+    }
+
+    @Override
     public JobDTO3 getJobDetail(int id) {
         LOGGER.info("Begin getJobDetail in Job Service with id : " + id);
         Job job;

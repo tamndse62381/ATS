@@ -244,6 +244,27 @@ public class CVServiceImpl implements CVService {
     }
 
     @Override
+    public List<CVMobileDTO> getListCvByUserIdMobile(int id) {
+        List<CVMobileDTO> listMobileCv = new ArrayList<>();
+         List<Cv> listCv = cvRepository.findByUserIdAndStatus(id, "1");
+         if (listCv != null){
+             for (Cv cv : listCv) {
+                 CVMobileDTO cvMobile = new CVMobileDTO();
+                 cvMobile.setId(cv.getId());
+                 cvMobile.setUserId(cv.getUserId());
+                 cvMobile.setTitle(cv.getTitle());
+                 cvMobile.setFullName(cv.getFirstName() + " " + cv.getLastName());
+                 cvMobile.setCityName(cv.getCityByCityId().getFullName());
+                 cvMobile.setIndustryName(cv.getIndustryByIndustryId().getName());
+                 cvMobile.setIsActive(cv.getIsActive());
+                 listMobileCv.add(cvMobile);
+             }
+             return listMobileCv;
+         }
+         return null;
+    }
+
+    @Override
     public RestResponse checkActive(int id) {
         List<Cv> list1 = cvRepository.findByUserId(id);
         if (list1 == null)

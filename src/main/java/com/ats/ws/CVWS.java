@@ -1,6 +1,7 @@
 package com.ats.ws;
 
 import com.ats.dto.CVDTO;
+import com.ats.dto.CVMobileDTO;
 import com.ats.entity.*;
 import com.ats.repository.CVRepository;
 import com.ats.repository.JobRepository;
@@ -44,9 +45,15 @@ public class CVWS {
 
     // GET List CV cho User xem bang UserID - tested - co status = 1 (valid)
     @GetMapping("/get-list/{id}")
-    @CrossOrigin
+    @CrossOrigin("*")
     public RestResponse getListCvByUserId(@PathVariable(name = "id") int UserId){
         return cvService.getlistCvByUserId(UserId);
+    }
+
+    @GetMapping("/get-list/mobile/{id}")
+    @CrossOrigin("*")
+    public List<CVMobileDTO> getListCvByUserIdMobile(@PathVariable(name = "id") int UserId){
+        return cvService.getListCvByUserIdMobile(UserId);
     }
 
     // Delete One CV

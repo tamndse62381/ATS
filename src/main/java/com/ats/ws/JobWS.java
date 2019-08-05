@@ -161,6 +161,20 @@ public class JobWS {
         return new RestResponse(false, "get Top8 Fail", listJobs);
     }
 
+    // Get Top 8 for mobile
+    @GetMapping(value = "/getTop8/mobile")
+    public List<JobDTO> getTop8Mobile(){
+        List<JobDTO> listJobs = null;
+        try {
+            listJobs = jobService.getTop8Mobile();
+            return listJobs;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getTop8 in JobWS ");
+        return listJobs;
+    }
+
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getJobDetail", produces = "application/json;charset=UTF-8")
     public RestResponse getJobDetail(@RequestParam("id") int id) {
@@ -182,8 +196,28 @@ public class JobWS {
         return new RestResponse(false, "Job is Not Available : ", null);
     }
 
+
     @CrossOrigin(origins = "*")
-    @GetMapping(value = "/getJobComponent")
+    @GetMapping(value = "/getJobDetail/moblie", produces = "application/json;charset=UTF-8")
+    public JobDTO3 getJobDetailMobile(@RequestParam("id") int id) {
+        LOGGER.info("Begin getJobDetail in JobWS with id " + id);
+        JobDTO3 job;
+        try {
+            job = jobService.getJobDetail(id);
+            System.out.println(job.getCreatedDate());
+            System.out.println(job.getEndDateForApply());
+            LOGGER.info("End getJobDetail in JobWS with id " + id);
+            if (job != null) {
+                return job;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @CrossOrigin(origins = "*")
+        @GetMapping(value = "/getJobComponent")
     public RestResponse getJobComponent() {
         LOGGER.info("Begin getJobComponent in JobWS");
         List<SkillMasterDTO> listSkillMaster;

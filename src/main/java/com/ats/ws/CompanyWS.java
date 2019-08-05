@@ -115,5 +115,9 @@ public class CompanyWS {
 
     }
 
+    @GetMapping("/list-5")
+    public List<Company> getFiveCompany(){
+        return companyService.getFiveCompany();
+    }
 
 }

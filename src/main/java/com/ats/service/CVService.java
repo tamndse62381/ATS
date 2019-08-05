@@ -1,6 +1,7 @@
 package com.ats.service;
 
 import com.ats.dto.CVDTO;
+import com.ats.dto.CVMobileDTO;
 import com.ats.entity.Cv;
 import com.ats.form.CreateCVForm;
 import com.ats.model.FileModel;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.net.MalformedURLException;
+import java.util.List;
 
 public interface CVService {
     RestResponse getCVByCVID(int id);
@@ -23,6 +25,8 @@ public interface CVService {
     RestResponse delete(int id);
 
     RestResponse getlistCvByUserId(int id);
+
+    List<CVMobileDTO> getListCvByUserIdMobile(int id);
 
     RestResponse checkActive(int id);
 

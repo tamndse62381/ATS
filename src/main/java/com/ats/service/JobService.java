@@ -27,6 +27,8 @@ public interface JobService {
 
     Page<JobDTO> getTop8(Pageable pageable);
 
+    List<JobDTO> getTop8Mobile();
+
     JobDTO3 getJobDetail(int id);
 
     int changeStatus(int id , String newStatus);
