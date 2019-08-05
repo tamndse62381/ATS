@@ -214,6 +214,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     @Override
     public List<Company> getFiveCompany() {
@@ -228,6 +229,8 @@ public class CompanyServiceImpl implements CompanyService {
         }
         return getList;
     }
+=======
+>>>>>>> parent of db3aeb9... list 5 company 05082019
 =======
 >>>>>>> parent of db3aeb9... list 5 company 05082019
 }

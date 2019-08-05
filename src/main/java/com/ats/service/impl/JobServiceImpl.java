@@ -185,6 +185,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public JobDTO3 getJobDetail(int id) {
+<<<<<<< HEAD
         LOGGER.info("Begin getJobDetail in Job Service with id : " + id);
         Job job;
         JobDTO3 jobDTO = null;
@@ -211,6 +212,8 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public JobDTO3 getJobDetail(int id, int userId) {
+=======
+>>>>>>> parent of db3aeb9... list 5 company 05082019
         LOGGER.info("Begin getJobDetail in Job Service with id : " + id);
         Job job;
         JobDTO3 jobDTO = null;

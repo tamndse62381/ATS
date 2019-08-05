@@ -197,6 +197,7 @@ public class JobWS {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     // Get Top 8 for mobile
     @GetMapping(value = "/getTop8/mobile")
     public List<JobDTO> getTop8Mobile() {
@@ -211,6 +212,8 @@ public class JobWS {
         return listJobs;
     }
 
+=======
+>>>>>>> parent of db3aeb9... list 5 company 05082019
 =======
 >>>>>>> parent of db3aeb9... list 5 company 05082019
     @CrossOrigin(origins = "*")
@@ -228,6 +231,7 @@ public class JobWS {
         return new RestResponse(false, "get Top8 Fail", listJobs);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getJobDetail", produces = "application/json;charset=UTF-8")
@@ -251,6 +255,8 @@ public class JobWS {
         return new RestResponse(false, "Job is Not Available : ", null);
     }
 
+=======
+>>>>>>> parent of db3aeb9... list 5 company 05082019
 =======
 >>>>>>> parent of db3aeb9... list 5 company 05082019
     @CrossOrigin(origins = "*")
