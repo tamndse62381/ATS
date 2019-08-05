@@ -18,11 +18,7 @@ public interface UsersService {
 
     int changePassword(int id, String newPassword, String oldPassword);
 
-    int forgotPassword(String token, String password);
-
     int changeStatus(int id, String newStatus);
-
-    int confirmUser(String token, String newStatus);
 
     boolean checkPassword(String password, int id);
 

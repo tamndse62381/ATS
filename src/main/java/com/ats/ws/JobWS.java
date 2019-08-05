@@ -50,9 +50,12 @@ public class JobWS {
         int result = 0;
 
         Date dt = new Date();
-
+        Calendar c = Calendar.getInstance();
+        c.setTime(dt);
         try {
             job.setCreatedDate(dt);
+            c.add(Calendar.DATE, 30);
+            job.setEndDateForApply(c.getTime());
             job.setStatus("new");
             result = jobService.createJob(job);
             List<Integer> listSkillId = new ArrayList<>();
@@ -133,14 +136,11 @@ public class JobWS {
         Page<JobDTO> listJob = null;
         try {
             listJob = jobService.suggestJob(cvId, pageable);
-            if (listJob.getContent().size() > 0) {
-                return new RestResponse(true, "suggestJob Successfull", listJob);
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         LOGGER.info("End suggestJob in JobWS  with cvId : " + cvId);
-        return new RestResponse(false, "suggestJob Fail", null);
+        return new RestResponse(true, "suggestJob Successfull", listJob);
     }
 
     @CrossOrigin(origins = "*")
@@ -157,6 +157,7 @@ public class JobWS {
         LOGGER.info("End suggestJob in JobWS  with userId : " + userId);
         return new RestResponse(true, "suggestJob Successfull", listJob);
     }
+
 
 
     @CrossOrigin(origins = "*")
@@ -208,12 +209,11 @@ public class JobWS {
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getJobDetail", produces = "application/json;charset=UTF-8")
-    public RestResponse getJobDetail(@RequestParam("id") int id,
-                                     @RequestParam("userId") int userId) {
+    public RestResponse getJobDetail(@RequestParam("id") int id) {
         LOGGER.info("Begin getJobDetail in JobWS with id " + id);
         JobDTO3 job;
         try {
-            job = jobService.getJobDetail(id, userId);
+            job = jobService.getJobDetail(id);
             System.out.println(job.getCreatedDate());
             System.out.println(job.getEndDateForApply());
             LOGGER.info("End getJobDetail in JobWS with id " + id);
