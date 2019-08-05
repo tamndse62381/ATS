@@ -88,4 +88,6 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
             "(j.title LIKE CONCAT('%',LOWER(:search),'%') OR " +
             "c.nameCompany LIKE CONCAT('%',LOWER(:search),'%'))")
     Page<Job> getAll(Pageable pageable, @Param("search") String search, @Param("status") String status);
+
+    List<Job> findJobsByStatusAndUserId(String status, int EmployerId);
 }
