@@ -29,19 +29,20 @@ public interface JobService {
 
     List<JobDTO> getTop8Mobile();
 
-    JobDTO3 getJobDetail(int id);
+    
+    JobDTO3 getJobDetail(int id, int userId);
 
-    int changeStatus(int id , String newStatus);
+    int changeStatus(int id, String newStatus);
 
-    Page<JobDTO> suggestJob(int cvid , Pageable pageable);
+    Page<JobDTO> suggestJob(int cvid, Pageable pageable);
 
-    Page<JobDTO> suggestJobByJobId(int jobid , Pageable pageable);
+    Page<JobDTO> suggestJobByJobId(int jobid, Pageable pageable);
 
-    Page<JobDTO> suggestJobByUserId(int userid , Pageable pageable);
+    Page<JobDTO> suggestJobByUserId(int userid, Pageable pageable);
 
     RestResponse findListJobValid(int EmployerId);
 
     RestResponse findListJobInValid(int EmployerId);
 
-    Page<Job> getAllJob(Pageable pageable , String search , String status);
+    Page<Job> getAllJob(Pageable pageable, String search, String status);
 }
