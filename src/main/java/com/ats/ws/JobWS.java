@@ -178,6 +178,25 @@ public class JobWS {
     }
 
     @CrossOrigin(origins = "*")
+    @GetMapping(value = "/getJobDetail/moblie", produces = "application/json;charset=UTF-8")
+    public JobDTO3 getJobDetailMobile(@RequestParam("id") int id) {
+        LOGGER.info("Begin getJobDetail in JobWS with id " + id);
+        JobDTO3 job;
+        try {
+            job = jobService.getJobDetail(id);
+            System.out.println(job.getCreatedDate());
+            System.out.println(job.getEndDateForApply());
+            LOGGER.info("End getJobDetail in JobWS with id " + id);
+            if (job != null) {
+                return job;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @CrossOrigin(origins = "*")
     @GetMapping(value = "/getTop8")
     public RestResponse getTop8(@PageableDefault Pageable pageable) {
         LOGGER.info("Begin getTop8 in JobWS ");

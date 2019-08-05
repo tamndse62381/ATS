@@ -183,7 +183,49 @@ public class JobServiceImpl implements JobService {
         return pageDTO;
     }
 
+    @Override
+    public List<JobDTO> getTop8Mobile() {
+        List<Job> listofJob = null;
+        List<JobDTO> listofDTO = null;
+        try {
+            LOGGER.info("Begin getTop8 in Job Repository ");
+            listofJob = jobRepository.getTop8Mobile("approved", new Date());
+            ModelMapper mapper = new ModelMapper();
+            java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
+            }.getType();
+            listofDTO = mapper.map(listofJob, targetListType);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getTop8 in Job Service");
+        return listofDTO;
+    }
 
+    @Override
+    public JobDTO3 getJobDetail(int id) {
+        LOGGER.info("Begin getJobDetail in Job Service with id : " + id);
+        Job job;
+        JobDTO3 jobDTO = null;
+
+        try {
+            LOGGER.info("Begin getJobDetail in Job Repository with id : " + id);
+            job = jobRepository.findOne(id);
+            LOGGER.info("End getJobDetail in Job Repository with id : " + id);
+            List<Job> listJobOfCompany = jobRepository.getJobByCompanyID(job.getCompanyId(), job.getId());
+            List<String> listSkillName = skillService.getSkillName(job.getSkillneedforjobsById());
+            String jobLevelName = joblevelService.getJobLevelNameById(job.getJobLevelId());
+            ModelMapper mapper = new ModelMapper();
+            jobDTO = mapper.map(job, JobDTO3.class);
+
+            jobDTO.setListSkillName(listSkillName);
+            jobDTO.setListJobSameCompany(listJobOfCompany);
+            jobDTO.setJoblevelName(jobLevelName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getJobDetail in Job Service with id : " + id);
+        return jobDTO;
+    }
 
     @Override
     public JobDTO3 getJobDetail(int id, int userId) {
