@@ -171,20 +171,20 @@ public class UserWS {
 
     @ResponseBody
     @CrossOrigin(origins = "*")
-    @GetMapping(value = "/confirmUser", produces = "application/json;charset=UTF-8")
-    public RestResponse confirmUser(@RequestParam("token") String token) {
+    @GetMapping(value = "/confirmUser", produces = "text/html")
+    public String confirmUser(@RequestParam("token") String token) {
         LOGGER.info("Begin confirmUser in UserWS ");
         int success;
         try {
             success = usersService.confirmUser(token, "active");
             LOGGER.info("End confirmUser in UserWS");
             if (success > 0) {
-                return new RestResponse(true, "confirmUser Successful ", null);
+                return "Bạn đã kích hoạt thành công tài khoản";
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new RestResponse(false, "changeStatus Fail", null);
+        return "Mày Không Thể Thoát Được Đâu, To be continued !";
     }
 
     @ResponseBody
