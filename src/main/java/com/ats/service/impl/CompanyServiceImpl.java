@@ -213,4 +213,18 @@ public class CompanyServiceImpl implements CompanyService {
         return companyDTO3Page;
 
     }
+
+    @Override
+    public List<Company> getFiveCompany() {
+        List<Company> list = companyRepository.findAll();
+        List<Company> getList = new ArrayList<>();
+        int i = 1;
+        for (Company company : list) {
+            if (i <= 5){
+                getList.add(company);
+                i++;
+            }
+        }
+        return getList;
+    }
 }

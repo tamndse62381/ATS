@@ -121,6 +121,10 @@ public class CompanyWS {
         return new RestResponse(false, "Fail getCompanyAdmin ", null);
 
     }
+    @GetMapping("/list-5")
+    public List<Company> getFiveCompany(){
+        return companyService.getFiveCompany();
+    }
 
 
 }

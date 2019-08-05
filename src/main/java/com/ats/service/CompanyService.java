@@ -23,7 +23,9 @@ public interface CompanyService {
 
     RestResponse create(CompanyDTO newCompany);
 
-    int changeStatus(int id , String newStatus);
+    int changeStatus(int id, String newStatus);
 
-    Page<CompanyDTO3> findAllCompanyByStatus(String search , String status , Pageable pageable);
+    Page<CompanyDTO3> findAllCompanyByStatus(String search, String status, Pageable pageable);
+
+    List<Company> getFiveCompany();
 }
