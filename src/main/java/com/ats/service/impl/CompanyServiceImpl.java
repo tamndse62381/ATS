@@ -130,24 +130,37 @@ public class CompanyServiceImpl implements CompanyService {
         System.out.println(newStatus);
         for (int i = 0; i < company.getEmployercompaniesById().size(); i++) {
             usersList.add(company.getEmployercompaniesById().get(i).getUsersByUserId());
+            System.out.println(company.getEmployercompaniesById().get(i).getUsersByUserId().getId());
         }
         System.out.println(usersList.size());
         if (newStatus.equals("ban")) {
             for (int i = 0; i < usersList.size(); i++) {
                 if (usersList.get(i).getStatus().equals("active")) {
-                    for (int j = 0; j < usersList.get(i).getJobsById().size(); j++) {
+                    System.out.println(usersList.get(i).getJobsById().size());
+                    if (usersList.get(i).getJobsById().size() == 0) {
                         usersService.changeStatus(usersList.get(i).getId(),
                                 usersList.get(i).getStatus() + " ban");
+                    } else {
+                        for (int j = 0; j < usersList.get(i).getJobsById().size(); j++) {
+                            usersService.changeStatus(usersList.get(i).getId(),
+                                    usersList.get(i).getStatus() + " ban");
+                        }
                     }
+
                 }
             }
         }
         if (newStatus.equals("approved")) {
             for (int i = 0; i < usersList.size(); i++) {
                 if (usersList.get(i).getStatus().equals("active ban")) {
-                    for (int j = 0; j < usersList.get(i).getJobsById().size(); j++) {
+                    if (usersList.get(i).getJobsById().size() == 0) {
                         usersService.changeStatus(usersList.get(i).getId(), "active");
+                    } else {
+                        for (int j = 0; j < usersList.get(i).getJobsById().size(); j++) {
+                            usersService.changeStatus(usersList.get(i).getId(), "active");
+                        }
                     }
+
                 }
             }
         }

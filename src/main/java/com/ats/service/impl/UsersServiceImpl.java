@@ -11,6 +11,7 @@ import com.ats.dto.UsersDTO2;
 import com.ats.entity.Job;
 import com.ats.entity.Users;
 import com.ats.repository.UsersRepository;
+import com.ats.service.EmailService;
 import com.ats.service.JobService;
 import com.ats.service.RoleService;
 import org.apache.logging.log4j.LogManager;
@@ -38,6 +39,8 @@ public class UsersServiceImpl implements UsersService {
     @Autowired
     private RoleService roleService;
     @Autowired
+    private EmailService emailService;
+    @Autowired
     private JobService jobService;
     @Autowired
     TokenAuthenticationService tokenService;
@@ -51,19 +54,24 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public UsersDTO login(String email, String password) {
-        LOGGER.info("Begin login in Account Service with email - password: {}", email + " - " + password);
+        LOGGER.info("Begin login in User Service with email - password: {}", email + " - " + password);
         UsersDTO usersDTO;
         UsersDTO reTurnUsersDTO = new UsersDTO();
         passwordUtil = new EncrytedPasswordUtils();
         modelMapper = new ModelMapper();
+
+
         if (email != null) {
             usersDTO = findUserByEmail(email);
-            reTurnUsersDTO.setEmail("Account not Existed Or Banned!! ");
+
+            reTurnUsersDTO.setEmail("User not Existed Or Banned!! ");
             if (usersDTO != null) {
                 reTurnUsersDTO.setEmail("Wrong password !! ");
+
                 if (passwordUtil.compare(password, usersDTO.getPassword())) {
 
-                    if (usersDTO.getStatus().matches("new")) {
+                    if (usersDTO.getStatus().matches("active")) {
+
                         Date lastLoginDate = new Date();
                         usersRepository.editAccountLastLogin(lastLoginDate, usersDTO.getEmail(), usersDTO.getAccessToken());
                         reTurnUsersDTO = new UsersDTO(usersDTO.getId(), usersDTO.getFullname(),
@@ -75,7 +83,7 @@ public class UsersServiceImpl implements UsersService {
                     }
                 }
             }
-            LOGGER.info("End login in Account Service with result: {}", usersDTO);
+            LOGGER.info("End login in User Service with result: {}", usersDTO);
         }
         return reTurnUsersDTO;
     }
@@ -96,21 +104,19 @@ public class UsersServiceImpl implements UsersService {
             if (users != null) {
                 try {
                     LOGGER.info("End registration in User Repository with result: {}", users.toString());
-
                     newUsers = usersRepository.save(users);
                     LOGGER.info("End registration in User Repository with result: {}", newUsers.toString());
-
                 } catch (Exception e) {
                     System.out.println(e);
                 }
             }
+            emailService.sendActiveUserEmail(newUsers.getAccessToken(), newUsers.getEmail());
         } else {
             return -1;
         }
         LOGGER.info("End registration in Account Service with result: {}", newUsers.getId());
         return newUsers.getId();
     }
-
 
     @Override
     public boolean checkPassword(String password, int id) {
@@ -127,18 +133,16 @@ public class UsersServiceImpl implements UsersService {
         LOGGER.info("Begin findAccountByEmail in Account Service with email {}", email);
         modelMapper = new ModelMapper();
         UsersDTO usersDTO = null;
-        modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
         Users users;
         if (email != null) {
             users = usersRepository.findAccountByEmail(email);
-            if (users != null && users.getStatus().equals("new")) {
+            if (users != null && users.getStatus().equals("active")) {
                 usersDTO = modelMapper.map(users, UsersDTO.class);
             }
         }
         LOGGER.info("End findAccountByEmail in Account Service with result: {}", usersDTO);
         return usersDTO;
     }
-
 
     @Override
     public UsersDTO2 findUserByToken(String token) {
@@ -227,7 +231,7 @@ public class UsersServiceImpl implements UsersService {
         LOGGER.info("Begin changeStatus in User Service with User id - newStatus : {}", id + newStatus);
         int success;
         success = usersRepository.changeStatus(id, newStatus);
-        if (newStatus.equals("ban") || newStatus.equals("active ban")){
+        if (newStatus.equals("ban") || newStatus.equals("active ban")) {
             Users users = usersRepository.findOne(id);
             List<Job> jobList = users.getJobsById();
             for (int i = 0; i < jobList.size(); i++) {
@@ -254,6 +258,23 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    public int confirmUser(String token, String newStatus) {
+        LOGGER.info("Begin confirmUser in User Service  {}");
+        int success = -1;
+        try {
+            UsersDTO2 user = findUserByToken(token);
+            if (user != null) {
+                success = usersRepository.confirmUser(token, newStatus);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        LOGGER.info("End confirmUser in User Service with result: {}", success);
+        return success;
+    }
+
+    @Override
     public int changePassword(int id, String newPassword, String oldPassword) {
         LOGGER.info("Begin changePassword in Account Service with Account id : {}", id);
         boolean existedPassword = checkPassword(oldPassword, id);
@@ -262,7 +283,7 @@ public class UsersServiceImpl implements UsersService {
             return success;
         } else {
             ModelMapper modelMapper = new ModelMapper();
-            Users users = usersRepository.getOne(id);
+            Users users = usersRepository.findOne(id);
             System.out.println("Account id : " + users.getId());
             UsersDTO usersDTO = modelMapper.map(users, UsersDTO.class);
             if (usersDTO.getStatus().matches("new")) {
@@ -270,6 +291,22 @@ public class UsersServiceImpl implements UsersService {
                 newPassword = passwordUtil.encrytePassword(newPassword);
                 success = usersRepository.changePassword(id, newPassword);
                 LOGGER.info("End changePassword in Account Service with result: {}", success);
+            }
+        }
+        return success;
+    }
+
+    @Override
+    public int forgotPassword(String token, String password) {
+        LOGGER.info("Begin forgotPassword in User Service");
+        int success = 0;
+        UsersDTO2 user = findUserByToken(token);
+        if (user != null) {
+            if (user.getStatus().matches("active")) {
+                EncrytedPasswordUtils passwordUtil = new EncrytedPasswordUtils();
+                password = passwordUtil.encrytePassword(password);
+                success = usersRepository.forgotPassword(token, password);
+                LOGGER.info("End changePassword in User Service ");
             }
         }
         return success;
