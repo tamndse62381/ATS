@@ -196,6 +196,20 @@ public class JobWS {
         return null;
     }
 
+    // Get Top 8 for mobile
+    @GetMapping(value = "/getTop8/mobile")
+    public List<JobDTO> getTop8Mobile(){
+        List<JobDTO> listJobs = null;
+        try {
+            listJobs = jobService.getTop8Mobile();
+            return listJobs;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getTop8 in JobWS ");
+        return listJobs;
+    }
+
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getTop8")
     public RestResponse getTop8(@PageableDefault Pageable pageable) {
