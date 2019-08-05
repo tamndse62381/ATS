@@ -1,8 +1,10 @@
 package com.ats.repository;
 
 import com.ats.entity.Apply;
+import com.ats.entity.Cv;
 import com.ats.entity.Job;
 import org.glassfish.jersey.jaxb.internal.XmlJaxbElementProvider;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,4 +20,6 @@ public interface ApplyRepository extends JpaRepository<Apply, Integer> {
     List<Apply> findAppliesByCvid(int Cvid);
 
     List<Apply> findAppliesByJobId(int JobId);
+
+    List<Apply> findAppliesByJobIdAndStatus(int JobId, String status);
 }

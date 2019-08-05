@@ -60,7 +60,7 @@ public class CompanyWS {
             editedCompany.setLastModify(new Timestamp(new Date().getTime()));
             return ResponseEntity.ok().body(companyRepository.save(editedCompany));
         } catch (RuntimeException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
         return ResponseEntity.badRequest().body(null);
     }
@@ -122,5 +122,9 @@ public class CompanyWS {
 
     }
 
+    @GetMapping("/list-5")
+    public List<Company> getFiveCompany(){
+        return companyService.getFiveCompany();
+    }
 
 }
