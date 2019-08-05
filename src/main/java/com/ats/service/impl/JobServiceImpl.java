@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -44,12 +43,6 @@ public class JobServiceImpl implements JobService {
     CVRepository cvRepository;
     @Autowired
     UsersRepository usersRepository;
-    @Autowired
-    CountjobService countjobService;
-    @Autowired
-    ApplyService applyService;
-    @Autowired
-    ApplyRepository applyRepository;
 
     private static final Logger LOGGER = LogManager.getLogger(JobServiceImpl.class);
 
@@ -143,6 +136,7 @@ public class JobServiceImpl implements JobService {
         List<Job> listofJob;
         List<String> listofResult = new ArrayList<>();
 
+
         try {
             LOGGER.info("Begin getALlJobTitle in Job Repository ");
             listofJob = jobRepository.findAll();
@@ -202,7 +196,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public JobDTO3 getJobDetail(int id, int userId) {
+    public JobDTO3 getJobDetail(int id) {
         LOGGER.info("Begin getJobDetail in Job Service with id : " + id);
         Job job;
         JobDTO3 jobDTO = null;
@@ -210,7 +204,7 @@ public class JobServiceImpl implements JobService {
         try {
             LOGGER.info("Begin getJobDetail in Job Repository with id : " + id);
             job = jobRepository.findOne(id);
-            countjobService.countWhenEmployerGetDetailOfJob(id, userId);
+
             LOGGER.info("End getJobDetail in Job Repository with id : " + id);
             List<Job> listJobOfCompany = jobRepository.getJobByCompanyID(job.getCompanyId(), job.getId());
             List<String> listSkillName = skillService.getSkillName(job.getSkillneedforjobsById());
@@ -233,14 +227,6 @@ public class JobServiceImpl implements JobService {
         LOGGER.info("Begin changeStatus in Job Service with Job id - newStatus : {}", id + newStatus);
         int success;
         success = jobRepository.changeStatus(id, newStatus);
-        Job job = jobRepository.findOne(id);
-        Date dt = new Date();
-        Calendar c = Calendar.getInstance();
-        c.setTime(dt);
-        c.add(Calendar.DATE, 30);
-        job.setEndDateForApply(new Timestamp(c.getTimeInMillis()));
-        job.setStatus(newStatus);
-        jobRepository.save(job);
         LOGGER.info("End changeStatus in Job Service with result: {}", success);
         return success;
     }
@@ -518,11 +504,6 @@ public class JobServiceImpl implements JobService {
                     cv = cvRepository.findOne(users.getCvsById().get(i).getId());
                 }
             }
-            List<Apply> applies = applyRepository.findAppliesByCvid(cv.getId());
-            List<Job> jobs = new ArrayList<>();
-            for (int i = 0; i < applies.size(); i++) {
-                jobs.add(applies.get(i).getJobByJobId());
-            }
             System.out.println("SKILL của CV Ở ĐÂY");
             for (int i = 0; i < cv.getSkillincvsById().size(); i++) {
                 skillInCvName.add(cv.getSkillincvsById().get(i).getSkillBySkillId().getSkillmasterBySkillMasterId().getSkillName());
@@ -625,13 +606,6 @@ public class JobServiceImpl implements JobService {
                 }
             }
             System.out.println("SIZE ở đây : " + suggestJobList.size());
-            System.out.println("đã apply : " + jobs.size());
-            for (int i = 0; i < jobs.size(); i++) {
-                if (suggestJobList.contains(jobs.get(i))) {
-                    suggestJobList.remove(jobs.get(i));
-                }
-            }
-
 
             ModelMapper mapper = new ModelMapper();
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {

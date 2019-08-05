@@ -51,10 +51,9 @@ public class UserWS {
         LOGGER.info("Begin login inUserWS with username - password: {}", usersDTO.getEmail() + " - " + usersDTO.getPassword());
 
         try {
-            if (!usersDTO.getPassword().isEmpty()) {
-                System.out.println(usersDTO.getPassword());
+            if(!usersDTO.getPassword().isEmpty()){
                 usersDTO = usersService.login(usersDTO.getEmail(), usersDTO.getPassword());
-                LOGGER.info("End login in UserWS with username ", usersDTO.getEmail());
+                LOGGER.info("End login in UserWS with username ", usersDTO.getEmail() );
                 if (usersDTO != null && usersDTO.getId() != 0) {
                     return new RestResponse(true, "Login Successful", usersDTO);
                 }
@@ -81,7 +80,7 @@ public class UserWS {
             usersDTO.setAccessToken(tokenString);
             usersDTO.setLastLogin(date);
             usersDTO.setCreatedDate(date);
-            usersDTO.setStatus("new");
+            usersDTO.setStatus("active");
             result = usersService.registration(usersDTO);
             LOGGER.info("End Registration in UserWS with email - password - fullname: {}",
                     usersDTO.getEmail() + " - " + usersDTO.getPassword() + " - " + usersDTO.getFullname());
@@ -102,7 +101,7 @@ public class UserWS {
         LOGGER.info("Begin login in UserWS with Token : {}", accessToken);
         UsersDTO2 usersDTO;
         try {
-            usersDTO = usersService.findUserByToken(accessToken);
+            usersDTO = usersService. findUserByToken(accessToken);
             LOGGER.info("End login in UserWS with Token : {}", accessToken);
             if (usersDTO != null) {
                 return new RestResponse(true, "CheckLogin To Successful", usersDTO);
@@ -152,84 +151,28 @@ public class UserWS {
 
     @ResponseBody
     @CrossOrigin(origins = "*")
-    @GetMapping(value = "/forgotPassword", produces = "application/json;charset=UTF-8")
-    public RestResponse forgotPassword(@RequestParam("token") String token,
-                                       @RequestParam("password") String password) {
-        LOGGER.info("Begin forgotPassword in UserWS");
-        int success;
-        try {
-            success = usersService.forgotPassword(token, password);
-            LOGGER.info("End forgotPassword in UserWS");
-            if (success > 0) {
-                return new RestResponse(true, "forgotPassword Successful ", null);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new RestResponse(false, "forgotPassword Fail", null);
-    }
-
-    @ResponseBody
-    @CrossOrigin(origins = "*")
-    @GetMapping(value = "/confirmUser", produces = "application/json;charset=UTF-8")
-    public RestResponse confirmUser(@RequestParam("token") String token) {
-        LOGGER.info("Begin confirmUser in UserWS ");
-        int success;
-        try {
-            success = usersService.confirmUser(token, "active");
-            LOGGER.info("End confirmUser in UserWS");
-            if (success > 0) {
-                return new RestResponse(true, "confirmUser Successful ", null);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new RestResponse(false, "changeStatus Fail", null);
-    }
-
-    @ResponseBody
-    @CrossOrigin(origins = "*")
-    @PostMapping(value = "/findUserByEmail", produces = "application/json;charset=UTF-8")
-    public RestResponse findUserByEmail(@RequestParam("email") String email) {
-        LOGGER.info("Begin changeStatus in UserWS with Email : {}" + email);
-        UsersDTO dto = null;
-        try {
-            dto = usersService.findUserByEmail(email);
-            if (dto != null) {
-                return new RestResponse(true, "findUserByEmail Successful", dto);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        LOGGER.info("Begin changeStatus in UserWS with Email : {}" + email);
-        return new RestResponse(false, "findUserByEmail Fail", null);
-    }
-
-
-    @ResponseBody
-    @CrossOrigin(origins = "*")
     @PostMapping(value = "/registrationGoogle")
     public RestResponse registrationGoogle(@RequestBody UsersDTO usersDTO) {
-        LOGGER.info("Begin Registration Google in UserWS with email - password - fullname: {}",
-                usersDTO.getEmail() + " - " + usersDTO.getFullname());
+        LOGGER.info("Begin Registration in UserWS with email - password - fullname: {}",
+                usersDTO.getEmail()  + " - " + usersDTO.getFullname());
         int result;
         try {
             java.util.Date date = new java.util.Date();
-            if (usersDTO.getPassword().isEmpty()) {
+            if(usersDTO.getPassword().isEmpty()){
                 String tokenString = tokenService.addAuthentication(usersDTO.getEmail());
                 usersDTO.setAccessToken(tokenString);
                 usersDTO.setLastLogin(date);
                 usersDTO.setCreatedDate(date);
-                usersDTO.setStatus("active");
+                usersDTO.setStatus("new");
                 result = usersService.registration(usersDTO);
-                LOGGER.info("End Registration Google in UserWS with email - password - fullname: {}",
+                LOGGER.info("End Registration in UserWS with email - password - fullname: {}",
                         usersDTO.getEmail() + " - " + usersDTO.getFullname());
 
                 if (result > -1) {
                     return new RestResponse(true, "Create To Successful", null);
                 }
-            } else {
-                return new RestResponse(false, "Create Fail", null);
+            }else {
+                    return new RestResponse(false, "Create Fail", null);
             }
 
         } catch (Exception e) {
@@ -244,11 +187,11 @@ public class UserWS {
     public RestResponse loginGoogle(@RequestBody UsersDTO usersDTO) {
         LOGGER.info("Begin loginGoogle inUserWS with username - password: {}", usersDTO.getEmail() + " - " + usersDTO.getPassword());
         try {
-            usersDTO = usersService.login(usersDTO.getEmail(), usersDTO.getPassword());
-            LOGGER.info("End loginGoogle in UserWS with username - password : {}", usersDTO.getEmail() + " - " + usersDTO.getPassword());
-            if (usersDTO != null && usersDTO.getId() != 0) {
-                return new RestResponse(true, "Login Successful", usersDTO);
-            }
+                usersDTO = usersService.login(usersDTO.getEmail(), usersDTO.getPassword());
+                LOGGER.info("End loginGoogle in UserWS with username - password : {}", usersDTO.getEmail() + " - " + usersDTO.getPassword());
+                if (usersDTO != null && usersDTO.getId() != 0) {
+                    return new RestResponse(true, "Login Successful", usersDTO);
+                }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -257,7 +200,7 @@ public class UserWS {
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getRegisterEmployerComponent")
-    public RestResponse getRegisterEmployerComponent() {
+    public RestResponse getRegisterEmployerComponent(){
         LOGGER.info("Begin getRegisterEmployerComponent in UserWS");
         List<City> listCity;
         List<Joblevel> listJobLevel;
@@ -266,10 +209,10 @@ public class UserWS {
             listCity = cityService.getAllCity();
             listCompany = companyService.listAll();
             listJobLevel = joblevelService.getAllJobLevel();
-            HashMap<String, List> map = new HashMap<>();
+            HashMap<String,List> map = new HashMap<>();
             map.put("city", listCity);
-            map.put("level", listJobLevel);
-            map.put("company", listCompany);
+            map.put("level" , listJobLevel);
+            map.put("company" , listCompany);
             return new RestResponse(true, "Get Register Employer Component Successful", map);
 
         } catch (Exception e) {
@@ -303,14 +246,14 @@ public class UserWS {
     @ResponseBody
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getAllUser")
-    public RestResponse getAllUser(@RequestParam(value = "search") String search,
+    public RestResponse getAllUser(@RequestParam(value ="search") String search,
                                    @PageableDefault Pageable pageable,
-                                   @RequestParam(value = "status") String status) {
+                                   @RequestParam(value = "status") String status){
         LOGGER.info("Begin getAllUser in UserWS");
         Page<Users> usersPage;
         pageable = new PageRequest(0, Integer.MAX_VALUE);
         try {
-            usersPage = usersService.getAllUser(pageable, search, status);
+            usersPage = usersService.getAllUser(pageable,search,status);
             LOGGER.info("End getAllUser in UserWS");
             if (usersPage.getContent().size() > 0) {
                 return new RestResponse(true, "getAllUser Successful", usersPage);
