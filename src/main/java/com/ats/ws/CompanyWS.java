@@ -121,10 +121,14 @@ public class CompanyWS {
         return new RestResponse(false, "Fail getCompanyAdmin ", null);
 
     }
+<<<<<<< HEAD
     @GetMapping("/list-5")
     public List<Company> getFiveCompany(){
         return companyService.getFiveCompany();
     }
+=======
+
+>>>>>>> parent of db3aeb9... list 5 company 05082019
 
 
 }

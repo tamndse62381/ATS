@@ -196,6 +196,7 @@ public class JobWS {
         return null;
     }
 
+<<<<<<< HEAD
     // Get Top 8 for mobile
     @GetMapping(value = "/getTop8/mobile")
     public List<JobDTO> getTop8Mobile() {
@@ -210,6 +211,8 @@ public class JobWS {
         return listJobs;
     }
 
+=======
+>>>>>>> parent of db3aeb9... list 5 company 05082019
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getTop8")
     public RestResponse getTop8(@PageableDefault Pageable pageable) {
@@ -225,6 +228,7 @@ public class JobWS {
         return new RestResponse(false, "get Top8 Fail", listJobs);
     }
 
+<<<<<<< HEAD
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getJobDetail", produces = "application/json;charset=UTF-8")
     public RestResponse getJobDetail(@RequestParam("id") int id,
@@ -247,6 +251,8 @@ public class JobWS {
         return new RestResponse(false, "Job is Not Available : ", null);
     }
 
+=======
+>>>>>>> parent of db3aeb9... list 5 company 05082019
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getJobComponent")
     public RestResponse getJobComponent() {

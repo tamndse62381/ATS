@@ -25,7 +25,11 @@ public interface CompanyService {
 
     int changeStatus(int id, String newStatus);
 
+<<<<<<< HEAD
     Page<CompanyDTO3> findAllCompanyByStatus(String search, String status, Pageable pageable);
 
     List<Company> getFiveCompany();
+=======
+    Page<CompanyDTO3> findAllCompanyByStatus(String search , String status , Pageable pageable);
+>>>>>>> parent of db3aeb9... list 5 company 05082019
 }
