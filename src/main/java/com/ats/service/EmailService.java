@@ -26,25 +26,18 @@ public class EmailService {
 
     String footer =
             "<p style='font-size:150%;font-family:verdana;'>" +
-                    "<p><b><u>Date:</u>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;" + new SimpleDateFormat("EEEE").format(new Date()) +
+                    "<p><b><u>Nga&#768;y g&#432;&#777;i mail:</u>&ensp;&ensp;&ensp;" + new SimpleDateFormat("EEEE").format(new Date()) +
                     ", &ensp;" + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + "  </b></p>" +
-                    "<p><b><u>Time:</u>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp; 2:00:00 PM </b> " + "</p>" +
-                    "<p><b><u>&#272;i&#803;a &#272;i&ecirc;&#777;m:</u>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp; &#272;a&#803;i ho&#803;c FPT, " +
-                    "To&#768;a nha&#768; Innovation." +
-                    "<p></p>" +
                     "&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;C&ocirc;ng vi&ecirc;n ph&acirc;&#768;n m&ecirc;&#768;m Quang Trung," +
                     "Tan Chanh Hiep, Qu&acirc;&#803;n 12,Tha&#768;nh Ph&ocirc;&#769; Ho Chi Minh</b></p>" +
                     "<p>Thanks and Best Regards,</p>" +
                     "<p>Team 17</p>" +
-                    "<p>Recruitment team</p>" +
-                    "<p>Human Resource Dept.</p>" +
-                    "<p>Team 17(Vietnam) JSC</p>" +
                     "<p>To&#768;a nha&#768; Innovation,C&ocirc;ng vi&ecirc;n ph&acirc;&#768;n m&ecirc;&#768;m " +
                     "Quang Trung ,Qu&acirc;&#803;n 12,Tha&#768;nh Ph&ocirc;&#769; Ho Chi Minh</p>" +
                     "<p>Tel: (+84) 077 761 4243</p>" +
                     "<p>Mobi: (+84) 077 761 4243</p>" +
                     "<p>Email: jobboard.system@gmail.com</p>" +
-                    "<p>Website: www.globalcybersoft.com</p>" +
+                    "<p>Website: www.jobboard.com</p>" +
                     "<p>We Make it Happen. Better.</p></p>";
 
     private static final Logger LOGGER = LogManager.getLogger(EmailService.class);
@@ -54,7 +47,7 @@ public class EmailService {
         this.javaMailSender = javaMailSender;
     }
 
-    public void sendEmail(String email, String jobTitle, String userFullname, String result) {
+    public void sendEmailForJob(String email, String jobTitle, String userFullname, String result) {
         try {
             LOGGER.info("Begin SendEmail in EmailService with Email : " + email);
             MimeMessage message = javaMailSender.createMimeMessage();
@@ -104,13 +97,16 @@ public class EmailService {
             LOGGER.info("Begin sendActiveUserEmail in EmailService with Email : " + email);
             MimeMessage message = javaMailSender.createMimeMessage();
             boolean multipart = true;
-            String subject = "Complete Registration";
+            String subject = "Complete your account registration";
+            Users users = usersRepository.findAccountByToken(token);
             MimeMessageHelper helper = new MimeMessageHelper(message, multipart, "UTF-8");
-
+            String welcome = "<p>Dear <b>" + users.getFullName() + "</b>,</p>" +
+                    "<p>Ca&#769;m &#417;n ba&#803;n &#273;a&#771; ta&#803;o ta&#768;i khoa&#777;n ta&#803;i ATS.</p>";
             String confirm = "<p>&#272;&ecirc;&#777; ki&#769;ch hoa&#803;t ta&#768;i " +
-                    "khoa&#777;n, xin ba&#803;n click va&#768;o &#273;&#432;&#417;&#768;ng link: </p>" +
-                    "http://localhost:8080/user/confirmUser?token=" + token;
-            message.setContent(confirm, "text/html");
+                    "khoa&#777;n, xin ba&#803;n click va&#768;o &#273;&#432;&#417;&#768;ng link b&ecirc;n d&#432;&#417;&#769;i:</p> </p>" +
+                    "<a href='http://localhost:8080/user/confirmUser?token=" + token + "'>Confirm your account</a>";
+            String end = "<p>Tr&acirc;n tro&#803;ng,</p><p> ATS Team</p>";
+            message.setContent(welcome + confirm + end, "text/html");
 
             helper.setTo(email);
             helper.setSubject(subject);
@@ -119,5 +115,68 @@ public class EmailService {
         } catch (MessagingException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void sendEmailStatus(String email, String title, String userFullname, String result, String type) {
+        try {
+            LOGGER.info("Begin sendEmailStatus in EmailService with Email : " + email);
+            MimeMessage message = javaMailSender.createMimeMessage();
+            boolean multipart = true;
+            String subject = "";
+            MimeMessageHelper helper = new MimeMessageHelper(message, multipart, "UTF-8");
+            String begin = "<p>Dear Mr/Ms.<b>" + userFullname + "</b>,</p><p></p>";
+            String company = "<p>C&ocirc;ng ty :<b>" + title + "</b>cu&#777;a ba&#803;n &#273;a&#771; ";
+            String job = "<p>c&ocirc;ng vi&ecirc;&#803;c:<b>" + title + "</b> cu&#777;a ba&#803;n &#273;a&#771; ";
+            String account = "<p>Ta&#768;i khoa&#777;n cu&#777;a ba&#803;n &#273;a&#771; ";
+
+            if (result.equals("approved") || result.equals("active") || result.equals("new")) {
+                if (type.equals("company")) {
+                    message.setContent(begin + company +
+                            "&ensp;&#273;&#432;&#417;&#803;c &#273;&#432;a va&#768;o hoa&#803;t &#273;&ocirc;&#803;ng</p>" + footer, "text/html");
+                    subject = "Approved company mail";
+                }
+                if (type.equals("job")) {
+                    message.setContent(begin + job
+                            + "&#273;&#432;&#417;&#803;c duy&ecirc;&#803;t tha&#768;nh c&ocirc;ng</p>" + footer, "text/html");
+                    subject = "Approved job mail";
+                }
+                if (type.equals("user")) {
+                    message.setContent(begin + account +
+                            "&#273;&#432;&#417;&#803;c ta&#769;i ki&#769;ch hoa&#803;t</p>" + footer, "text/html");
+                    subject = "Approved user mail";
+                }
+
+
+            }
+            if (result.equals("ban") || result.equals("approved ban")
+                    || result.equals("active ban") || result.equals("new ban")) {
+                if (type.equals("company")) {
+                    message.setContent(begin + company +
+                            "bi&#803; ch&#259;&#803;n</p>" + footer, "text/html");
+                    subject = "Ban company mail";
+                }
+                if (type.equals("job")) {
+                    message.setContent(begin + job +
+                            "bi&#803; ch&#259;&#803;n</p>" + footer, "text/html");
+                    subject = "Ban job mail";
+                }
+                if (type.equals("user")) {
+                    message.setContent(begin + account +
+                            "bi&#803; ch&#259;&#803;n</p> " + footer, "text/html");
+                    subject = "Ban user mail";
+                }
+
+            }
+
+
+            helper.setTo(email);
+            helper.setSubject(subject);
+
+            this.javaMailSender.send(message);
+            LOGGER.info("End sendEmailStatus in EmailService with Email : " + email);
+        } catch (MessagingException ex) {
+            ex.printStackTrace();
+        }
+
     }
 }

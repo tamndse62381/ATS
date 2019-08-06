@@ -9,6 +9,7 @@ import com.ats.entity.Companyindustry;
 import com.ats.entity.Users;
 import com.ats.repository.*;
 import com.ats.service.CompanyService;
+import com.ats.service.EmailService;
 import com.ats.service.UsersService;
 import com.ats.util.RestResponse;
 import org.apache.logging.log4j.LogManager;
@@ -40,6 +41,8 @@ public class CompanyServiceImpl implements CompanyService {
     private IndustryRepository industryRepository;
     @Autowired
     private UsersService usersService;
+    @Autowired
+    private EmailService emailService;
 
     private static final Logger LOGGER = LogManager.getLogger(CompanyServiceImpl.class);
 
@@ -164,7 +167,14 @@ public class CompanyServiceImpl implements CompanyService {
                 }
             }
         }
-
+        String name = "";
+        for (int i = 0; i < company.getEmployercompaniesById().size(); i++) {
+            if (company.getEmployercompaniesById().get(i).getUsersByUserId().getRoleId() == 2) {
+                name = company.getEmployercompaniesById().get(i).getUsersByUserId().getFullName();
+            }
+        }
+        emailService.sendEmailStatus(company.getEmail(), company.getNameCompany(), name
+                , newStatus, "company");
         LOGGER.info("End changeStatus in Company Service with result: {}", success);
         return success;
     }
@@ -220,7 +230,7 @@ public class CompanyServiceImpl implements CompanyService {
         List<Company> getList = new ArrayList<>();
         int i = 1;
         for (Company company : list) {
-            if (i <= 5){
+            if (i <= 5) {
                 getList.add(company);
                 i++;
             }

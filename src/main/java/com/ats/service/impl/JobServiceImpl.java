@@ -50,6 +50,8 @@ public class JobServiceImpl implements JobService {
     ApplyService applyService;
     @Autowired
     ApplyRepository applyRepository;
+    @Autowired
+    EmailService emailService;
 
     private static final Logger LOGGER = LogManager.getLogger(JobServiceImpl.class);
 
@@ -260,13 +262,19 @@ public class JobServiceImpl implements JobService {
         int success;
         success = jobRepository.changeStatus(id, newStatus);
         Job job = jobRepository.findOne(id);
-        Date dt = new Date();
-        Calendar c = Calendar.getInstance();
-        c.setTime(dt);
-        c.add(Calendar.DATE, 30);
-        job.setEndDateForApply(new Timestamp(c.getTimeInMillis()));
-        job.setStatus(newStatus);
-        jobRepository.save(job);
+
+        if(job.getCreatedDate() == null && newStatus.equals("approved")){
+            Date dt = new Date();
+            Calendar c = Calendar.getInstance();
+            c.setTime(dt);
+            job.setCreatedDate(new Timestamp(c.getTimeInMillis()));
+            c.add(Calendar.DATE, 30);
+            job.setEndDateForApply(new Timestamp(c.getTimeInMillis()));
+            job.setStatus(newStatus);
+            jobRepository.save(job);
+        }
+        emailService.sendEmailStatus(job.getUsersByUserId().getEmail(),job.getTitle(),
+                job.getUsersByUserId().getFullName(),newStatus,"job");
         LOGGER.info("End changeStatus in Job Service with result: {}", success);
         return success;
     }

@@ -48,11 +48,8 @@ public class JobWS {
     public RestResponse createJob(@RequestBody JobDTO2 job) {
         LOGGER.info("Begin createJob in JobWS with Job title : {}" + job.getTitle());
         int result = 0;
-
-        Date dt = new Date();
-
         try {
-            job.setCreatedDate(dt);
+
             job.setStatus("new");
             result = jobService.createJob(job);
             List<Integer> listSkillId = new ArrayList<>();
@@ -101,6 +98,7 @@ public class JobWS {
                                   @PageableDefault Pageable pageable) {
         LOGGER.info("Begin searchJob in JobWS  with Search value : {}" + search + " " + city + " " + industry);
         Page<JobDTO> listJob = null;
+        pageable = new PageRequest(0, Integer.MAX_VALUE);
         try {
             listJob = jobService.searchJob(search, city, industry, pageable);
         } catch (Exception e) {
@@ -116,6 +114,7 @@ public class JobWS {
     public RestResponse suggestJobByJobId(@RequestParam(value = "jobId") int jobId, @PageableDefault Pageable pageable) {
         LOGGER.info("Begin suggestJob in JobWS  with jobId : " + jobId);
         Page<JobDTO> listJob = null;
+        pageable = new PageRequest(0, Integer.MAX_VALUE);
         try {
             listJob = jobService.suggestJobByJobId(jobId, pageable);
         } catch (Exception e) {
@@ -131,6 +130,7 @@ public class JobWS {
     public RestResponse suggestJob(@RequestParam(value = "cvId") int cvId, @PageableDefault Pageable pageable) {
         LOGGER.info("Begin suggestJob in JobWS  with cvId : " + cvId);
         Page<JobDTO> listJob = null;
+        pageable = new PageRequest(0, Integer.MAX_VALUE);
         try {
             listJob = jobService.suggestJob(cvId, pageable);
             if (listJob.getContent().size() > 0) {
@@ -149,6 +149,7 @@ public class JobWS {
     public RestResponse suggestJobByUserId(@RequestParam(value = "userId") int userId, @PageableDefault Pageable pageable) {
         LOGGER.info("Begin suggestJob in JobWS  userId jobId : " + userId);
         Page<JobDTO> listJob = null;
+        pageable = new PageRequest(0, Integer.MAX_VALUE);
         try {
             listJob = jobService.suggestJobByUserId(userId, pageable);
         } catch (Exception e) {

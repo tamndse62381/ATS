@@ -79,9 +79,8 @@ public class UserWS {
             java.util.Date date = new java.util.Date();
             String tokenString = tokenService.addAuthentication(usersDTO.getEmail());
             usersDTO.setAccessToken(tokenString);
-            usersDTO.setLastLogin(date);
             usersDTO.setCreatedDate(date);
-            usersDTO.setStatus("onhold");
+            usersDTO.setStatus("new");
             result = usersService.registration(usersDTO);
             LOGGER.info("End Registration in UserWS with email - password - fullname: {}",
                     usersDTO.getEmail() + " - " + usersDTO.getPassword() + " - " + usersDTO.getFullname());
@@ -184,7 +183,8 @@ public class UserWS {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "Mày Không Thể Thoát Được Đâu, To be continued !";
+        return "Token của bạn đã hết hạn hoặc bị hỏng" +
+                "Xin bạn đăng ký một tài khoản ATS mới";
     }
 
     @ResponseBody

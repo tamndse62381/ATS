@@ -1,6 +1,7 @@
 package com.ats.service.impl;
 
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -45,6 +46,7 @@ public class UsersServiceImpl implements UsersService {
     @Autowired
     TokenAuthenticationService tokenService;
 
+
     ModelMapper modelMapper;
 
 
@@ -59,30 +61,32 @@ public class UsersServiceImpl implements UsersService {
         UsersDTO reTurnUsersDTO = new UsersDTO();
         passwordUtil = new EncrytedPasswordUtils();
         modelMapper = new ModelMapper();
-
-
         if (email != null) {
             usersDTO = findUserByEmail(email);
-
-            reTurnUsersDTO.setEmail("User not Existed Or Banned!! ");
             if (usersDTO != null) {
-                reTurnUsersDTO.setEmail("Wrong password !! ");
-
                 if (passwordUtil.compare(password, usersDTO.getPassword())) {
-
                     if (usersDTO.getStatus().matches("active")) {
-
                         Date lastLoginDate = new Date();
                         usersRepository.editAccountLastLogin(lastLoginDate, usersDTO.getEmail(), usersDTO.getAccessToken());
                         reTurnUsersDTO = new UsersDTO(usersDTO.getId(), usersDTO.getFullname(),
                                 usersDTO.getEmail(), usersDTO.getRoleId(), usersDTO.getAccessToken());
-
                         return reTurnUsersDTO;
-                    } else {
-                        reTurnUsersDTO.setEmail("is Banned !!");
+                    }
+                    if (usersDTO.getStatus().matches("new")) {
+                        reTurnUsersDTO.setEmail("User not activated yet !!");
+                    }
+                    if (usersDTO.getStatus().matches("ban")) {
+                        reTurnUsersDTO.setEmail("User is banned !! ");
                     }
                 }
+                if (!passwordUtil.compare(password, usersDTO.getPassword())) {
+                    reTurnUsersDTO.setEmail("Wrong Password !!");
+                }
             }
+            if (findUserByEmail(email) == null) {
+                reTurnUsersDTO.setEmail("User not Existed !!");
+            }
+
             LOGGER.info("End login in User Service with result: {}", usersDTO);
         }
         return reTurnUsersDTO;
@@ -136,7 +140,7 @@ public class UsersServiceImpl implements UsersService {
         Users users;
         if (email != null) {
             users = usersRepository.findAccountByEmail(email);
-            if (users != null && users.getStatus().equals("active")) {
+            if (users != null) {
                 usersDTO = modelMapper.map(users, UsersDTO.class);
             }
         }
@@ -231,8 +235,9 @@ public class UsersServiceImpl implements UsersService {
         LOGGER.info("Begin changeStatus in User Service with User id - newStatus : {}", id + newStatus);
         int success;
         success = usersRepository.changeStatus(id, newStatus);
+        Users users = usersRepository.findOne(id);
         if (newStatus.equals("ban") || newStatus.equals("active ban")) {
-            Users users = usersRepository.findOne(id);
+
             List<Job> jobList = users.getJobsById();
             for (int i = 0; i < jobList.size(); i++) {
                 if (jobList.get(i).getStatus().equals("new") ||
@@ -242,7 +247,7 @@ public class UsersServiceImpl implements UsersService {
             }
         }
         if (newStatus.equals("active")) {
-            Users users = usersRepository.findOne(id);
+
             List<Job> jobList = users.getJobsById();
             for (int i = 0; i < jobList.size(); i++) {
                 if (jobList.get(i).getStatus().equals("new ban")) {
@@ -253,6 +258,8 @@ public class UsersServiceImpl implements UsersService {
                 }
             }
         }
+        emailService.sendEmailStatus(users.getEmail(),users.getFullName(),users.getFullName(),
+                newStatus,"user");
         LOGGER.info("End changeStatus in User Service with result: {}", success);
         return success;
     }
@@ -264,7 +271,23 @@ public class UsersServiceImpl implements UsersService {
         try {
             UsersDTO2 user = findUserByToken(token);
             if (user != null) {
-                success = usersRepository.confirmUser(token, newStatus);
+                Calendar c1 = Calendar.getInstance();
+                Calendar c2 = Calendar.getInstance();
+
+                // Định nghĩa 2 mốc thời gian ban đầu
+
+                c1.setTime(user.getCreatedDate());
+                c2.setTime(new Date());
+
+                // Công thức tính số ngày giữa 2 mốc thời gian:
+                long noDay = (c2.getTime().getTime() - c1.getTime().getTime());
+
+                if (noDay < 24 * 3600 * 1000) {
+                    if (user.getStatus().equals("new")) {
+                        success = usersRepository.confirmUser(token, newStatus);
+                    }
+                }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
