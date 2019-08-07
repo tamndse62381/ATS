@@ -175,8 +175,7 @@ public class JobServiceImpl implements JobService {
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
             }.getType();
             listofDTO = mapper.map(listofJob.getContent(), targetListType);
-            pageDTO = new PageImpl<>(listofDTO, new PageRequest(listofJob.getTotalPages(), listofJob.getSize()
-                    , listofJob.getSort()), listofDTO.size());
+            pageDTO = new PageImpl<>(listofDTO, new PageRequest(0, 10), listofDTO.size());
             LOGGER.info("End getTop8 in Job Repository");
         } catch (Exception e) {
             e.printStackTrace();
@@ -201,6 +200,28 @@ public class JobServiceImpl implements JobService {
         }
         LOGGER.info("End getTop8 in Job Service");
         return listofDTO;
+    }
+
+    @Override
+    public Page<JobDTO> getJobByEmployerId(int employerId, Pageable pageable, String status) {
+        LOGGER.info("Begin getJobByEmployerId in Job Service");
+        Page<Job> listofJob = null;
+        List<JobDTO> listofDTO;
+        Page<JobDTO> pageDTO = null;
+        try {
+            LOGGER.info("Begin getJobByEmployerId in Job Repository ");
+            listofJob = jobRepository.findAllByEmployerId(pageable, status, employerId);
+            ModelMapper mapper = new ModelMapper();
+            java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
+            }.getType();
+            listofDTO = mapper.map(listofJob.getContent(), targetListType);
+            pageDTO = new PageImpl<>(listofDTO, new PageRequest(0, 10), listofDTO.size());
+            LOGGER.info("End getJobByEmployerId in Job Repository");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getJobByEmployerId in Job Service");
+        return pageDTO;
     }
 
     @Override
@@ -263,7 +284,7 @@ public class JobServiceImpl implements JobService {
         success = jobRepository.changeStatus(id, newStatus);
         Job job = jobRepository.findOne(id);
 
-        if(job.getCreatedDate() == null && newStatus.equals("approved")){
+        if (job.getCreatedDate() == null && newStatus.equals("approved")) {
             Date dt = new Date();
             Calendar c = Calendar.getInstance();
             c.setTime(dt);
@@ -273,8 +294,8 @@ public class JobServiceImpl implements JobService {
             job.setStatus(newStatus);
             jobRepository.save(job);
         }
-        emailService.sendEmailStatus(job.getUsersByUserId().getEmail(),job.getTitle(),
-                job.getUsersByUserId().getFullName(),newStatus,"job");
+        emailService.sendEmailStatus(job.getUsersByUserId().getEmail(), job.getTitle(),
+                job.getUsersByUserId().getFullName(), newStatus, "job");
         LOGGER.info("End changeStatus in Job Service with result: {}", success);
         return success;
     }
@@ -681,7 +702,7 @@ public class JobServiceImpl implements JobService {
     }
 
     public RestResponse findListJobValid(int EmployerId) {
-        List<Job> listJob = jobRepository.getJobValid(EmployerId, new Timestamp(new Date().getTime()));
+        List<Job> listJob = jobRepository.getJobValid(EmployerId, new Timestamp(new Date().getTime()), "approved");
         if (listJob == null)
             return new RestResponse(false, "không có công việc nào!!!", null);
         return new RestResponse(true, "Thành công!!!", listJob);

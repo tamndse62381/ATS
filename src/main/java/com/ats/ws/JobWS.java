@@ -242,6 +242,23 @@ public class JobWS {
     }
 
     @CrossOrigin(origins = "*")
+    @GetMapping(value = "/getJobByEmployerId")
+    public RestResponse getJobByEmployerId(@PageableDefault Pageable pageable,
+                                           @RequestParam("employerId") int employerId,
+                                           @RequestParam("status") String status) {
+        LOGGER.info("Begin getJobByEmployerId in JobWS ");
+        Page<JobDTO> listJobs = null;
+        try {
+            listJobs = jobService.getJobByEmployerId(employerId, pageable, status);
+            return new RestResponse(true, "get getJobByEmployerId Successfull with list size is : ", listJobs);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getJobByEmployerId in JobWS ");
+        return new RestResponse(false, "get getJobByEmployerId Fail", listJobs);
+    }
+
+    @CrossOrigin(origins = "*")
     @GetMapping(value = "/getJobDetail", produces = "application/json;charset=UTF-8")
     public RestResponse getJobDetail(@RequestParam("id") int id,
                                      @RequestParam("userId") int userId) {
@@ -343,18 +360,6 @@ public class JobWS {
     public RestResponse listJobsByEmployerIdInValid(@PathVariable(name = "EmployerId") int EmployerId) {
         return jobService.findListJobInValid(EmployerId);
     }
-
-    // Test
-    @Autowired
-    private JobRepository jobRepository;
-
-    // Test get
-    @GetMapping("/test/get")
-    @CrossOrigin("*")
-    public RestResponse testGet() {
-        return new RestResponse(true, "Thanh cong", jobRepository.findAll());
-    }
-
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getAllJob")

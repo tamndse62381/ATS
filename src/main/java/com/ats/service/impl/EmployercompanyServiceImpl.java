@@ -167,7 +167,7 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
             if (employercompanyDTO.getStatus().equals("approved")) {
                 result = employercompanyRepository.changeStatus(employercompanyDTO.getUserId(), employercompanyDTO.getStatus());
                 if (result > -1) {
-                    usersService.changeRole(employercompanyDTO.getUserId(), 3);
+                    usersService.changeRole(employercompanyDTO.getUserId(), 5);
                 }
             } else if (employercompanyDTO.getStatus().equals("deny")) {
                 result = employercompanyRepository.changeStatus(employercompanyDTO.getUserId(), employercompanyDTO.getStatus());

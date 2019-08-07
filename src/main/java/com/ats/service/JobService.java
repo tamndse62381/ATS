@@ -29,6 +29,8 @@ public interface JobService {
 
     List<JobDTO> getTop8Mobile();
 
+    Page<JobDTO> getJobByEmployerId(int employerId, Pageable pageable, String status);
+
     JobDTO3 getJobDetail(int id);
 
     JobDTO3 getJobDetail(int id, int userId);
