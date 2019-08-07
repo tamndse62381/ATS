@@ -242,6 +242,22 @@ public class JobWS {
     }
 
     @CrossOrigin(origins = "*")
+    @GetMapping(value = "/getJobByCompanyId")
+    public RestResponse getJobByCompanyId(@PageableDefault Pageable pageable,
+                                          @RequestParam("companyId") int companyId) {
+        LOGGER.info("Begin getJobByCompanyId in JobWS ");
+        Page<JobDTO> listJobs = null;
+        try {
+            listJobs = jobService.getJobByCompanyId(pageable, companyId);
+            return new RestResponse(true, "get getJobByCompanyId Successfull with list size is : ", listJobs);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getJobByCompanyId in JobWS ");
+        return new RestResponse(false, "getJobByCompanyId Fail", listJobs);
+    }
+
+    @CrossOrigin(origins = "*")
     @GetMapping(value = "/getJobByEmployerId")
     public RestResponse getJobByEmployerId(@PageableDefault Pageable pageable,
                                            @RequestParam("employerId") int employerId,

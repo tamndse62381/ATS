@@ -185,6 +185,28 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    public Page<JobDTO> getJobByCompanyId(Pageable pageable, int companyId) {
+        LOGGER.info("Begin getJobByCompanyId in Job Service");
+        Page<Job> listofJob = null;
+        List<JobDTO> listofDTO;
+        Page<JobDTO> pageDTO = null;
+        try {
+            LOGGER.info("Begin getJobByCompanyId in Job Repository ");
+            listofJob = jobRepository.getJobByCompanyId(pageable, companyId, "approved");
+            ModelMapper mapper = new ModelMapper();
+            java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
+            }.getType();
+            listofDTO = mapper.map(listofJob.getContent(), targetListType);
+            pageDTO = new PageImpl<>(listofDTO, new PageRequest(0, 10), listofDTO.size());
+            LOGGER.info("End getJobByCompanyId in Job Repository");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getJobByCompanyId in Job Service");
+        return pageDTO;
+    }
+
+    @Override
     public List<JobDTO> getTop8Mobile() {
         List<Job> listofJob = null;
         List<JobDTO> listofDTO = null;
