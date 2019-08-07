@@ -102,6 +102,34 @@ public class JobServiceImpl implements JobService {
         try {
             newJob = jobRepository.findOne(job.getId());
             newJob.setTitle(job.getTitle());
+            newJob.setJobDescription(job.getJobDescription());
+            newJob.setYearExperience(job.getYearExperience());
+            newJob.setSalaryFrom(job.getSalaryFrom());
+            newJob.setSalaryTo(job.getSalaryTo());
+            newJob.setAddress(job.getAddress());
+
+
+            City city = new City();
+            city.setId(newJob.getCityId());
+
+            Company company = new Company();
+            company.setId(newJob.getCompanyId());
+
+            Users users = new Users();
+            users.setId(newJob.getUserId());
+
+            Joblevel joblevel = new Joblevel();
+            joblevel.setId(newJob.getJobLevelId());
+
+            Industry industry = new Industry();
+            industry.setId(newJob.getIndustryId());
+
+            newJob.setCityByCityId(city);
+            newJob.setUsersByUserId(users);
+            newJob.setCompanyByCompanyId(company);
+            newJob.setJoblevelByJobLevelId(joblevel);
+            newJob.setIndustryByIndustryId(industry);
+
             newJob = jobRepository.save(newJob);
             result = newJob.getId();
             System.out.println("KQ : " + result);
@@ -185,6 +213,28 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    public Page<JobDTO> getJobByCompanyId(Pageable pageable, int companyId) {
+        LOGGER.info("Begin getJobByCompanyId in Job Service");
+        Page<Job> listofJob = null;
+        List<JobDTO> listofDTO;
+        Page<JobDTO> pageDTO = null;
+        try {
+            LOGGER.info("Begin getJobByCompanyId in Job Repository ");
+            listofJob = jobRepository.getJobByCompanyId(pageable, companyId, "approved");
+            ModelMapper mapper = new ModelMapper();
+            java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
+            }.getType();
+            listofDTO = mapper.map(listofJob.getContent(), targetListType);
+            pageDTO = new PageImpl<>(listofDTO, new PageRequest(0, 10), listofDTO.size());
+            LOGGER.info("End getJobByCompanyId in Job Repository");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getJobByCompanyId in Job Service");
+        return pageDTO;
+    }
+
+    @Override
     public List<JobDTO> getTop8Mobile() {
         List<Job> listofJob = null;
         List<JobDTO> listofDTO = null;
@@ -229,7 +279,6 @@ public class JobServiceImpl implements JobService {
         LOGGER.info("Begin getJobDetail in Job Service with id : " + id);
         Job job;
         JobDTO3 jobDTO = null;
-
         try {
             LOGGER.info("Begin getJobDetail in Job Repository with id : " + id);
             job = jobRepository.findOne(id);
@@ -248,6 +297,22 @@ public class JobServiceImpl implements JobService {
         }
         LOGGER.info("End getJobDetail in Job Service with id : " + id);
         return jobDTO;
+    }
+
+    @Override
+    public Job getJobDetailToUpdate(int id) {
+        LOGGER.info("Begin getJobDetailToUpdate in Job Service with id : " + id);
+        Job job = null;
+
+        try {
+            LOGGER.info("Begin getJobDetailToUpdate in Job Repository with id : " + id);
+            job = jobRepository.findOne(id);
+            LOGGER.info("End getJobDetailToUpdate in Job Repository with id : " + id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getJobDetailToUpdate in Job Service with id : " + id);
+        return job;
     }
 
     @Override

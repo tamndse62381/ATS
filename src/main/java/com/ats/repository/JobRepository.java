@@ -56,8 +56,14 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
                                   @Param("status") String status,
                                   @Param("employerId") int employerId);
 
+
     @Query("Select b from Job b where b.companyId = :companyId and b.id <> :jobId")
     List<Job> getJobByCompanyID(@Param("companyId") int companyId, @Param("jobId") int jobId);
+
+    @Query("Select b from Job b where b.companyId = :companyId and b.status = :status")
+    Page<Job> getJobByCompanyId(Pageable pageable,
+                                @Param("companyId") int companyId,
+                                @Param("status")String status);
 
     @Transactional
     @Modifying

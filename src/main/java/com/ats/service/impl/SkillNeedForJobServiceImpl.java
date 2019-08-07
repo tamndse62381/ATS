@@ -28,7 +28,6 @@ public class SkillNeedForJobServiceImpl implements SkillNeedForJobService {
         int skillResult = -1;
         LOGGER.info("Begin addSkillForJob in SkillNeedForJob Service with JobID {}", listSkillId.size());
         try {
-
             for (int i = 0; i < listSkillId.size(); i++) {
                 Skillneedforjob skillneedforjob = new Skillneedforjob();
                 skillneedforjob.setJobId(jobId);
@@ -73,4 +72,44 @@ public class SkillNeedForJobServiceImpl implements SkillNeedForJobService {
         }
         return -1;
     }
+
+    @Override
+    public boolean updateSkillForJob(List<Integer> listSkillId, int jobId) {
+        boolean result = false;
+        int skillResult = -1;
+        LOGGER.info("Begin addSkillForJob in SkillNeedForJob Service with JobID {}", listSkillId.size());
+        try {
+            List<Skillneedforjob> skillneedforjobList = skillNeedForJobRepository.getAllByJobId(jobId);
+            for (int i = 0; i < skillneedforjobList.size(); i++) {
+                skillNeedForJobRepository.delete(skillneedforjobList.get(i).getId());
+            }
+            for (int i = 0; i < listSkillId.size(); i++) {
+                Skillneedforjob skillneedforjob = new Skillneedforjob();
+                skillneedforjob.setJobId(jobId);
+                skillneedforjob.setSkillId(listSkillId.get(i));
+                skillResult = checkSkillNeedForJob(skillneedforjob);
+                if (skillResult == -1) {
+                    Skill skill = new Skill();
+                    skill.setId(listSkillId.get(i));
+
+                    Job job = new Job();
+                    job.setId(jobId);
+
+                    skillneedforjob.setSkillBySkillId(skill);
+                    skillneedforjob.setJobByJobId(job);
+
+                    skillNeedForJobRepository.save(skillneedforjob);
+
+                }
+                result = true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End addSkillForJob in SkillNeedForJob Service with JobID {}", jobId);
+        return result;
+    }
+
+
 }
