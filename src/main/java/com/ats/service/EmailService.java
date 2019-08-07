@@ -117,6 +117,37 @@ public class EmailService {
         }
     }
 
+    public void sendAcceptUserEmail(String employerName, String email, String companyName, String result) {
+        try {
+            LOGGER.info("Begin sendAcceptUserEmail in EmailService with Email : " + email);
+            MimeMessage message = javaMailSender.createMimeMessage();
+            boolean multipart = true;
+            String subject = "Complete your account registration";
+            MimeMessageHelper helper = new MimeMessageHelper(message, multipart, "UTF-8");
+
+            String welcome = "<p>Dear <b>" + employerName + "</b>,</p>";
+            String confirm = "<p>Ba&#803;n &#273;a&#771; &#273;&#432;&#417;&#803;c ch&acirc;&#769;p nh&acirc;&#803;n va&#768;o c&ocirc;ng ty <b>"
+                    + companyName + "</b></p>";
+            String deny = "<p>Ba&#803;n &#273;a&#771; bi&#803; t&#432;&#768; ch&ocirc;&#769;i va&#768;o c&ocirc;ng ty <b>"
+                    + companyName + "</b></p>";
+            String end = "<p>Tr&acirc;n tro&#803;ng,</p><p> ATS Team</p>";
+
+            if (result.equals("approved")) {
+                message.setContent(welcome + confirm + end, "text/html");
+            }
+            if (result.equals("deny")) {
+                message.setContent(welcome + deny + end, "text/html");
+            }
+
+            helper.setTo(email);
+            helper.setSubject(subject);
+            this.javaMailSender.send(message);
+            LOGGER.info("End sendAcceptUserEmail in EmailService with Email : " + email);
+        } catch (MessagingException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public void sendEmailStatus(String email, String title, String userFullname, String result, String type) {
         try {
             LOGGER.info("Begin sendEmailStatus in EmailService with Email : " + email);

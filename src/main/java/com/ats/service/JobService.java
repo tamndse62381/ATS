@@ -35,6 +35,8 @@ public interface JobService {
 
     JobDTO3 getJobDetail(int id);
 
+    Job getJobDetailToUpdate(int id);
+
     JobDTO3 getJobDetail(int id, int userId);
 
     int changeStatus(int id, String newStatus);

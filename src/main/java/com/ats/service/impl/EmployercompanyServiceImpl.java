@@ -8,6 +8,7 @@ import com.ats.entity.Users;
 import com.ats.repository.EmployercompanyRepository;
 import com.ats.repository.UsersRepository;
 import com.ats.service.CompanyService;
+import com.ats.service.EmailService;
 import com.ats.service.EmployercompanyService;
 import com.ats.service.UsersService;
 import org.apache.logging.log4j.LogManager;
@@ -36,6 +37,8 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
     UsersService usersService;
     @Autowired
     UsersRepository usersRepository;
+    @Autowired
+    EmailService emailService;
 
 
     private static final Logger LOGGER = LogManager.getLogger(EmployercompanyServiceImpl.class);
@@ -163,14 +166,21 @@ public class EmployercompanyServiceImpl implements EmployercompanyService {
     public int changeStatus(EmployercompanyDTO employercompanyDTO) {
         LOGGER.info("Begin changeStatus in Employercompany Service with User id : " + employercompanyDTO.getUserId());
         int result = -1;
+        Employercompany employercompany = employercompanyRepository.findByUserId(employercompanyDTO.getUserId());
         try {
             if (employercompanyDTO.getStatus().equals("approved")) {
                 result = employercompanyRepository.changeStatus(employercompanyDTO.getUserId(), employercompanyDTO.getStatus());
                 if (result > -1) {
-                    usersService.changeRole(employercompanyDTO.getUserId(), 5);
+                    usersService.changeRole(employercompanyDTO.getUserId(), 3);
+                    emailService.sendAcceptUserEmail(employercompany.getUsersByUserId().getFullName(),
+                            employercompany.getUsersByUserId().getEmail(),
+                            employercompany.getCompanyByCompanyId().getNameCompany(), "approved");
                 }
             } else if (employercompanyDTO.getStatus().equals("deny")) {
                 result = employercompanyRepository.changeStatus(employercompanyDTO.getUserId(), employercompanyDTO.getStatus());
+                emailService.sendAcceptUserEmail(employercompany.getUsersByUserId().getFullName(),
+                        employercompany.getUsersByUserId().getEmail(),
+                        employercompany.getCompanyByCompanyId().getNameCompany(), "deny");
             }
         } catch (Exception e) {
             e.printStackTrace();

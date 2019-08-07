@@ -10,4 +10,6 @@ public interface SkillNeedForJobService {
     boolean addSkillForJob(List<Integer> listSkillId , int jobId);
 
     int checkSkillNeedForJob(Skillneedforjob entity);
+
+    boolean updateSkillForJob(List<Integer> listSkillId , int jobId);
 }

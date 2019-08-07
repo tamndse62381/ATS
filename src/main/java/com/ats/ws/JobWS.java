@@ -73,14 +73,14 @@ public class JobWS {
         LOGGER.info("Begin updateJob in JobWS with Job title : {}" + job.getTitle());
         int result = 0;
 
-        Date dt = new Date();
-        Calendar c = Calendar.getInstance();
-        c.setTime(dt);
         try {
-            job.setEndDateForApply(c.getTime());
             result = jobService.updateJob(job);
-
-            if (result > 0) {
+            List<Integer> listSkillId = new ArrayList<>();
+            for (int i = 0; i < job.getListSkill().size(); i++) {
+                listSkillId.add(skillService.addNewSkill(job.getListSkill().get(i)));
+            }
+            boolean finish = skillNeedForJobService.updateSkillForJob(listSkillId, result);
+            if (finish) {
                 return new RestResponse(true, "Update Job Successfull", result);
             }
         } catch (Exception e) {
@@ -272,6 +272,25 @@ public class JobWS {
         }
         LOGGER.info("End getJobByEmployerId in JobWS ");
         return new RestResponse(false, "get getJobByEmployerId Fail", listJobs);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping(value = "/getJobDetailToUpdate", produces = "application/json;charset=UTF-8")
+    public RestResponse getJobDetail(@RequestParam("id") int id) {
+        LOGGER.info("Begin getJobDetail in JobWS with id " + id);
+        Job job;
+        try {
+            job = jobService.getJobDetailToUpdate(id);
+            LOGGER.info("End getJobDetail in JobWS with id " + id);
+            if (job != null) {
+                return new RestResponse(true, "Get job Detail with job id : " + id, job);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return new RestResponse(false, "Job is Not Available : ", null);
     }
 
     @CrossOrigin(origins = "*")
