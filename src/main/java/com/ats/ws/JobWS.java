@@ -49,17 +49,22 @@ public class JobWS {
         LOGGER.info("Begin createJob in JobWS with Job title : {}" + job.getTitle());
         int result = 0;
         try {
+            if (job.getListSkill().isEmpty()) {
+                return new RestResponse(false, "Fail To Create New Job ", null);
+            }
+            if (!job.getListSkill().isEmpty()) {
+                job.setStatus("new");
+                result = jobService.createJob(job);
+                List<Integer> listSkillId = new ArrayList<>();
+                for (int i = 0; i < job.getListSkill().size(); i++) {
+                    listSkillId.add(skillService.addNewSkill(job.getListSkill().get(i)));
+                }
+                boolean finish = skillNeedForJobService.addSkillForJob(listSkillId, result);
+                if (finish) {
+                    return new RestResponse(true, "Create New Job Successfull", result);
+                }
+            }
 
-            job.setStatus("new");
-            result = jobService.createJob(job);
-            List<Integer> listSkillId = new ArrayList<>();
-            for (int i = 0; i < job.getListSkill().size(); i++) {
-                listSkillId.add(skillService.addNewSkill(job.getListSkill().get(i)));
-            }
-            boolean finish = skillNeedForJobService.addSkillForJob(listSkillId, result);
-            if (finish) {
-                return new RestResponse(true, "Create New Job Successfull", result);
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -107,6 +112,26 @@ public class JobWS {
         LOGGER.info("End searchJob in JobWS with Search value : {}" + search);
         return new RestResponse(true, "searchJob Successfull with list Size : ", listJob);
     }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping(value = "/searchMobile")
+    @ResponseBody
+    public RestResponse searchMobile(@RequestParam(value = "search") String search,
+                                     @RequestParam(value = "city") String city,
+                                     @RequestParam(value = "industry") String industry,
+                                     @PageableDefault Pageable pageable) {
+        LOGGER.info("Begin searchMobile in JobWS  with Search value : {}" + search + " " + city + " " + industry);
+        Page<JobDTO> listJob = null;
+        pageable = new PageRequest(0, Integer.MAX_VALUE);
+        try {
+            listJob = jobService.searchJob(search, city, industry, pageable);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End searchMobile in JobWS with Search value : {}" + search);
+        return new RestResponse(true, "searchJob Successfull with list Size : ", listJob.getContent().subList(0, 14));
+    }
+
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/suggestJobByJobId")

@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -41,4 +42,7 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
             "(c.nameCompany LIKE CONCAT('%',LOWER(:search),'%') or " +
             "u.email LIKE CONCAT('%',LOWER(:search),'%'))")
     Page<Company> findAll(Pageable pageable, @Param("search") String search, @Param("status") String status);
+
+    @Query("select c from Company c order by c.id desc ")
+    List<Company> getFiveCompany();
 }
