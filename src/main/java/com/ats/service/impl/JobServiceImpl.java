@@ -359,6 +359,7 @@ public class JobServiceImpl implements JobService {
             job.setStatus(newStatus);
             jobRepository.save(job);
         }
+
         emailService.sendEmailStatus(job.getUsersByUserId().getEmail(), job.getTitle(),
                 job.getUsersByUserId().getFullName(), newStatus, "job");
         LOGGER.info("End changeStatus in Job Service with result: {}", success);
