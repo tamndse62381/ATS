@@ -135,6 +135,7 @@ public class CVServiceImpl implements CVService {
                 for (ProjectorproductworkedDTO projectorproductworkedDTO : listPro) {
                     Projectorproductworked pro = modelMapper.map(projectorproductworkedDTO, Projectorproductworked.class);
                     pro.setCvid(CVID);
+
                     pro.setCvByCvid(saveCv);
                     projectorproductworkedService.createANewProjectorProduct(pro);
                 }

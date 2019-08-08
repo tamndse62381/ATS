@@ -9,9 +9,6 @@ import com.ats.repository.UsersRepository;
 import com.ats.service.UserlikecvService;
 import com.ats.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -31,9 +28,7 @@ public class UserlikecvServiceImpl implements UserlikecvService {
     @Override
     public boolean check(int EmployerId, int Cvid) {
         List<Userslikecv> userslikecv = userlikecvRepository.check(EmployerId, Cvid);
-
         if (userslikecv.size() == 0)
-
             return true;
         return false;
     }
@@ -55,19 +50,18 @@ public class UserlikecvServiceImpl implements UserlikecvService {
     }
 
     @Override
-    public Page<Cv> listCv(int EmployerId, Pageable pageable) {
+    public RestResponse listCv(int EmployerId) {
         Users user = usersRepository.findOne(EmployerId);
         if (user == null)
-            return null;
+            return new RestResponse(false, "Có lỗi xảy ra. Vui lòng thử lại!!!", null);
         List<Userslikecv> listUserslikecv = userlikecvRepository.findUserslikecvsByUserId(EmployerId);
         if (listUserslikecv == null)
-            return null;
+            return new RestResponse(false, "Không có ứng viên nào ứng tuyển!!!", null);
         List<Cv> listCv = new ArrayList<>();
         for (Userslikecv userslikecv : listUserslikecv) {
             listCv.add(userslikecv.getCvByCvid());
         }
-        Page<Cv> pageCv = new PageImpl<>(listCv, pageable, listCv.size());
-        return pageCv;
+        return new RestResponse(true, "Thành công!!!", listCv);
 
     }
 
