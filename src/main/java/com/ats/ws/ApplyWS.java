@@ -1,15 +1,12 @@
 package com.ats.ws;
 
-import com.ats.entity.Apply;
+import com.ats.dto.JobDTO;
 import com.ats.service.ApplyService;
 import com.ats.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.ws.rs.Path;
+import java.util.List;
 
 @RestController
 @RequestMapping("/apply")
@@ -56,9 +53,16 @@ public class ApplyWS {
 
 
     // get List Cv applied for one Job
-        @GetMapping("/cv-applied/{jobid}")
+    @GetMapping("/cv-applied/{jobid}")
     @CrossOrigin(origins = "*")
     public RestResponse getListCvAppliedForOneJob(@PathVariable(name = "jobid") int JobId){
         return applyService.listCv(JobId);
+    }
+
+    // get list job applied of JobSeekerId
+    @GetMapping("/list-applied/mobile/{id}")
+    @CrossOrigin(origins = "*")
+    public List<JobDTO> getListJobAppliedMobile(@PathVariable int id){
+        return applyService.listJobMobile(id);
     }
 }
