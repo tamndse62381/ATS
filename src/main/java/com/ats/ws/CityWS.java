@@ -44,6 +44,11 @@ public class CityWS {
         return new RestResponse(false, "Get Fail ", null);
     }
 
+    @GetMapping("/getAll/mobile")
+    @CrossOrigin(origins = "*")
+    public List<City> getAll(){
+        return cityService.getAllCity();
+    }
 
     @PostMapping("/create")
     @CrossOrigin("/")
