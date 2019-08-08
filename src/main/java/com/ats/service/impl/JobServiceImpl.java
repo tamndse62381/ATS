@@ -349,7 +349,7 @@ public class JobServiceImpl implements JobService {
         success = jobRepository.changeStatus(id, newStatus);
         Job job = jobRepository.findOne(id);
 
-        if (job.getEndDateForApply() == null && newStatus.equals("approved")) {
+        if (job.getCreatedDate() == null && newStatus.equals("approved")) {
             Date dt = new Date();
             Calendar c = Calendar.getInstance();
             c.setTime(dt);

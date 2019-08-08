@@ -48,7 +48,6 @@ public class Cv {
     private List<Workexperience> workexperiencesById;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     public int getId() {
         return id;
