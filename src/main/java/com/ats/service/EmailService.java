@@ -104,7 +104,7 @@ public class EmailService {
                     "<p>Ca&#769;m &#417;n ba&#803;n &#273;a&#771; ta&#803;o ta&#768;i khoa&#777;n ta&#803;i ATS.</p>";
             String confirm = "<p>&#272;&ecirc;&#777; ki&#769;ch hoa&#803;t ta&#768;i " +
                     "khoa&#777;n, xin ba&#803;n click va&#768;o &#273;&#432;&#417;&#768;ng link b&ecirc;n d&#432;&#417;&#769;i:</p> </p>" +
-                    "<a href='http://localhost:1122/user/confirmUser/" + token + "'>Confirm your account</a>";
+                    "<a href='http://localhost:8090/kiem-tra-thanh-cong/" + token + "'>Confirm your account</a>";
             String end = "<p>Tr&acirc;n tro&#803;ng,</p><p> ATS Team</p>";
             message.setContent(welcome + confirm + end, "text/html");
 
