@@ -227,6 +227,10 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public List<Company> getFiveCompany() {
         List<Company> list = companyRepository.getFiveCompany();
-        return list.subList(0,4);
+        if (list.size() < 5) {
+            return list;
+        } else {
+            return list.subList(0, 4);
+        }
     }
 }

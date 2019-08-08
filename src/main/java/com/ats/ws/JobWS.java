@@ -56,6 +56,9 @@ public class JobWS {
             }
             if (!job.getListSkill().isEmpty()) {
                 job.setStatus("new");
+
+                job.setCreatedDate(new Date());
+
                 result = jobService.createJob(job);
                 List<Integer> listSkillId = new ArrayList<>();
                 for (int i = 0; i < job.getListSkill().size(); i++) {
@@ -81,6 +84,10 @@ public class JobWS {
         int result = 0;
 
         try {
+            Date dt = new Date();
+            Calendar c = Calendar.getInstance();
+            c.setTime(dt);
+            job.setCreatedDate(new Timestamp(c.getTimeInMillis()));
             result = jobService.updateJob(job);
             List<Integer> listSkillId = new ArrayList<>();
             for (int i = 0; i < job.getListSkill().size(); i++) {
