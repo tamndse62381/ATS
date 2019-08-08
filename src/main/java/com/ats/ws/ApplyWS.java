@@ -64,4 +64,12 @@ public class ApplyWS {
                                                   @PageableDefault(value=5)Pageable pageable){
         return applyService.listCv(JobId,pageable);
     }
+
+    // check Status appy
+    @PostMapping("/checkstatus/{CvId}/{JobId}")
+    @CrossOrigin("*")
+    public RestResponse checkStatusApply(@PathVariable(name = "CvId") int CvId,
+                                         @PathVariable(name = "JobId") int JobId){
+        return applyService.checkStatusApply(CvId, JobId);
+    }
 }
