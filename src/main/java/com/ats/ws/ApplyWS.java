@@ -1,17 +1,13 @@
 package com.ats.ws;
 
-import com.ats.entity.Apply;
+import com.ats.entity.Cv;
 import com.ats.service.ApplyService;
 import com.ats.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.ws.rs.Path;
 
 @RestController
 @RequestMapping("/apply")
@@ -28,17 +24,19 @@ public class ApplyWS {
     }
 
     // edit status - confirm
-    @RequestMapping(value = "/confirm/{applyid}",method = RequestMethod.GET)
+    @RequestMapping(value = "/confirm/{jobid}/{cvid}",method = RequestMethod.GET)
     @CrossOrigin(origins = "*")
-    public RestResponse confirm(@PathVariable(name = "applyid") int applyid){
-        return applyService.confirm(applyid);
+    public RestResponse confirm(@PathVariable(name = "jobid") int jobid,
+                                @PathVariable(name = "cvid") int cvid){
+        return applyService.confirm(jobid, cvid);
     }
 
     // edit status - deny
-    @RequestMapping(value = "/deny/{applyid}", method = RequestMethod.GET)
+    @RequestMapping(value = "/deny/{jobid}/{cvid}", method = RequestMethod.GET)
     @CrossOrigin("*")
-    public RestResponse deny(@PathVariable(name = "applyid") int applyid){
-        return applyService.deny(applyid);
+    public RestResponse deny(@PathVariable(name = "jobid") int jobid,
+                             @PathVariable(name = "cvid") int cvid){
+        return applyService.deny(jobid, cvid);
     }
 
     // check
@@ -58,11 +56,11 @@ public class ApplyWS {
 
 
     // get List Cv applied for one Job
-        @GetMapping("/cv-applied/{jobid}")
+    @GetMapping("/cv-applied/{jobid}")
     @CrossOrigin(origins = "*")
-    public RestResponse getListCvAppliedForOneJob(@PathVariable(name = "jobid") int JobId,
-                                                  @PageableDefault(value=5)Pageable pageable){
-        return applyService.listCv(JobId,pageable);
+    public Page<Cv> getListCvAppliedForOneJob(@PathVariable(name = "jobid") int JobId,
+                                              @PageableDefault(size = 5) Pageable pageable){
+        return applyService.listCv(JobId, pageable);
     }
 
     // check Status appy

@@ -6,31 +6,25 @@ import com.ats.repository.CVRepository;
 import com.ats.repository.JobRepository;
 import com.ats.repository.UsersRepository;
 import com.ats.service.ApplyService;
-import com.ats.service.EmailService;
 import com.ats.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Service
-public class ApplyServiceImpl implements ApplyService {
+public class ApplyServiceImpl implements ApplyService{
     @Autowired
     private ApplyRepository applyRepository;
-    @Autowired
-    private UsersRepository usersRepository;
     @Autowired
     private JobRepository jobRepository;
     @Autowired
     private CVRepository cvRepository;
-    @Autowired
-    private EmailService emailService;
 
     @Override
     public RestResponse create(int CvId, int JobID) {
@@ -46,33 +40,27 @@ public class ApplyServiceImpl implements ApplyService {
         apply.setDayApply(new Timestamp(new Date().getTime()));
         apply.setStatus("1");
         applyRepository.save(apply);
-        emailService.sendEmailForJob(cv.getUsersByUserId().getEmail(), job.getTitle(),
-                cv.getUsersByUserId().getFullName(), "apply");
-        return new RestResponse(true, "Bạn đã ứng tuyển vào công việc này thành công!!!", null);
+        return new RestResponse(true,"Bạn đã ứng tuyển vào công việc này thành công!!!", null);
     }
 
     @Override
-    public RestResponse confirm(int ApplyId) {
-        Apply apply = applyRepository.findOne(ApplyId);
+    public RestResponse confirm(int JobId, int CvId) {
+        Apply apply = applyRepository.findForCheck(CvId, JobId);
         if (apply == null)
             return new RestResponse(false, "Có lỗi xảy ra. Vui lòng thử lại!!!", null);
         apply.setStatus("2");
         applyRepository.save(apply);
-        emailService.sendEmailForJob(apply.getCvByCvid().getUsersByUserId().getEmail(), apply.getJobByJobId().getTitle(),
-                apply.getCvByCvid().getUsersByUserId().getFullName(), "confirm");
         // goi mail serviec gui mail cho employer
         return new RestResponse(true, "Thành công!!!", null);
     }
 
     @Override
-    public RestResponse deny(int ApplyId) {
-        Apply apply = applyRepository.findOne(ApplyId);
+    public RestResponse deny(int JobId, int CvId) {
+        Apply apply = applyRepository.findForCheck(CvId, JobId);
         if (apply == null)
             return new RestResponse(false, "Có lỗi xảy ra. Vui lòng thử lại!!!", null);
         apply.setStatus("3");
         applyRepository.save(apply);
-        emailService.sendEmailForJob(apply.getCvByCvid().getUsersByUserId().getEmail(), apply.getJobByJobId().getTitle(),
-                apply.getCvByCvid().getUsersByUserId().getFullName(), "deny");
         return new RestResponse(true, "Thành công!!!", null);
     }
 
@@ -104,7 +92,7 @@ public class ApplyServiceImpl implements ApplyService {
     }
 
     @Override
-    public RestResponse listCv(int JobId, Pageable pageable) {
+    public Page<Cv> listCv(int JobId, Pageable pageable) {
         Job job = jobRepository.findOne(JobId);
         if (job == null)
             return null;
@@ -116,10 +104,8 @@ public class ApplyServiceImpl implements ApplyService {
             listCv.add(apply.getCvByCvid());
         }
         Page<Cv> pageCv = new PageImpl<>(listCv, pageable, listCv.size());
-
-        return new RestResponse(true, "Thành công!!!", pageCv);
+        return pageCv;
     }
-
 
     @Override
     public RestResponse checkStatusApply(int CvId, int JobId) {
@@ -128,5 +114,4 @@ public class ApplyServiceImpl implements ApplyService {
             return new RestResponse(false, "Có lỗi xảy ra vui lòng thử lại!!!", null);
         return new RestResponse(true, "Thành công!!!", apply.getStatus());
     }
-
 }
