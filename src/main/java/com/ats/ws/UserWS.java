@@ -170,8 +170,8 @@ public class UserWS {
 
     @ResponseBody
     @CrossOrigin(origins = "*")
-    @GetMapping(value = "/confirmUser", produces = "text/html")
-    public String confirmUser(@RequestParam("token") String token) {
+    @GetMapping(value = "/confirmUser/{token}", produces = "text/html")
+    public String confirmUser(@PathVariable String token) {
         LOGGER.info("Begin confirmUser in UserWS ");
         int success;
         try {
