@@ -6,6 +6,7 @@ import com.ats.repository.CVRepository;
 import com.ats.repository.JobRepository;
 import com.ats.repository.UsersRepository;
 import com.ats.service.ApplyService;
+import com.ats.service.EmailService;
 import com.ats.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,8 @@ public class ApplyServiceImpl implements ApplyService{
     private JobRepository jobRepository;
     @Autowired
     private CVRepository cvRepository;
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public RestResponse create(int CvId, int JobID) {
@@ -50,6 +53,8 @@ public class ApplyServiceImpl implements ApplyService{
             return new RestResponse(false, "Có lỗi xảy ra. Vui lòng thử lại!!!", null);
         apply.setStatus("2");
         applyRepository.save(apply);
+        emailService.sendEmailForJob(apply.getCvByCvid().getUsersByUserId().getEmail(),apply.getJobByJobId().getTitle(),
+                apply.getCvByCvid().getUsersByUserId().getFullName(),"confirm");
         // goi mail serviec gui mail cho employer
         return new RestResponse(true, "Thành công!!!", null);
     }
@@ -61,6 +66,8 @@ public class ApplyServiceImpl implements ApplyService{
             return new RestResponse(false, "Có lỗi xảy ra. Vui lòng thử lại!!!", null);
         apply.setStatus("3");
         applyRepository.save(apply);
+        emailService.sendEmailForJob(apply.getCvByCvid().getUsersByUserId().getEmail(),apply.getJobByJobId().getTitle(),
+                apply.getCvByCvid().getUsersByUserId().getFullName(),"deny");
         return new RestResponse(true, "Thành công!!!", null);
     }
 
