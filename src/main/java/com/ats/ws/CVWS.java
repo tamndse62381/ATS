@@ -43,6 +43,7 @@ public class CVWS {
         }
     }
 
+
     // GET List CV cho User xem bang UserID - tested - co status = 1 (valid)
     @GetMapping("/get-list/{id}")
     @CrossOrigin("*")
