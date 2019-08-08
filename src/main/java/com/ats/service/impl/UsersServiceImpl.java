@@ -270,6 +270,7 @@ public class UsersServiceImpl implements UsersService {
         int success = -1;
         try {
             UsersDTO2 user = findUserByToken(token);
+            System.out.println(user);
             if (user != null) {
                 Calendar c1 = Calendar.getInstance();
                 Calendar c2 = Calendar.getInstance();
@@ -281,7 +282,7 @@ public class UsersServiceImpl implements UsersService {
 
                 // Công thức tính số ngày giữa 2 mốc thời gian:
                 long noDay = (c2.getTime().getTime() - c1.getTime().getTime());
-
+                System.out.println(noDay);
                 if (noDay < 24 * 3600 * 1000) {
                     if (user.getStatus().equals("new")) {
                         success = usersRepository.confirmUser(token, newStatus);
