@@ -7,6 +7,7 @@ import com.ats.service.*;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ats.util.RestResponse;
@@ -300,20 +301,39 @@ public class JobWS {
     }
 
     @CrossOrigin(origins = "*")
-    @GetMapping(value = "/getJobDetailToUpdate", produces = "application/json;charset=UTF-8")
-    public RestResponse getJobDetail(@RequestParam("id") int id) {
-        LOGGER.info("Begin getJobDetail in JobWS with id " + id);
+    @GetMapping(value = "/getJobDetailAdmin", produces = "application/json;charset=UTF-8")
+    public RestResponse getJobDetailAdmin(@RequestParam("id") int id) {
+        LOGGER.info("Begin getJobDetailAdmin in JobWS with id " + id);
         Job job;
         try {
             job = jobService.getJobDetailToUpdate(id);
-            LOGGER.info("End getJobDetail in JobWS with id " + id);
+            LOGGER.info("End getJobDetailAdmin in JobWS with id " + id);
             if (job != null) {
-                return new RestResponse(true, "Get job Detail with job id : " + id, job);
+                return new RestResponse(true, "getJobDetailAdmin with job id : " + id, job);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        return new RestResponse(false, "Job is Not Available : ", null);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping(value = "/getJobDetailToUpdate", produces = "application/json;charset=UTF-8")
+    public RestResponse getJobDetailToUpdate(@RequestParam("id") int id) {
+        LOGGER.info("Begin getJobDetailToUpdate in JobWS with id " + id);
+        Job job;
+        try {
+            job = jobService.getJobDetailToUpdate(id);
+            ModelMapper mapper = new ModelMapper();
+            JobDTO2 jobDTO2 = mapper.map(job,JobDTO2.class);
+            LOGGER.info("End getJobDetailToUpdate in JobWS with id " + id);
+            if (job != null) {
+                return new RestResponse(true, "getJobDetailToUpdate with job id : " + id, jobDTO2);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return new RestResponse(false, "Job is Not Available : ", null);
     }
