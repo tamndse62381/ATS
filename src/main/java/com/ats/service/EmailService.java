@@ -77,7 +77,7 @@ public class EmailService {
                 subject = "Deny Mail";
             }
             if (result.equals("apply")) {
-                message.setContent(apply + footer, "text/html/css");
+                message.setContent(apply + footer, "text/html");
                 subject = "Apply Mail";
             }
 
