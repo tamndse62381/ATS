@@ -175,6 +175,7 @@ public class UserWS {
         LOGGER.info("Begin confirmUser in UserWS ");
         int success;
         try {
+            System.out.println(token);
             success = usersService.confirmUser(token, "active");
             LOGGER.info("End confirmUser in UserWS");
             if (success > 0) {
