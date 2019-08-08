@@ -18,6 +18,7 @@ import org.springframework.data.web.PageableDefault;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.*;
 
 @RestController
@@ -49,7 +50,10 @@ public class JobWS {
         LOGGER.info("Begin createJob in JobWS with Job title : {}" + job.getTitle());
         int result = 0;
         try {
-
+            Date dt = new Date();
+            Calendar c = Calendar.getInstance();
+            c.setTime(dt);
+            job.setCreatedDate(new Timestamp(c.getTimeInMillis()));
             job.setStatus("new");
             result = jobService.createJob(job);
             List<Integer> listSkillId = new ArrayList<>();
