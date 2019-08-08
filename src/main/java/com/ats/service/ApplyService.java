@@ -1,6 +1,7 @@
 package com.ats.service;
 
 import com.ats.util.RestResponse;
+import org.springframework.data.domain.Pageable;
 
 public interface ApplyService {
     RestResponse create(int CvId, int JobID);
@@ -13,5 +14,5 @@ public interface ApplyService {
 
     RestResponse listJob(int JobSeekerId);
 
-    RestResponse listCv(int JobId);
+    RestResponse listCv(int JobId , Pageable pageable);
 }
