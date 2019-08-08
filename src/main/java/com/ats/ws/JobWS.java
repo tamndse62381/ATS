@@ -98,7 +98,7 @@ public class JobWS {
                                   @PageableDefault Pageable pageable) {
         LOGGER.info("Begin searchJob in JobWS  with Search value : {}" + search + " " + city + " " + industry);
         Page<JobDTO> listJob = null;
-        pageable = new PageRequest(0, Integer.MAX_VALUE);
+        pageable = new PageRequest(0, 5);
         try {
             listJob = jobService.searchJob(search, city, industry, pageable);
         } catch (Exception e) {
