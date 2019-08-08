@@ -178,7 +178,7 @@ public class UserWS {
             success = usersService.confirmUser(token, "active");
             LOGGER.info("End confirmUser in UserWS");
             if (success > 0) {
-                return "Bạn đã kích hoạt thành công tài khoản";
+                return "https://www.vietnamworks.com/tim-viec-lam/tat-ca-viec-lam";
             }
         } catch (Exception e) {
             e.printStackTrace();
