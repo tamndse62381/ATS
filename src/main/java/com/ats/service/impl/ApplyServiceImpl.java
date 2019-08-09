@@ -15,13 +15,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Service
-public class ApplyServiceImpl implements ApplyService{
+public class ApplyServiceImpl implements ApplyService {
     @Autowired
     private ApplyRepository applyRepository;
     @Autowired
@@ -47,9 +48,9 @@ public class ApplyServiceImpl implements ApplyService{
         apply.setDayApply(new Timestamp(new Date().getTime()));
         apply.setStatus("1");
         applyRepository.save(apply);
-        emailService.sendEmailForJob(cv.getUsersByUserId().getEmail(),job.getTitle(),
-                cv.getUsersByUserId().getFullName(),"apply");
-        return new RestResponse(true,"Bạn đã ứng tuyển vào công việc này thành công!!!", null);
+        emailService.sendEmailForJob(cv.getUsersByUserId().getEmail(), job.getTitle(),
+                cv.getUsersByUserId().getFullName(), "apply");
+        return new RestResponse(true, "Bạn đã ứng tuyển vào công việc này thành công!!!", null);
     }
 
     @Override
@@ -59,8 +60,8 @@ public class ApplyServiceImpl implements ApplyService{
             return new RestResponse(false, "Có lỗi xảy ra. Vui lòng thử lại!!!", null);
         apply.setStatus("2");
         applyRepository.save(apply);
-        emailService.sendEmailForJob(apply.getCvByCvid().getUsersByUserId().getEmail(),apply.getJobByJobId().getTitle(),
-                apply.getCvByCvid().getUsersByUserId().getFullName(),"confirm");
+        emailService.sendEmailForJob(apply.getCvByCvid().getUsersByUserId().getEmail(), apply.getJobByJobId().getTitle(),
+                apply.getCvByCvid().getUsersByUserId().getFullName(), "confirm");
         // goi mail serviec gui mail cho employer
         return new RestResponse(true, "Thành công!!!", null);
     }
@@ -72,8 +73,8 @@ public class ApplyServiceImpl implements ApplyService{
             return new RestResponse(false, "Có lỗi xảy ra. Vui lòng thử lại!!!", null);
         apply.setStatus("3");
         applyRepository.save(apply);
-        emailService.sendEmailForJob(apply.getCvByCvid().getUsersByUserId().getEmail(),apply.getJobByJobId().getTitle(),
-                apply.getCvByCvid().getUsersByUserId().getFullName(),"deny");
+        emailService.sendEmailForJob(apply.getCvByCvid().getUsersByUserId().getEmail(), apply.getJobByJobId().getTitle(),
+                apply.getCvByCvid().getUsersByUserId().getFullName(), "deny");
         return new RestResponse(true, "Thành công!!!", null);
     }
 
@@ -121,7 +122,7 @@ public class ApplyServiceImpl implements ApplyService{
     }
 
     @Override
-    public RestResponse listCv(int JobId) {
+    public RestResponse listCv(int JobId, Pageable pageable) {
         Job job = jobRepository.findOne(JobId);
         if (job == null)
             return null;
@@ -133,7 +134,7 @@ public class ApplyServiceImpl implements ApplyService{
             listCv.add(apply.getCvByCvid());
         }
         Page<Cv> pageCv = new PageImpl<>(listCv, pageable, listCv.size());
-        return pageCv;
+        return new RestResponse(true, "Lấy thành công", pageCv);
     }
 
     @Override
