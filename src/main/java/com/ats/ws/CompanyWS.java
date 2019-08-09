@@ -122,6 +122,7 @@ public class CompanyWS {
 
     }
     @GetMapping("/list-5")
+    @CrossOrigin("*")
     public List<Company> getFiveCompany(){
         return companyService.getFiveCompany();
     }

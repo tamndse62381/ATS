@@ -227,6 +227,6 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public List<Company> getFiveCompany() {
         List<Company> list = companyRepository.getFiveCompany();
-        return list.subList(0,4);
+        return list.subList(0,5);
     }
 }
