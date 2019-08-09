@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -19,7 +21,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Service
+@EnableAsync
 public class EmailService {
+    @Autowired
     private JavaMailSender javaMailSender;
     @Autowired
     private UsersRepository usersRepository;
@@ -42,11 +46,8 @@ public class EmailService {
 
     private static final Logger LOGGER = LogManager.getLogger(EmailService.class);
 
-    @Autowired
-    private EmailService(JavaMailSender javaMailSender) {
-        this.javaMailSender = javaMailSender;
-    }
 
+    @Async
     public void sendEmailForJob(String email, String jobTitle, String userFullname, String result) {
         try {
             LOGGER.info("Begin SendEmail in EmailService with Email : " + email);
@@ -91,7 +92,7 @@ public class EmailService {
         }
 
     }
-
+    @Async
     public void sendActiveUserEmail(String token, String email) {
         try {
             LOGGER.info("Begin sendActiveUserEmail in EmailService with Email : " + email);
@@ -104,7 +105,7 @@ public class EmailService {
                     "<p>Ca&#769;m &#417;n ba&#803;n &#273;a&#771; ta&#803;o ta&#768;i khoa&#777;n ta&#803;i ATS.</p>";
             String confirm = "<p>&#272;&ecirc;&#777; ki&#769;ch hoa&#803;t ta&#768;i " +
                     "khoa&#777;n, xin ba&#803;n click va&#768;o &#273;&#432;&#417;&#768;ng link b&ecirc;n d&#432;&#417;&#769;i:</p> </p>" +
-                    "<a href='http://localhost:8080/user/confirmUser?token=" + token + "'>Confirm your account</a>";
+                    "<a href='http://localhost:8090/kiem-tra-thanh-cong/" + token + "'>Confirm your account</a>";
             String end = "<p>Tr&acirc;n tro&#803;ng,</p><p> ATS Team</p>";
             message.setContent(welcome + confirm + end, "text/html");
 
@@ -116,7 +117,7 @@ public class EmailService {
             ex.printStackTrace();
         }
     }
-
+    @Async
     public void sendAcceptUserEmail(String employerName, String email, String companyName, String result) {
         try {
             LOGGER.info("Begin sendAcceptUserEmail in EmailService with Email : " + email);
@@ -148,6 +149,7 @@ public class EmailService {
         }
     }
 
+    @Async
     public void sendEmailStatus(String email, String title, String userFullname, String result, String type) {
         try {
             LOGGER.info("Begin sendEmailStatus in EmailService with Email : " + email);

@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
@@ -42,6 +43,7 @@ public class CVWS {
             return cvService.getCVByCVID(CVID);
         }
     }
+
 
     // GET List CV cho User xem bang UserID - tested - co status = 1 (valid)
     @GetMapping("/get-list/{id}")
@@ -102,7 +104,8 @@ public class CVWS {
     public Page<Cv> searchCv(@RequestParam(name = "listskill") String listSkill,
                              @RequestParam(name = "city") String cityName,
                              @RequestParam(name = "industry") String industryName,
-                             @PageableDefault(size = 2) Pageable pageable){
+                             @PageableDefault Pageable pageable){
+        pageable = new PageRequest(0,Integer.MAX_VALUE);
         return cvService.searchCv(listSkill, cityName, industryName, pageable);
     }
 
