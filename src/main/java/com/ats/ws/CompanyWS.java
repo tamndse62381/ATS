@@ -90,7 +90,6 @@ public class CompanyWS {
             if (companyDTO.getStatus().equals("approved")) {
                 employercompanyService.changeUserStatusAfterApproved(companyDTO.getId());
             }
-
             if (success > 0) {
                 return new RestResponse(true, "changeStatus Successful with status " + companyDTO.getStatus(), null);
             }
@@ -100,6 +99,8 @@ public class CompanyWS {
         LOGGER.info("End changeJobStatus in CompanyWS with Search value : {}" + companyDTO.getId());
         return new RestResponse(false, "changeStatus Fail", null);
     }
+
+
 
     @GetMapping("/getCompanyAdmin")
     @CrossOrigin("*")

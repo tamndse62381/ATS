@@ -197,7 +197,8 @@ public class CompanyServiceImpl implements CompanyService {
             companyDTO3List = mapper.map(companyPage.getContent(), targetListType);
             for (int i = 0; i < companyPage.getContent().size(); i++) {
                 for (int j = 0; j < companyPage.getContent().get(i).getEmployercompaniesById().size(); j++) {
-                    if (companyPage.getContent().get(i).getEmployercompaniesById().get(j).getUsersByUserId().getRoleId() == 2) {
+                    if (companyPage.getContent().get(i).getEmployercompaniesById().get(j).getUsersByUserId().getRoleId() == 2 ||
+                            companyPage.getContent().get(i).getEmployercompaniesById().get(j).getUsersByUserId().getRoleId() == 5) {
                         if (companyDTO3List.get(i).getId() == companyPage.getContent().get(i).getId()) {
                             companyDTO3List.get(i).setUsersEmail(companyPage.
                                     getContent().get(i).getEmployercompaniesById().get(j).getUsersByUserId().getEmail());

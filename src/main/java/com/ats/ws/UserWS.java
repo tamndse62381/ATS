@@ -171,7 +171,7 @@ public class UserWS {
     @ResponseBody
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/confirmUser", produces = "text/html")
-    public String confirmUser(@RequestParam(value="token") String token) {
+    public boolean confirmUser(@RequestParam(value="token") String token) {
         LOGGER.info("Begin confirmUser in UserWS ");
         int success;
         try {
@@ -179,13 +179,12 @@ public class UserWS {
             success = usersService.confirmUser(token, "active");
             LOGGER.info("End confirmUser in UserWS");
             if (success > 0) {
-                return "Bạn đã kích hoạt thành công tài khoản";
+                return true;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "Token của bạn đã hết hạn hoặc bị hỏng" +
-                "Xin bạn đăng ký một tài khoản ATS mới";
+        return false;
     }
 
     @ResponseBody
