@@ -171,7 +171,7 @@ public class UserWS {
     @ResponseBody
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/confirmUser", produces = "text/html")
-    public boolean confirmUser(@RequestParam(value="token") String token) {
+    public String confirmUser(@RequestParam(value="token") String token) {
         LOGGER.info("Begin confirmUser in UserWS ");
         int success;
         try {
@@ -179,12 +179,12 @@ public class UserWS {
             success = usersService.confirmUser(token, "active");
             LOGGER.info("End confirmUser in UserWS");
             if (success > 0) {
-                return true;
+                return "true";
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return "false";
     }
 
     @ResponseBody
