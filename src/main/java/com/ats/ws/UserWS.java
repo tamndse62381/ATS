@@ -170,8 +170,8 @@ public class UserWS {
 
     @ResponseBody
     @CrossOrigin(origins = "*")
-    @GetMapping(value = "/confirmUser/{token}", produces = "text/html")
-    public String confirmUser(@PathVariable String token) {
+    @GetMapping(value = "/confirmUser", produces = "text/html")
+    public String confirmUser(@RequestParam(value="token") String token) {
         LOGGER.info("Begin confirmUser in UserWS ");
         int success;
         try {
@@ -179,7 +179,7 @@ public class UserWS {
             success = usersService.confirmUser(token, "active");
             LOGGER.info("End confirmUser in UserWS");
             if (success > 0) {
-                return "https://www.vietnamworks.com/tim-viec-lam/tat-ca-viec-lam";
+                return "Bạn đã kích hoạt thành công tài khoản";
             }
         } catch (Exception e) {
             e.printStackTrace();
