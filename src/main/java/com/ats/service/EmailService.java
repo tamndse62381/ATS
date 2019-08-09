@@ -92,6 +92,7 @@ public class EmailService {
         }
 
     }
+
     @Async
     public void sendActiveUserEmail(String token, String email) {
         try {
@@ -117,6 +118,7 @@ public class EmailService {
             ex.printStackTrace();
         }
     }
+
     @Async
     public void sendAcceptUserEmail(String employerName, String email, String companyName, String result) {
         try {
