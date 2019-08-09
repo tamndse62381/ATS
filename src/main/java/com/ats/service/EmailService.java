@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -19,7 +21,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Service
+@EnableAsync
 public class EmailService {
+    @Autowired
     private JavaMailSender javaMailSender;
     @Autowired
     private UsersRepository usersRepository;
@@ -42,11 +46,8 @@ public class EmailService {
 
     private static final Logger LOGGER = LogManager.getLogger(EmailService.class);
 
-    @Autowired
-    private EmailService(JavaMailSender javaMailSender) {
-        this.javaMailSender = javaMailSender;
-    }
 
+    @Async
     public void sendEmailForJob(String email, String jobTitle, String userFullname, String result) {
         try {
             LOGGER.info("Begin SendEmail in EmailService with Email : " + email);
@@ -91,7 +92,7 @@ public class EmailService {
         }
 
     }
-
+    @Async
     public void sendActiveUserEmail(String token, String email) {
         try {
             LOGGER.info("Begin sendActiveUserEmail in EmailService with Email : " + email);
@@ -116,7 +117,7 @@ public class EmailService {
             ex.printStackTrace();
         }
     }
-
+    @Async
     public void sendAcceptUserEmail(String employerName, String email, String companyName, String result) {
         try {
             LOGGER.info("Begin sendAcceptUserEmail in EmailService with Email : " + email);
@@ -148,6 +149,7 @@ public class EmailService {
         }
     }
 
+    @Async
     public void sendEmailStatus(String email, String title, String userFullname, String result, String type) {
         try {
             LOGGER.info("Begin sendEmailStatus in EmailService with Email : " + email);
