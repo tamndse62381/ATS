@@ -316,8 +316,13 @@ public class CVServiceImpl implements CVService {
                         skillName = skillName  + skillmaster.getSkillName();
                     }
                 }
-                listCv = cvRepository.searchCv(skillstring, pageable, city, industry);
-                return listCv;
+                if (skillName.isEmpty()){
+                    listCv = cvRepository.searchWithoutSkill(pageable,city, industry);
+                    return listCv;
+                } else {
+                    listCv = cvRepository.searchCv(skillstring, pageable, city, industry);
+                }
+                return null;
             }
         } catch(Exception e){
             e.printStackTrace();

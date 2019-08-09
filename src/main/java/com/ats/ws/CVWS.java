@@ -104,8 +104,7 @@ public class CVWS {
     public Page<Cv> searchCv(@RequestParam(name = "listskill") String listSkill,
                              @RequestParam(name = "city") String cityName,
                              @RequestParam(name = "industry") String industryName,
-                             @PageableDefault Pageable pageable){
-        pageable = new PageRequest(0,Integer.MAX_VALUE);
+                             @PageableDefault(size = 2) Pageable pageable){
         return cvService.searchCv(listSkill, cityName, industryName, pageable);
     }
 

@@ -48,6 +48,7 @@ public interface CVRepository extends JpaRepository<Cv, Integer> {
             "inner join a.skillmasterBySkillMasterId m " +
             "inner join c.cityByCityId ci " +
             "inner join c.industryByIndustryId i where c.status = 1 " +
+            "and c.isActive = 1" +
             "and ci.fullName LIKE CONCAT('%',LOWER(:city),'%')" +
             "and i.name LIKE CONCAT('%',LOWER(:industry),'%') " +
             "or m.skillName in (:skillstring) order by c.lastModify desc")
@@ -57,6 +58,7 @@ public interface CVRepository extends JpaRepository<Cv, Integer> {
     @Query("select c from Cv  c " +
             "inner join c.cityByCityId ci " +
             "inner join c.industryByIndustryId i where c.status = 1 " +
+            "and c.isActive = 1" +
             "and ci.fullName LIKE CONCAT('%',LOWER(:city),'%')" +
             "and i.name LIKE CONCAT('%',LOWER(:industry),'%') " +
             "order by c.lastModify desc")
