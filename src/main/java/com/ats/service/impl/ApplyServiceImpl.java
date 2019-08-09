@@ -11,6 +11,9 @@ import com.ats.service.EmailService;
 import com.ats.util.RestResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -50,8 +53,8 @@ public class ApplyServiceImpl implements ApplyService{
     }
 
     @Override
-    public RestResponse confirm(int ApplyId) {
-        Apply apply = applyRepository.findOne(ApplyId);
+    public RestResponse confirm(int JobId, int CvId) {
+        Apply apply = applyRepository.findForCheck(CvId, JobId);
         if (apply == null)
             return new RestResponse(false, "Có lỗi xảy ra. Vui lòng thử lại!!!", null);
         apply.setStatus("2");
@@ -63,8 +66,8 @@ public class ApplyServiceImpl implements ApplyService{
     }
 
     @Override
-    public RestResponse deny(int ApplyId) {
-        Apply apply = applyRepository.findOne(ApplyId);
+    public RestResponse deny(int JobId, int CvId) {
+        Apply apply = applyRepository.findForCheck(CvId, JobId);
         if (apply == null)
             return new RestResponse(false, "Có lỗi xảy ra. Vui lòng thử lại!!!", null);
         apply.setStatus("3");
@@ -121,14 +124,23 @@ public class ApplyServiceImpl implements ApplyService{
     public RestResponse listCv(int JobId) {
         Job job = jobRepository.findOne(JobId);
         if (job == null)
-            return new RestResponse(false, "Có lỗi xảy ra!!!", null);
+            return null;
         List<Apply> listApply = applyRepository.findAppliesByJobId(JobId);
         if (listApply == null)
-            return new RestResponse(false, "Chưa có ứng viên nào cho công việc này!!!", null);
+            return null;
         List<Cv> listCv = new ArrayList<>();
         for (Apply apply : listApply) {
             listCv.add(apply.getCvByCvid());
         }
-        return new RestResponse(true, "Thành công!!!", listCv);
+        Page<Cv> pageCv = new PageImpl<>(listCv, pageable, listCv.size());
+        return pageCv;
+    }
+
+    @Override
+    public RestResponse checkStatusApply(int CvId, int JobId) {
+        Apply apply = applyRepository.findForCheck(CvId, JobId);
+        if (apply == null)
+            return new RestResponse(false, "Có lỗi xảy ra vui lòng thử lại!!!", null);
+        return new RestResponse(true, "Thành công!!!", apply.getStatus());
     }
 }

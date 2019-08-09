@@ -23,17 +23,19 @@ public class ApplyWS {
     }
 
     // edit status - confirm
-    @RequestMapping(value = "/confirm/{applyid}",method = RequestMethod.GET)
+    @RequestMapping(value = "/confirm/{jobid}/{cvid}",method = RequestMethod.GET)
     @CrossOrigin(origins = "*")
-    public RestResponse confirm(@PathVariable(name = "applyid") int applyid){
-        return applyService.confirm(applyid);
+    public RestResponse confirm(@PathVariable(name = "jobid") int jobid,
+                                @PathVariable(name = "cvid") int cvid){
+        return applyService.confirm(jobid, cvid);
     }
 
     // edit status - deny
-    @RequestMapping(value = "/deny/{applyid}", method = RequestMethod.GET)
+    @RequestMapping(value = "/deny/{jobid}/{cvid}", method = RequestMethod.GET)
     @CrossOrigin("*")
-    public RestResponse deny(@PathVariable(name = "applyid") int applyid){
-        return applyService.deny(applyid);
+    public RestResponse deny(@PathVariable(name = "jobid") int jobid,
+                             @PathVariable(name = "cvid") int cvid){
+        return applyService.deny(jobid, cvid);
     }
 
     // check
@@ -55,8 +57,17 @@ public class ApplyWS {
     // get List Cv applied for one Job
     @GetMapping("/cv-applied/{jobid}")
     @CrossOrigin(origins = "*")
-    public RestResponse getListCvAppliedForOneJob(@PathVariable(name = "jobid") int JobId){
-        return applyService.listCv(JobId);
+    public Page<Cv> getListCvAppliedForOneJob(@PathVariable(name = "jobid") int JobId,
+                                              @PageableDefault(size = 5) Pageable pageable){
+        return applyService.listCv(JobId, pageable);
+    }
+
+    // check Status appy
+    @PostMapping("/checkstatus/{CvId}/{JobId}")
+    @CrossOrigin("*")
+    public RestResponse checkStatusApply(@PathVariable(name = "CvId") int CvId,
+                                         @PathVariable(name = "JobId") int JobId){
+        return applyService.checkStatusApply(CvId, JobId);
     }
 
     // get list job applied of JobSeekerId

@@ -19,6 +19,7 @@ import org.springframework.data.web.PageableDefault;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.*;
 
 @RestController
@@ -54,6 +55,10 @@ public class JobWS {
                 return new RestResponse(false, "Fail To Create New Job ", null);
             }
             if (!job.getListSkill().isEmpty()) {
+                Date dt = new Date();
+            Calendar c = Calendar.getInstance();
+            c.setTime(dt);
+            job.setCreatedDate(new Timestamp(c.getTimeInMillis()));
                 job.setStatus("new");
                 result = jobService.createJob(job);
                 List<Integer> listSkillId = new ArrayList<>();
@@ -101,10 +106,9 @@ public class JobWS {
     public RestResponse searchJob(@RequestParam(value = "search") String search,
                                   @RequestParam(value = "city") String city,
                                   @RequestParam(value = "industry") String industry,
-                                  @PageableDefault Pageable pageable) {
+                                  @PageableDefault(value = 5) Pageable pageable) {
         LOGGER.info("Begin searchJob in JobWS  with Search value : {}" + search + " " + city + " " + industry);
         Page<JobDTO> listJob = null;
-        pageable = new PageRequest(0, Integer.MAX_VALUE);
         try {
             listJob = jobService.searchJob(search, city, industry, pageable);
         } catch (Exception e) {
@@ -330,16 +334,6 @@ public class JobWS {
             job = jobService.getJobDetailToUpdate(id);
             ModelMapper mapper = new ModelMapper();
             JobDTO2 jobDTO2 = mapper.map(job,JobDTO2.class);
-            List<SkillDTO> skillDTOList = new ArrayList<>();
-            for (int i = 0; i < job.getSkillneedforjobsById().size(); i++) {
-                SkillDTO dto = new SkillDTO();
-                dto.setId(job.getSkillneedforjobsById().get(i).getId());
-                dto.setSkillMasterId(job.getSkillneedforjobsById().get(i).getSkillBySkillId().getSkillMasterId());
-                dto.setSkillLevel(job.getSkillneedforjobsById().get(i).getSkillBySkillId().getSkillLevel());
-                skillDTOList.add(dto);
-            }
-            jobDTO2.setListSkill(skillDTOList);
-
             LOGGER.info("End getJobDetailToUpdate in JobWS with id " + id);
             if (job != null) {
                 return new RestResponse(true, "getJobDetailToUpdate with job id : " + id, jobDTO2);
@@ -350,7 +344,6 @@ public class JobWS {
 
         return new RestResponse(false, "Job is Not Available : ", null);
     }
-
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getJobDetail", produces = "application/json;charset=UTF-8")
     public RestResponse getJobDetail(@RequestParam("id") int id,

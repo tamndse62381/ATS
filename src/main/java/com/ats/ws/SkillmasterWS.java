@@ -25,7 +25,7 @@ public class SkillmasterWS {
 
     // CREATE A NEW SKILL DO MAY BAN
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    @CrossOrigin(origins = "")
+    @CrossOrigin(origins = "*")
     public boolean createNewSkillmaster(@RequestBody SkillMasterDTO newSkillmaster){
         if (skillmasterService.createANewSkillMaster(newSkillmaster))
             return true;
@@ -34,7 +34,7 @@ public class SkillmasterWS {
 
     // EDIT MOT SKILL IN ONE CV
     @RequestMapping(value = "/", method = RequestMethod.PUT)
-    @CrossOrigin(origins = "")
+    @CrossOrigin(origins = "*")
     public boolean editASkillmaster(@RequestBody SkillMasterDTO editedSkillmaster){
            if (skillmasterService.editASkillmaster(editedSkillmaster))
                return true;
@@ -43,7 +43,7 @@ public class SkillmasterWS {
 
     // GET All LANGUAGE SKILL
     @RequestMapping(value = "/language/{id}", method = RequestMethod.GET)
-    @CrossOrigin(origins = "")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<List<Skillmaster>> findAllLanguageskill(@PathVariable int id){
         return ResponseEntity.ok().body(skillmasterService.findAllLanguageskill(id));
     }
