@@ -117,7 +117,7 @@ public class JobWS {
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/searchMobile")
     @ResponseBody
-    public RestResponse searchMobile(@RequestParam(value = "search") String search,
+    public List<JobDTO> searchMobile(@RequestParam(value = "search") String search,
                                      @RequestParam(value = "city") String city,
                                      @RequestParam(value = "industry") String industry,
                                      @PageableDefault Pageable pageable) {
@@ -130,14 +130,17 @@ public class JobWS {
             e.printStackTrace();
         }
         LOGGER.info("End searchMobile in JobWS with Search value : {}" + search);
-        return new RestResponse(true, "searchJob Successfull with list Size : ", listJob.getContent().subList(0, 14));
+        if (listJob.getContent().size() < 14){
+            return listJob.getContent();
+        }
+        return listJob.getContent().subList(0, 14);
     }
 
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/suggestJobByJobId")
     @ResponseBody
-    public RestResponse suggestJobByJobId(@RequestParam(value = "jobId") int jobId, @PageableDefault Pageable pageable) {
+    public RestResponse suggestJobByJobId(@RequestParam(value = "jobId") int jobId, @PageableDefault Pageable pageable)     {
         LOGGER.info("Begin suggestJob in JobWS  with jobId : " + jobId);
         Page<JobDTO> listJob = null;
         pageable = new PageRequest(0, Integer.MAX_VALUE);
