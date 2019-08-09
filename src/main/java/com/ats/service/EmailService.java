@@ -66,7 +66,7 @@ public class EmailService {
 
             String apply = "<p>Dear Mr/Ms.<b>" + userFullname + "</b></p>" +
                     "<p> </p>" +
-                    "<p>B&#7841;n &#273;&atilde; &#7913;ng tuy&#7875;n th&agrave;nh c&ocirc;ng v&agrave;o c&ocirc;ng vi&#7879;c: " + jobTitle + "</b></p>";
+                    "<p><p>&#272;a&#771; co&#769; ng&#432;&#417;&#768;i &#432;&#769;ng tuy&ecirc;&#777;n va&#768;o c&ocirc;ng vi&ecirc;&#803;c : &ensp;<b>" + jobTitle + "</b></p>";
 
 
             if (result.equals("confirm")) {

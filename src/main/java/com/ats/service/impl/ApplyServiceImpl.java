@@ -43,7 +43,7 @@ public class ApplyServiceImpl implements ApplyService{
         apply.setDayApply(new Timestamp(new Date().getTime()));
         apply.setStatus("1");
         applyRepository.save(apply);
-        emailService.sendEmailForJob(cv.getUsersByUserId().getEmail(),job.getTitle(),
+        emailService.sendEmailForJob(job.getUsersByUserId().getEmail(),job.getTitle(),
                 cv.getUsersByUserId().getFullName(),"apply");
         return new RestResponse(true,"Bạn đã ứng tuyển vào công việc này thành công!!!", null);
     }
