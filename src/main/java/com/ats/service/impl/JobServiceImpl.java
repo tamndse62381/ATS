@@ -204,6 +204,7 @@ public class JobServiceImpl implements JobService {
             }.getType();
             listofDTO = mapper.map(listofJob.getContent(), targetListType);
             pageDTO = new PageImpl<>(listofDTO, new PageRequest(0, 10), listofDTO.size());
+
             LOGGER.info("End getTop8 in Job Repository");
         } catch (Exception e) {
             e.printStackTrace();
