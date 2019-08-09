@@ -1,5 +1,6 @@
 package com.ats.service.impl;
 
+import com.ats.dto.JobDTO;
 import com.ats.entity.*;
 import com.ats.repository.ApplyRepository;
 import com.ats.repository.CVRepository;
@@ -8,6 +9,7 @@ import com.ats.repository.UsersRepository;
 import com.ats.service.ApplyService;
 import com.ats.service.EmailService;
 import com.ats.util.RestResponse;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -28,6 +30,8 @@ public class ApplyServiceImpl implements ApplyService{
     private CVRepository cvRepository;
     @Autowired
     private EmailService emailService;
+    //Mapping Object
+    ModelMapper modelMapper = new ModelMapper();
 
     @Override
     public RestResponse create(int CvId, int JobID) {
@@ -98,6 +102,22 @@ public class ApplyServiceImpl implements ApplyService{
             }
         }
         return new RestResponse(true, "Thành công!!!", listJob);
+    }
+
+    @Override
+    public List<JobDTO> listJobMobile(int JobSeekerId) {
+        List<Cv> listCv = cvRepository.findByUserId(JobSeekerId);
+        if (listCv == null)
+            return null;
+        List<JobDTO> listJobDTO = new ArrayList<>();
+        for (Cv cv : listCv) {
+            List<Apply> list = applyRepository.findAppliesByCvid(cv.getId());
+            for (Apply apply : list) {
+                JobDTO dto = modelMapper.map(apply.getJobByJobId(), JobDTO.class);
+                listJobDTO.add(dto);
+            }
+        }
+        return listJobDTO;
     }
 
     @Override

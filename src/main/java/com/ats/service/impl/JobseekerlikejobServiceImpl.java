@@ -1,5 +1,6 @@
 package com.ats.service.impl;
 
+import com.ats.dto.JobDTO;
 import com.ats.entity.Job;
 import com.ats.entity.Jobseekerlikejob;
 import com.ats.entity.Users;
@@ -9,6 +10,7 @@ import com.ats.repository.UsersRepository;
 import com.ats.service.JobseekerlikejobService;
 import com.ats.util.RestResponse;
 import org.apache.catalina.User;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,8 @@ public class JobseekerlikejobServiceImpl implements JobseekerlikejobService {
     private UsersRepository usersRepository;
     @Autowired
     private JobRepository jobRepository;
+    //Mapping Object
+    ModelMapper modelMapper = new ModelMapper();
 
     @Override
     public boolean check(int JobSeekerId, int Jobid) {
@@ -63,6 +67,20 @@ public class JobseekerlikejobServiceImpl implements JobseekerlikejobService {
             listJob.add(jobseekerlikejob.getJobByJobId());
         }
         return new RestResponse(true, "Thành công!!!", listJob);
+    }
+
+    @Override
+    public List<JobDTO> listJobMobile(int JobSeekerId) {
+        List<Jobseekerlikejob> list = jobseekerlikejobRespository.findJobseekerlikejobsByUserId(JobSeekerId);
+        if (list == null)
+            return null;
+        List<Job> listJob = new ArrayList<>();
+        List<JobDTO> listJobDTO = new ArrayList<>();
+        for (Jobseekerlikejob jobseekerlikejob : list) {
+            JobDTO dto = modelMapper.map(jobseekerlikejob.getJobByJobId(), JobDTO.class);
+            listJobDTO.add(dto);
+        }
+        return listJobDTO;
     }
 
     @Override

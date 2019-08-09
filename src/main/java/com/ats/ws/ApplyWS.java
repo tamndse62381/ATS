@@ -1,5 +1,4 @@
 package com.ats.ws;
-
 import com.ats.entity.Cv;
 import com.ats.service.ApplyService;
 import com.ats.util.RestResponse;
@@ -8,6 +7,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+import com.ats.dto.JobDTO;
+import com.ats.service.ApplyService;
+import com.ats.util.RestResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/apply")
@@ -70,4 +75,12 @@ public class ApplyWS {
                                          @PathVariable(name = "JobId") int JobId){
         return applyService.checkStatusApply(CvId, JobId);
     }
+
+   // get list job applied of JobSeekerId
+    @GetMapping("/list-applied/mobile/{id}")
+    @CrossOrigin(origins = "*")
+    public List<JobDTO> getListJobAppliedMobile(@PathVariable int id){
+        return applyService.listJobMobile(id);
+    }
 }
+
