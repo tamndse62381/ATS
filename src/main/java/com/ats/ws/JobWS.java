@@ -101,10 +101,9 @@ public class JobWS {
     public RestResponse searchJob(@RequestParam(value = "search") String search,
                                   @RequestParam(value = "city") String city,
                                   @RequestParam(value = "industry") String industry,
-                                  @PageableDefault Pageable pageable) {
+                                  @PageableDefault(size = 5) Pageable pageable) {
         LOGGER.info("Begin searchJob in JobWS  with Search value : {}" + search + " " + city + " " + industry);
         Page<JobDTO> listJob = null;
-        pageable = new PageRequest(0, Integer.MAX_VALUE);
         try {
             listJob = jobService.searchJob(search, city, industry, pageable);
         } catch (Exception e) {
@@ -130,7 +129,7 @@ public class JobWS {
             e.printStackTrace();
         }
         LOGGER.info("End searchMobile in JobWS with Search value : {}" + search);
-        if (listJob.getContent().size() < 14){
+        if (listJob.getContent().size() < 14) {
             return listJob.getContent();
         }
         return listJob.getContent().subList(0, 14);
@@ -140,7 +139,7 @@ public class JobWS {
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/suggestJobByJobId")
     @ResponseBody
-    public RestResponse suggestJobByJobId(@RequestParam(value = "jobId") int jobId, @PageableDefault Pageable pageable)     {
+    public RestResponse suggestJobByJobId(@RequestParam(value = "jobId") int jobId, @PageableDefault Pageable pageable) {
         LOGGER.info("Begin suggestJob in JobWS  with jobId : " + jobId);
         Page<JobDTO> listJob = null;
         pageable = new PageRequest(0, Integer.MAX_VALUE);
@@ -329,7 +328,7 @@ public class JobWS {
         try {
             job = jobService.getJobDetailToUpdate(id);
             ModelMapper mapper = new ModelMapper();
-            JobDTO2 jobDTO2 = mapper.map(job,JobDTO2.class);
+            JobDTO2 jobDTO2 = mapper.map(job, JobDTO2.class);
             List<SkillDTO> skillDTOList = new ArrayList<>();
             for (int i = 0; i < job.getSkillneedforjobsById().size(); i++) {
                 SkillDTO dto = new SkillDTO();
