@@ -320,7 +320,7 @@ public class Job {
     }
 
     @ManyToOne
-    @JsonBackReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "JobLevelID", referencedColumnName = "ID", nullable = false)
     public Joblevel getJoblevelByJobLevelId() {
         return joblevelByJobLevelId;

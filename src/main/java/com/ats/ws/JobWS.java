@@ -311,9 +311,9 @@ public class JobWS {
     @GetMapping(value = "/getJobDetailAdmin", produces = "application/json;charset=UTF-8")
     public RestResponse getJobDetailAdmin(@RequestParam("id") int id) {
         LOGGER.info("Begin getJobDetailAdmin in JobWS with id " + id);
-        Job job;
+        JobDTO3 job;
         try {
-            job = jobService.getJobDetailToUpdate(id);
+            job = jobService.getJobDetail(id);
             LOGGER.info("End getJobDetailAdmin in JobWS with id " + id);
             if (job != null) {
                 return new RestResponse(true, "getJobDetailAdmin with job id : " + id, job);

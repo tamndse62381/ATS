@@ -324,7 +324,8 @@ public class JobServiceImpl implements JobService {
         try {
             LOGGER.info("Begin getJobDetail in Job Repository with id : " + id);
             job = jobRepository.findOne(id);
-            if (userId == 0) {
+            System.out.println("abcyxcjalksdlkajdlksad : "+userId);
+            if (userId != 0) {
                 countjobService.countWhenEmployerGetDetailOfJob(id, userId);
             }
             
