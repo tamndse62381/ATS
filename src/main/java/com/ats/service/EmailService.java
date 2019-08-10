@@ -2,6 +2,7 @@ package com.ats.service;
 
 import com.ats.entity.Users;
 import com.ats.repository.UsersRepository;
+import com.ats.util.EncrytedPasswordUtils;
 import org.apache.catalina.User;
 
 import org.apache.logging.log4j.LogManager;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -92,8 +94,9 @@ public class EmailService {
         }
 
     }
+
     @Async
-    public void sendActiveUserEmail(String token, String email) {
+    public void sendActiveUserEmail(String token, String email, boolean result) {
         try {
             LOGGER.info("Begin sendActiveUserEmail in EmailService with Email : " + email);
             MimeMessage message = javaMailSender.createMimeMessage();
@@ -104,11 +107,20 @@ public class EmailService {
             String welcome = "<p>Dear <b>" + users.getFullName() + "</b>,</p>" +
                     "<p>Ca&#769;m &#417;n ba&#803;n &#273;a&#771; ta&#803;o ta&#768;i khoa&#777;n ta&#803;i ATS.</p>";
             String confirm = "<p>&#272;&ecirc;&#777; ki&#769;ch hoa&#803;t ta&#768;i " +
-                    "khoa&#777;n, xin ba&#803;n click va&#768;o &#273;&#432;&#417;&#768;ng link b&ecirc;n d&#432;&#417;&#769;i:</p> </p>" +
-                    "<a href='http://localhost:8090/#/kiem-tra-thanh-cong/" + token + "'>Confirm your account</a>";
-            String end = "<p>Tr&acirc;n tro&#803;ng,</p><p> ATS Team</p>";
-            message.setContent(welcome + confirm + end, "text/html");
+                    "khoa&#777;n, xin ba&#803;n click va&#768;o &#273;&#432;&#417;&#768;ng link b&ecirc;n d&#432;&#417;&#769;i:</p> ";
+            EncrytedPasswordUtils encrytedPasswordUtils = new EncrytedPasswordUtils();
+            String rand = generateRandomString(20);
 
+            String emp = "<a href='http://localhost:8090/#/kiem-tra-thanh-cong/" + users.getId() + "." + rand + "'>Confirm your account</a></p>";
+            String js = "<a href='http://localhost:8090/#/kiem-tra-thanh-cong-mail/" + users.getId() + "." + rand + "'>Confirm your account</a></p>";
+            String end = "<p>Tr&acirc;n tro&#803;ng,</p><p> ATS Team</p>";
+            if (result) {
+                message.setContent(welcome + confirm + emp + end, "text/html");
+            }
+
+            if (!result) {
+                message.setContent(welcome + confirm + js + end, "text/html");
+            }
             helper.setTo(email);
             helper.setSubject(subject);
             this.javaMailSender.send(message);
@@ -117,6 +129,7 @@ public class EmailService {
             ex.printStackTrace();
         }
     }
+
     @Async
     public void sendAcceptUserEmail(String employerName, String email, String companyName, String result) {
         try {
@@ -210,6 +223,31 @@ public class EmailService {
         } catch (MessagingException ex) {
             ex.printStackTrace();
         }
+
+    }
+
+
+    private static final String CHAR_LOWER = "abcdefghijklmnopqrstuvwasdasdxyz";
+    private static final String CHAR_UPPER = CHAR_LOWER.toUpperCase();
+    private static final String NUMBER = "0123456789";
+
+    private static final String DATA_FOR_RANDOM_STRING = CHAR_LOWER + CHAR_UPPER + NUMBER;
+    private static SecureRandom random = new SecureRandom();
+
+    public static String generateRandomString(int length) {
+        if (length < 1) throw new IllegalArgumentException();
+
+        StringBuilder sb = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+
+            int rndCharAt = random.nextInt(DATA_FOR_RANDOM_STRING.length());
+            char rndChar = DATA_FOR_RANDOM_STRING.charAt(rndCharAt);
+
+            sb.append(rndChar);
+
+        }
+
+        return sb.toString();
 
     }
 }

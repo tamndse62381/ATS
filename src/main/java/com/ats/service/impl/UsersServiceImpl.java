@@ -114,7 +114,13 @@ public class UsersServiceImpl implements UsersService {
                     System.out.println(e);
                 }
             }
-            emailService.sendActiveUserEmail(newUsers.getAccessToken(), newUsers.getEmail());
+            if (newUsers.getRoleId() == 5) {
+                emailService.sendActiveUserEmail(newUsers.getAccessToken(), newUsers.getEmail(), true);
+            }
+            if (newUsers.getRoleId() == 1) {
+                emailService.sendActiveUserEmail(newUsers.getAccessToken(), newUsers.getEmail(), false);
+            }
+
         } else {
             return -1;
         }
@@ -144,6 +150,24 @@ public class UsersServiceImpl implements UsersService {
                 usersDTO = modelMapper.map(users, UsersDTO.class);
             }
         }
+        LOGGER.info("End findAccountByEmail in Account Service with result: {}", usersDTO);
+        return usersDTO;
+    }
+
+    @Override
+    public UsersDTO findUserByUserId(int id) {
+        LOGGER.info("Begin findAccountByEmail in Account Service with email {}", id);
+        modelMapper = new ModelMapper();
+        UsersDTO usersDTO = null;
+        Users users;
+
+        users = usersRepository.findOne(id);
+        if (users != null) {
+            usersDTO = modelMapper.map(users, UsersDTO.class);
+            usersDTO.setPassword("");
+            usersDTO.setAccessToken("");
+        }
+
         LOGGER.info("End findAccountByEmail in Account Service with result: {}", usersDTO);
         return usersDTO;
     }
@@ -258,18 +282,18 @@ public class UsersServiceImpl implements UsersService {
                 }
             }
         }
-        emailService.sendEmailStatus(users.getEmail(),users.getFullName(),users.getFullName(),
-                newStatus,"user");
+        emailService.sendEmailStatus(users.getEmail(), users.getFullName(), users.getFullName(),
+                newStatus, "user");
         LOGGER.info("End changeStatus in User Service with result: {}", success);
         return success;
     }
 
     @Override
-    public int confirmUser(String token, String newStatus) {
+    public int confirmUser(int id, String newStatus) {
         LOGGER.info("Begin confirmUser in User Service  {}");
         int success = -1;
         try {
-            UsersDTO2 user = findUserByToken(token);
+            Users user = usersRepository.findOne(id);
             System.out.println(user);
             if (user != null) {
                 Calendar c1 = Calendar.getInstance();
@@ -281,11 +305,14 @@ public class UsersServiceImpl implements UsersService {
                 c2.setTime(new Date());
 
                 // Công thức tính số ngày giữa 2 mốc thời gian:
+                //1 ngày = 86.400.000
                 long noDay = (c2.getTime().getTime() - c1.getTime().getTime());
                 System.out.println(noDay);
                 if (noDay < 24 * 3600 * 1000) {
                     if (user.getStatus().equals("new")) {
-                        success = usersRepository.confirmUser(token, newStatus);
+                        user.setStatus(newStatus);
+                        usersRepository.save(user);
+                        success = 1;
                     }
                 }
 

@@ -14,6 +14,7 @@ import com.ats.entity.Users;
 import com.ats.service.CityService;
 import com.ats.service.CompanyService;
 import com.ats.service.JoblevelService;
+import com.ats.util.EncrytedPasswordUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +81,7 @@ public class UserWS {
             String tokenString = tokenService.addAuthentication(usersDTO.getEmail());
             usersDTO.setAccessToken(tokenString);
             usersDTO.setCreatedDate(date);
+            usersDTO.setLastModify(date);
             usersDTO.setStatus("new");
             result = usersService.registration(usersDTO);
             LOGGER.info("End Registration in UserWS with email - password - fullname: {}",
@@ -176,7 +178,10 @@ public class UserWS {
         int success;
         try {
             System.out.println(token);
-            success = usersService.confirmUser(token, "active");
+            String[] output = token.split("[, ?.@]+");
+            System.out.println(output[0]);
+            int id = Integer.parseInt(output[0]);
+            success = usersService.confirmUser(id, "active");
             LOGGER.info("End confirmUser in UserWS");
             if (success > 0) {
                 return "true";
@@ -191,7 +196,7 @@ public class UserWS {
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/findUserByEmail", produces = "application/json;charset=UTF-8")
     public RestResponse findUserByEmail(@RequestParam("email") String email) {
-        LOGGER.info("Begin changeStatus in UserWS with Email : {}" + email);
+        LOGGER.info("Begin findUserByEmail in UserWS with Email : {}" + email);
         UsersDTO dto = null;
         try {
             dto = usersService.findUserByEmail(email);
@@ -201,7 +206,25 @@ public class UserWS {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOGGER.info("Begin changeStatus in UserWS with Email : {}" + email);
+        LOGGER.info("Begin findUserByEmail in UserWS with Email : {}" + email);
+        return new RestResponse(false, "findUserByEmail Fail", null);
+    }
+
+    @ResponseBody
+    @CrossOrigin(origins = "*")
+    @PostMapping(value = "/findUserByUserId", produces = "application/json;charset=UTF-8")
+    public RestResponse findUserByUserId(@RequestParam("id") int id) {
+        LOGGER.info("Begin findUserByUserId in UserWS with Id : {}" + id);
+        UsersDTO dto = null;
+        try {
+            dto = usersService.findUserByUserId(id);
+            if (dto != null) {
+                return new RestResponse(true, "findUserByUserId Successful", dto);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("Begin findUserByUserId in UserWS with Id : {}" + id);
         return new RestResponse(false, "findUserByEmail Fail", null);
     }
 

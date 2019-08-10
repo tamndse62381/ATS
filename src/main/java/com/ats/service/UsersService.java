@@ -22,11 +22,13 @@ public interface UsersService {
 
     int changeStatus(int id, String newStatus);
 
-    int confirmUser(String token, String newStatus);
+    int confirmUser(int id, String newStatus);
 
     boolean checkPassword(String password, int id);
 
     UsersDTO findUserByEmail(String email);
+
+    UsersDTO findUserByUserId(int id);
 
     UsersDTO2 findUserByToken(String token);
 

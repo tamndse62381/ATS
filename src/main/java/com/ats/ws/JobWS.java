@@ -56,9 +56,9 @@ public class JobWS {
             }
             if (!job.getListSkill().isEmpty()) {
                 Date dt = new Date();
-            Calendar c = Calendar.getInstance();
-            c.setTime(dt);
-            job.setCreatedDate(new Timestamp(c.getTimeInMillis()));
+                Calendar c = Calendar.getInstance();
+                c.setTime(dt);
+                job.setCreatedDate(new Timestamp(c.getTimeInMillis()));
                 job.setStatus("new");
                 result = jobService.createJob(job);
                 List<Integer> listSkillId = new ArrayList<>();
@@ -134,7 +134,7 @@ public class JobWS {
             e.printStackTrace();
         }
         LOGGER.info("End searchMobile in JobWS with Search value : {}" + search);
-        if (listJob.getContent().size() < 14){
+        if (listJob.getContent().size() < 14) {
             return listJob.getContent();
         }
         return listJob.getContent().subList(0, 14);
@@ -144,7 +144,7 @@ public class JobWS {
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/suggestJobByJobId")
     @ResponseBody
-    public RestResponse suggestJobByJobId(@RequestParam(value = "jobId") int jobId, @PageableDefault Pageable pageable)     {
+    public RestResponse suggestJobByJobId(@RequestParam(value = "jobId") int jobId, @PageableDefault Pageable pageable) {
         LOGGER.info("Begin suggestJob in JobWS  with jobId : " + jobId);
         Page<JobDTO> listJob = null;
         pageable = new PageRequest(0, Integer.MAX_VALUE);
@@ -333,7 +333,7 @@ public class JobWS {
         try {
             job = jobService.getJobDetailToUpdate(id);
             ModelMapper mapper = new ModelMapper();
-            JobDTO2 jobDTO2 = mapper.map(job,JobDTO2.class);
+            JobDTO2 jobDTO2 = mapper.map(job, JobDTO2.class);
             LOGGER.info("End getJobDetailToUpdate in JobWS with id " + id);
             if (job != null) {
                 return new RestResponse(true, "getJobDetailToUpdate with job id : " + id, jobDTO2);
@@ -344,6 +344,7 @@ public class JobWS {
 
         return new RestResponse(false, "Job is Not Available : ", null);
     }
+
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getJobDetail", produces = "application/json;charset=UTF-8")
     public RestResponse getJobDetail(@RequestParam("id") int id,

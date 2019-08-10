@@ -86,6 +86,7 @@ public class CVServiceImpl implements CVService {
                 cv.setIsActive(0);
             cv.setStatus("1");
             cv.setCreatedDate(new Timestamp(new Date().getTime()));
+            cv.setLastModify(new Timestamp(new Date().getTime()));
             int CVID = cvRepository.save(cv).getId();
             Cv saveCv = cvRepository.findOne(CVID);
 

@@ -324,7 +324,10 @@ public class JobServiceImpl implements JobService {
         try {
             LOGGER.info("Begin getJobDetail in Job Repository with id : " + id);
             job = jobRepository.findOne(id);
-            countjobService.countWhenEmployerGetDetailOfJob(id, userId);
+            if (userId == 0) {
+                countjobService.countWhenEmployerGetDetailOfJob(id, userId);
+            }
+            
             LOGGER.info("End getJobDetail in Job Repository with id : " + id);
             List<Job> listJobOfCompany = jobRepository.getJobByCompanyID(job.getCompanyId(), job.getId());
             List<String> listSkillName = skillService.getSkillName(job.getSkillneedforjobsById());
