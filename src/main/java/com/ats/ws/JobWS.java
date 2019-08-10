@@ -333,7 +333,16 @@ public class JobWS {
         try {
             job = jobService.getJobDetailToUpdate(id);
             ModelMapper mapper = new ModelMapper();
-            JobDTO2 jobDTO2 = mapper.map(job, JobDTO2.class);
+            JobDTO2 jobDTO2 = mapper.map(job,JobDTO2.class);
+            List<SkillDTO> skillDTOList = new ArrayList<>();
+            for (int i = 0; i < job.getSkillneedforjobsById().size(); i++) {
+                SkillDTO dto = new SkillDTO();
+                dto.setId(job.getSkillneedforjobsById().get(i).getId());
+                dto.setSkillMasterId(job.getSkillneedforjobsById().get(i).getSkillBySkillId().getSkillMasterId());
+                dto.setSkillLevel(job.getSkillneedforjobsById().get(i).getSkillBySkillId().getSkillLevel());
+                skillDTOList.add(dto);
+            }
+            jobDTO2.setListSkill(skillDTOList);
             LOGGER.info("End getJobDetailToUpdate in JobWS with id " + id);
             if (job != null) {
                 return new RestResponse(true, "getJobDetailToUpdate with job id : " + id, jobDTO2);
