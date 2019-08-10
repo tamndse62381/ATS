@@ -337,7 +337,7 @@ public class JobWS {
             List<SkillDTO> skillDTOList = new ArrayList<>();
             for (int i = 0; i < job.getSkillneedforjobsById().size(); i++) {
                 SkillDTO dto = new SkillDTO();
-                dto.setId(job.getSkillneedforjobsById().get(i).getId());
+                dto.setId(job.getSkillneedforjobsById().get(i).getSkillBySkillId().getId());
                 dto.setSkillMasterId(job.getSkillneedforjobsById().get(i).getSkillBySkillId().getSkillMasterId());
                 dto.setSkillLevel(job.getSkillneedforjobsById().get(i).getSkillBySkillId().getSkillLevel());
                 skillDTOList.add(dto);
