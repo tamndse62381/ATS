@@ -27,5 +27,5 @@ public interface CompanyService {
 
     Page<CompanyDTO3> findAllCompanyByStatus(String search, String status, Pageable pageable);
 
-    List<Company> getFiveCompany();
+    List<CompanyDTO> getFiveCompany();
 }

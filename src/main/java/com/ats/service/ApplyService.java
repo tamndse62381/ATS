@@ -23,5 +23,7 @@ public interface ApplyService {
 
     RestResponse listCv(int JobId, Pageable pageable);
 
+    RestResponse getAllApply(int userId);
+
     RestResponse checkStatusApply(int CvId, int JobId);
 }

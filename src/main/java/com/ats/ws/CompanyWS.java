@@ -101,7 +101,6 @@ public class CompanyWS {
     }
 
 
-
     @GetMapping("/getCompanyAdmin")
     @CrossOrigin("*")
     public RestResponse getCompanyAdmin(@RequestParam(value = "search") String search,
@@ -122,9 +121,10 @@ public class CompanyWS {
         return new RestResponse(false, "Fail getCompanyAdmin ", null);
 
     }
+
     @GetMapping("/list-5")
     @CrossOrigin("*")
-    public List<Company> getFiveCompany(){
+    public List<CompanyDTO> getFiveCompany() {
         return companyService.getFiveCompany();
     }
 

@@ -178,7 +178,7 @@ public class JobServiceImpl implements JobService {
             listofJob = jobRepository.findAll();
             LOGGER.info("End getALlJobTitle in Job Repository");
             for (int i = 0; i < listofJob.size(); i++) {
-                if (listofJob.get(i).getStatus().matches("new") &&
+                if (listofJob.get(i).getStatus().matches("approved") &&
                         listofJob.get(i).getEndDateForApply().after(new Date())) {
                     listofResult.add(listofJob.get(i).getTitle());
                 }

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -31,6 +32,8 @@ public class ApplyServiceImpl implements ApplyService {
     private CVRepository cvRepository;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private UsersRepository usersRepository;
     //Mapping Object
     ModelMapper modelMapper = new ModelMapper();
 
@@ -135,6 +138,43 @@ public class ApplyServiceImpl implements ApplyService {
         }
         Page<Cv> pageCv = new PageImpl<>(listCv, pageable, listCv.size());
         return new RestResponse(true, "Lấy thành công", pageCv);
+    }
+
+    @Override
+    public RestResponse getAllApply(int userId) {
+        List<Cv> cvList = cvRepository.findByUserId(userId);
+        List<Apply> applyList = new ArrayList<>();
+        int all = 0;
+        int not = 0;
+        int accept = 0;
+        int deny = 0;
+        for (int i = 0; i < cvList.size(); i++) {
+            applyList.addAll(applyRepository.findAppliesByCvid(cvList.get(i).getId()));
+        }
+        for (int i = 0; i < applyList.size(); i++) {
+            all++;
+        }
+        for (int i = 0; i < applyList.size(); i++) {
+            if (applyList.get(i).getStatus().equals("1")) {
+                not++;
+            }
+        }
+        for (int i = 0; i < applyList.size(); i++) {
+            if (applyList.get(i).getStatus().equals("2")) {
+                accept++;
+            }
+        }
+        for (int i = 0; i < applyList.size(); i++) {
+            if (applyList.get(i).getStatus().equals("3")) {
+                deny++;
+            }
+        }
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("all", all);
+        map.put("not", not);
+        map.put("accept", accept);
+        map.put("deny", deny);
+        return new RestResponse(true, "Get Apply Success", map);
     }
 
     @Override

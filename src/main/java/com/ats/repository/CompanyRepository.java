@@ -43,6 +43,8 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
             "u.email LIKE CONCAT('%',LOWER(:search),'%'))")
     Page<Company> findAll(Pageable pageable, @Param("search") String search, @Param("status") String status);
 
-    @Query("select c from Company c order by c.id desc ")
+    @Query("select distinct c from Company c " +
+            "INNER JOIN c.jobsById j " +
+            "where j.status = 'approved'")
     List<Company> getFiveCompany();
 }

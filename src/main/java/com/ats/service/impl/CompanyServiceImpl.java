@@ -1,9 +1,6 @@
 package com.ats.service.impl;
 
-import com.ats.dto.CompanyDTO;
-import com.ats.dto.CompanyDTO2;
-import com.ats.dto.CompanyDTO3;
-import com.ats.dto.CompanyindustryDTO;
+import com.ats.dto.*;
 import com.ats.entity.Company;
 import com.ats.entity.Companyindustry;
 import com.ats.entity.Users;
@@ -226,8 +223,31 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<Company> getFiveCompany() {
+    public List<CompanyDTO> getFiveCompany() {
         List<Company> list = companyRepository.getFiveCompany();
-        return list.subList(0,4);
+        List<Company> correctList = new ArrayList<>();
+        List<CompanyDTO> companyDTOS = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            correctList = list;
+            if (correctList.size() > 5) {
+                for (int j = 0; j < correctList.size() && correctList.size() > 5; j++) {
+                    int min = correctList.get(j).getJobsById().size();
+                    for (int z = 1; z < correctList.size(); z++) {
+                        if (correctList.get(z).getJobsById().size() < min) {
+                            min = correctList.get(z).getJobsById().size();
+                            j = z;
+                        }
+                    }
+                    if (j != 0) {
+                        correctList.remove(j);
+                    }
+                }
+            }
+        }
+        ModelMapper mapper = new ModelMapper();
+        java.lang.reflect.Type targetListType = new TypeToken<List<CompanyDTO>>() {
+        }.getType();
+        companyDTOS = mapper.map(correctList, targetListType);
+        return companyDTOS;
     }
 }
