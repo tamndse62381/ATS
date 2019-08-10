@@ -17,7 +17,7 @@ public class CountcvWS {
     private CountcvService countcvService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @CrossOrigin(origins = "")
+    @CrossOrigin(origins = "*")
     public int countCv(@PathVariable(name = "id") Integer id){
         return countcvService.countAccessTimes(id);
     }
