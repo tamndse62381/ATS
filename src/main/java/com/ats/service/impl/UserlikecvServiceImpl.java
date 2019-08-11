@@ -9,6 +9,7 @@ import com.ats.repository.UsersRepository;
 import com.ats.service.UserlikecvService;
 import com.ats.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -50,7 +51,7 @@ public class UserlikecvServiceImpl implements UserlikecvService {
     }
 
     @Override
-    public RestResponse listCv(int EmployerId) {
+    public RestResponse listCv(int EmployerId, Pageable pageable) {
         Users user = usersRepository.findOne(EmployerId);
         if (user == null)
             return new RestResponse(false, "Có lỗi xảy ra. Vui lòng thử lại!!!", null);
