@@ -2,7 +2,6 @@ package com.ats.entity;
 
 import com.ats.enummerator.WorkingType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 

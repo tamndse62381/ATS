@@ -4,7 +4,6 @@ import com.ats.entity.Education;
 import com.ats.repository.EducationRepository;
 import com.ats.service.EducationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,22 +1,20 @@
 package com.ats.ws;
 
 import com.ats.dto.*;
-import com.ats.entity.*;
-import com.ats.repository.JobRepository;
+import com.ats.entity.City;
+import com.ats.entity.Industry;
+import com.ats.entity.Job;
+import com.ats.entity.Joblevel;
 import com.ats.service.*;
-
+import com.ats.util.RestResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.ats.util.RestResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
 import org.springframework.data.web.PageableDefault;
-
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;

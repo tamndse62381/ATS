@@ -1,7 +1,9 @@
 package com.ats.service.impl;
 
 import com.ats.dto.JobDTO;
-import com.ats.entity.*;
+import com.ats.entity.Apply;
+import com.ats.entity.Cv;
+import com.ats.entity.Job;
 import com.ats.repository.ApplyRepository;
 import com.ats.repository.CVRepository;
 import com.ats.repository.JobRepository;

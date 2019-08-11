@@ -1,10 +1,16 @@
 package com.ats.service.impl;
 
-import com.ats.dto.*;
+import com.ats.dto.CompanyDTO;
+import com.ats.dto.CompanyDTO2;
+import com.ats.dto.CompanyDTO3;
+import com.ats.dto.CompanyindustryDTO;
 import com.ats.entity.Company;
 import com.ats.entity.Companyindustry;
 import com.ats.entity.Users;
-import com.ats.repository.*;
+import com.ats.repository.CityRepository;
+import com.ats.repository.CompanyRepository;
+import com.ats.repository.CompanyindustryRepository;
+import com.ats.repository.IndustryRepository;
 import com.ats.service.CompanyService;
 import com.ats.service.EmailService;
 import com.ats.service.UsersService;
@@ -19,12 +25,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {

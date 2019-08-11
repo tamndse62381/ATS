@@ -1,10 +1,13 @@
 package com.ats.service.impl;
 
-import com.ats.dto.JobDTO2;
 import com.ats.dto.JobDTO;
+import com.ats.dto.JobDTO2;
 import com.ats.dto.JobDTO3;
 import com.ats.entity.*;
-import com.ats.repository.*;
+import com.ats.repository.ApplyRepository;
+import com.ats.repository.CVRepository;
+import com.ats.repository.JobRepository;
+import com.ats.repository.UsersRepository;
 import com.ats.service.*;
 import com.ats.util.RestResponse;
 import org.apache.logging.log4j.LogManager;

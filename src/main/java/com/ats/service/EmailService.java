@@ -2,14 +2,9 @@ package com.ats.service;
 
 import com.ats.entity.Users;
 import com.ats.repository.UsersRepository;
-import com.ats.util.EncrytedPasswordUtils;
-import org.apache.catalina.User;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -34,7 +29,7 @@ public class EmailService {
             "<p style='font-size:150%;font-family:verdana;'>" +
                     "<p><b><u>Nga&#768;y g&#432;&#777;i mail:</u>&ensp;&ensp;&ensp;" + new SimpleDateFormat("EEEE").format(new Date()) +
                     ", &ensp;" + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + "  </b></p>" +
-                    "&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;C&ocirc;ng vi&ecirc;n ph&acirc;&#768;n m&ecirc;&#768;m Quang Trung," +
+                    "&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;C&ocirc;ng vi&ecirc;n ph&acirc;&#768;n m&ecirc;&#768;m Quang Trung," +
                     "Tan Chanh Hiep, Qu&acirc;&#803;n 12,Tha&#768;nh Ph&ocirc;&#769; Ho Chi Minh</b></p>" +
                     "<p>Thanks and Best Regards,</p>" +
                     "<p>Team 17</p>" +
@@ -108,7 +103,7 @@ public class EmailService {
                     "<p>Ca&#769;m &#417;n ba&#803;n &#273;a&#771; ta&#803;o ta&#768;i khoa&#777;n ta&#803;i ATS.</p>";
             String confirm = "<p>&#272;&ecirc;&#777; ki&#769;ch hoa&#803;t ta&#768;i " +
                     "khoa&#777;n, xin ba&#803;n click va&#768;o &#273;&#432;&#417;&#768;ng link b&ecirc;n d&#432;&#417;&#769;i:</p> ";
-            EncrytedPasswordUtils encrytedPasswordUtils = new EncrytedPasswordUtils();
+//            EncrytedPasswordUtils encrytedPasswordUtils = new EncrytedPasswordUtils();
             String rand = generateRandomString(20);
 
             String emp = "<a href='http://localhost:8090/#/kiem-tra-thanh-cong/" + users.getId() + "." + rand + "'>Confirm your account</a></p>";
@@ -171,8 +166,8 @@ public class EmailService {
             String subject = "";
             MimeMessageHelper helper = new MimeMessageHelper(message, multipart, "UTF-8");
             String begin = "<p>Dear Mr/Ms.<b>" + userFullname + "</b>,</p><p></p>";
-            String company = "<p>C&ocirc;ng ty :<b>" + title + "</b>cu&#777;a ba&#803;n &#273;a&#771; ";
-            String job = "<p>c&ocirc;ng vi&ecirc;&#803;c:<b>" + title + "</b> cu&#777;a ba&#803;n &#273;a&#771; ";
+            String company = "<p>C&ocirc;ng ty :<b>" + title + "</b> &ensp;cu&#777;a ba&#803;n &#273;a&#771; ";
+            String job = "<p>c&ocirc;ng vi&ecirc;&#803;c:<b>" + title + "</b>&ensp; cu&#777;a ba&#803;n &#273;a&#771; ";
             String account = "<p>Ta&#768;i khoa&#777;n cu&#777;a ba&#803;n &#273;a&#771; ";
 
             if (result.equals("approved") || result.equals("active") || result.equals("new")) {

@@ -1,7 +1,6 @@
 package com.ats.service;
 
 import com.ats.entity.Education;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

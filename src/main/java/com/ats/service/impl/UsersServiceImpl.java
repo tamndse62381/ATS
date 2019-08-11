@@ -1,11 +1,5 @@
 package com.ats.service.impl;
 
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import com.ats.dto.JobDTO;
 import com.ats.dto.JobDTO3;
 import com.ats.dto.UsersDTO;
 import com.ats.dto.UsersDTO2;
@@ -15,9 +9,11 @@ import com.ats.repository.UsersRepository;
 import com.ats.service.EmailService;
 import com.ats.service.JobService;
 import com.ats.service.RoleService;
+import com.ats.service.UsersService;
+import com.ats.token.TokenAuthenticationService;
+import com.ats.util.EncrytedPasswordUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +22,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ats.service.UsersService;
-
-import com.ats.token.TokenAuthenticationService;
-import com.ats.util.EncrytedPasswordUtils;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @Service
 @Transactional
@@ -262,6 +258,9 @@ public class UsersServiceImpl implements UsersService {
         int success;
         success = usersRepository.changeStatus(id, newStatus);
         Users users = usersRepository.findOne(id);
+        if(users.getRoleId() == 2){
+
+        }
         if (newStatus.equals("ban") || newStatus.equals("active ban")) {
 
             List<Job> jobList = users.getJobsById();

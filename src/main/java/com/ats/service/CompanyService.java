@@ -4,11 +4,9 @@ import com.ats.dto.CompanyDTO;
 import com.ats.dto.CompanyDTO2;
 import com.ats.dto.CompanyDTO3;
 import com.ats.entity.Company;
-import com.ats.model.FileModel;
 import com.ats.util.RestResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

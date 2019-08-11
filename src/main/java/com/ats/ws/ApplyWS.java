@@ -1,11 +1,9 @@
 package com.ats.ws;
 
 import com.ats.dto.JobDTO;
-import com.ats.entity.Cv;
 import com.ats.service.ApplyService;
 import com.ats.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;

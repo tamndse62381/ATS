@@ -9,7 +9,6 @@ import com.ats.repository.JobseekerlikejobRespository;
 import com.ats.repository.UsersRepository;
 import com.ats.service.JobseekerlikejobService;
 import com.ats.util.RestResponse;
-import org.apache.catalina.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
