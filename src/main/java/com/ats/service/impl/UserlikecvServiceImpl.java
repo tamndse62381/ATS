@@ -9,6 +9,8 @@ import com.ats.repository.UsersRepository;
 import com.ats.service.UserlikecvService;
 import com.ats.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -62,7 +64,8 @@ public class UserlikecvServiceImpl implements UserlikecvService {
         for (Userslikecv userslikecv : listUserslikecv) {
             listCv.add(userslikecv.getCvByCvid());
         }
-        return new RestResponse(true, "Thành công!!!", listCv);
+        Page<Cv> pageCv = new PageImpl<>(listCv, pageable, listCv.size());
+        return new RestResponse(true, "Thành công!!!", pageCv);
 
     }
 
