@@ -307,6 +307,21 @@ public class JobWS {
     }
 
     @CrossOrigin(origins = "*")
+    @GetMapping(value = "/getProfileByEmployerId")
+    public RestResponse getJobByEmployerIdProfile(@RequestParam("employerId") int employerId) {
+        LOGGER.info("Begin getJobByEmployerIdProfile in JobWS ");
+        HashMap<String, Integer> map;
+        try {
+            map = jobService.getJobListByEmployerId(employerId);
+            return new RestResponse(true, "get getJobByEmployerIdProfile Successfull with list size is : ", map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getJobByEmployerIdProfile in JobWS ");
+        return new RestResponse(false, "get getJobByEmployerIdProfile Fail", null);
+    }
+
+    @CrossOrigin(origins = "*")
     @GetMapping(value = "/getJobDetailAdmin", produces = "application/json;charset=UTF-8")
     public RestResponse getJobDetailAdmin(@RequestParam("id") int id) {
         LOGGER.info("Begin getJobDetailAdmin in JobWS with id " + id);
@@ -332,7 +347,7 @@ public class JobWS {
         try {
             job = jobService.getJobDetailToUpdate(id);
             ModelMapper mapper = new ModelMapper();
-            JobDTO2 jobDTO2 = mapper.map(job,JobDTO2.class);
+            JobDTO2 jobDTO2 = mapper.map(job, JobDTO2.class);
             List<SkillDTO> skillDTOList = new ArrayList<>();
             for (int i = 0; i < job.getSkillneedforjobsById().size(); i++) {
                 SkillDTO dto = new SkillDTO();

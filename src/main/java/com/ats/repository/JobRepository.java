@@ -61,7 +61,7 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
     @Query("Select b from Job b where b.companyId = :companyId and b.status = :status")
     Page<Job> getJobByCompanyId(Pageable pageable,
                                 @Param("companyId") int companyId,
-                                @Param("status")String status);
+                                @Param("status") String status);
 
     @Transactional
     @Modifying
@@ -101,4 +101,7 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
     Page<Job> getAll(Pageable pageable, @Param("search") String search, @Param("status") String status);
 
     List<Job> findJobsByStatusAndUserId(String status, int EmployerId);
+
+    @Query("Select j from Job j where j.userId = :employerId")
+    List<Job> getJobsByEmployerId(@Param("employerId") int employerId);
 }

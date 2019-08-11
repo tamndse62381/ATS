@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -31,6 +32,8 @@ public interface JobService {
     List<JobDTO> getTop8Mobile();
 
     Page<JobDTO> getJobByEmployerId(int employerId, Pageable pageable, String status);
+
+    HashMap getJobListByEmployerId(int employerId);
 
     JobDTO3 getJobDetail(int id);
 

@@ -24,10 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -209,7 +206,7 @@ public class JobServiceImpl implements JobService {
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
             }.getType();
             listofDTO = mapper.map(listofJob.getContent(), targetListType);
-            pageDTO = new PageImpl<>(listofDTO.subList(0,8), new PageRequest(0, 10), 8);
+            pageDTO = new PageImpl<>(listofDTO.subList(0, 8), new PageRequest(0, 10), 8);
             LOGGER.info("End getTop8 in Job Repository");
         } catch (Exception e) {
             e.printStackTrace();
@@ -282,6 +279,64 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    public HashMap getJobListByEmployerId(int employerId) {
+        LOGGER.info("Begin getJobListByEmployerId in Job Service");
+        List<Job> listOfJob;
+        List<Apply> applyList = new ArrayList<>();
+        HashMap<String, Integer> map = new HashMap<>();
+        try {
+            LOGGER.info("Begin getJobListByEmployerId in Job Repository ");
+            listOfJob = jobRepository.getJobsByEmployerId(employerId);
+            System.out.println(listOfJob.size());
+            int all = 0;
+            int current = 0;
+            int deny = 0;
+            int wait = 0;
+            int js = 0;
+            for (int i = 0; i < listOfJob.size(); i++) {
+                all++;
+            }
+            for (int i = 0; i < listOfJob.size(); i++) {
+                if (listOfJob.get(i).getStatus().equals("approved")) {
+                    current++;
+                }
+            }
+            for (int i = 0; i < listOfJob.size(); i++) {
+                if (listOfJob.get(i).getStatus().equals("ban")) {
+                    deny++;
+                }
+            }
+            for (int i = 0; i < listOfJob.size(); i++) {
+                if (listOfJob.get(i).getStatus().equals("new")) {
+                    wait++;
+                }
+            }
+            map.put("all", all);
+            map.put("current", current);
+            map.put("deny", deny);
+            map.put("wait", wait);
+            for (int i = 0; i < listOfJob.size(); i++) {
+                if(listOfJob.get(i).getStatus().equals("approved")){
+                    applyList.addAll(applyRepository.findAppliesByJobId(listOfJob.get(i).getId()));
+                }
+
+            }
+            for (int i = 0; i < applyList.size(); i++) {
+                System.out.println(applyList.get(i).getStatus());
+                if (applyList.get(i).getStatus().equals("1")) {
+                    js++;
+                }
+            }
+            map.put("allJS", js);
+            LOGGER.info("End getJobByEmployerId in Job Repository");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getJobByEmployerId in Job Service");
+        return map;
+    }
+
+    @Override
     public JobDTO3 getJobDetail(int id) {
         LOGGER.info("Begin getJobDetail in Job Service with id : " + id);
         Job job;
@@ -331,11 +386,11 @@ public class JobServiceImpl implements JobService {
         try {
             LOGGER.info("Begin getJobDetail in Job Repository with id : " + id);
             job = jobRepository.findOne(id);
-            System.out.println("abcyxcjalksdlkajdlksad : "+userId);
+            System.out.println("abcyxcjalksdlkajdlksad : " + userId);
             if (userId != 0) {
                 countjobService.countWhenEmployerGetDetailOfJob(id, userId);
             }
-            
+
             LOGGER.info("End getJobDetail in Job Repository with id : " + id);
             List<Job> listJobOfCompany = jobRepository.getJobByCompanyID(job.getCompanyId(), job.getId());
             List<String> listSkillName = skillService.getSkillName(job.getSkillneedforjobsById());
