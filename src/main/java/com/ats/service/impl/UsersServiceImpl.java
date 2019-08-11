@@ -216,6 +216,8 @@ public class UsersServiceImpl implements UsersService {
             users.setAddress(dto.getAddress());
             users.setDescription(dto.getDescription());
             users.setTelephoneNumber(dto.getTelephoneNumber());
+            users.setCityId(dto.getCityid());
+            users.setJobLevelId(dto.getJobLevelID());
             users.setLastModify(new Timestamp(date.getTime()));
             try {
                 LOGGER.info("End updateUser in User Repository with result: {}", users.toString());
