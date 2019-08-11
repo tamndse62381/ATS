@@ -292,10 +292,11 @@ public class JobWS {
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getJobByEmployerId")
-    public RestResponse getJobByEmployerId(@PageableDefault Pageable pageable,
+    public RestResponse getJobByEmployerId(@PageableDefault(value = 5) Pageable pageable,
                                            @RequestParam("employerId") int employerId,
                                            @RequestParam("status") String status) {
         LOGGER.info("Begin getJobByEmployerId in JobWS ");
+
         Page<JobDTO> listJobs = null;
         try {
             listJobs = jobService.getJobByEmployerId(employerId, pageable, status);
@@ -344,7 +345,7 @@ public class JobWS {
             }
             jobDTO2.setListSkill(skillDTOList);
             LOGGER.info("End getJobDetailToUpdate in JobWS with id " + id);
-            if (job != null) {
+            if (jobDTO2 != null) {
                 return new RestResponse(true, "getJobDetailToUpdate with job id : " + id, jobDTO2);
             }
         } catch (Exception e) {

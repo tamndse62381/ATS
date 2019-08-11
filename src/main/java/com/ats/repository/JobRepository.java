@@ -50,8 +50,8 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
     Page<Job> getTop8(Pageable pageable, @Param("status") String status, @Param("now") Date endDateForApply);
 
     @Query("Select b from Job b " +
-            "where b.status = :status and " +
-            "b.usersByUserId.id = :employerId ")
+            "where b.status LIKE CONCAT('%',LOWER(:status),'%') and " +
+            "b.userId = :employerId ")
     Page<Job> findAllByEmployerId(Pageable pageable,
                                   @Param("status") String status,
                                   @Param("employerId") int employerId);

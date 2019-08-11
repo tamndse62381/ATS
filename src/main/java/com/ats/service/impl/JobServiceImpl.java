@@ -147,6 +147,9 @@ public class JobServiceImpl implements JobService {
         Page<JobDTO> pageDTO = null;
         try {
             LOGGER.info("Begin searchJob in Job Repository with job name : {} ", job);
+            System.out.println(job);
+            System.out.println(city);
+            System.out.println(industry);
             pageOfJob = jobRepository.searchJob(job, pageable, "approved", new Date(), city, industry);
 
             ModelMapper mapper = new ModelMapper();
@@ -203,7 +206,7 @@ public class JobServiceImpl implements JobService {
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
             }.getType();
             listofDTO = mapper.map(listofJob.getContent(), targetListType);
-            pageDTO = new PageImpl<>(listofDTO, new PageRequest(0, 10), listofDTO.size());
+            pageDTO = new PageImpl<>(listofDTO.subList(0,8), new PageRequest(0, 10), 8);
             LOGGER.info("End getTop8 in Job Repository");
         } catch (Exception e) {
             e.printStackTrace();
@@ -261,6 +264,7 @@ public class JobServiceImpl implements JobService {
         try {
             LOGGER.info("Begin getJobByEmployerId in Job Repository ");
             listofJob = jobRepository.findAllByEmployerId(pageable, status, employerId);
+            System.out.println(listofJob.getContent().size());
             ModelMapper mapper = new ModelMapper();
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
             }.getType();
