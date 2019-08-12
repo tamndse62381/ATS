@@ -2,9 +2,7 @@ package com.ats.service;
 
 import com.ats.dto.JobDTO;
 import com.ats.util.RestResponse;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

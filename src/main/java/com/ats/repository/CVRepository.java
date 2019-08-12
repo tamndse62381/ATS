@@ -1,7 +1,7 @@
 package com.ats.repository;
 
-import org.springframework.data.domain.Page;
 import com.ats.entity.Cv;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

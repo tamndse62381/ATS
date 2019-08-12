@@ -1,20 +1,17 @@
 package com.ats.ws;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import com.ats.dto.CompanyDTO;
 import com.ats.dto.CompanyDTO2;
+import com.ats.dto.UsersDTO;
 import com.ats.dto.UsersDTO2;
 import com.ats.entity.City;
-import com.ats.entity.Company;
 import com.ats.entity.Joblevel;
 import com.ats.entity.Users;
 import com.ats.service.CityService;
 import com.ats.service.CompanyService;
 import com.ats.service.JoblevelService;
-import com.ats.util.EncrytedPasswordUtils;
+import com.ats.service.UsersService;
+import com.ats.token.TokenAuthenticationService;
+import com.ats.util.RestResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +20,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-import com.ats.dto.UsersDTO;
-import com.ats.service.UsersService;
-import com.ats.token.TokenAuthenticationService;
-import com.ats.util.RestResponse;
+
+import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")

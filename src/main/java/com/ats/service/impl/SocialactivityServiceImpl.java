@@ -1,7 +1,6 @@
 package com.ats.service.impl;
 
 import com.ats.entity.Socialactivities;
-
 import com.ats.repository.SocialactivityRepository;
 import com.ats.service.SocialactivityService;
 import org.springframework.beans.factory.annotation.Autowired;

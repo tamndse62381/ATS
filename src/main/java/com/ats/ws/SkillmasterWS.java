@@ -1,7 +1,6 @@
 package com.ats.ws;
 
 import com.ats.dto.SkillMasterDTO;
-import com.ats.entity.Skill;
 import com.ats.entity.Skillmaster;
 import com.ats.service.SkillmasterService;
 import org.springframework.beans.factory.annotation.Autowired;

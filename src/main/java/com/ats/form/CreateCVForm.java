@@ -2,8 +2,6 @@ package com.ats.form;
 
 import com.ats.dto.*;
 import lombok.Data;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.web.multipart.MultipartFile;
 

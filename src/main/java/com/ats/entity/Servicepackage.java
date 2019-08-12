@@ -1,13 +1,10 @@
 package com.ats.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.sql.Time;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 

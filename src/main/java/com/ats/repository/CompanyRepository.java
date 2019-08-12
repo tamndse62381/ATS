@@ -1,8 +1,6 @@
 package com.ats.repository;
 
-import com.ats.dto.CompanyDTO;
 import com.ats.entity.Company;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

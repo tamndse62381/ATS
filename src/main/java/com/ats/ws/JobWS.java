@@ -1,22 +1,20 @@
 package com.ats.ws;
 
 import com.ats.dto.*;
-import com.ats.entity.*;
-import com.ats.repository.JobRepository;
+import com.ats.entity.City;
+import com.ats.entity.Industry;
+import com.ats.entity.Job;
+import com.ats.entity.Joblevel;
 import com.ats.service.*;
-
+import com.ats.util.RestResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.ats.util.RestResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
 import org.springframework.data.web.PageableDefault;
-
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -292,10 +290,11 @@ public class JobWS {
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getJobByEmployerId")
-    public RestResponse getJobByEmployerId(@PageableDefault Pageable pageable,
+    public RestResponse getJobByEmployerId(@PageableDefault(value = 5) Pageable pageable,
                                            @RequestParam("employerId") int employerId,
                                            @RequestParam("status") String status) {
         LOGGER.info("Begin getJobByEmployerId in JobWS ");
+
         Page<JobDTO> listJobs = null;
         try {
             listJobs = jobService.getJobByEmployerId(employerId, pageable, status);
@@ -305,6 +304,21 @@ public class JobWS {
         }
         LOGGER.info("End getJobByEmployerId in JobWS ");
         return new RestResponse(false, "get getJobByEmployerId Fail", listJobs);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping(value = "/getProfileByEmployerId")
+    public RestResponse getJobByEmployerIdProfile(@RequestParam("employerId") int employerId) {
+        LOGGER.info("Begin getJobByEmployerIdProfile in JobWS ");
+        HashMap<String, Integer> map;
+        try {
+            map = jobService.getJobListByEmployerId(employerId);
+            return new RestResponse(true, "get getJobByEmployerIdProfile Successfull with list size is : ", map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getJobByEmployerIdProfile in JobWS ");
+        return new RestResponse(false, "get getJobByEmployerIdProfile Fail", null);
     }
 
     @CrossOrigin(origins = "*")
@@ -333,7 +347,7 @@ public class JobWS {
         try {
             job = jobService.getJobDetailToUpdate(id);
             ModelMapper mapper = new ModelMapper();
-            JobDTO2 jobDTO2 = mapper.map(job,JobDTO2.class);
+            JobDTO2 jobDTO2 = mapper.map(job, JobDTO2.class);
             List<SkillDTO> skillDTOList = new ArrayList<>();
             for (int i = 0; i < job.getSkillneedforjobsById().size(); i++) {
                 SkillDTO dto = new SkillDTO();
@@ -344,7 +358,7 @@ public class JobWS {
             }
             jobDTO2.setListSkill(skillDTOList);
             LOGGER.info("End getJobDetailToUpdate in JobWS with id " + id);
-            if (job != null) {
+            if (jobDTO2 != null) {
                 return new RestResponse(true, "getJobDetailToUpdate with job id : " + id, jobDTO2);
             }
         } catch (Exception e) {
