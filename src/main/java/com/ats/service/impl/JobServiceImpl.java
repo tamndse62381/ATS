@@ -867,6 +867,7 @@ public class JobServiceImpl implements JobService {
             LOGGER.info("Begin getAllJob in Job Repository ");
             System.out.println(search);
             listofJob = jobRepository.getAll(pageable, search, status);
+            System.out.println(listofJob.getContent().size());
             LOGGER.info("End getAllJob in Job Repository");
         } catch (Exception e) {
             e.printStackTrace();

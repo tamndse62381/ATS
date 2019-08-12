@@ -7,10 +7,7 @@ import com.ats.dto.CompanyindustryDTO;
 import com.ats.entity.Company;
 import com.ats.entity.Companyindustry;
 import com.ats.entity.Users;
-import com.ats.repository.CityRepository;
-import com.ats.repository.CompanyRepository;
-import com.ats.repository.CompanyindustryRepository;
-import com.ats.repository.IndustryRepository;
+import com.ats.repository.*;
 import com.ats.service.CompanyService;
 import com.ats.service.EmailService;
 import com.ats.service.UsersService;
@@ -45,7 +42,8 @@ public class CompanyServiceImpl implements CompanyService {
     private UsersService usersService;
     @Autowired
     private EmailService emailService;
-
+    @Autowired
+    private JobRepository jobRepository;
     private static final Logger LOGGER = LogManager.getLogger(CompanyServiceImpl.class);
 
     //Mapping Object
@@ -236,10 +234,11 @@ public class CompanyServiceImpl implements CompanyService {
             correctList = list;
             if (correctList.size() > 5) {
                 for (int j = 0; j < correctList.size() && correctList.size() > 5; j++) {
-                    int min = correctList.get(j).getJobsById().size();
+                    int min = jobRepository.getNumberOfJobByCompanyByCompanyId(correctList.get(j).getId()).size();
                     for (int z = 1; z < correctList.size(); z++) {
-                        if (correctList.get(z).getJobsById().size() < min) {
-                            min = correctList.get(z).getJobsById().size();
+                        int current = jobRepository.getNumberOfJobByCompanyByCompanyId(correctList.get(z).getId()).size();
+                        if (current < min) {
+                            min = current;
                             j = z;
                         }
                     }

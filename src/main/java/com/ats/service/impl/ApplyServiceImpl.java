@@ -107,7 +107,6 @@ public class ApplyServiceImpl implements ApplyService {
                 listJob.add(apply.getJobByJobId());
             }
         }
-        List<Job> correctList = new ArrayList<>();
 
         for (int i = 0; i < listJob.size(); i++) {
             for (int j = 0; j < listJob.get(i).getAppliesById().size(); j++) {
@@ -122,7 +121,6 @@ public class ApplyServiceImpl implements ApplyService {
                 }
             }
         }
-
         return new RestResponse(true, "Thành công!!!", listJob);
     }
 
