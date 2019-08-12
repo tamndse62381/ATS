@@ -22,6 +22,14 @@ public class SkillmasterWS {
         return ResponseEntity.ok().body(skillmasterService.listAll());
     }
 
+    // get for mobile
+    @GetMapping("/mobile")
+    @CrossOrigin(origins = "*")
+    public List<SkillMasterDTO> getAllMobile(){
+        return skillmasterService.listAll();
+    }
+
+
     // CREATE A NEW SKILL DO MAY BAN
     @RequestMapping(value = "/", method = RequestMethod.POST)
     @CrossOrigin(origins = "*")
