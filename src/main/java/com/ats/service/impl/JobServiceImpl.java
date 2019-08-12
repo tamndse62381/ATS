@@ -107,22 +107,24 @@ public class JobServiceImpl implements JobService {
             newJob.setSalaryFrom(job.getSalaryFrom());
             newJob.setSalaryTo(job.getSalaryTo());
             newJob.setAddress(job.getAddress());
+            System.out.println(job.getSalaryFrom());
+            System.out.println(job.getSalaryTo());
 
 
             City city = new City();
-            city.setId(newJob.getCityId());
+            city.setId(job.getCityId());
 
             Company company = new Company();
-            company.setId(newJob.getCompanyId());
+            company.setId(job.getCompanyId());
 
             Users users = new Users();
-            users.setId(newJob.getUserId());
+            users.setId(job.getUserId());
 
             Joblevel joblevel = new Joblevel();
-            joblevel.setId(newJob.getJobLevelId());
+            joblevel.setId(job.getJoblevelId());
 
             Industry industry = new Industry();
-            industry.setId(newJob.getIndustryId());
+            industry.setId(job.getIndustryId());
 
             newJob.setCityByCityId(city);
             newJob.setUsersByUserId(users);

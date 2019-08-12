@@ -266,7 +266,7 @@ public class Job {
     }
 
     @OneToMany(mappedBy = "jobByJobId")
-    @JsonBackReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     public List<Apply> getAppliesById() {
         return appliesById;
     }

@@ -106,6 +106,7 @@ public class ApplyServiceImpl implements ApplyService {
             for (Apply apply : list) {
                 listJob.add(apply.getJobByJobId());
             }
+            listJob.get(0).getAppliesById().get(0).getStatus();
         }
         return new RestResponse(true, "Thành công!!!", listJob);
     }
@@ -124,6 +125,14 @@ public class ApplyServiceImpl implements ApplyService {
             }
         }
         return listJobDTO;
+    }
+
+    @Override
+    public RestResponse getStatusApplyJob(int userId) {
+        List<Job> jobList = jobRepository.findByUserId(userId);
+        List<Apply> applyList = new ArrayList<>();
+
+        return new RestResponse(true, "Get getStatusApplyJob Success", null);
     }
 
     @Override
