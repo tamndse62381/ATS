@@ -32,9 +32,9 @@ public class JobseekerlikejobServiceImpl implements JobseekerlikejobService {
     @Override
     public boolean check(int JobSeekerId, int Jobid) {
         List<Jobseekerlikejob> jobseekerlikejob = jobseekerlikejobRespository.findByUserIdAndJobId(JobSeekerId, Jobid);
-        if (jobseekerlikejob == null)
-            return true;
-        return false;
+        if (jobseekerlikejob.size() > 0 )
+            return false;
+        return true;
     }
 
     @Override
