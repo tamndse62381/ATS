@@ -19,11 +19,11 @@ public interface ApplyService {
 
     List<JobDTO> listJobMobile(int JobSeekerId);
 
-    RestResponse getStatusApplyJob(int userId);
-
     RestResponse listCv(int JobId, Pageable pageable);
 
     RestResponse getAllApply(int userId);
+
+    int getAllApplyMobile(int userId);
 
     RestResponse checkStatusApply(int CvId, int JobId);
 }

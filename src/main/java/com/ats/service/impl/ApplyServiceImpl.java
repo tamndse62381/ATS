@@ -127,13 +127,6 @@ public class ApplyServiceImpl implements ApplyService {
         return listJobDTO;
     }
 
-    @Override
-    public RestResponse getStatusApplyJob(int userId) {
-        List<Job> jobList = jobRepository.findByUserId(userId);
-        List<Apply> applyList = new ArrayList<>();
-
-        return new RestResponse(true, "Get getStatusApplyJob Success", null);
-    }
 
     @Override
     public RestResponse listCv(int JobId, Pageable pageable) {
@@ -186,6 +179,20 @@ public class ApplyServiceImpl implements ApplyService {
         map.put("accept", accept);
         map.put("deny", deny);
         return new RestResponse(true, "Get Apply Success", map);
+    }
+
+    @Override
+    public int getAllApplyMobile(int userId) {
+        List<Cv> cvList = cvRepository.findByUserId(userId);
+        List<Apply> applyList = new ArrayList<>();
+        int all = 0;
+        for (int i = 0; i < cvList.size(); i++) {
+            applyList.addAll(applyRepository.findAppliesByCvid(cvList.get(i).getId()));
+        }
+        for (int i = 0; i < applyList.size(); i++) {
+            all++;
+        }
+        return all;
     }
 
     @Override

@@ -78,11 +78,12 @@ public class ApplyWS {
         return applyService.getAllApply(userId);
     }
 
-    @GetMapping("/getStatusApplyJob/{userId}")
+    @GetMapping("/getAllApllyMobile/{userId}")
     @CrossOrigin("*")
-    public RestResponse getStatusApplyJob(@PathVariable(name = "userId") int userId){
-        return applyService.getStatusApplyJob(userId);
+    public int getAllApllyMobile(@PathVariable(name = "userId") int userId){
+        return applyService.getAllApplyMobile(userId);
     }
+
 
     // get list job applied of JobSeekerId
     @GetMapping("/list-applied/mobile/{id}")
