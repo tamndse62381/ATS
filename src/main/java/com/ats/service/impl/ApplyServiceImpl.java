@@ -106,8 +106,23 @@ public class ApplyServiceImpl implements ApplyService {
             for (Apply apply : list) {
                 listJob.add(apply.getJobByJobId());
             }
-            listJob.get(0).getAppliesById().get(0).getStatus();
         }
+        List<Job> correctList = new ArrayList<>();
+
+        for (int i = 0; i < listJob.size(); i++) {
+            for (int j = 0; j < listJob.get(i).getAppliesById().size(); j++) {
+                for (int k = 0; k < listCv.size(); k++) {
+                    if (listJob.get(i).getAppliesById().get(j).getCvid() == listCv.get(k).getId()){
+                        List<Apply> applyList = new ArrayList<>();
+                        Apply apply = listJob.get(i).getAppliesById().get(j);
+                        listJob.get(i).setAppliesById(applyList);
+                        applyList.add(apply);
+                        listJob.get(i).setAppliesById(applyList);
+                    }
+                }
+            }
+        }
+
         return new RestResponse(true, "Thành công!!!", listJob);
     }
 

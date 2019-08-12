@@ -318,7 +318,7 @@ public class JobServiceImpl implements JobService {
             map.put("deny", deny);
             map.put("wait", wait);
             for (int i = 0; i < listOfJob.size(); i++) {
-                if(listOfJob.get(i).getStatus().equals("approved")){
+                if (listOfJob.get(i).getStatus().equals("approved")) {
                     applyList.addAll(applyRepository.findAppliesByJobId(listOfJob.get(i).getId()));
                 }
 
@@ -550,7 +550,9 @@ public class JobServiceImpl implements JobService {
                 }
             }
             System.out.println("SIZE ở đây : " + suggestJobList.size());
-
+            if (suggestJobList.size() == 0) {
+                suggestJobList = jobList;
+            }
             ModelMapper mapper = new ModelMapper();
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
             }.getType();
@@ -674,7 +676,9 @@ public class JobServiceImpl implements JobService {
 
 
             System.out.println("SIZE ở đây : " + suggestJobList.size());
-
+            if (suggestJobList.size() == 0) {
+                suggestJobList = jobList;
+            }
             ModelMapper mapper = new ModelMapper();
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
             }.getType();
@@ -706,6 +710,9 @@ public class JobServiceImpl implements JobService {
                 if (users.getCvsById().get(i).getIsActive() == 1) {
                     cv = cvRepository.findOne(users.getCvsById().get(i).getId());
                 }
+            }
+            if (cv == null) {
+                return null;
             }
             List<Apply> applies = applyRepository.findAppliesByCvid(cv.getId());
             List<Job> jobs = new ArrayList<>();
@@ -812,6 +819,9 @@ public class JobServiceImpl implements JobService {
                         }
                     }
                 }
+            }
+            if (suggestJobList.size() == 0) {
+                suggestJobList = jobList;
             }
             System.out.println("SIZE ở đây : " + suggestJobList.size());
             System.out.println("đã apply : " + jobs.size());

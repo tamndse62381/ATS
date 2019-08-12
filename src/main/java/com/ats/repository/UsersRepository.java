@@ -57,7 +57,7 @@ public interface UsersRepository extends JpaRepository<Users, Integer> {
     Optional<Users> findById(int id);
 
     @Query("select u from Users u where " +
-            "u.status LIKE CONCAT('%',LOWER(:status),'%') and " +
+            "u.status LIKE CONCAT('%',LOWER(:status),'%') and u.roleId <> 4 and" +
             "(u.email LIKE CONCAT('%',LOWER(:search),'%') or " +
             "u.fullName LIKE CONCAT('%',LOWER(:search),'%'))")
     Page<Users> findAll(Pageable pageable,
