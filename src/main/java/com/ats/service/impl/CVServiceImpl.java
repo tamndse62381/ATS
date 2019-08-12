@@ -165,7 +165,7 @@ public class CVServiceImpl implements CVService {
             editCv.setCityByCityId(cityRepository.findOne(editedCv.getCityId()));
             editCv.setIndustryByIndustryId(industryRepository.findOne(editedCv.getIndustryId()));
             editCv.setUsersByUserId(usersRepository.findOne(editedCv.getUserId()));
-
+            editCv.setLastModify(new Timestamp(new Date().getTime()));
             int CVID = cv.getId();
 
             List<CertificationDTO> listCer = editedCv.getCertificationsById();

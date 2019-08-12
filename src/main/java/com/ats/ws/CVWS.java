@@ -57,7 +57,7 @@ public class CVWS {
 
     // Delete One CV
     @RequestMapping(value = "/deleteCV/{id}", method = RequestMethod.POST)
-    @CrossOrigin(origins = "")
+    @CrossOrigin(origins = "*")
     public RestResponse deleteACV(@PathVariable int id){
         return cvService.delete(id);
     }
