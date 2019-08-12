@@ -131,9 +131,9 @@ public class EmailService {
             LOGGER.info("Begin sendAcceptUserEmail in EmailService with Email : " + email);
             MimeMessage message = javaMailSender.createMimeMessage();
             boolean multipart = true;
-            String subject = "Complete your account registration";
-            MimeMessageHelper helper = new MimeMessageHelper(message, multipart, "UTF-8");
 
+            MimeMessageHelper helper = new MimeMessageHelper(message, multipart, "UTF-8");
+            String subject = "";
             String welcome = "<p>Dear <b>" + employerName + "</b>,</p>";
             String confirm = "<p>Ba&#803;n &#273;a&#771; &#273;&#432;&#417;&#803;c ch&acirc;&#769;p nh&acirc;&#803;n va&#768;o c&ocirc;ng ty <b>"
                     + companyName + "</b></p>";
@@ -143,9 +143,11 @@ public class EmailService {
 
             if (result.equals("approved")) {
                 message.setContent(welcome + confirm + end, "text/html");
+                subject = "Approved User Enter Company";
             }
             if (result.equals("deny")) {
                 message.setContent(welcome + deny + end, "text/html");
+                subject = "Deny User Enter Company";
             }
 
             helper.setTo(email);
