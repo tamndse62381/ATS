@@ -413,7 +413,7 @@ public class CVServiceImpl implements CVService {
                 }
             }
             List<Cv> listCv = cvRepository.searchListCv(listSkillName, cityName, industryName);
-            listCv.removeAll(listLikedCv);
+//            listCv.removeAll(listLikedCv);
             Page<Cv> pageCv = new PageImpl<>(listCv, pageable, listCv.size());
             return pageCv;
         } catch (RuntimeException e) {
