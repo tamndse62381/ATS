@@ -18,7 +18,8 @@
     <mapping class="com.ats.entity.Cv"/>
     <mapping class="com.ats.entity.Education"/>
     <mapping class="com.ats.entity.Employercompany"/>
-    <mapping class="com.ats.entity.Functionpackage"/>
+    <mapping class="com.ats.entity.Feedback"/>
+    <mapping class="com.ats.entity.Feedbacktype"/>
     <mapping class="com.ats.entity.Industry"/>
     <mapping class="com.ats.entity.Job"/>
     <mapping class="com.ats.entity.Joblevel"/>
@@ -29,7 +30,6 @@
     <mapping class="com.ats.entity.Projectorproductworked"/>
     <mapping class="com.ats.entity.Receipts"/>
     <mapping class="com.ats.entity.Role"/>
-    <mapping class="com.ats.entity.Servicefunction"/>
     <mapping class="com.ats.entity.Servicepackage"/>
     <mapping class="com.ats.entity.Skill"/>
     <mapping class="com.ats.entity.Skillincv"/>

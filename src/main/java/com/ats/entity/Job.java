@@ -7,6 +7,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,6 +42,7 @@ public class Job {
     private List<Jobseekerlikejob> jobseekerlikejobsById;
     private List<Logjob> logjobsById;
     private List<Skillneedforjob> skillneedforjobsById;
+    private List<Feedback> feedbacksById;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -368,5 +370,15 @@ public class Job {
 
     public void setSkillneedforjobsById(List<Skillneedforjob> skillneedforjobsById) {
         this.skillneedforjobsById = skillneedforjobsById;
+    }
+
+    @OneToMany(mappedBy = "jobByJobId")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    public List<Feedback> getFeedbacksById() {
+        return feedbacksById;
+    }
+
+    public void setFeedbacksById(List<Feedback> feedbacksById) {
+        this.feedbacksById = feedbacksById;
     }
 }

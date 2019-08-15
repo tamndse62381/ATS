@@ -83,7 +83,6 @@ public class JobServiceImpl implements JobService {
             newJob.setCompanyByCompanyId(company);
             newJob.setJoblevelByJobLevelId(joblevel);
             newJob.setIndustryByIndustryId(industry);
-
 //            newJob = jobRepository.save(newJob);
             result = jobRepository.save(newJob).getId();
             System.out.println("KQ : " + result);
