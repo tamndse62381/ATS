@@ -1,6 +1,8 @@
 package com.ats.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.Objects;
@@ -97,6 +99,7 @@ public class Feedback {
     }
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "FeedBackTypeID", referencedColumnName = "id")
     public Feedbacktype getFeedbacktypeByFeedBackTypeId() {
         return feedbacktypeByFeedBackTypeId;
@@ -107,6 +110,7 @@ public class Feedback {
     }
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "JobID", referencedColumnName = "ID")
     public Job getJobByJobId() {
         return jobByJobId;
@@ -117,6 +121,7 @@ public class Feedback {
     }
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "UserID", referencedColumnName = "ID")
     public Users getUsersByUserId() {
         return usersByUserId;

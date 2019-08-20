@@ -1,5 +1,7 @@
 package com.ats.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -46,6 +48,7 @@ public class Feedbacktype {
     }
 
     @OneToMany(mappedBy = "feedbacktypeByFeedBackTypeId")
+    @JsonBackReference
     public List<Feedback> getFeedbacksById() {
         return feedbacksById;
     }

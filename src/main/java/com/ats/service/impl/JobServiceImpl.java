@@ -696,6 +696,7 @@ public class JobServiceImpl implements JobService {
         LOGGER.info("Begin suggestJob in Job Service with userid : " + userid);
         List<Integer> skillInCvId = new ArrayList();
         List<String> skillInCvName = new ArrayList<>();
+        List<Skill> skillObjinCv = new ArrayList<>();
         List<Job> jobList;
 
         List<Job> suggestJobList = new ArrayList<>();
@@ -722,6 +723,7 @@ public class JobServiceImpl implements JobService {
             for (int i = 0; i < cv.getSkillincvsById().size(); i++) {
                 skillInCvName.add(cv.getSkillincvsById().get(i).getSkillBySkillId().getSkillmasterBySkillMasterId().getSkillName());
                 skillInCvId.add(cv.getSkillincvsById().get(i).getSkillId());
+                skillObjinCv.add(cv.getSkillincvsById().get(i).getSkillBySkillId());
                 System.out.println(cv.getSkillincvsById().get(i).getSkillId());
                 System.out.println(cv.getSkillincvsById().get(i).getSkillBySkillId().getSkillmasterBySkillMasterId().getSkillName());
             }
@@ -747,6 +749,20 @@ public class JobServiceImpl implements JobService {
                     }
                 }
             }
+
+            for (int i = 0; i < suggestJobList.size(); i++) {
+                List<Skill> skillJob = new ArrayList<>();
+                for (int j = 0; j < suggestJobList.get(i).getSkillneedforjobsById().size(); j++) {
+                    skillJob.add(suggestJobList.get(i).getSkillneedforjobsById().get(j).getSkillBySkillId());
+                }
+                for (int j = 0; j < skillObjinCv.size(); j++) {
+                    if (skillJob.get(j).getSkillmasterBySkillMasterId() == skillObjinCv.get(j).getSkillmasterBySkillMasterId()){
+
+                    }
+                }
+
+            }
+
             if (suggestJobList.size() < 4) {
                 jobPage = jobRepository.suggestJob(100, industryName,
                         cityName, "approved", date, pageable);

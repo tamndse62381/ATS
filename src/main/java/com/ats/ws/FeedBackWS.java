@@ -26,8 +26,8 @@ public class FeedBackWS {
     @ResponseBody
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/create")
-    public RestResponse createJob(@RequestBody FeedBackDTO dto) {
-        LOGGER.info("Begin createJob in JobWS with Job title : {}");
+    public RestResponse createFeedBack(@RequestBody FeedBackDTO dto) {
+        LOGGER.info("Begin createFeedBack in FeedBackWS with Job title : {}");
         int result = 0;
         try {
             dto.setCreatedDate(new Date());
