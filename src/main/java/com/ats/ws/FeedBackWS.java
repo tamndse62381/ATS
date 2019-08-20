@@ -46,11 +46,11 @@ public class FeedBackWS {
     @ResponseBody
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getAllFeedBack")
-    public RestResponse getAllFeedBack(@PageableDefault Pageable pageable) {
+    public RestResponse getAllFeedBack(@PageableDefault Pageable pageable, @RequestParam("search") String search) {
         LOGGER.info("Begin getAllFeedBack in JobWS with Job title : {}");
         Page<FeedBackDTO2> feedbackPage;
         try {
-            feedbackPage = feedBackService.getAllFeedBack(pageable);
+            feedbackPage = feedBackService.getAllFeedBack(pageable,search);
             if (feedbackPage.getContent().size() > 0) {
                 return new RestResponse(true, "getAllFeedBack Successfull", feedbackPage);
             }

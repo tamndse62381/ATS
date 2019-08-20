@@ -80,12 +80,12 @@ public class FeedBackServiceImpl implements FeedBackService {
     }
 
     @Override
-    public Page<FeedBackDTO2> getAllFeedBack(Pageable pageable) {
+    public Page<FeedBackDTO2> getAllFeedBack(Pageable pageable,String search) {
         LOGGER.info("Begin getAllFeedBack in Feedback Service ");
         Page<Feedback> feedbackList = null;
         Page<FeedBackDTO2> feedBackDTO2s = null;
         try {
-            feedbackList = feedBackRepository.findAllByCreatedDate(pageable);
+            feedbackList = feedBackRepository.findAllByCreatedDate(pageable,search);
             feedBackDTO2s = feedbackList.map(new Converter<Feedback, FeedBackDTO2>() {
                 @Override
                 public FeedBackDTO2 convert(Feedback feedback) {
