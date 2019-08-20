@@ -152,7 +152,7 @@ public class JobServiceImpl implements JobService {
             System.out.println(city);
             System.out.println(industry);
             pageOfJob = jobRepository.searchJob(job, pageable, "approved", new Date(), city, industry);
-
+            System.out.println(pageOfJob.getContent().size());
             ModelMapper mapper = new ModelMapper();
             pageDTO = pageOfJob.map(new Converter<Job, JobDTO>() {
                 @Override

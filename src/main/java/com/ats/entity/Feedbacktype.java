@@ -7,7 +7,6 @@ import java.util.Objects;
 @Entity
 public class Feedbacktype {
     private int id;
-    private Integer feedBackId;
     private String description;
     private List<Feedback> feedbacksById;
 
@@ -20,16 +19,6 @@ public class Feedbacktype {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    @Basic
-    @Column(name = "FeedBackID", nullable = true)
-    public Integer getFeedBackId() {
-        return feedBackId;
-    }
-
-    public void setFeedBackId(Integer feedBackId) {
-        this.feedBackId = feedBackId;
     }
 
     @Basic
@@ -48,13 +37,12 @@ public class Feedbacktype {
         if (o == null || getClass() != o.getClass()) return false;
         Feedbacktype that = (Feedbacktype) o;
         return id == that.id &&
-                Objects.equals(feedBackId, that.feedBackId) &&
                 Objects.equals(description, that.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, feedBackId, description);
+        return Objects.hash(id, description);
     }
 
     @OneToMany(mappedBy = "feedbacktypeByFeedBackTypeId")
