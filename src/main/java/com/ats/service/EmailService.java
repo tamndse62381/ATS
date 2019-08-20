@@ -1,6 +1,8 @@
 package com.ats.service;
 
+import com.ats.entity.Job;
 import com.ats.entity.Users;
+import com.ats.repository.JobRepository;
 import com.ats.repository.UsersRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,6 +26,8 @@ public class EmailService {
     private JavaMailSender javaMailSender;
     @Autowired
     private UsersRepository usersRepository;
+    @Autowired
+    private JobRepository jobRepository;
 
     String footer =
             "<p style='font-size:150%;font-family:verdana;'>" +
@@ -221,6 +225,35 @@ public class EmailService {
             ex.printStackTrace();
         }
 
+    }
+
+    @Async
+    public void sendReplyUserEmail(int userId, int jobId, String contain) {
+        try {
+            Users users = usersRepository.findOne(userId);
+            Job job = jobRepository.findOne(jobId);
+            LOGGER.info("Begin sendReplyUserEmail in EmailService with Email : " + users.getEmail());
+            MimeMessage message = javaMailSender.createMimeMessage();
+            boolean multipart = true;
+
+            MimeMessageHelper helper = new MimeMessageHelper(message, multipart, "UTF-8");
+            String subject = "Reply User Feedback";
+            String welcome = "<p>Dear <b>" + users.getFullName() + "</b>,</p>";
+            String auto = "<p>Chu&#769;ng t&ocirc;i &#273;a&#771; nh&acirc;&#803;n &#273;&#432;&#417;&#803;c Feedback cu&#777;a ba&#803;n v&ecirc;&#768; c&ocirc;ng vi&ecirc;&#803;c</p>" + job.getTitle();
+            String end = "<p>Tr&acirc;n tro&#803;ng,</p><p> ATS Team</p>";
+            if (contain.isEmpty()) {
+                message.setContent(welcome + auto + end, "text/html; charset=UTF-8");
+            }
+            if (!contain.isEmpty()) {
+                message.setContent(welcome + "<p>" + contain + "</p>" + end, "text/html; charset=UTF-8");
+            }
+            helper.setTo(users.getEmail());
+            helper.setSubject(subject);
+            this.javaMailSender.send(message);
+            LOGGER.info("End sendReplyUserEmail in EmailService with Email : " + users.getEmail());
+        } catch (MessagingException ex) {
+            ex.printStackTrace();
+        }
     }
 
 

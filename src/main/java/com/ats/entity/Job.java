@@ -381,4 +381,5 @@ public class Job {
     public void setFeedbacksById(List<Feedback> feedbacksById) {
         this.feedbacksById = feedbacksById;
     }
+
 }

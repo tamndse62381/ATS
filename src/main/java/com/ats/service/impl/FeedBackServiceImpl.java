@@ -102,7 +102,7 @@ public class FeedBackServiceImpl implements FeedBackService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOGGER.info("Begin getAllFeedBack in Feedback Service");
+        LOGGER.info("End getAllFeedBack in Feedback Service");
         return feedBackDTO2s;
     }
 }
