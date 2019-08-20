@@ -373,7 +373,7 @@ public class Job {
     }
 
     @OneToMany(mappedBy = "jobByJobId")
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonBackReference
     public List<Feedback> getFeedbacksById() {
         return feedbacksById;
     }

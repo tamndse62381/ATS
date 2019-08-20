@@ -2,6 +2,8 @@ package com.ats.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -99,7 +101,7 @@ public class Feedback {
     }
 
     @ManyToOne
-    @JsonBackReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "FeedBackTypeID", referencedColumnName = "id")
     public Feedbacktype getFeedbacktypeByFeedBackTypeId() {
         return feedbacktypeByFeedBackTypeId;
@@ -121,7 +123,7 @@ public class Feedback {
     }
 
     @ManyToOne
-    @JsonBackReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "UserID", referencedColumnName = "ID")
     public Users getUsersByUserId() {
         return usersByUserId;

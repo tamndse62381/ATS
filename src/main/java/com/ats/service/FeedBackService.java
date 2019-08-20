@@ -1,6 +1,7 @@
 package com.ats.service;
 
 import com.ats.dto.FeedBackDTO;
+import com.ats.dto.FeedBackDTO2;
 import com.ats.entity.Feedback;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,5 +14,5 @@ public interface FeedBackService {
 
     Page<Feedback> getFeedBackByJobId(int jobid);
 
-    Page<Feedback> getAllFeedBack(Pageable pageable);
+    Page<FeedBackDTO2> getAllFeedBack(Pageable pageable);
 }

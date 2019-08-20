@@ -1,6 +1,7 @@
 package com.ats.ws;
 
 import com.ats.dto.FeedBackDTO;
+import com.ats.dto.FeedBackDTO2;
 import com.ats.entity.Feedback;
 import com.ats.service.FeedBackService;
 import com.ats.util.RestResponse;
@@ -44,12 +45,11 @@ public class FeedBackWS {
 
     @ResponseBody
     @CrossOrigin(origins = "*")
-    @PostMapping(value = "/getAllFeedBack")
+    @GetMapping(value = "/getAllFeedBack")
     public RestResponse getAllFeedBack(@PageableDefault Pageable pageable) {
         LOGGER.info("Begin getAllFeedBack in JobWS with Job title : {}");
-        Page<Feedback> feedbackPage;
+        Page<FeedBackDTO2> feedbackPage;
         try {
-
             feedbackPage = feedBackService.getAllFeedBack(pageable);
             if (feedbackPage.getContent().size() > 0) {
                 return new RestResponse(true, "getAllFeedBack Successfull", feedbackPage);

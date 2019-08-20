@@ -29,7 +29,7 @@ public class EmailService {
             "<p style='font-size:150%;font-family:verdana;'>" +
                     "<p><b><u>Nga&#768;y g&#432;&#777;i mail:</u>&ensp;&ensp;&ensp;" + new SimpleDateFormat("EEEE").format(new Date()) +
                     ", &ensp;" + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + "  </b></p>" +
-                    "&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;C&ocirc;ng vi&ecirc;n ph&acirc;&#768;n m&ecirc;&#768;m Quang Trung," +
+                    "&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;C&ocirc;ng vi&ecirc;n ph&acirc;&#768;n m&ecirc;&#768;m Quang Trung," +
                     "Tan Chanh Hiep, Qu&acirc;&#803;n 12,Tha&#768;nh Ph&ocirc;&#769; Ho Chi Minh</b></p>" +
                     "<p>Thanks and Best Regards,</p>" +
                     "<p>Team 17</p>" +
@@ -67,15 +67,15 @@ public class EmailService {
 
 
             if (result.equals("confirm")) {
-                message.setContent(confirm + footer, "text/html");
+                message.setContent(confirm + footer, "text/html; charset=UTF-8");
                 subject = "Confirm Mail";
             }
             if (result.equals("deny")) {
-                message.setContent(deny + footer, "text/html");
+                message.setContent(deny + footer, "text/html; charset=UTF-8");
                 subject = "Deny Mail";
             }
             if (result.equals("apply")) {
-                message.setContent(apply + footer, "text/html");
+                message.setContent(apply + footer, "text/html; charset=UTF-8");
                 subject = "Apply Mail";
             }
 
@@ -110,11 +110,11 @@ public class EmailService {
             String js = "<a href='http://localhost:8090/#/kiem-tra-thanh-cong-mail/" + users.getId() + "." + rand + "'>Confirm your account</a></p>";
             String end = "<p>Tr&acirc;n tro&#803;ng,</p><p> ATS Team</p>";
             if (result) {
-                message.setContent(welcome + confirm + emp + end, "text/html");
+                message.setContent(welcome + confirm + emp + end, "text/html; charset=UTF-8");
             }
 
             if (!result) {
-                message.setContent(welcome + confirm + js + end, "text/html");
+                message.setContent(welcome + confirm + js + end, "text/html; charset=UTF-8");
             }
             helper.setTo(email);
             helper.setSubject(subject);
@@ -142,11 +142,11 @@ public class EmailService {
             String end = "<p>Tr&acirc;n tro&#803;ng,</p><p> ATS Team</p>";
 
             if (result.equals("approved")) {
-                message.setContent(welcome + confirm + end, "text/html");
+                message.setContent(welcome + confirm + end, "text/html; charset=UTF-8");
                 subject = "Approved User Enter Company";
             }
             if (result.equals("deny")) {
-                message.setContent(welcome + deny + end, "text/html");
+                message.setContent(welcome + deny + end, "text/html; charset=UTF-8");
                 subject = "Deny User Enter Company";
             }
 
@@ -195,17 +195,17 @@ public class EmailService {
                     || result.equals("active ban") || result.equals("new ban")) {
                 if (type.equals("company")) {
                     message.setContent(begin + company +
-                            "bi&#803; ch&#259;&#803;n</p>" + footer, "text/html");
+                            "bi&#803; ch&#259;&#803;n</p>" + footer, "text/html; charset=UTF-8");
                     subject = "Ban company mail";
                 }
                 if (type.equals("job")) {
                     message.setContent(begin + job +
-                            "bi&#803; ch&#259;&#803;n</p>" + footer, "text/html");
+                            "bi&#803; ch&#259;&#803;n</p>" + footer, "text/html; charset=UTF-8");
                     subject = "Ban job mail";
                 }
                 if (type.equals("user")) {
                     message.setContent(begin + account +
-                            "bi&#803; ch&#259;&#803;n</p> " + footer, "text/html");
+                            "bi&#803; ch&#259;&#803;n</p> " + footer, "text/html; charset=UTF-8");
                     subject = "Ban user mail";
                 }
 

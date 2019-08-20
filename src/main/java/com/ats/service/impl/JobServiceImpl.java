@@ -750,18 +750,36 @@ public class JobServiceImpl implements JobService {
                 }
             }
 
-            for (int i = 0; i < suggestJobList.size(); i++) {
-                List<Skill> skillJob = new ArrayList<>();
-                for (int j = 0; j < suggestJobList.get(i).getSkillneedforjobsById().size(); j++) {
-                    skillJob.add(suggestJobList.get(i).getSkillneedforjobsById().get(j).getSkillBySkillId());
-                }
-                for (int j = 0; j < skillObjinCv.size(); j++) {
-                    if (skillJob.get(j).getSkillmasterBySkillMasterId() == skillObjinCv.get(j).getSkillmasterBySkillMasterId()){
-
-                    }
-                }
-
-            }
+//            HashMap<Job, Integer> map = new HashMap<>();
+//            for (int i = 0; i < suggestJobList.size(); i++) {
+//                List<Skill> skillJob = new ArrayList<>();
+//                for (int j = 0; j < suggestJobList.get(i).getSkillneedforjobsById().size(); j++) {
+//                    skillJob.add(suggestJobList.get(i).getSkillneedforjobsById().get(j).getSkillBySkillId());
+//                }
+//
+//                int sum = 0;
+//                int total = 0;
+//                for (int j = 0; j < skillObjinCv.size(); j++) {
+//                    int s1 = 0;
+//                    total += skillJob.get(j).getSkillLevel();
+//                    if (skillJob.get(j).getSkillmasterBySkillMasterId() == skillObjinCv.get(j).getSkillmasterBySkillMasterId()) {
+//                        s1 = skillObjinCv.get(j).getSkillLevel() - skillJob.get(j).getSkillLevel();
+//                    }
+//                    if (s1 > 0) {
+//                        sum += s1 * skillJob.get(j).getSkillLevel();
+//                    }
+//                    if(s1 == 0){
+//                        sum +=
+//                    }
+//                    if (s1 < 0) {
+//                        suggestJobList.remove(i);
+//                        break;
+//                    }
+//
+//                }
+//                int div = sum / total;
+//                map.put(suggestJobList.get(i), div);
+//            }
 
             if (suggestJobList.size() < 4) {
                 jobPage = jobRepository.suggestJob(100, industryName,
