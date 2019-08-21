@@ -9,6 +9,7 @@ import com.ats.entity.Users;
 import com.ats.repository.CompanyRepository;
 import com.ats.repository.FeedBackRepository;
 import com.ats.repository.JobRepository;
+import com.ats.service.EmailService;
 import com.ats.service.FeedBackService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,6 +31,8 @@ public class FeedBackServiceImpl implements FeedBackService {
     private FeedBackRepository feedBackRepository;
     @Autowired
     private JobRepository jobRepository;
+    @Autowired
+    private EmailService emailService;
     @Autowired
     private CompanyRepository companyRepository;
 
@@ -59,6 +62,7 @@ public class FeedBackServiceImpl implements FeedBackService {
 
 
             id = feedBackRepository.save(feedback).getId();
+            emailService.sendReplyUserEmail(dto.getUserId(), dto.getJobId(), "");
             System.out.println(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,12 +84,12 @@ public class FeedBackServiceImpl implements FeedBackService {
     }
 
     @Override
-    public Page<FeedBackDTO2> getAllFeedBack(Pageable pageable,String search) {
+    public Page<FeedBackDTO2> getAllFeedBack(Pageable pageable, String search) {
         LOGGER.info("Begin getAllFeedBack in Feedback Service ");
         Page<Feedback> feedbackList = null;
         Page<FeedBackDTO2> feedBackDTO2s = null;
         try {
-            feedbackList = feedBackRepository.findAllByCreatedDate(pageable,search);
+            feedbackList = feedBackRepository.findAllByCreatedDate(pageable, search);
             feedBackDTO2s = feedbackList.map(new Converter<Feedback, FeedBackDTO2>() {
                 @Override
                 public FeedBackDTO2 convert(Feedback feedback) {

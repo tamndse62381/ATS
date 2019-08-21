@@ -149,9 +149,9 @@ public class JobServiceImpl implements JobService {
         Page<JobDTO> pageDTO = null;
         try {
             LOGGER.info("Begin searchJob in Job Repository with job name : {} ", job);
-            System.out.println(job);
-            System.out.println(city);
-            System.out.println(industry);
+            System.out.println("String search : " + job);
+            System.out.println("City : " + city);
+            System.out.println("Industry : " + industry);
             pageOfJob = jobRepository.searchJob(job, pageable, "approved", new Date(), city, industry);
             System.out.println(pageOfJob.getContent().size());
             ModelMapper mapper = new ModelMapper();

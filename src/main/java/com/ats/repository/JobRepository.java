@@ -29,7 +29,7 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
             "c.fullName LIKE CONCAT('%',LOWER(:city),'%') and " +
             "d.name LIKE CONCAT('%',LOWER(:industry),'%') and " +
             "j.endDateForApply > :now and " +
-            "(j.title LIKE CONCAT('%',LOWER(:search),'%') " +
+            "(j.title LIKE CONCAT('%',LOWER(:search),'%')" +
             "OR m.skillName LIKE CONCAT('%',LOWER(:search),'%')" +
             "OR j.companyByCompanyId.nameCompany LIKE CONCAT('%',LOWER(:search),'%'))")
     Page<Job> searchJob(@Param("search") String search, Pageable pageable,
