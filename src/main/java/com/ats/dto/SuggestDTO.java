@@ -4,23 +4,12 @@ import com.ats.entity.Job;
 import lombok.Data;
 
 @Data
-public class SuggestDTO {
-    double div;
+public class SuggestDTO implements Comparable<SuggestDTO> {
+    int sum;
     Job job;
 
-    public void setDiv(double div) {
-        this.div = div;
-    }
-
-    public void setJob(Job job) {
-        this.job = job;
-    }
-
-    public double getDiv() {
-        return div;
-    }
-
-    public Job getJob() {
-        return job;
+    @Override
+    public int compareTo(SuggestDTO o) {
+        return Integer.compare(this.getSum(), o.getSum());
     }
 }

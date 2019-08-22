@@ -437,23 +437,27 @@ public class JobServiceImpl implements JobService {
     @Override
     public Page<JobDTO> suggestJob(int cvId, Pageable pageable) {
         LOGGER.info("Begin suggestJob in Job Service with cvId : " + cvId);
-        List<Integer> skillInCvId = new ArrayList();
-        List<String> skillInCvName = new ArrayList<>();
         List<Job> jobList;
-
+        List<SuggestDTO> suggestDTOS = new ArrayList<>();
         List<Job> suggestJobList = new ArrayList<>();
         Page<Job> jobPage;
-
+        List<Skill> skillObjinCv = new ArrayList<>();
         List<JobDTO> listofDTO;
         Page<JobDTO> pageDTO = null;
         try {
             Cv cv = cvRepository.findOne(cvId);
-            System.out.println("SKILL của CV Ở ĐÂY");
+            Users users = cv.getUsersByUserId();
+            List<Apply> applies = null;
+            for (int i = 0; i < users.getCvsById().size(); i++) {
+                applies = applyRepository.findAppliesByCvid(users.getCvsById().get(i).getId());
+            }
+
+            List<Job> jobs = new ArrayList<>();
+            for (int i = 0; i < applies.size(); i++) {
+                jobs.add(applies.get(i).getJobByJobId());
+            }
             for (int i = 0; i < cv.getSkillincvsById().size(); i++) {
-                skillInCvName.add(cv.getSkillincvsById().get(i).getSkillBySkillId().getSkillmasterBySkillMasterId().getSkillName());
-                skillInCvId.add(cv.getSkillincvsById().get(i).getSkillId());
-                System.out.println(cv.getSkillincvsById().get(i).getSkillId());
-                System.out.println(cv.getSkillincvsById().get(i).getSkillBySkillId().getSkillmasterBySkillMasterId().getSkillName());
+                skillObjinCv.add(cv.getSkillincvsById().get(i).getSkillBySkillId());
             }
             Date date = new Date();
 
@@ -462,96 +466,77 @@ public class JobServiceImpl implements JobService {
 
             jobPage = jobRepository.suggestJob(cv.getYearExperience(), industryName,
                     cityName, "approved", date, pageable);
-            jobList = jobPage.getContent();
-
-            System.out.println("CÓ NHA : " + jobList.size());
-            // Get All Job Check All Field
-            System.out.println("Get All Job Check All Field");
-            for (int i = 0; i < jobList.size(); i++) {
-                for (int j = 0; j < jobList.get(i).getSkillneedforjobsById().size(); j++) {
-                    System.out.println(jobList.get(i).getSkillneedforjobsById().get(j).getSkillId());
-                    if (skillInCvId.contains(jobList.get(i).getSkillneedforjobsById().get(j).getSkillId())) {
-                        if (!suggestJobList.contains(jobList.get(i))) {
-                            suggestJobList.add(jobList.get(i));
-                        }
-                    }
-                }
-            }
-            if (suggestJobList.size() < 4) {
+            System.out.println("Lần 1 : " + jobPage.getContent().size());
+            if (jobPage.getContent().size() < 4) {
                 jobPage = jobRepository.suggestJob(100, industryName,
                         cityName, "approved", date, pageable);
-                jobList = jobPage.getContent();
-
-                System.out.println("CÓ NHA : " + jobList.size());
-                // Get All Job Without Year Experience
-                System.out.println(" Get All Job Without Year Experience");
-                for (int i = 0; i < jobList.size(); i++) {
-                    for (int j = 0; j < jobList.get(i).getSkillneedforjobsById().size(); j++) {
-                        System.out.println(jobList.get(i).getSkillneedforjobsById().get(j).getSkillId());
-                        if (skillInCvId.contains(jobList.get(i).getSkillneedforjobsById().get(j).getSkillId())) {
-                            if (!suggestJobList.contains(jobList.get(i))) {
-                                suggestJobList.add(jobList.get(i));
-                            }
-                        }
-                    }
-                }
+                System.out.println("Lần 2 : " + jobPage.getContent().size());
             }
-            if (suggestJobList.size() < 4) {
+            if (jobPage.getContent().size() < 4) {
                 jobPage = jobRepository.suggestJob(100, industryName,
                         "", "approved", date, pageable);
-                jobList = jobPage.getContent();
-                System.out.println("CÓ NHA : " + jobList.size());
-                // Get All Job Without Year Experience, cityName
-                System.out.println(" Get All Job Without Year Experience, cityName");
-                for (int i = 0; i < jobList.size(); i++) {
-                    for (int j = 0; j < jobList.get(i).getSkillneedforjobsById().size(); j++) {
-                        System.out.println(jobList.get(i).getSkillneedforjobsById().get(j).getSkillId());
-                        if (skillInCvId.contains(jobList.get(i).getSkillneedforjobsById().get(j).getSkillId())) {
-                            if (!suggestJobList.contains(jobList.get(i))) {
-                                suggestJobList.add(jobList.get(i));
-                            }
-                        }
-                    }
-                }
+                System.out.println("Lần 3 : " + jobPage.getContent().size());
             }
-            if (suggestJobList.size() < 4) {
+            if (jobPage.getContent().size() < 4) {
                 jobPage = jobRepository.suggestJob(100, "",
                         "", "approved", date, pageable);
-                jobList = jobPage.getContent();
-                System.out.println("CÓ NHA : " + jobList.size());
-                // Get All Job Without Year Experience,cityName,industryName
-                System.out.println(" Get All Job Without Year Experience, cityName , industryName");
-                for (int i = 0; i < jobList.size(); i++) {
-                    for (int j = 0; j < jobList.get(i).getSkillneedforjobsById().size(); j++) {
-                        System.out.println(jobList.get(i).getSkillneedforjobsById().get(j).getSkillId());
-                        if (skillInCvId.contains(jobList.get(i).getSkillneedforjobsById().get(j).getSkillId())) {
-                            if (!suggestJobList.contains(jobList.get(i))) {
-                                suggestJobList.add(jobList.get(i));
+                System.out.println("Lần 4 : " + jobPage.getContent().size());
+            }
+
+            jobList = jobPage.getContent();
+            System.out.println("Size cuối cùng : " + jobList.size());
+            for (int i = 0; i < jobList.size(); i++) {
+                int check = 0;
+                for (int j = 0; j < skillObjinCv.size(); j++) {
+                    for (int k = 0; k < jobList.get(i).getSkillneedforjobsById().size(); k++) {
+                        if (skillObjinCv.get(j).getSkillMasterId() ==
+                                jobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillMasterId()) {
+                            if (skillObjinCv.get(j).getSkillLevel() >=
+                                    jobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillLevel()) {
+                                check++;
                             }
                         }
                     }
                 }
-            }
-            //Bỏ hết Field Check Skill Name
-            if (suggestJobList.size() < 4) {
-                jobPage = jobRepository.suggestJob(100, "",
-                        "", "approved", date, pageable);
-                jobList = jobPage.getContent();
-                for (int i = 0; i < jobList.size(); i++) {
-                    for (int j = 0; j < jobList.get(i).getSkillneedforjobsById().size(); j++) {
-                        System.out.println(jobList.get(i).getSkillneedforjobsById().get(j).getSkillId());
-                        if (skillInCvName.contains(jobList.get(i).getSkillneedforjobsById().get(j).
-                                getSkillBySkillId().getSkillmasterBySkillMasterId().getSkillName())) {
-                            if (!suggestJobList.contains(jobList.get(i))) {
-                                suggestJobList.add(jobList.get(i));
-                            }
-                        }
-                    }
+                if (check == jobList.get(i).getSkillneedforjobsById().size()) {
+                    suggestJobList.add(jobList.get(i));
                 }
             }
-            System.out.println("SIZE ở đây : " + suggestJobList.size());
-            if (suggestJobList.size() == 0) {
-                suggestJobList = jobList;
+            for (int i = 0; i < suggestJobList.size(); i++) {
+                int sum = 0;
+
+                for (int j = 0; j < skillObjinCv.size(); j++) {
+                    boolean flag = true;
+                    for (int k = 0; k < suggestJobList.get(i).getSkillneedforjobsById().size(); k++) {
+                        if (skillObjinCv.get(j).getSkillMasterId() ==
+                                jobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillMasterId()) {
+                            sum += skillObjinCv.get(j).getSkillLevel() -
+                                    jobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillLevel();
+                            flag = false;
+                        }
+                    }
+                    if (flag) {
+                        sum += skillObjinCv.get(j).getSkillLevel();
+                    }
+                }
+                SuggestDTO dto = new SuggestDTO();
+                dto.setSum(sum);
+                dto.setJob(suggestJobList.get(i));
+                suggestDTOS.add(dto);
+            }
+            Collections.sort(suggestDTOS);
+            suggestJobList.clear();
+            for (int i = 0; i < suggestDTOS.size(); i++) {
+                System.out.println(i + "-" + suggestDTOS.get(i).getSum());
+                System.out.println(i + "-" + suggestDTOS.get(i).getJob().getTitle());
+                suggestJobList.add(suggestDTOS.get(i).getJob());
+            }
+            if (suggestJobList.size() < 10) {
+                for (int i = 0; i < jobList.size(); i++) {
+                    if (!suggestJobList.contains(jobList.get(i))) {
+                        suggestJobList.add(jobList.get(i));
+                    }
+                }
             }
             ModelMapper mapper = new ModelMapper();
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
@@ -569,10 +554,9 @@ public class JobServiceImpl implements JobService {
     @Override
     public Page<JobDTO> suggestJobByJobId(int jobid, Pageable pageable) {
         LOGGER.info("Begin suggestJob in Job Service with jobid : " + jobid);
-        List<Integer> skillInCvId = new ArrayList();
-        List<String> skillInCvName = new ArrayList<>();
+        List<Skill> skillObjinCv = new ArrayList<>();
         List<Job> jobList;
-
+        List<SuggestDTO> suggestDTOS = new ArrayList<>();
         List<Job> suggestJobList = new ArrayList<>();
         Page<Job> jobPage;
 
@@ -582,10 +566,7 @@ public class JobServiceImpl implements JobService {
             Job job = jobRepository.findOne(jobid);
             System.out.println("SKILL của Job Ở ĐÂY");
             for (int i = 0; i < job.getSkillneedforjobsById().size(); i++) {
-                skillInCvName.add(job.getSkillneedforjobsById().get(i).getSkillBySkillId().getSkillmasterBySkillMasterId().getSkillName());
-                skillInCvId.add(job.getSkillneedforjobsById().get(i).getSkillId());
-                System.out.println(job.getSkillneedforjobsById().get(i).getSkillId());
-                System.out.println(job.getSkillneedforjobsById().get(i).getSkillBySkillId().getSkillmasterBySkillMasterId().getSkillName());
+                skillObjinCv.add(job.getSkillneedforjobsById().get(i).getSkillBySkillId());
             }
             Date date = new Date();
 
@@ -594,91 +575,81 @@ public class JobServiceImpl implements JobService {
 
             jobPage = jobRepository.suggestJob(100, industryName,
                     cityName, "approved", date, pageable);
-            jobList = jobPage.getContent();
-
-            System.out.println("CÓ NHA : " + jobList.size());
-            // Get All Job Check All Field
-            System.out.println("Get All Job Check All Field");
-            for (int i = 0; i < jobList.size(); i++) {
-                for (int j = 0; j < jobList.get(i).getSkillneedforjobsById().size(); j++) {
-                    if (jobList.get(i).getId() != jobid) {
-                        if (skillInCvId.contains(jobList.get(i).getSkillneedforjobsById().get(j).getSkillId())) {
-                            if (!suggestJobList.contains(jobList.get(i))) {
-                                suggestJobList.add(jobList.get(i));
-                            }
-                        }
-                    }
-                }
-            }
-            if (suggestJobList.size() < 4) {
-                jobPage = jobRepository.suggestJob(100, "",
+            System.out.println("Lần 1 : " + jobPage.getContent().size());
+            if (jobPage.getContent().size() < 4) {
+                jobPage = jobRepository.suggestJob(100, industryName,
                         cityName, "approved", date, pageable);
-                jobList = jobPage.getContent();
-
-                System.out.println("CÓ NHA : " + jobList.size());
-                // Get All Job Without Year Experience
-                System.out.println(" Get All Job Without Year Experience");
-                for (int i = 0; i < jobList.size(); i++) {
-                    if (jobList.get(i).getId() != jobid) {
-                        for (int j = 0; j < jobList.get(i).getSkillneedforjobsById().size(); j++) {
-                            System.out.println(jobList.get(i).getSkillneedforjobsById().get(j).getSkillId());
-                            if (skillInCvId.contains(jobList.get(i).getSkillneedforjobsById().get(j).getSkillId())) {
-                                if (!suggestJobList.contains(jobList.get(i))) {
-                                    suggestJobList.add(jobList.get(i));
-                                }
-                            }
-                        }
-                    }
-                }
+                System.out.println("Lần 2 : " + jobPage.getContent().size());
             }
-
-            if (suggestJobList.size() < 4) {
+            if (jobPage.getContent().size() < 4) {
+                jobPage = jobRepository.suggestJob(100, industryName,
+                        "", "approved", date, pageable);
+                System.out.println("Lần 3 : " + jobPage.getContent().size());
+            }
+            if (jobPage.getContent().size() < 4) {
                 jobPage = jobRepository.suggestJob(100, "",
                         "", "approved", date, pageable);
-                jobList = jobPage.getContent();
-                System.out.println("CÓ NHA : " + jobList.size());
-                // Get All Job Without Year Experience, cityName
-                System.out.println(" Get All Job Without Year Experience, cityName");
-                for (int i = 0; i < jobList.size(); i++) {
-                    if (jobList.get(i).getId() != jobid) {
-                        for (int j = 0; j < jobList.get(i).getSkillneedforjobsById().size(); j++) {
-                            System.out.println(jobList.get(i).getSkillneedforjobsById().get(j).getSkillId());
-                            if (skillInCvId.contains(jobList.get(i).getSkillneedforjobsById().get(j).getSkillId())) {
-                                if (!suggestJobList.contains(jobList.get(i))) {
-                                    suggestJobList.add(jobList.get(i));
-                                }
+                System.out.println("Lần 4 : " + jobPage.getContent().size());
+            }
+
+            jobList = jobPage.getContent();
+            System.out.println("Size cuối cùng : " + jobList.size());
+
+            for (int i = 0; i < jobList.size(); i++) {
+                int check = 0;
+                for (int j = 0; j < skillObjinCv.size(); j++) {
+                    for (int k = 0; k < jobList.get(i).getSkillneedforjobsById().size(); k++) {
+                        if (skillObjinCv.get(j).getSkillMasterId() ==
+                                jobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillMasterId()) {
+                            if (skillObjinCv.get(j).getSkillLevel() >=
+                                    jobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillLevel()) {
+                                check++;
                             }
                         }
                     }
                 }
+                if (check == jobList.get(i).getSkillneedforjobsById().size()) {
+                    suggestJobList.add(jobList.get(i));
+                }
             }
-            if (suggestJobList.size() < 4) {
-                jobPage = jobRepository.suggestJob(100, "",
-                        "", "approved", date, pageable);
-                jobList = jobPage.getContent();
-                System.out.println("CÓ NHA : " + jobList.size());
-                // Get All Job Without Year Experience, cityName
-                System.out.println(" Get All Job Without Year Experience, cityName");
-                for (int i = 0; i < jobList.size(); i++) {
-                    if (jobList.get(i).getId() != jobid) {
-                        for (int j = 0; j < jobList.get(i).getSkillneedforjobsById().size(); j++) {
-                            if (skillInCvName.contains(jobList.get(i).getSkillneedforjobsById().get(j).
-                                    getSkillBySkillId().getSkillmasterBySkillMasterId().getSkillName())) {
-                                if (!suggestJobList.contains(jobList.get(i))) {
-                                    suggestJobList.add(jobList.get(i));
-                                }
-                            }
+            for (int i = 0; i < suggestJobList.size(); i++) {
+                int sum = 0;
+
+                for (int j = 0; j < skillObjinCv.size(); j++) {
+                    boolean flag = true;
+                    for (int k = 0; k < suggestJobList.get(i).getSkillneedforjobsById().size(); k++) {
+                        if (skillObjinCv.get(j).getSkillMasterId() ==
+                                jobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillMasterId()) {
+                            sum += skillObjinCv.get(j).getSkillLevel() -
+                                    jobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillLevel();
+                            flag = false;
                         }
                     }
-
+                    if (flag) {
+                        sum += skillObjinCv.get(j).getSkillLevel();
+                    }
+                }
+                SuggestDTO dto = new SuggestDTO();
+                dto.setSum(sum);
+                dto.setJob(suggestJobList.get(i));
+                suggestDTOS.add(dto);
+            }
+            Collections.sort(suggestDTOS);
+            suggestJobList.clear();
+            for (int i = 0; i < suggestDTOS.size(); i++) {
+                System.out.println(i + "-" + suggestDTOS.get(i).getSum());
+                System.out.println(i + "-" + suggestDTOS.get(i).getJob().getTitle());
+                suggestJobList.add(suggestDTOS.get(i).getJob());
+            }
+            if (suggestJobList.size() < 10) {
+                for (int i = 0; i < jobList.size(); i++) {
+                    if (!suggestJobList.contains(jobList.get(i))) {
+                        suggestJobList.add(jobList.get(i));
+                    }
                 }
             }
 
 
-            System.out.println("SIZE ở đây : " + suggestJobList.size());
-            if (suggestJobList.size() == 0) {
-                suggestJobList = jobList;
-            }
             ModelMapper mapper = new ModelMapper();
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
             }.getType();
@@ -695,38 +666,27 @@ public class JobServiceImpl implements JobService {
     @Override
     public Page<JobDTO> suggestJobByUserId(int userid, Pageable pageable) {
         LOGGER.info("Begin suggestJob in Job Service with userid : " + userid);
-        List<Integer> skillInCvId = new ArrayList();
-        List<String> skillInCvName = new ArrayList<>();
         List<Skill> skillObjinCv = new ArrayList<>();
         List<Job> jobList;
-
         List<Job> suggestJobList = new ArrayList<>();
         Page<Job> jobPage;
         Cv cv = null;
+        List<SuggestDTO> suggestDTOS = new ArrayList<>();
         List<JobDTO> listofDTO;
         Page<JobDTO> pageDTO = null;
         try {
             Users users = usersRepository.findOne(userid);
+            List<Apply> applies = null;
             for (int i = 0; i < users.getCvsById().size(); i++) {
-                if (users.getCvsById().get(i).getIsActive() == 1) {
-                    cv = cvRepository.findOne(users.getCvsById().get(i).getId());
-                }
+                applies = applyRepository.findAppliesByCvid(users.getCvsById().get(i).getId());
             }
-            if (cv == null) {
-                return null;
-            }
-            List<Apply> applies = applyRepository.findAppliesByCvid(cv.getId());
+
             List<Job> jobs = new ArrayList<>();
             for (int i = 0; i < applies.size(); i++) {
                 jobs.add(applies.get(i).getJobByJobId());
             }
-            System.out.println("SKILL của CV Ở ĐÂY");
             for (int i = 0; i < cv.getSkillincvsById().size(); i++) {
-                skillInCvName.add(cv.getSkillincvsById().get(i).getSkillBySkillId().getSkillmasterBySkillMasterId().getSkillName());
-                skillInCvId.add(cv.getSkillincvsById().get(i).getSkillId());
                 skillObjinCv.add(cv.getSkillincvsById().get(i).getSkillBySkillId());
-                System.out.println(cv.getSkillincvsById().get(i).getSkillId());
-                System.out.println(cv.getSkillincvsById().get(i).getSkillBySkillId().getSkillmasterBySkillMasterId().getSkillName());
             }
             Date date = new Date();
 
@@ -735,97 +695,42 @@ public class JobServiceImpl implements JobService {
 
             jobPage = jobRepository.suggestJob(cv.getYearExperience(), industryName,
                     cityName, "approved", date, pageable);
-            jobList = jobPage.getContent();
-            System.out.println("Get All Job Check All Field");
-            System.out.println("CÓ NHA : " + jobList.size());
-            // Get All Job Check All Field
-
-            for (int i = 0; i < jobList.size(); i++) {
-                for (int j = 0; j < jobList.get(i).getSkillneedforjobsById().size(); j++) {
-                    if (skillInCvId.contains(jobList.get(i).getSkillneedforjobsById().get(j).getSkillId())) {
-                        if (!suggestJobList.contains(jobList.get(i))) {
-                            suggestJobList.add(jobList.get(i));
-                        }
-                    }
-                }
-            }
-
-
-            if (suggestJobList.size() < 4) {
+            System.out.println("Lần 1 : " + jobPage.getContent().size());
+            if (jobPage.getContent().size() < 4) {
                 jobPage = jobRepository.suggestJob(100, industryName,
                         cityName, "approved", date, pageable);
-                jobList = jobPage.getContent();
-                System.out.println(" Get All Job Without Year Experience");
-                System.out.println("CÓ NHA : " + jobList.size());
-                // Get All Job Without Year Experience
-
-                for (int i = 0; i < jobList.size(); i++) {
-                    for (int j = 0; j < jobList.get(i).getSkillneedforjobsById().size(); j++) {
-                        if (skillInCvId.contains(jobList.get(i).getSkillneedforjobsById().get(j).getSkillId())) {
-                            if (!suggestJobList.contains(jobList.get(i))) {
-                                suggestJobList.add(jobList.get(i));
-                            }
-                        }
-                    }
-                }
+                System.out.println("Lần 2 : " + jobPage.getContent().size());
             }
-            if (suggestJobList.size() < 4) {
+            if (jobPage.getContent().size() < 4) {
                 jobPage = jobRepository.suggestJob(100, industryName,
                         "", "approved", date, pageable);
-                jobList = jobPage.getContent();
-                System.out.println(" Get All Job Without Year Experience, cityName");
-                System.out.println("CÓ NHA : " + jobList.size());
-                // Get All Job Without Year Experience, cityName
-
-                for (int i = 0; i < jobList.size(); i++) {
-                    for (int j = 0; j < jobList.get(i).getSkillneedforjobsById().size(); j++) {
-                        if (skillInCvId.contains(jobList.get(i).getSkillneedforjobsById().get(j).getSkillId())) {
-                            if (!suggestJobList.contains(jobList.get(i))) {
-                                suggestJobList.add(jobList.get(i));
-                            }
-                        }
-                    }
-                }
+                System.out.println("Lần 3 : " + jobPage.getContent().size());
             }
-            if (suggestJobList.size() < 4) {
+            if (jobPage.getContent().size() < 4) {
                 jobPage = jobRepository.suggestJob(100, "",
                         "", "approved", date, pageable);
-                jobList = jobPage.getContent();
-                System.out.println(" Get All Job Without Year Experience, cityName , industryName");
-                System.out.println("CÓ NHA : " + jobList.size());
-                // Get All Job Without Year Experience,cityName,industryName
+                System.out.println("Lần 4 : " + jobPage.getContent().size());
+            }
 
-                for (int i = 0; i < jobList.size(); i++) {
-                    for (int j = 0; j < jobList.get(i).getSkillneedforjobsById().size(); j++) {
-                        System.out.println(jobList.get(i).getSkillneedforjobsById().get(j).getSkillId());
-                        if (skillInCvId.contains(jobList.get(i).getSkillneedforjobsById().get(j).getSkillId())) {
-                            if (!suggestJobList.contains(jobList.get(i))) {
-                                suggestJobList.add(jobList.get(i));
+            jobList = jobPage.getContent();
+            System.out.println("Size cuối cùng : " + jobList.size());
+            for (int i = 0; i < jobList.size(); i++) {
+                int check = 0;
+                for (int j = 0; j < skillObjinCv.size(); j++) {
+                    for (int k = 0; k < jobList.get(i).getSkillneedforjobsById().size(); k++) {
+                        if (skillObjinCv.get(j).getSkillMasterId() ==
+                                jobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillMasterId()) {
+                            if (skillObjinCv.get(j).getSkillLevel() >=
+                                    jobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillLevel()) {
+                                check++;
                             }
                         }
                     }
                 }
-            }
-            //Bỏ hết Field Check Skill Name
-            if (suggestJobList.size() < 4) {
-                jobPage = jobRepository.suggestJob(100, "",
-                        "", "approved", date, pageable);
-                jobList = jobPage.getContent();
-                for (int i = 0; i < jobList.size(); i++) {
-                    for (int j = 0; j < jobList.get(i).getSkillneedforjobsById().size(); j++) {
-                        System.out.println(jobList.get(i).getSkillneedforjobsById().get(j).getSkillId());
-                        if (skillInCvName.contains(jobList.get(i).getSkillneedforjobsById().get(j).
-                                getSkillBySkillId().getSkillmasterBySkillMasterId().getSkillName())) {
-                            if (!suggestJobList.contains(jobList.get(i))) {
-                                suggestJobList.add(jobList.get(i));
-                            }
-                        }
-                    }
+                if (check == jobList.get(i).getSkillneedforjobsById().size()) {
+                    suggestJobList.add(jobList.get(i));
                 }
             }
-//            if (suggestJobList.size() == 0) {
-//                suggestJobList = jobList;
-//            }
             System.out.println("SIZE ở đây : " + suggestJobList.size());
             System.out.println("đã apply : " + jobs.size());
             if (jobs.size() > 0) {
@@ -835,64 +740,44 @@ public class JobServiceImpl implements JobService {
                     }
                 }
             }
+            for (int i = 0; i < suggestJobList.size(); i++) {
+                int sum = 0;
 
+                for (int j = 0; j < skillObjinCv.size(); j++) {
+                    boolean flag = true;
+                    for (int k = 0; k < suggestJobList.get(i).getSkillneedforjobsById().size(); k++) {
+                        if (skillObjinCv.get(j).getSkillMasterId() ==
+                                jobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillMasterId()) {
+                            sum += skillObjinCv.get(j).getSkillLevel() -
+                                    jobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillLevel();
+                            flag = false;
+                        }
+                    }
+                    if (flag) {
+                        sum += skillObjinCv.get(j).getSkillLevel();
+                    }
+                }
+                SuggestDTO dto = new SuggestDTO();
+                dto.setSum(sum);
+                dto.setJob(suggestJobList.get(i));
+                suggestDTOS.add(dto);
+            }
+            Collections.sort(suggestDTOS);
+            suggestJobList.clear();
+            for (int i = 0; i < suggestDTOS.size(); i++) {
+                System.out.println(i + "-" + suggestDTOS.get(i).getSum());
+                System.out.println(i + "-" + suggestDTOS.get(i).getJob().getTitle());
+                suggestJobList.add(suggestDTOS.get(i).getJob());
+            }
 
-//            List<SuggestDTO> suggestDTOS = new ArrayList<>();
-//
-//            int total = 0;
-//            for (int i = 0; i < suggestJobList.size(); i++) {
-//                List<Skill> skillJob = new ArrayList<>();
-//                System.out.println(suggestJobList.get(i).getTitle());
-//                for (int j = 0; j < suggestJobList.get(i).getSkillneedforjobsById().size(); j++) {
-//                    skillJob.add(suggestJobList.get(i).getSkillneedforjobsById().get(j).getSkillBySkillId());
-//                }
-//                for (int t = 0; t < skillJob.size(); t++) {
-//                    total += skillJob.get(t).getSkillLevel();
-//                }
-//                int sum = 0;
-//                int s1 = 0;
-//                double div = 0.0;
-//                for (int j = 0; j < skillObjinCv.size(); j++) {
-//                    boolean flag = true;
-//                    for (int k = 0; k < skillJob.size(); k++) {
-//                        if (skillObjinCv.get(j).getSkillmasterBySkillMasterId().getSkillName().equals(
-//                                skillJob.get(k).getSkillmasterBySkillMasterId().getSkillName())) {
-//                            s1 = skillObjinCv.get(j).getSkillLevel() - skillJob.get(k).getSkillLevel();
-//                            if (s1 >= 0) {
-//                                sum += s1 * skillJob.get(k).getSkillLevel();
-//                                flag = false;
-//                            }
-//                        }
-//                    }
-//                    if (s1 == 0 && flag) {
-//                        sum += 1 * skillObjinCv.get(j).getSkillLevel() - 1;
-//                    }
-//                    if (skillObjinCv.size() > skillJob.size() && flag) {
-//                        sum += 1;
-//                    }
-//                    if (skillObjinCv.size() < skillJob.size() && flag) {
-//                        sum += 5;
-//                    }
-//                }
-//                div = sum / total;
-//                SuggestDTO dto = new SuggestDTO();
-//                dto.setDiv(div);
-//                System.out.println(div);
-//                dto.setJob(suggestJobList.get(i));
-//                suggestDTOS.add(dto);
-//            }
-//
-//            Collections.sort(suggestDTOS, new Comparator<SuggestDTO>() {
-//                @Override
-//                public int compare(SuggestDTO u1, SuggestDTO u2) {
-//                    return Double.compare(u1.getDiv(), u2.getDiv());
-//                }
-//            });
-//            List<Job> jobList1 = new ArrayList<>();
-//            for (int i = 0; i < suggestDTOS.size(); i++) {
-//                jobList1.add(suggestDTOS.get(i).getJob());
-//                System.out.println(suggestDTOS.get(i).getDiv());
-//            }
+            if (suggestJobList.size() < 10) {
+                for (int i = 0; i < jobList.size(); i++) {
+                    if (!suggestJobList.contains(jobList.get(i))) {
+                        suggestJobList.add(jobList.get(i));
+                    }
+                }
+            }
+
             ModelMapper mapper = new ModelMapper();
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
             }.getType();
