@@ -679,6 +679,9 @@ public class JobServiceImpl implements JobService {
             List<Apply> applies = null;
             for (int i = 0; i < users.getCvsById().size(); i++) {
                 applies = applyRepository.findAppliesByCvid(users.getCvsById().get(i).getId());
+                if(users.getCvsById().get(i).getIsActive() == 1){
+                    cv = cvRepository.findOne(users.getCvsById().get(i).getId());
+                }
             }
 
             List<Job> jobs = new ArrayList<>();
@@ -713,7 +716,7 @@ public class JobServiceImpl implements JobService {
             }
 
             jobList = jobPage.getContent();
-            System.out.println("Size cuối cùng : " + jobList.size());
+            System.out.println("Size sau Hard Condition : " + jobList.size());
             for (int i = 0; i < jobList.size(); i++) {
                 int check = 0;
                 for (int j = 0; j < skillObjinCv.size(); j++) {
@@ -731,7 +734,7 @@ public class JobServiceImpl implements JobService {
                     suggestJobList.add(jobList.get(i));
                 }
             }
-            System.out.println("SIZE ở đây : " + suggestJobList.size());
+            System.out.println("Size sau Soft Condition Phase 1 : " + suggestJobList.size());
             System.out.println("đã apply : " + jobs.size());
             if (jobs.size() > 0) {
                 for (int i = 0; i < jobs.size(); i++) {
@@ -769,14 +772,15 @@ public class JobServiceImpl implements JobService {
                 System.out.println(i + "-" + suggestDTOS.get(i).getJob().getTitle());
                 suggestJobList.add(suggestDTOS.get(i).getJob());
             }
-
+            System.out.println("Size sau Soft Condition Phase 2 : " + suggestJobList.size());
             if (suggestJobList.size() < 10) {
                 for (int i = 0; i < jobList.size(); i++) {
-                    if (!suggestJobList.contains(jobList.get(i))) {
+                    if (!suggestJobList.contains(jobList.get(i)) && !jobs.contains(jobList.get(i))) {
                         suggestJobList.add(jobList.get(i));
                     }
                 }
             }
+            System.out.println("Size sau khi bổ sung : " + suggestJobList.size());
 
             ModelMapper mapper = new ModelMapper();
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
