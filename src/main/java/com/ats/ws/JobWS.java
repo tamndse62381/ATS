@@ -205,7 +205,6 @@ public class JobWS {
         return new RestResponse(true, "suggestJob Successfull", listJob);
     }
 
-
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/changeJobStatus")
     @ResponseBody
@@ -463,6 +462,12 @@ public class JobWS {
     @CrossOrigin(origins = "*")
     public RestResponse listJobsByEmployerIdValid(@PathVariable(name = "EmployerId") int EmployerId) {
         return jobService.findListJobValid(EmployerId);
+    }
+
+    @GetMapping("/list/{EmployerId}")
+    @CrossOrigin(origins = "*")
+    public RestResponse listJobsByEmployerId(@PathVariable(name = "EmployerId") int EmployerId) {
+        return jobService.listJobsByEmployerId(EmployerId);
     }
 
     @GetMapping("/list-invalid/{EmployerId}")
