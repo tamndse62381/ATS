@@ -17,6 +17,7 @@ public class Feedback {
     private Integer userId;
     private String description;
     private Date createdDate;
+    private Integer isReply;
     private Feedbacktype feedbacktypeByFeedBackTypeId;
     private Job jobByJobId;
     private Users usersByUserId;
@@ -33,7 +34,7 @@ public class Feedback {
     }
 
     @Basic
-    @Column(name = "FeedBackTypeID", nullable = true, insertable = false , updatable = false)
+    @Column(name = "FeedBackTypeID", nullable = true, insertable = false, updatable = false)
     public Integer getFeedBackTypeId() {
         return feedBackTypeId;
     }
@@ -43,7 +44,7 @@ public class Feedback {
     }
 
     @Basic
-    @Column(name = "JobID", nullable = true, insertable = false , updatable = false)
+    @Column(name = "JobID", nullable = true, insertable = false, updatable = false)
     public Integer getJobId() {
         return jobId;
     }
@@ -53,7 +54,7 @@ public class Feedback {
     }
 
     @Basic
-    @Column(name = "UserID", nullable = true, insertable = false , updatable = false)
+    @Column(name = "UserID", nullable = true, insertable = false, updatable = false)
     public Integer getUserId() {
         return userId;
     }
@@ -82,6 +83,16 @@ public class Feedback {
         this.createdDate = createdDate;
     }
 
+    @Basic
+    @Column(name = "isReply", nullable = true)
+    public Integer getIsReply() {
+        return isReply;
+    }
+
+    public void setIsReply(Integer isReply) {
+        this.isReply = isReply;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -92,12 +103,13 @@ public class Feedback {
                 Objects.equals(jobId, feedback.jobId) &&
                 Objects.equals(userId, feedback.userId) &&
                 Objects.equals(description, feedback.description) &&
-                Objects.equals(createdDate, feedback.createdDate);
+                Objects.equals(createdDate, feedback.createdDate) &&
+                Objects.equals(isReply, feedback.isReply);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, feedBackTypeId, jobId, userId, description, createdDate);
+        return Objects.hash(id, feedBackTypeId, jobId, userId, description, createdDate,isReply);
     }
 
     @ManyToOne

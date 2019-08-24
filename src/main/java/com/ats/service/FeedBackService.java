@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface FeedBackService {
 
@@ -15,4 +17,6 @@ public interface FeedBackService {
     Page<Feedback> getFeedBackByJobId(int jobid);
 
     Page<FeedBackDTO2> getAllFeedBack(Pageable pageable,String search);
+
+    List<Integer> checkFeedBack(int userId);
 }

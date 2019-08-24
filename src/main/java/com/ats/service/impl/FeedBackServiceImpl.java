@@ -2,13 +2,8 @@ package com.ats.service.impl;
 
 import com.ats.dto.FeedBackDTO;
 import com.ats.dto.FeedBackDTO2;
-import com.ats.entity.Feedback;
-import com.ats.entity.Feedbacktype;
-import com.ats.entity.Job;
-import com.ats.entity.Users;
-import com.ats.repository.CompanyRepository;
-import com.ats.repository.FeedBackRepository;
-import com.ats.repository.JobRepository;
+import com.ats.entity.*;
+import com.ats.repository.*;
 import com.ats.service.EmailService;
 import com.ats.service.FeedBackService;
 import org.apache.logging.log4j.LogManager;
@@ -35,6 +30,10 @@ public class FeedBackServiceImpl implements FeedBackService {
     private EmailService emailService;
     @Autowired
     private CompanyRepository companyRepository;
+    @Autowired
+    private CVRepository cvRepository;
+    @Autowired
+    private ApplyRepository applyRepository;
 
     private static final Logger LOGGER = LogManager.getLogger(FeedBackServiceImpl.class);
 
@@ -108,5 +107,23 @@ public class FeedBackServiceImpl implements FeedBackService {
         }
         LOGGER.info("End getAllFeedBack in Feedback Service");
         return feedBackDTO2s;
+    }
+
+    @Override
+    public List<Integer> checkFeedBack(int userId) {
+        int result = 0;
+        LOGGER.info("Begin checkFeedBack in Job Service with job name : {}");
+        List<Feedback> feedbackList;
+        List<Integer> jobIdList = new ArrayList<>();
+        try {
+            feedbackList = feedBackRepository.checkFeedBack(userId);
+            for (int i = 0; i < feedbackList.size(); i++) {
+                jobIdList.add(feedbackList.get(i).getJobId());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End checkFeedBack in Job Service with job name : {}");
+        return jobIdList;
     }
 }

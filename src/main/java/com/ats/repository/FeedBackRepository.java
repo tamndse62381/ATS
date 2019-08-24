@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Repository
 public interface FeedBackRepository extends JpaRepository<Feedback, Integer> {
@@ -15,4 +17,7 @@ public interface FeedBackRepository extends JpaRepository<Feedback, Integer> {
             "f.jobByJobId.title LIKE CONCAT('%',LOWER(:search),'%') OR " +
             "f.jobByJobId.companyByCompanyId.nameCompany LIKE CONCAT('%',LOWER(:search),'%') order by f.createdDate desc")
     Page<Feedback> findAllByCreatedDate(Pageable pageable, @Param("search") String search);
+
+    @Query("select f from Feedback f where f.userId = :userId")
+    List<Feedback> checkFeedBack(@Param("userId") int userId);
 }
