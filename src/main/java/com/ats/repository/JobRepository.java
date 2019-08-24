@@ -64,6 +64,14 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
                                 @Param("companyId") int companyId,
                                 @Param("status") String status);
 
+    @Query("Select b from Job b where b.companyId = :companyId " +
+            "and b.status = :status " +
+            "and b.endDateForApply > :now")
+    Page<Job> getInvalidJobByCompanyId(Pageable pageable,
+                                       @Param("companyId") int companyId,
+                                       @Param("status") String status,
+                                       @Param("now") Timestamp now);
+
     @Transactional
     @Modifying
     @Query("UPDATE Job b SET b.status = :newStatus WHERE b.id = :id")
@@ -107,5 +115,5 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
     List<Job> getJobsByEmployerId(@Param("employerId") int employerId);
 
     @Query("Select j from Job j where j.companyId = :companyId")
-    List<Job> getNumberOfJobByCompanyByCompanyId(@Param("companyId")int companyId);
+    List<Job> getNumberOfJobByCompanyByCompanyId(@Param("companyId") int companyId);
 }
