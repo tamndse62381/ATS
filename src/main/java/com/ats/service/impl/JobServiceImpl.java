@@ -199,16 +199,18 @@ public class JobServiceImpl implements JobService {
     public Page<JobDTO> getTop8(Pageable pageable) {
         LOGGER.info("Begin getTop8 in Job Service");
         Page<Job> listofJob = null;
-        List<JobDTO> listofDTO;
+        List<JobDTO> listofDTO;e
         Page<JobDTO> pageDTO = null;
         try {
             LOGGER.info("Begin getTop8 in Job Repository ");
             listofJob = jobRepository.getTop8(pageable, "approved", new Date());
-            ModelMapper mapper = new ModelMapper();
-            java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
-            }.getType();
-            listofDTO = mapper.map(listofJob.getContent(), targetListType);
-            pageDTO = new PageImpl<>(listofDTO.subList(0, 8), new PageRequest(0, 10), 8);
+            if(listofJob.getContent().size() > 8){
+                ModelMapper mapper = new ModelMapper();
+                java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
+                }.getType();
+                listofDTO = mapper.map(listofJob.getContent(), targetListType);
+                pageDTO = new PageImpl<>(listofDTO.subList(0, 8), new PageRequest(0, 10), 8);
+            }
             LOGGER.info("End getTop8 in Job Repository");
         } catch (Exception e) {
             e.printStackTrace();
