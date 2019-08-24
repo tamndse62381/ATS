@@ -369,8 +369,8 @@ public class CVServiceImpl implements CVService {
                     return listCv;
                 } else {
                     listCv = cvRepository.searchCv(skillstring, pageable, city, industry);
+                    return listCv;
                 }
-                return null;
             }
         } catch (Exception e) {
             e.printStackTrace();

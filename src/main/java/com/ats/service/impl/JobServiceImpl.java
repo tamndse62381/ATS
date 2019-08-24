@@ -201,11 +201,18 @@ public class JobServiceImpl implements JobService {
         try {
             LOGGER.info("Begin getTop8 in Job Repository ");
             listofJob = jobRepository.getTop8(pageable, "approved", new Date());
+
             ModelMapper mapper = new ModelMapper();
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
             }.getType();
             listofDTO = mapper.map(listofJob.getContent(), targetListType);
-            pageDTO = new PageImpl<>(listofDTO.subList(0, 8), new PageRequest(0, 10), 8);
+            if (listofDTO.size() < 8) {
+                pageDTO = new PageImpl<>(listofDTO.subList(0, listofDTO.size()), new PageRequest(0, 10), listofDTO.size());
+            }
+            if (listofDTO.size() >= 8) {
+                pageDTO = new PageImpl<>(listofDTO.subList(0, 8), new PageRequest(0, 10), 8);
+            }
+
             LOGGER.info("End getTop8 in Job Repository");
         } catch (Exception e) {
             e.printStackTrace();
@@ -592,6 +599,9 @@ public class JobServiceImpl implements JobService {
             jobList = jobPage.getContent();
             System.out.println("Size cuối cùng : " + jobList.size());
 
+            jobList.remove(job);
+
+
             for (int i = 0; i < jobList.size(); i++) {
                 int check = 0;
                 for (int j = 0; j < skillObjinCv.size(); j++) {
@@ -799,7 +809,7 @@ public class JobServiceImpl implements JobService {
         Users users = usersRepository.findOne(EmployerId);
         if (users.getRoleId() == 2) {
             int companyId = listJob.get(0).getCompanyId();
-            jobPage = jobRepository.getInvalidJobByCompanyId(null, companyId, "approved",new Timestamp(new Date().getTime()));
+            jobPage = jobRepository.getInvalidJobByCompanyId(null, companyId, "approved", new Timestamp(new Date().getTime()));
             listJob = jobPage.getContent();
 
         }

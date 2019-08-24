@@ -14,6 +14,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/feedback")
@@ -47,7 +48,7 @@ public class FeedBackWS {
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getAllFeedBack")
     public RestResponse getAllFeedBack(@PageableDefault Pageable pageable, @RequestParam("search") String search) {
-        LOGGER.info("Begin getAllFeedBack in JobWS with Job title : {}");
+        LOGGER.info("Begin getAllFeedBack in FeedBackWS with Job title : {}");
         Page<FeedBackDTO2> feedbackPage = null;
         try {
             feedbackPage = feedBackService.getAllFeedBack(pageable,search);
@@ -59,6 +60,24 @@ public class FeedBackWS {
             e.printStackTrace();
         }
         return new RestResponse(false, "getAllFeedBack Fail ", null);
+    }
+
+    @ResponseBody
+    @CrossOrigin(origins = "*")
+    @GetMapping(value = "/checkFeedBack")
+    public RestResponse checkFeedBack(@RequestParam("userId") int userId) {
+        LOGGER.info("Begin checkFeedBack in FeedBackWS with Job title : {}");
+        List<Integer> feedbackPage = null;
+        try {
+            feedbackPage = feedBackService.checkFeedBack(userId);
+            if (feedbackPage != null) {
+                return new RestResponse(true, "checkFeedBack Successfull", feedbackPage);
+            }
+        } catch (
+                Exception e) {
+            e.printStackTrace();
+        }
+        return new RestResponse(false, "checkFeedBack Fail ", null);
     }
 
 }
