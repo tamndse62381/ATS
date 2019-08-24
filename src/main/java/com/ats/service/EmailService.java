@@ -179,17 +179,17 @@ public class EmailService {
             if (result.equals("approved") || result.equals("active") || result.equals("new")) {
                 if (type.equals("company")) {
                     message.setContent(begin + company +
-                            "&ensp;&#273;&#432;&#417;&#803;c &#273;&#432;a va&#768;o hoa&#803;t &#273;&ocirc;&#803;ng</p>" + footer, "text/html");
+                            "&ensp;&#273;&#432;&#417;&#803;c &#273;&#432;a va&#768;o hoa&#803;t &#273;&ocirc;&#803;ng</p>" + footer, "text/html; charset=UTF-8");
                     subject = "Approved company mail";
                 }
                 if (type.equals("job")) {
                     message.setContent(begin + job
-                            + "&#273;&#432;&#417;&#803;c duy&ecirc;&#803;t tha&#768;nh c&ocirc;ng</p>" + footer, "text/html");
+                            + "&#273;&#432;&#417;&#803;c duy&ecirc;&#803;t tha&#768;nh c&ocirc;ng</p>" + footer, "text/html; charset=UTF-8");
                     subject = "Approved job mail";
                 }
                 if (type.equals("user")) {
                     message.setContent(begin + account +
-                            "&#273;&#432;&#417;&#803;c ta&#769;i ki&#769;ch hoa&#803;t</p>" + footer, "text/html");
+                            "&#273;&#432;&#417;&#803;c ta&#769;i ki&#769;ch hoa&#803;t</p>" + footer, "text/html; charset=UTF-8");
                     subject = "Approved user mail";
                 }
 

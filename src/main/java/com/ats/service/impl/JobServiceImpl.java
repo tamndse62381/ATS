@@ -196,18 +196,23 @@ public class JobServiceImpl implements JobService {
     public Page<JobDTO> getTop8(Pageable pageable) {
         LOGGER.info("Begin getTop8 in Job Service");
         Page<Job> listofJob = null;
-        List<JobDTO> listofDTO;e
+        List<JobDTO> listofDTO;
         Page<JobDTO> pageDTO = null;
         try {
             LOGGER.info("Begin getTop8 in Job Repository ");
             listofJob = jobRepository.getTop8(pageable, "approved", new Date());
-            if(listofJob.getContent().size() > 8){
-                ModelMapper mapper = new ModelMapper();
-                java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
-                }.getType();
-                listofDTO = mapper.map(listofJob.getContent(), targetListType);
+
+            ModelMapper mapper = new ModelMapper();
+            java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
+            }.getType();
+            listofDTO = mapper.map(listofJob.getContent(), targetListType);
+            if (listofDTO.size() < 8) {
+                pageDTO = new PageImpl<>(listofDTO.subList(0, listofDTO.size()), new PageRequest(0, 10), listofDTO.size());
+            }
+            if (listofDTO.size() >= 8) {
                 pageDTO = new PageImpl<>(listofDTO.subList(0, 8), new PageRequest(0, 10), 8);
             }
+
             LOGGER.info("End getTop8 in Job Repository");
         } catch (Exception e) {
             e.printStackTrace();
@@ -801,7 +806,7 @@ public class JobServiceImpl implements JobService {
         Users users = usersRepository.findOne(EmployerId);
         if (users.getRoleId() == 2) {
             int companyId = listJob.get(0).getCompanyId();
-            jobPage = jobRepository.getInvalidJobByCompanyId(null, companyId, "approved",new Timestamp(new Date().getTime()));
+            jobPage = jobRepository.getInvalidJobByCompanyId(null, companyId, "approved", new Timestamp(new Date().getTime()));
             listJob = jobPage.getContent();
 
         }
