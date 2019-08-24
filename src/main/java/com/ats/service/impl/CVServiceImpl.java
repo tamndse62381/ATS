@@ -342,8 +342,9 @@ public class CVServiceImpl implements CVService {
     @Override
     public Page<Cv> searchCv(String skillstring, String city, String industry, Pageable pageable) {
         Page<Cv> listCv;
+        System.out.println(skillstring);
         try {
-            if (skillstring.equals("0")) {
+            if (skillstring.equals("")) {
                 listCv = cvRepository.searchWithoutSkill(pageable, city, industry);
                 return listCv;
             } else {
@@ -368,7 +369,10 @@ public class CVServiceImpl implements CVService {
                     listCv = cvRepository.searchWithoutSkill(pageable, city, industry);
                     return listCv;
                 } else {
-                    listCv = cvRepository.searchCv(skillstring, pageable, city, industry);
+                    System.out.println(skillName);
+                    System.out.println(city);
+                    System.out.println(industry);
+                    listCv = cvRepository.searchCv(skillName, pageable, city, industry);
                     return listCv;
                 }
             }
