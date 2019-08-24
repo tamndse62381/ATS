@@ -1,9 +1,6 @@
 package com.ats.service.impl;
 
-import com.ats.dto.JobDTO;
-import com.ats.dto.JobDTO2;
-import com.ats.dto.JobDTO3;
-import com.ats.dto.SuggestDTO;
+import com.ats.dto.*;
 import com.ats.entity.*;
 import com.ats.repository.ApplyRepository;
 import com.ats.repository.CVRepository;
@@ -800,6 +797,14 @@ public class JobServiceImpl implements JobService {
 
     public RestResponse findListJobValid(int EmployerId) {
         List<Job> listJob = jobRepository.getJobValid(EmployerId, new Timestamp(new Date().getTime()), "approved");
+        Page<Job> jobPage;
+        Users users = usersRepository.findOne(EmployerId);
+        if (users.getRoleId() == 2) {
+            int companyId = listJob.get(0).getCompanyId();
+            jobPage = jobRepository.getInvalidJobByCompanyId(null, companyId, "approved",new Timestamp(new Date().getTime()));
+            listJob = jobPage.getContent();
+
+        }
         if (listJob == null)
             return new RestResponse(false, "không có công việc nào!!!", null);
         return new RestResponse(true, "Thành công!!!", listJob);
@@ -808,13 +813,6 @@ public class JobServiceImpl implements JobService {
     @Override
     public RestResponse findListJobInValid(int EmployerId) {
         List<Job> listJob = jobRepository.getJobInValid(EmployerId, new Timestamp(new Date().getTime()));
-        Page<Job> jobPage;
-        Users users = usersRepository.findOne(EmployerId);
-        if (users.getRoleId() == 2) {
-            int companyId = listJob.get(0).getCompanyId();
-            jobPage = jobRepository.getJobByCompanyId(null, companyId, "approved");
-            listJob = jobPage.getContent();
-        }
         if (listJob == null)
             return new RestResponse(false, "Không có công việc nào!!", null);
         return new RestResponse(true, "Thành công!!!", listJob);
@@ -824,19 +822,22 @@ public class JobServiceImpl implements JobService {
     public RestResponse listJobsByEmployerId(int EmployerId) {
         List<Job> listJob = jobRepository.getJobInValid(EmployerId, new Timestamp(new Date().getTime()));
         Page<Job> jobPage;
-        HashMap<Integer,String> map = new HashMap<>();
+        List<MainEmpJobDTO> mainEmpJobDTOS = new ArrayList<>();
         Users users = usersRepository.findOne(EmployerId);
         if (users.getRoleId() == 2) {
             int companyId = listJob.get(0).getCompanyId();
             jobPage = jobRepository.getJobByCompanyId(null, companyId, "approved");
             listJob = jobPage.getContent();
             for (int i = 0; i < listJob.size(); i++) {
-                map.put(listJob.get(i).getId(),listJob.get(i).getUsersByUserId().getFullName());
+                MainEmpJobDTO dto = new MainEmpJobDTO();
+                dto.setJobId(listJob.get(i).getId());
+                dto.setFullName(listJob.get(i).getUsersByUserId().getFullName());
+                mainEmpJobDTOS.add(dto);
             }
         }
         if (listJob == null)
             return new RestResponse(false, "Không có công việc nào!!", null);
-        return new RestResponse(true, "Thành công!!!", map);
+        return new RestResponse(true, "Thành công!!!", mainEmpJobDTOS);
     }
 
     public Page<Job> getAllJob(Pageable pageable, String search, String status) {
