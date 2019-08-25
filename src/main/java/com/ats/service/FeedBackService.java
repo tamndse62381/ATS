@@ -16,9 +16,9 @@ public interface FeedBackService {
 
     Page<Feedback> getFeedBackByJobId(int jobid);
 
-    Page<FeedBackDTO2> getAllFeedBack(Pageable pageable,String search);
+    Page<FeedBackDTO2> getAllFeedBack(Pageable pageable, String search);
 
     List<Integer> checkFeedBack(int userId);
 
-    int checkIsReply(int userId);
+    int checkIsReply(int jobId, int userId);
 }

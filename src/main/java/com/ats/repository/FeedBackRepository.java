@@ -25,6 +25,6 @@ public interface FeedBackRepository extends JpaRepository<Feedback, Integer> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE Feedback f SET f.isReply = 1 WHERE f.userId = :userId")
-    int checkIsReply(@Param("userId") int userId);
+    @Query("UPDATE Feedback f SET f.isReply = 1 WHERE f.userId = :userId and f.jobId = :jobId")
+    int checkIsReply(@Param("userId") int userId, @Param("jobId") int jobId);
 }

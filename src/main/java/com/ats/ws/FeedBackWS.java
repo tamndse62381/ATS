@@ -84,11 +84,11 @@ public class FeedBackWS {
     @ResponseBody
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/checkIsReply")
-    public RestResponse checkIsReply(@RequestParam("jobId") int jobId) {
+    public RestResponse checkIsReply(@RequestParam("jobId") int jobId, @RequestParam("userId") int userId) {
         LOGGER.info("Begin checkFeedBack in FeedBackWS with Job title : {}");
         int result = 0;
         try {
-            result = feedBackService.checkIsReply(jobId);
+            result = feedBackService.checkIsReply(jobId, userId);
             if (result > 0) {
                 return new RestResponse(true, "checkFeedBack Successfull", null);
             }
