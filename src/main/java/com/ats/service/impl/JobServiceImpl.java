@@ -599,24 +599,30 @@ public class JobServiceImpl implements JobService {
             }
 
             jobList = jobPage.getContent();
-            System.out.println("Size cuối cùng : " + jobList.size());
-            jobList.remove(job);
+            System.out.println("Size cuối cùng 1: " + jobList.size());
 
+            List<Job> jobList1 = new ArrayList<>();
             for (int i = 0; i < jobList.size(); i++) {
+                if(jobList.get(i).getId() != job.getId()){
+                    jobList1.add(jobList.get(i));
+                }
+            }
+            System.out.println("Size cuối cùng 2: " + jobList1.size());
+            for (int i = 0; i < jobList1.size(); i++) {
                 int check = 0;
                 for (int j = 0; j < skillObjinCv.size(); j++) {
-                    for (int k = 0; k < jobList.get(i).getSkillneedforjobsById().size(); k++) {
+                    for (int k = 0; k < jobList1.get(i).getSkillneedforjobsById().size(); k++) {
                         if (skillObjinCv.get(j).getSkillMasterId() ==
-                                jobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillMasterId()) {
+                                jobList1.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillMasterId()) {
                             if (skillObjinCv.get(j).getSkillLevel() >=
-                                    jobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillLevel()) {
+                                    jobList1.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillLevel()) {
                                 check++;
                             }
                         }
                     }
                 }
-                if (check == jobList.get(i).getSkillneedforjobsById().size()) {
-                    suggestJobList.add(jobList.get(i));
+                if (check == jobList1.get(i).getSkillneedforjobsById().size()) {
+                    suggestJobList.add(jobList1.get(i));
                 }
             }
             for (int i = 0; i < suggestJobList.size(); i++) {
@@ -655,7 +661,7 @@ public class JobServiceImpl implements JobService {
                     }
                 }
             }
-
+            System.out.println("Danh sach goi y : " + suggestJobList.size());
 
             ModelMapper mapper = new ModelMapper();
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
