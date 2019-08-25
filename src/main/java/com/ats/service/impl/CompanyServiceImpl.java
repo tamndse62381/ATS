@@ -230,30 +230,33 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public List<CompanyDTO> getFiveCompany() {
         List<Company> list = companyRepository.getFiveCompany();
-        List<Company> correctList = new ArrayList<>();
+//        List<Company> correctList = new ArrayList<>();
         List<CompanyDTO> companyDTOS = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            correctList = list;
-            if (correctList.size() > 5) {
-                for (int j = 0; j < correctList.size() && correctList.size() > 5; j++) {
-                    int min = jobRepository.getNumberOfJobByCompanyByCompanyId(correctList.get(j).getId()).size();
-                    for (int z = 1; z < correctList.size(); z++) {
-                        int current = jobRepository.getNumberOfJobByCompanyByCompanyId(correctList.get(z).getId()).size();
-                        if (current < min) {
-                            min = current;
-                            j = z;
-                        }
-                    }
-                    if (j != 0) {
-                        correctList.remove(j);
-                    }
-                }
-            }
-        }
+//        for (int i = 0; i < list.size(); i++) {
+//            correctList = list;
+//            if (correctList.size() > 5) {
+//                for (int j = 0; j < correctList.size() && correctList.size() > 5; j++) {
+//                    int min = jobRepository.getNumberOfJobByCompanyByCompanyId(correctList.get(j).getId()).size();
+//                    for (int z = 1; z < correctList.size(); z++) {
+//                        int current = jobRepository.getNumberOfJobByCompanyByCompanyId(correctList.get(z).getId()).size();
+//                        if (current < min) {
+//                            min = current;
+//                            j = z;
+//                        }
+//                    }
+//                    if (j != 0) {
+//                        correctList.remove(j);
+//                    }
+//                }
+//            }
+//        }
         ModelMapper mapper = new ModelMapper();
         java.lang.reflect.Type targetListType = new TypeToken<List<CompanyDTO>>() {
         }.getType();
-        companyDTOS = mapper.map(correctList, targetListType);
-        return companyDTOS;
+        companyDTOS = mapper.map(list, targetListType);
+        if (companyDTOS.size() < 5) {
+            return companyDTOS;
+        }
+        return companyDTOS.subList(0,5);
     }
 }

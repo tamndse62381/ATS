@@ -62,9 +62,9 @@ public class Skillmaster {
         return Objects.hash(id, skillTypeId, skillName);
     }
 
-    @LazyCollection(LazyCollectionOption.FALSE)
+
     @OneToMany(mappedBy = "skillmasterBySkillMasterId")
-    @JsonManagedReference
+    @JsonBackReference
     public List<Skill> getSkillsById() {
         return skillsById;
     }

@@ -10,6 +10,8 @@ import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -100,5 +102,22 @@ public class SkillmasterServiceImpl implements SkillmasterService {
         }
         LOGGER.info("End getSkillNameById in SkillMaster Service with List size : ", integerList.size());
         return listSkillName;
+    }
+
+    @Override
+    public Page<Skillmaster> getAllSkillMaster(Pageable pageable, String search, String type) {
+        LOGGER.info("Begin getAllSkillMaster in SM Service");
+        Page<Skillmaster> listofJob = null;
+        try {
+            LOGGER.info("Begin getAllSkillMaster in SM Repository ");
+            System.out.println(search);
+            listofJob = skillmasterRepository.getAll(pageable, search, type);
+            System.out.println(listofJob.getContent().size());
+            LOGGER.info("End getAllSkillMaster in SM Repository");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getAllSkillMaster in SM Service");
+        return listofJob;
     }
 }

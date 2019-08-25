@@ -43,6 +43,6 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
 
     @Query("select distinct c from Company c " +
             "INNER JOIN c.jobsById j " +
-            "where j.status = 'approved'")
+            "where j.status = 'approved' order by c.createdDate asc")
     List<Company> getFiveCompany();
 }
