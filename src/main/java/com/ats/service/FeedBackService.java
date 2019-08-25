@@ -20,5 +20,5 @@ public interface FeedBackService {
 
     List<Integer> checkFeedBack(int userId);
 
-    int checkIsReply(int jobId, int userId);
+    int checkIsReply(int userId, int jobId);
 }

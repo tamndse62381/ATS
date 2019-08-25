@@ -2,6 +2,7 @@ package com.ats.service;
 
 import com.ats.entity.Job;
 import com.ats.entity.Users;
+import com.ats.repository.FeedBackRepository;
 import com.ats.repository.JobRepository;
 import com.ats.repository.UsersRepository;
 import org.apache.logging.log4j.LogManager;
@@ -19,8 +20,9 @@ import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@Service
+
 @EnableAsync
+@Service
 public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
@@ -28,6 +30,8 @@ public class EmailService {
     private UsersRepository usersRepository;
     @Autowired
     private JobRepository jobRepository;
+    @Autowired
+    private FeedBackRepository feedBackRepository;
 
     String footer =
             "<p style='font-size:150%;font-family:verdana;'>" +
@@ -247,9 +251,11 @@ public class EmailService {
             if (!contain.isEmpty()) {
                 message.setContent(welcome + "<p>" + contain + "</p>" + end, "text/html; charset=UTF-8");
             }
+            feedBackRepository.checkIsReply(userId,jobId);
             helper.setTo(users.getEmail());
             helper.setSubject(subject);
             this.javaMailSender.send(message);
+
             LOGGER.info("End sendReplyUserEmail in EmailService with Email : " + users.getEmail());
         } catch (MessagingException ex) {
             ex.printStackTrace();

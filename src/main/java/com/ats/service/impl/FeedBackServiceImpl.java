@@ -128,7 +128,7 @@ public class FeedBackServiceImpl implements FeedBackService {
     }
 
     @Override
-    public int checkIsReply(int userId, int jobId) {
+    public int checkIsReply(int jobId, int userId) {
         int result = 0;
         LOGGER.info("Begin checkIsReply in Feedback Service with userId: " + userId);
         try {
