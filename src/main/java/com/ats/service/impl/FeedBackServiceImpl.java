@@ -126,4 +126,17 @@ public class FeedBackServiceImpl implements FeedBackService {
         LOGGER.info("End checkFeedBack in Job Service with job name : {}");
         return jobIdList;
     }
+
+    @Override
+    public int checkIsReply(int userId) {
+        int result = 0;
+        LOGGER.info("Begin checkIsReply in Feedback Service with userId: " + userId);
+        try {
+            result = feedBackRepository.checkIsReply(userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End checkIsReply in Feedback Service with userId: " + userId);
+        return result;
+    }
 }

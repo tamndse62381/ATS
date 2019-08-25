@@ -33,6 +33,7 @@ public class FeedBackWS {
         int result = 0;
         try {
             dto.setCreatedDate(new Date());
+            dto.setIsReply(0);
             result = feedBackService.createFeedBack(dto);
             if (result > 0) {
                 return new RestResponse(true, "Create New FeedBack Successfull", result);
@@ -51,7 +52,7 @@ public class FeedBackWS {
         LOGGER.info("Begin getAllFeedBack in FeedBackWS with Job title : {}");
         Page<FeedBackDTO2> feedbackPage = null;
         try {
-            feedbackPage = feedBackService.getAllFeedBack(pageable,search);
+            feedbackPage = feedBackService.getAllFeedBack(pageable, search);
             if (feedbackPage != null) {
                 return new RestResponse(true, "getAllFeedBack Successfull", feedbackPage);
             }
@@ -72,6 +73,24 @@ public class FeedBackWS {
             feedbackPage = feedBackService.checkFeedBack(userId);
             if (feedbackPage != null) {
                 return new RestResponse(true, "checkFeedBack Successfull", feedbackPage);
+            }
+        } catch (
+                Exception e) {
+            e.printStackTrace();
+        }
+        return new RestResponse(false, "checkFeedBack Fail ", null);
+    }
+
+    @ResponseBody
+    @CrossOrigin(origins = "*")
+    @GetMapping(value = "/checkIsReply")
+    public RestResponse checkIsReply(@RequestParam("jobId") int jobId) {
+        LOGGER.info("Begin checkFeedBack in FeedBackWS with Job title : {}");
+        int result = 0;
+        try {
+            result = feedBackService.checkIsReply(jobId);
+            if (result > 0) {
+                return new RestResponse(true, "checkFeedBack Successfull", null);
             }
         } catch (
                 Exception e) {

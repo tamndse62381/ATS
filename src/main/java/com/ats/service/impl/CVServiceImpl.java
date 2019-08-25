@@ -430,6 +430,7 @@ public class CVServiceImpl implements CVService {
     public Page<Cv> listCvConfirmed(int EmployerId, Pageable pageable) {
         try {
             List<Cv> listCv = getByJobIdAndStatus(EmployerId, "2");
+
             Page<Cv> pageCv = new PageImpl<>(listCv, pageable, listCv.size());
             return pageCv;
         } catch (Exception e) {
@@ -467,8 +468,8 @@ public class CVServiceImpl implements CVService {
 
     private List<Cv> getByJobIdAndStatus(int EmployerId, String status) {
         List<Job> listJob = jobRepository.findJobsByStatusAndUserId("approved", EmployerId);
-        if (listJob.size() == 0) return null;
         List<Cv> listCv = new ArrayList<>();
+        if (listJob.size() == 0) return listCv;
         for (Job job : listJob) {
             List<Apply> listApply = applyRepository.findAppliesByJobIdAndStatus(job.getId(), status);
             if (listApply != null) {

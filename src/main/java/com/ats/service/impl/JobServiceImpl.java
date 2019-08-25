@@ -598,9 +598,7 @@ public class JobServiceImpl implements JobService {
 
             jobList = jobPage.getContent();
             System.out.println("Size cuối cùng : " + jobList.size());
-
             jobList.remove(job);
-
 
             for (int i = 0; i < jobList.size(); i++) {
                 int check = 0;

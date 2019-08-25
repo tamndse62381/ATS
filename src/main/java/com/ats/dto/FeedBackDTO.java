@@ -12,4 +12,5 @@ public class FeedBackDTO {
     private Integer userId;
     private String description;
     private Date createdDate;
+    private int isReply;
 }
