@@ -1,5 +1,6 @@
 package com.ats.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -47,8 +48,9 @@ public class Skilltype {
         return Objects.hash(id, typeName);
     }
 
-    @LazyCollection(LazyCollectionOption.FALSE)
+
     @OneToMany(mappedBy = "skilltypeBySkillTypeId")
+    @JsonBackReference
     public List<Skillmaster> getSkillmastersById() {
         return skillmastersById;
     }
