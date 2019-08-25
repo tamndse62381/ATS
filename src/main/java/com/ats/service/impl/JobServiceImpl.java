@@ -457,8 +457,10 @@ public class JobServiceImpl implements JobService {
             }
 
             List<Job> jobs = new ArrayList<>();
-            for (int i = 0; i < applies.size(); i++) {
-                jobs.add(applies.get(i).getJobByJobId());
+            if (applies != null) {
+                for (int i = 0; i < applies.size(); i++) {
+                    jobs.add(applies.get(i).getJobByJobId());
+                }
             }
             for (int i = 0; i < cv.getSkillincvsById().size(); i++) {
                 skillObjinCv.add(cv.getSkillincvsById().get(i).getSkillBySkillId());
@@ -513,9 +515,9 @@ public class JobServiceImpl implements JobService {
                     boolean flag = true;
                     for (int k = 0; k < suggestJobList.get(i).getSkillneedforjobsById().size(); k++) {
                         if (skillObjinCv.get(j).getSkillMasterId() ==
-                                jobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillMasterId()) {
+                                suggestJobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillMasterId()) {
                             sum += skillObjinCv.get(j).getSkillLevel() -
-                                    jobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillLevel();
+                                    suggestJobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillLevel();
                             flag = false;
                         }
                     }
@@ -624,9 +626,9 @@ public class JobServiceImpl implements JobService {
                     boolean flag = true;
                     for (int k = 0; k < suggestJobList.get(i).getSkillneedforjobsById().size(); k++) {
                         if (skillObjinCv.get(j).getSkillMasterId() ==
-                                jobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillMasterId()) {
+                                suggestJobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillMasterId()) {
                             sum += skillObjinCv.get(j).getSkillLevel() -
-                                    jobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillLevel();
+                                    suggestJobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillLevel();
                             flag = false;
                         }
                     }
@@ -690,8 +692,10 @@ public class JobServiceImpl implements JobService {
             }
 
             List<Job> jobs = new ArrayList<>();
-            for (int i = 0; i < applies.size(); i++) {
-                jobs.add(applies.get(i).getJobByJobId());
+            if (applies != null) {
+                for (int i = 0; i < applies.size(); i++) {
+                    jobs.add(applies.get(i).getJobByJobId());
+                }
             }
             for (int i = 0; i < cv.getSkillincvsById().size(); i++) {
                 skillObjinCv.add(cv.getSkillincvsById().get(i).getSkillBySkillId());
@@ -755,9 +759,9 @@ public class JobServiceImpl implements JobService {
                     boolean flag = true;
                     for (int k = 0; k < suggestJobList.get(i).getSkillneedforjobsById().size(); k++) {
                         if (skillObjinCv.get(j).getSkillMasterId() ==
-                                jobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillMasterId()) {
+                                suggestJobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillMasterId()) {
                             sum += skillObjinCv.get(j).getSkillLevel() -
-                                    jobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillLevel();
+                                    suggestJobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillLevel();
                             flag = false;
                         }
                     }
