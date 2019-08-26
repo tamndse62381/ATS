@@ -169,12 +169,19 @@ public class CompanyServiceImpl implements CompanyService {
         }
         String name = "";
         String email_main = "";
+
+
         for (int i = 0; i < company.getEmployercompaniesById().size(); i++) {
             if (company.getEmployercompaniesById().get(i).getUsersByUserId().getRoleId() == 2) {
                 name = company.getEmployercompaniesById().get(i).getUsersByUserId().getFullName();
                 email_main = company.getEmployercompaniesById().get(i).getUsersByUserId().getEmail();
             }
         }
+        if(company.getStatus().equals("approved") && company.getEmployercompaniesById().size() == 1){
+            email_main = company.getEmployercompaniesById().get(0).getUsersByUserId().getEmail();
+        }
+
+
         emailService.sendEmailStatus(email_main, company.getNameCompany(), name
                 , newStatus, "company");
         LOGGER.info("End changeStatus in Company Service with result: {}", success);

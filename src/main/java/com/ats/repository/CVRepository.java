@@ -37,12 +37,12 @@ public interface CVRepository extends JpaRepository<Cv, Integer> {
             "inner join c.industryByIndustryId i where c.status = 1 " +
             "and (ci.fullName LIKE CONCAT('%',LOWER(:city),'%')" +
             "and i.name LIKE CONCAT('%',LOWER(:industry),'%')) " +
-            "and m.skillName in (:skillstring) order by c.lastModify desc")
+            "or m.skillName in (:skillstring) order by c.lastModify desc")
     Page<Cv> searchCv(@Param("skillstring") String skillstring, Pageable pageable,
                       @Param("city") String city, @Param("industry") String industry);
 
     // test
-    @Query("select c from Cv  c " +
+    @Query("select distinct c from Cv  c " +
             "inner join c.skillincvsById s " +
             "inner join s.skillBySkillId a " +
             "inner join a.skillmasterBySkillMasterId m " +
@@ -51,8 +51,8 @@ public interface CVRepository extends JpaRepository<Cv, Integer> {
             "and c.isActive = 1" +
             "and ci.fullName LIKE CONCAT('%',LOWER(:city),'%')" +
             "and i.name LIKE CONCAT('%',LOWER(:industry),'%') " +
-            "and m.skillName in (:skillstring) order by c.lastModify desc")
-    List<Cv> searchListCv(@Param("skillstring") String skillstring,
+            "or m.skillName in (:skillstring) order by c.lastModify desc")
+    Page<Cv> searchListCv(@Param("skillstring") String skillstring,Pageable pageable,
                           @Param("city") String city, @Param("industry") String industry);
 
     @Query("select c from Cv  c " +

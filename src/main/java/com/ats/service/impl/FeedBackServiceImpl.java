@@ -44,8 +44,9 @@ public class FeedBackServiceImpl implements FeedBackService {
         int id = -1;
         try {
             ModelMapper mapper = new ModelMapper();
+            System.out.println(dto.getIsReply());
             feedback = mapper.map(dto, Feedback.class);
-
+            System.out.println(feedback.getIsReply());
             Feedbacktype feedbacktype = new Feedbacktype();
             feedbacktype.setId(dto.getFeedBackTypeId());
 
@@ -59,8 +60,9 @@ public class FeedBackServiceImpl implements FeedBackService {
             feedback.setUsersByUserId(users);
             feedback.setJobByJobId(job);
 
-
             id = feedBackRepository.save(feedback).getId();
+            feedback = feedBackRepository.findOne(id);
+            System.out.println(feedback.getIsReply());
             emailService.sendReplyUserEmail(dto.getUserId(), dto.getJobId(), "");
             System.out.println(id);
         } catch (Exception e) {

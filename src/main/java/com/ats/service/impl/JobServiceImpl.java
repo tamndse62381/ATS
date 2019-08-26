@@ -254,11 +254,15 @@ public class JobServiceImpl implements JobService {
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
             }.getType();
             listofDTO = mapper.map(listofJob, targetListType);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         LOGGER.info("End getTop8 in Job Service");
-        return listofDTO;
+        if(listofDTO.size() < 8){
+            return listofDTO;
+        }
+        return listofDTO.subList(0,8);
     }
 
     @Override

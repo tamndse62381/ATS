@@ -243,7 +243,7 @@ public class EmailService {
             MimeMessageHelper helper = new MimeMessageHelper(message, multipart, "UTF-8");
             String subject = "Reply User Feedback";
             String welcome = "<p>Dear <b>" + users.getFullName() + "</b>,</p>";
-            String auto = "<p>Chu&#769;ng t&ocirc;i &#273;a&#771; nh&acirc;&#803;n &#273;&#432;&#417;&#803;c Feedback cu&#777;a ba&#803;n v&ecirc;&#768; c&ocirc;ng vi&ecirc;&#803;c&ensp;" + job.getTitle()+ "</p>";
+            String auto = "<p>Chu&#769;ng t&ocirc;i &#273;a&#771; nh&acirc;&#803;n &#273;&#432;&#417;&#803;c Feedback cu&#777;a ba&#803;n v&ecirc;&#768; c&ocirc;ng vi&ecirc;&#803;c&ensp;" + job.getTitle() + "</p>";
             String end = "<p>Tr&acirc;n tro&#803;ng,</p><p> ATS Team</p>";
             if (contain.isEmpty()) {
                 message.setContent(welcome + auto + end, "text/html; charset=UTF-8");
@@ -251,7 +251,10 @@ public class EmailService {
             if (!contain.isEmpty()) {
                 message.setContent(welcome + "<p>" + contain + "</p>" + end, "text/html; charset=UTF-8");
             }
-            feedBackRepository.checkIsReply(userId,jobId);
+            if (!contain.isEmpty()) {
+                feedBackRepository.checkIsReply(userId, jobId);
+            }
+
             helper.setTo(users.getEmail());
             helper.setSubject(subject);
             this.javaMailSender.send(message);
