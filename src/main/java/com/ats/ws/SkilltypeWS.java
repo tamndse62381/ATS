@@ -39,7 +39,7 @@ public class SkilltypeWS {
     }
 
     @GetMapping(value = "/getAll")
-    @CrossOrigin(origins = "")
+    @CrossOrigin(origins = "*")
     public List<Skilltype> getAll() {
         List<Skilltype> skilltypeList = skilltypeRepository.findAll();
         return skilltypeList;

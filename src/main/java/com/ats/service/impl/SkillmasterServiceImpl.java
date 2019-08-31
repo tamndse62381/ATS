@@ -29,14 +29,22 @@ public class SkillmasterServiceImpl implements SkillmasterService {
     @Override
     public boolean createANewSkillMaster(SkillMasterDTO skillmasterDTO) {
         try {
-            Skillmaster newSkillMaster;
-            ModelMapper mapper = new ModelMapper();
-            newSkillMaster = mapper.map(skillmasterDTO,Skillmaster.class);
-            Skilltype skilltype = new Skilltype();
-            skilltype.setId(newSkillMaster.getSkillTypeId());
-            newSkillMaster.setSkilltypeBySkillTypeId(skilltype);
-            skillmasterRepository.save(newSkillMaster);
-            return true;
+            Skillmaster newSkillMaster = null;
+            System.out.println(skillmasterDTO.getSkillTypeId());
+            System.out.println(skillmasterDTO.getSkillName());
+            newSkillMaster = skillmasterRepository.checkExistSkill(skillmasterDTO.getSkillTypeId(), skillmasterDTO.getSkillName());
+            System.out.println(newSkillMaster);
+            if (newSkillMaster == null) {
+                ModelMapper mapper = new ModelMapper();
+                newSkillMaster = mapper.map(skillmasterDTO, Skillmaster.class);
+                Skilltype skilltype = new Skilltype();
+                skilltype.setId(newSkillMaster.getSkillTypeId());
+                newSkillMaster.setSkilltypeBySkillTypeId(skilltype);
+                skillmasterRepository.save(newSkillMaster);
+                return true;
+            }
+
+
         } catch (RuntimeException e) {
             System.out.println(e);
         }
@@ -119,5 +127,11 @@ public class SkillmasterServiceImpl implements SkillmasterService {
         }
         LOGGER.info("End getAllSkillMaster in SM Service");
         return listofJob;
+    }
+
+    @Override
+    public boolean checkExistSkill(int skillTypeId, String skillName) {
+
+        return false;
     }
 }

@@ -20,4 +20,8 @@ public interface SkillmasterRepository extends JpaRepository<Skillmaster, Intege
             "where s.skilltypeBySkillTypeId.typeName LIKE CONCAT('%',LOWER(:type),'%') and " +
             "s.skillName LIKE CONCAT('%',LOWER(:search),'%')")
     Page<Skillmaster> getAll(Pageable pageable, @Param("search") String search, @Param("type") String type);
+
+
+    @Query("Select s from Skillmaster s where s.skillTypeId = :skillTypeId and s.skillName = :skillName")
+    Skillmaster checkExistSkill(@Param("skillTypeId")int skillTypeId, @Param("skillName")String skillName);
 }

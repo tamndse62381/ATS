@@ -200,7 +200,7 @@ public class EmailService {
 
             }
             if (result.equals("ban") || result.equals("approved ban")
-                    || result.equals("active ban") || result.equals("new ban")) {
+                    || result.equals("active ban") || result.equals("new ban") || result.equals("deny")) {
                 if (type.equals("company")) {
                     message.setContent(begin + company +
                             "bi&#803; ch&#259;&#803;n</p>" + footer, "text/html; charset=UTF-8");

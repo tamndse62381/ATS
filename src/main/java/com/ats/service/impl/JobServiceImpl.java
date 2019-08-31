@@ -355,7 +355,7 @@ public class JobServiceImpl implements JobService {
             LOGGER.info("Begin getJobDetail in Job Repository with id : " + id);
             job = jobRepository.findOne(id);
             LOGGER.info("End getJobDetail in Job Repository with id : " + id);
-            List<Job> listJobOfCompany = jobRepository.getJobByCompanyID(job.getCompanyId(), job.getId());
+            List<Job> listJobOfCompany = jobRepository.getJobByCompanyID(job.getCompanyId(), job.getId(),"approved");
             List<String> listSkillName = skillService.getSkillName(job.getSkillneedforjobsById());
             String jobLevelName = joblevelService.getJobLevelNameById(job.getJobLevelId());
             ModelMapper mapper = new ModelMapper();
@@ -402,7 +402,7 @@ public class JobServiceImpl implements JobService {
             }
 
             LOGGER.info("End getJobDetail in Job Repository with id : " + id);
-            List<Job> listJobOfCompany = jobRepository.getJobByCompanyID(job.getCompanyId(), job.getId());
+            List<Job> listJobOfCompany = jobRepository.getJobByCompanyID(job.getCompanyId(), job.getId(),"approved");
             List<String> listSkillName = skillService.getSkillName(job.getSkillneedforjobsById());
             String jobLevelName = joblevelService.getJobLevelNameById(job.getJobLevelId());
             ModelMapper mapper = new ModelMapper();
@@ -823,7 +823,6 @@ public class JobServiceImpl implements JobService {
             int companyId = listJob.get(0).getCompanyId();
             jobPage = jobRepository.getInvalidJobByCompanyId(null, companyId, "approved", new Timestamp(new Date().getTime()));
             listJob = jobPage.getContent();
-
         }
         if (listJob == null)
             return new RestResponse(false, "không có công việc nào!!!", null);

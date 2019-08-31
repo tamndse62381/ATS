@@ -21,4 +21,6 @@ public interface SkillmasterService {
      List<String> getSkillNameById(List<Integer> integerList);
 
      Page<Skillmaster> getAllSkillMaster(Pageable pageable,String search, String type);
+
+     boolean checkExistSkill(int skillTypeId, String skillName);
 }
