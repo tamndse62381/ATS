@@ -1,8 +1,6 @@
 package com.ats.repository;
 
-import com.ats.dto.CompanyDTO;
 import com.ats.entity.Company;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -43,6 +41,8 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
             "u.email LIKE CONCAT('%',LOWER(:search),'%'))")
     Page<Company> findAll(Pageable pageable, @Param("search") String search, @Param("status") String status);
 
-    @Query("select c from Company c order by c.id desc ")
+    @Query("select distinct c from Company c " +
+            "INNER JOIN c.jobsById j " +
+            "where j.status = 'approved' order by c.createdDate asc")
     List<Company> getFiveCompany();
 }

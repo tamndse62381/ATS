@@ -1,7 +1,9 @@
 package com.ats.service.impl;
 
 import com.ats.dto.JobDTO;
-import com.ats.entity.*;
+import com.ats.entity.Apply;
+import com.ats.entity.Cv;
+import com.ats.entity.Job;
 import com.ats.repository.ApplyRepository;
 import com.ats.repository.CVRepository;
 import com.ats.repository.JobRepository;
@@ -15,13 +17,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
-public class ApplyServiceImpl implements ApplyService{
+public class ApplyServiceImpl implements ApplyService {
     @Autowired
     private ApplyRepository applyRepository;
     @Autowired
@@ -30,6 +34,8 @@ public class ApplyServiceImpl implements ApplyService{
     private CVRepository cvRepository;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private UsersRepository usersRepository;
     //Mapping Object
     ModelMapper modelMapper = new ModelMapper();
 
@@ -47,9 +53,9 @@ public class ApplyServiceImpl implements ApplyService{
         apply.setDayApply(new Timestamp(new Date().getTime()));
         apply.setStatus("1");
         applyRepository.save(apply);
-        emailService.sendEmailForJob(job.getUsersByUserId().getEmail(),job.getTitle(),
-                cv.getUsersByUserId().getFullName(),"apply");
-        return new RestResponse(true,"Bạn đã ứng tuyển vào công việc này thành công!!!", null);
+        emailService.sendEmailForJob(job.getUsersByUserId().getEmail(), job.getTitle(),
+                cv.getUsersByUserId().getFullName(), "apply");
+        return new RestResponse(true, "Bạn đã ứng tuyển vào công việc này thành công!!!", null);
     }
 
     @Override
@@ -59,8 +65,8 @@ public class ApplyServiceImpl implements ApplyService{
             return new RestResponse(false, "Có lỗi xảy ra. Vui lòng thử lại!!!", null);
         apply.setStatus("2");
         applyRepository.save(apply);
-        emailService.sendEmailForJob(apply.getCvByCvid().getUsersByUserId().getEmail(),apply.getJobByJobId().getTitle(),
-                apply.getCvByCvid().getUsersByUserId().getFullName(),"confirm");
+        emailService.sendEmailForJob(apply.getCvByCvid().getUsersByUserId().getEmail(), apply.getJobByJobId().getTitle(),
+                apply.getCvByCvid().getUsersByUserId().getFullName(), "confirm");
         // goi mail serviec gui mail cho employer
         return new RestResponse(true, "Thành công!!!", null);
     }
@@ -72,8 +78,8 @@ public class ApplyServiceImpl implements ApplyService{
             return new RestResponse(false, "Có lỗi xảy ra. Vui lòng thử lại!!!", null);
         apply.setStatus("3");
         applyRepository.save(apply);
-        emailService.sendEmailForJob(apply.getCvByCvid().getUsersByUserId().getEmail(),apply.getJobByJobId().getTitle(),
-                apply.getCvByCvid().getUsersByUserId().getFullName(),"deny");
+        emailService.sendEmailForJob(apply.getCvByCvid().getUsersByUserId().getEmail(), apply.getJobByJobId().getTitle(),
+                apply.getCvByCvid().getUsersByUserId().getFullName(), "deny");
         return new RestResponse(true, "Thành công!!!", null);
     }
 
@@ -101,6 +107,20 @@ public class ApplyServiceImpl implements ApplyService{
                 listJob.add(apply.getJobByJobId());
             }
         }
+
+        for (int i = 0; i < listJob.size(); i++) {
+            for (int j = 0; j < listJob.get(i).getAppliesById().size(); j++) {
+                for (int k = 0; k < listCv.size(); k++) {
+                    if (listJob.get(i).getAppliesById().get(j).getCvid() == listCv.get(k).getId()){
+                        List<Apply> applyList = new ArrayList<>();
+                        Apply apply = listJob.get(i).getAppliesById().get(j);
+                        listJob.get(i).setAppliesById(applyList);
+                        applyList.add(apply);
+                        listJob.get(i).setAppliesById(applyList);
+                    }
+                }
+            }
+        }
         return new RestResponse(true, "Thành công!!!", listJob);
     }
 
@@ -120,8 +140,9 @@ public class ApplyServiceImpl implements ApplyService{
         return listJobDTO;
     }
 
+
     @Override
-    public Page<Cv> listCv(int JobId, Pageable pageable) {
+    public RestResponse listCv(int JobId, Pageable pageable) {
         Job job = jobRepository.findOne(JobId);
         if (job == null)
             return null;
@@ -133,7 +154,58 @@ public class ApplyServiceImpl implements ApplyService{
             listCv.add(apply.getCvByCvid());
         }
         Page<Cv> pageCv = new PageImpl<>(listCv, pageable, listCv.size());
-        return pageCv;
+        return new RestResponse(true, "Lấy thành công", pageCv);
+    }
+
+    @Override
+    public RestResponse getAllApply(int userId) {
+        List<Cv> cvList = cvRepository.findByUserId(userId);
+        List<Apply> applyList = new ArrayList<>();
+        int all = 0;
+        int not = 0;
+        int accept = 0;
+        int deny = 0;
+        for (int i = 0; i < cvList.size(); i++) {
+            applyList.addAll(applyRepository.findAppliesByCvid(cvList.get(i).getId()));
+        }
+        for (int i = 0; i < applyList.size(); i++) {
+            all++;
+        }
+        for (int i = 0; i < applyList.size(); i++) {
+            if (applyList.get(i).getStatus().equals("1")) {
+                not++;
+            }
+        }
+        for (int i = 0; i < applyList.size(); i++) {
+            if (applyList.get(i).getStatus().equals("2")) {
+                accept++;
+            }
+        }
+        for (int i = 0; i < applyList.size(); i++) {
+            if (applyList.get(i).getStatus().equals("3")) {
+                deny++;
+            }
+        }
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("all", all);
+        map.put("not", not);
+        map.put("accept", accept);
+        map.put("deny", deny);
+        return new RestResponse(true, "Get Apply Success", map);
+    }
+
+    @Override
+    public int getAllApplyMobile(int userId) {
+        List<Cv> cvList = cvRepository.findByUserId(userId);
+        List<Apply> applyList = new ArrayList<>();
+        int all = 0;
+        for (int i = 0; i < cvList.size(); i++) {
+            applyList.addAll(applyRepository.findAppliesByCvid(cvList.get(i).getId()));
+        }
+        for (int i = 0; i < applyList.size(); i++) {
+            all++;
+        }
+        return all;
     }
 
     @Override

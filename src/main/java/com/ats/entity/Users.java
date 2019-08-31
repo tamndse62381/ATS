@@ -1,8 +1,6 @@
 package com.ats.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -40,6 +38,7 @@ public class Users implements Serializable {
     private List<Logusers> logusersById;
     private List<Receipts> receiptsById;
     private List<Userslikecv> userslikecvsById;
+    private List<Feedback> feedbacksById;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -332,4 +331,16 @@ public class Users implements Serializable {
     public void setUserslikecvsById(List<Userslikecv> userslikecvsById) {
         this.userslikecvsById = userslikecvsById;
     }
+
+    @OneToMany(mappedBy = "usersByUserId")
+    @JsonBackReference
+    public List<Feedback> getFeedbacksById() {
+        return feedbacksById;
+    }
+
+    public void setFeedbacksById(List<Feedback> feedbacksById) {
+        this.feedbacksById = feedbacksById;
+    }
+
+
 }

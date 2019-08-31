@@ -19,5 +19,13 @@ public class EmailWS {
         emailService.sendEmailForJob(email, jobTitle, userFullName, result);
     }
 
+    @GetMapping("/reply")
+    @CrossOrigin(origins = "*")
+    public void sendEmail(@RequestParam("jobId") int jobId,
+                          @RequestParam("userId") int userId,
+                          @RequestParam("contain") String contain) {
+        emailService.sendReplyUserEmail(userId, jobId, contain);
+    }
+
 
 }

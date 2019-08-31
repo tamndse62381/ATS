@@ -22,12 +22,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
@@ -43,7 +42,8 @@ public class CompanyServiceImpl implements CompanyService {
     private UsersService usersService;
     @Autowired
     private EmailService emailService;
-
+    @Autowired
+    private JobRepository jobRepository;
     private static final Logger LOGGER = LogManager.getLogger(CompanyServiceImpl.class);
 
     //Mapping Object
@@ -168,12 +168,21 @@ public class CompanyServiceImpl implements CompanyService {
             }
         }
         String name = "";
+        String email_main = "";
+
+
         for (int i = 0; i < company.getEmployercompaniesById().size(); i++) {
             if (company.getEmployercompaniesById().get(i).getUsersByUserId().getRoleId() == 2) {
                 name = company.getEmployercompaniesById().get(i).getUsersByUserId().getFullName();
+                email_main = company.getEmployercompaniesById().get(i).getUsersByUserId().getEmail();
             }
         }
-        emailService.sendEmailStatus(company.getEmail(), company.getNameCompany(), name
+        if(company.getStatus().equals("approved") && company.getEmployercompaniesById().size() == 1){
+            email_main = company.getEmployercompaniesById().get(0).getUsersByUserId().getEmail();
+        }
+
+
+        emailService.sendEmailStatus(email_main, company.getNameCompany(), name
                 , newStatus, "company");
         LOGGER.info("End changeStatus in Company Service with result: {}", success);
         return success;
@@ -197,7 +206,8 @@ public class CompanyServiceImpl implements CompanyService {
             companyDTO3List = mapper.map(companyPage.getContent(), targetListType);
             for (int i = 0; i < companyPage.getContent().size(); i++) {
                 for (int j = 0; j < companyPage.getContent().get(i).getEmployercompaniesById().size(); j++) {
-                    if (companyPage.getContent().get(i).getEmployercompaniesById().get(j).getUsersByUserId().getRoleId() == 2) {
+                    if (companyPage.getContent().get(i).getEmployercompaniesById().get(j).getUsersByUserId().getRoleId() == 2 ||
+                            companyPage.getContent().get(i).getEmployercompaniesById().get(j).getUsersByUserId().getRoleId() == 5) {
                         if (companyDTO3List.get(i).getId() == companyPage.getContent().get(i).getId()) {
                             companyDTO3List.get(i).setUsersEmail(companyPage.
                                     getContent().get(i).getEmployercompaniesById().get(j).getUsersByUserId().getEmail());
@@ -225,8 +235,35 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<Company> getFiveCompany() {
+    public List<CompanyDTO> getFiveCompany() {
         List<Company> list = companyRepository.getFiveCompany();
-        return list.subList(0,4);
+//        List<Company> correctList = new ArrayList<>();
+        List<CompanyDTO> companyDTOS = new ArrayList<>();
+//        for (int i = 0; i < list.size(); i++) {
+//            correctList = list;
+//            if (correctList.size() > 5) {
+//                for (int j = 0; j < correctList.size() && correctList.size() > 5; j++) {
+//                    int min = jobRepository.getNumberOfJobByCompanyByCompanyId(correctList.get(j).getId()).size();
+//                    for (int z = 1; z < correctList.size(); z++) {
+//                        int current = jobRepository.getNumberOfJobByCompanyByCompanyId(correctList.get(z).getId()).size();
+//                        if (current < min) {
+//                            min = current;
+//                            j = z;
+//                        }
+//                    }
+//                    if (j != 0) {
+//                        correctList.remove(j);
+//                    }
+//                }
+//            }
+//        }
+        ModelMapper mapper = new ModelMapper();
+        java.lang.reflect.Type targetListType = new TypeToken<List<CompanyDTO>>() {
+        }.getType();
+        companyDTOS = mapper.map(list, targetListType);
+        if (companyDTOS.size() < 5) {
+            return companyDTOS;
+        }
+        return companyDTOS.subList(0,5);
     }
 }

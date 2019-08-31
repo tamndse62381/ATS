@@ -1,16 +1,14 @@
 package com.ats.repository;
 
+import com.ats.entity.Job;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import com.ats.entity.Job;
-
-import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -31,8 +29,9 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
             "c.fullName LIKE CONCAT('%',LOWER(:city),'%') and " +
             "d.name LIKE CONCAT('%',LOWER(:industry),'%') and " +
             "j.endDateForApply > :now and " +
-            "(j.title LIKE CONCAT('%',LOWER(:search),'%') " +
-            "OR m.skillName LIKE CONCAT('%',LOWER(:search),'%'))")
+            "(j.title LIKE CONCAT('%',LOWER(:search),'%')" +
+            "OR m.skillName LIKE CONCAT('%',LOWER(:search),'%')" +
+            "OR j.companyByCompanyId.nameCompany LIKE CONCAT('%',LOWER(:search),'%'))")
     Page<Job> searchJob(@Param("search") String search, Pageable pageable,
                         @Param("status") String status, @Param("now") Date endDateForApply,
                         @Param("city") String city, @Param("industry") String industry);
@@ -50,8 +49,8 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
     Page<Job> getTop8(Pageable pageable, @Param("status") String status, @Param("now") Date endDateForApply);
 
     @Query("Select b from Job b " +
-            "where b.status = :status and " +
-            "b.usersByUserId.id = :employerId ")
+            "where b.status LIKE CONCAT('%',LOWER(:status),'%') and " +
+            "b.userId = :employerId ")
     Page<Job> findAllByEmployerId(Pageable pageable,
                                   @Param("status") String status,
                                   @Param("employerId") int employerId);
@@ -63,7 +62,15 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
     @Query("Select b from Job b where b.companyId = :companyId and b.status = :status")
     Page<Job> getJobByCompanyId(Pageable pageable,
                                 @Param("companyId") int companyId,
-                                @Param("status")String status);
+                                @Param("status") String status);
+
+    @Query("Select b from Job b where b.companyId = :companyId " +
+            "and b.status = :status " +
+            "and b.endDateForApply > :now")
+    Page<Job> getInvalidJobByCompanyId(Pageable pageable,
+                                       @Param("companyId") int companyId,
+                                       @Param("status") String status,
+                                       @Param("now") Timestamp now);
 
     @Transactional
     @Modifying
@@ -103,4 +110,10 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
     Page<Job> getAll(Pageable pageable, @Param("search") String search, @Param("status") String status);
 
     List<Job> findJobsByStatusAndUserId(String status, int EmployerId);
+
+    @Query("Select j from Job j where j.userId = :employerId")
+    List<Job> getJobsByEmployerId(@Param("employerId") int employerId);
+
+    @Query("Select j from Job j where j.companyId = :companyId")
+    List<Job> getNumberOfJobByCompanyByCompanyId(@Param("companyId") int companyId);
 }

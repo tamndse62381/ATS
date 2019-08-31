@@ -11,7 +11,7 @@ import com.ats.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -53,7 +53,7 @@ public class UserlikecvServiceImpl implements UserlikecvService {
     }
 
     @Override
-    public RestResponse listCv(int EmployerId) {
+    public RestResponse listCv(int EmployerId, Pageable pageable) {
         Users user = usersRepository.findOne(EmployerId);
         if (user == null)
             return new RestResponse(false, "Có lỗi xảy ra. Vui lòng thử lại!!!", null);
@@ -64,8 +64,8 @@ public class UserlikecvServiceImpl implements UserlikecvService {
         for (Userslikecv userslikecv : listUserslikecv) {
             listCv.add(userslikecv.getCvByCvid());
         }
-        Page<Cv> page = new PageImpl<>(listCv, new PageRequest(0, 10), listCv.size());
-        return new RestResponse(true, "Thành công!!!", page);
+        Page<Cv> pageCv = new PageImpl<>(listCv, pageable, listCv.size());
+        return new RestResponse(true, "Thành công!!!", pageCv);
 
     }
 

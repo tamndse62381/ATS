@@ -2,12 +2,12 @@ package com.ats.entity;
 
 import com.ats.enummerator.WorkingType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,6 +42,7 @@ public class Job {
     private List<Jobseekerlikejob> jobseekerlikejobsById;
     private List<Logjob> logjobsById;
     private List<Skillneedforjob> skillneedforjobsById;
+    private List<Feedback> feedbacksById;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -267,7 +268,7 @@ public class Job {
     }
 
     @OneToMany(mappedBy = "jobByJobId")
-    @JsonBackReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     public List<Apply> getAppliesById() {
         return appliesById;
     }
@@ -320,7 +321,7 @@ public class Job {
     }
 
     @ManyToOne
-    @JsonBackReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "JobLevelID", referencedColumnName = "ID", nullable = false)
     public Joblevel getJoblevelByJobLevelId() {
         return joblevelByJobLevelId;
@@ -370,4 +371,15 @@ public class Job {
     public void setSkillneedforjobsById(List<Skillneedforjob> skillneedforjobsById) {
         this.skillneedforjobsById = skillneedforjobsById;
     }
+
+    @OneToMany(mappedBy = "jobByJobId")
+    @JsonBackReference
+    public List<Feedback> getFeedbacksById() {
+        return feedbacksById;
+    }
+
+    public void setFeedbacksById(List<Feedback> feedbacksById) {
+        this.feedbacksById = feedbacksById;
+    }
+
 }

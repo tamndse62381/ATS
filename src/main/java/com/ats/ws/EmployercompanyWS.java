@@ -3,7 +3,6 @@ package com.ats.ws;
 import com.ats.dto.EmployercompanyDTO;
 import com.ats.dto.EmployercompanyDTO2;
 import com.ats.entity.Company;
-import com.ats.entity.Employercompany;
 import com.ats.service.CompanyService;
 import com.ats.service.EmployercompanyService;
 import com.ats.util.RestResponse;
