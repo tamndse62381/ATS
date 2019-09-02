@@ -85,6 +85,7 @@ public class JobWS {
         int result = 0;
 
         try {
+            job.setLastmodifyDate(new Date());
             result = jobService.updateJob(job);
             List<Integer> listSkillId = new ArrayList<>();
             for (int i = 0; i < job.getListSkill().size(); i++) {

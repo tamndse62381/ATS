@@ -499,7 +499,7 @@ public class CVServiceImpl implements CVService {
             List<Socialactivities> socialactivitiesById =
                     socialactivityRepository.findAllSocialactivityByCVID(listofDTO.get(i).getId());
             List<SocialactivitiesDTO> socialactivitiesDTOS = new ArrayList<>();
-            for (int j = 0; j < projectorproductworkedsById.size(); j++) {
+            for (int j = 0; j < socialactivitiesById.size(); j++) {
                 SocialactivitiesDTO dto = new SocialactivitiesDTO();
                 dto = mapper.map(socialactivitiesById.get(j), SocialactivitiesDTO.class);
                 socialactivitiesDTOS.add(dto);

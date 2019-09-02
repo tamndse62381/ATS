@@ -22,6 +22,7 @@ public class JobDTO4 {
     private Double salaryTo;
     private Integer yearExperience;
     private Date createdDate;
+    private Date lastmodifyDate;
     private Date endDateForApply;
     private String jobDescription;
     private String additionalRequest;
