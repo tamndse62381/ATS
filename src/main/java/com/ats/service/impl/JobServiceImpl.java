@@ -2,10 +2,7 @@ package com.ats.service.impl;
 
 import com.ats.dto.*;
 import com.ats.entity.*;
-import com.ats.repository.ApplyRepository;
-import com.ats.repository.CVRepository;
-import com.ats.repository.JobRepository;
-import com.ats.repository.UsersRepository;
+import com.ats.repository.*;
 import com.ats.service.*;
 import com.ats.util.RestResponse;
 import org.apache.logging.log4j.LogManager;
@@ -50,6 +47,8 @@ public class JobServiceImpl implements JobService {
     ApplyRepository applyRepository;
     @Autowired
     EmailService emailService;
+    @Autowired
+    SkillNeedForJobRepository skillNeedForJobRepository;
 
     private static final Logger LOGGER = LogManager.getLogger(JobServiceImpl.class);
 
@@ -873,6 +872,28 @@ public class JobServiceImpl implements JobService {
         }
         LOGGER.info("End getAllJob in Job Service");
         return listofJob;
+    }
+
+    @Override
+    public List getAllCvAndJob() {
+        List<Job> jobList = jobRepository.findAll();
+        List<JobDTO4> listofDTO;
+        ModelMapper mapper = new ModelMapper();
+        java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO4>>() {
+        }.getType();
+        listofDTO = mapper.map(jobList, targetListType);
+        for (int i = 0; i < listofDTO.size(); i++) {
+            List<Skillneedforjob> skillneedforjobList = skillNeedForJobRepository.getAllByJobId(listofDTO.get(i).getId());
+            List<SkillDTO2> skillDTO2s = new ArrayList<>();
+            for (int j = 0; j < skillneedforjobList.size(); j++) {
+                    SkillDTO2 dto2 = new SkillDTO2();
+                    dto2.setSkillName(skillneedforjobList.get(j).getSkillBySkillId().getSkillmasterBySkillMasterId().getSkillName());
+                    dto2.setLevel(skillneedforjobList.get(j).getSkillBySkillId().getSkillLevel());
+                    skillDTO2s.add(dto2);
+            }
+            listofDTO.get(i).setListSkill(skillDTO2s);
+        }
+        return listofDTO;
     }
 
 }

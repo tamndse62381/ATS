@@ -56,4 +56,6 @@ public interface JobService {
     RestResponse listJobsByEmployerId(int EmployerId);
 
     Page<Job> getAllJob(Pageable pageable, String search, String status);
+
+    List getAllCvAndJob();
 }

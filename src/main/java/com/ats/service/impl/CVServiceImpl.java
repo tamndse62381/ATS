@@ -6,6 +6,7 @@ import com.ats.repository.*;
 import com.ats.service.*;
 import com.ats.util.RestResponse;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -416,7 +417,7 @@ public class CVServiceImpl implements CVService {
                     listLikedCv.add(userslikecv.getCvByCvid());
                 }
             }
-            Page<Cv> pageCv = cvRepository.searchListCv(listSkillName,pageable, cityName, industryName);
+            Page<Cv> pageCv = cvRepository.searchListCv(listSkillName, pageable, cityName, industryName);
 //            listCv.removeAll(listLikedCv);
 
             return pageCv;
@@ -457,6 +458,78 @@ public class CVServiceImpl implements CVService {
         if (count >= 5)
             return false;
         return true;
+    }
+
+    @Override
+    public List<CVDTO2> getAllCV() {
+        List<Cv> cvList = cvRepository.findAll();
+        List<CVDTO2> listofDTO;
+        ModelMapper mapper = new ModelMapper();
+        java.lang.reflect.Type targetListType = new TypeToken<List<CVDTO2>>() {
+        }.getType();
+        listofDTO = mapper.map(cvList, targetListType);
+        for (int i = 0; i < listofDTO.size(); i++) {
+            List<Skillincv> skillincvs = skillincvRepository.findSkillincvsByCvid(listofDTO.get(i).getId());
+            List<SkillDTO2> skillDTO2s = new ArrayList<>();
+            for (int j = 0; j < skillincvs.size(); j++) {
+                SkillDTO2 dto2 = new SkillDTO2();
+                dto2.setSkillName(skillincvs.get(j).getSkillBySkillId().getSkillmasterBySkillMasterId().getSkillName());
+                dto2.setLevel(skillincvs.get(j).getSkillBySkillId().getSkillLevel());
+                skillDTO2s.add(dto2);
+            }
+
+            List<Education> educationsById = educationRepository.findAllEduByCVID(listofDTO.get(i).getId());
+            List<EducationDTO> educationDTOS = new ArrayList<>();
+            for (int j = 0; j < educationsById.size(); j++) {
+                EducationDTO dto = new EducationDTO();
+                dto = mapper.map(educationsById.get(j), EducationDTO.class);
+                educationDTOS.add(dto);
+            }
+
+            List<Projectorproductworked> projectorproductworkedsById
+                    = projectorproductworkedRepository.findByCVID(listofDTO.get(i).getId());
+            List<ProjectorproductworkedDTO> projectorproductworkedDTOS = new ArrayList<>();
+            for (int j = 0; j < projectorproductworkedsById.size(); j++) {
+                ProjectorproductworkedDTO dto = new ProjectorproductworkedDTO();
+                dto = mapper.map(projectorproductworkedsById.get(j), ProjectorproductworkedDTO.class);
+                projectorproductworkedDTOS.add(dto);
+            }
+
+
+            List<Socialactivities> socialactivitiesById =
+                    socialactivityRepository.findAllSocialactivityByCVID(listofDTO.get(i).getId());
+            List<SocialactivitiesDTO> socialactivitiesDTOS = new ArrayList<>();
+            for (int j = 0; j < projectorproductworkedsById.size(); j++) {
+                SocialactivitiesDTO dto = new SocialactivitiesDTO();
+                dto = mapper.map(socialactivitiesById.get(j), SocialactivitiesDTO.class);
+                socialactivitiesDTOS.add(dto);
+            }
+
+            List<Workexperience> workexperiencesById = workexperienceRepository.findByCVID(listofDTO.get(i).getId());
+            List<WorkexperienceDTO> workexperienceDTOS = new ArrayList<>();
+            for (int j = 0; j < workexperiencesById.size(); j++) {
+                WorkexperienceDTO dto = new WorkexperienceDTO();
+                dto = mapper.map(workexperiencesById.get(j), WorkexperienceDTO.class);
+                workexperienceDTOS.add(dto);
+            }
+
+            List<Certification> certificationsById = certificationRepository.findListCertificationByCVID(listofDTO.get(i).getId());
+            List<CertificationDTO> certificationDTOS = new ArrayList<>();
+            for (int j = 0; j < certificationsById.size(); j++) {
+                CertificationDTO dto = new CertificationDTO();
+                dto = mapper.map(certificationsById.get(j), CertificationDTO.class);
+                certificationDTOS.add(dto);
+            }
+
+
+            listofDTO.get(i).setSkillincvsById(skillDTO2s);
+            listofDTO.get(i).setCertificationsById(certificationDTOS);
+            listofDTO.get(i).setEducationsById(educationDTOS);
+            listofDTO.get(i).setWorkexperiencesById(workexperienceDTOS);
+            listofDTO.get(i).setSocialactivitiesById(socialactivitiesDTOS);
+            listofDTO.get(i).setProjectorproductworkedsById(projectorproductworkedDTOS);
+        }
+        return listofDTO;
     }
 
     private boolean checkIsActive(int userId) {

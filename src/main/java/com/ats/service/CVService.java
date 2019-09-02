@@ -1,6 +1,7 @@
 package com.ats.service;
 
 import com.ats.dto.CVDTO;
+import com.ats.dto.CVDTO2;
 import com.ats.dto.CVMobileDTO;
 import com.ats.entity.Cv;
 import com.ats.util.RestResponse;
@@ -35,4 +36,6 @@ public interface CVService {
     Page<Cv> listCvDenied (int EmployerId, Pageable pageable);
 
     boolean check(int JobSeekerId);
+
+    List<CVDTO2> getAllCV();
 }

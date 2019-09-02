@@ -39,6 +39,8 @@ public class JobWS {
     IndustryService industryService;
     @Autowired
     CompanyService companyService;
+    @Autowired
+    CVService cvService;
 
     private static final Logger LOGGER = LogManager.getLogger(JobWS.class);
 
@@ -517,5 +519,25 @@ public class JobWS {
         LOGGER.info("End getSearchComponent in JobWS");
 
         return new RestResponse(false, "Get Search Component Admin Fail ", null);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping(value = "/getAllCvAndJob")
+    public RestResponse getAllCvAndJob() {
+        LOGGER.info("Begin getAllCvAndJob in JobWS");
+        List<JobDTO4> jobDTO4s = jobService.getAllCvAndJob();
+        List<CVDTO2> cvdto2s = cvService.getAllCV();
+        HashMap<String,List> map = new HashMap<>();
+        try {
+            map.put("cv",cvdto2s);
+            map.put("job",jobDTO4s);
+            return new RestResponse(true, "Get All Cv and Job Successful", map);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getAllCvAndJob in JobWS");
+
+        return new RestResponse(false, "Get All Cv and Job Fail ", null);
     }
 }
