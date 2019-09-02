@@ -56,6 +56,7 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
                                   @Param("employerId") int employerId);
 
 
+
     @Query("Select b from Job b where b.companyId = :companyId and b.id <> :jobId and b.status = :status")
     List<Job> getJobByCompanyID(@Param("companyId") int companyId, @Param("jobId") int jobId,
                                 @Param("status") String status);
