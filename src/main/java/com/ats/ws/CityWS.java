@@ -12,7 +12,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.POST;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +43,11 @@ public class CityWS {
         return new RestResponse(false, "Get Fail ", null);
     }
 
+    @GetMapping("/getAll/mobile")
+    @CrossOrigin(origins = "*")
+    public List<City> getAll(){
+        return cityService.getAllCity();
+    }
 
     @PostMapping("/create")
     @CrossOrigin("/")

@@ -17,7 +17,7 @@ public class CountjobWS {
     private CountjobService countjobService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @CrossOrigin(origins = "")
+    @CrossOrigin(origins = "*")
     public int countJob(@PathVariable(name = "id") int id){
         return countjobService.countAccessTimes(id);
     }

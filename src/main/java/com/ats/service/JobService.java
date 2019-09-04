@@ -1,16 +1,16 @@
 package com.ats.service;
 
-import com.ats.dto.JobDTO2;
 import com.ats.dto.JobDTO;
+import com.ats.dto.JobDTO2;
 import com.ats.dto.JobDTO3;
 import com.ats.entity.Job;
 import com.ats.util.RestResponse;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
-
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -33,6 +33,8 @@ public interface JobService {
 
     Page<JobDTO> getJobByEmployerId(int employerId, Pageable pageable, String status);
 
+    HashMap getJobListByEmployerId(int employerId);
+
     JobDTO3 getJobDetail(int id);
 
     Job getJobDetailToUpdate(int id);
@@ -51,5 +53,9 @@ public interface JobService {
 
     RestResponse findListJobInValid(int EmployerId);
 
+    RestResponse listJobsByEmployerId(int EmployerId);
+
     Page<Job> getAllJob(Pageable pageable, String search, String status);
+
+    List getAllCvAndJob();
 }

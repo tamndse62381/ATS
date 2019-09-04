@@ -2,17 +2,15 @@ package com.ats.ws;
 
 import com.ats.dto.CVDTO;
 import com.ats.dto.CVMobileDTO;
-import com.ats.entity.*;
-import com.ats.repository.CVRepository;
-import com.ats.repository.JobRepository;
-import com.ats.service.*;
+import com.ats.entity.Cv;
+import com.ats.service.CVService;
+import com.ats.service.CountcvService;
 import com.ats.util.RestResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +41,7 @@ public class CVWS {
         }
     }
 
+
     // GET List CV cho User xem bang UserID - tested - co status = 1 (valid)
     @GetMapping("/get-list/{id}")
     @CrossOrigin("*")
@@ -58,7 +57,7 @@ public class CVWS {
 
     // Delete One CV
     @RequestMapping(value = "/deleteCV/{id}", method = RequestMethod.POST)
-    @CrossOrigin(origins = "")
+    @CrossOrigin(origins = "*")
     public RestResponse deleteACV(@PathVariable int id){
         return cvService.delete(id);
     }
@@ -102,7 +101,7 @@ public class CVWS {
     public Page<Cv> searchCv(@RequestParam(name = "listskill") String listSkill,
                              @RequestParam(name = "city") String cityName,
                              @RequestParam(name = "industry") String industryName,
-                             @PageableDefault(size = 2) Pageable pageable){
+                             @PageableDefault(size = 5) Pageable pageable){
         return cvService.searchCv(listSkill, cityName, industryName, pageable);
     }
 

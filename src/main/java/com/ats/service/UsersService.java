@@ -8,8 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public interface UsersService {
     UsersDTO login(String email, String password);
@@ -22,11 +20,13 @@ public interface UsersService {
 
     int changeStatus(int id, String newStatus);
 
-    int confirmUser(String token, String newStatus);
+    int confirmUser(int id, String newStatus);
 
     boolean checkPassword(String password, int id);
 
     UsersDTO findUserByEmail(String email);
+
+    UsersDTO findUserByUserId(int id);
 
     UsersDTO2 findUserByToken(String token);
 

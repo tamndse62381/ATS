@@ -1,11 +1,5 @@
 package com.ats.service.impl;
 
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import com.ats.dto.JobDTO;
 import com.ats.dto.JobDTO3;
 import com.ats.dto.UsersDTO;
 import com.ats.dto.UsersDTO2;
@@ -15,9 +9,11 @@ import com.ats.repository.UsersRepository;
 import com.ats.service.EmailService;
 import com.ats.service.JobService;
 import com.ats.service.RoleService;
+import com.ats.service.UsersService;
+import com.ats.token.TokenAuthenticationService;
+import com.ats.util.EncrytedPasswordUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +22,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ats.service.UsersService;
-
-import com.ats.token.TokenAuthenticationService;
-import com.ats.util.EncrytedPasswordUtils;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @Service
 @Transactional
@@ -114,7 +110,13 @@ public class UsersServiceImpl implements UsersService {
                     System.out.println(e);
                 }
             }
-            emailService.sendActiveUserEmail(newUsers.getAccessToken(), newUsers.getEmail());
+            if (newUsers.getRoleId() == 5) {
+                emailService.sendActiveUserEmail(newUsers.getAccessToken(), newUsers.getEmail(), true);
+            }
+            if (newUsers.getRoleId() == 1) {
+                emailService.sendActiveUserEmail(newUsers.getAccessToken(), newUsers.getEmail(), false);
+            }
+
         } else {
             return -1;
         }
@@ -144,6 +146,24 @@ public class UsersServiceImpl implements UsersService {
                 usersDTO = modelMapper.map(users, UsersDTO.class);
             }
         }
+        LOGGER.info("End findAccountByEmail in Account Service with result: {}", usersDTO);
+        return usersDTO;
+    }
+
+    @Override
+    public UsersDTO findUserByUserId(int id) {
+        LOGGER.info("Begin findAccountByEmail in Account Service with email {}", id);
+        modelMapper = new ModelMapper();
+        UsersDTO usersDTO = null;
+        Users users;
+
+        users = usersRepository.findOne(id);
+        if (users != null) {
+            usersDTO = modelMapper.map(users, UsersDTO.class);
+            usersDTO.setPassword("");
+            usersDTO.setAccessToken("");
+        }
+
         LOGGER.info("End findAccountByEmail in Account Service with result: {}", usersDTO);
         return usersDTO;
     }
@@ -192,6 +212,8 @@ public class UsersServiceImpl implements UsersService {
             users.setAddress(dto.getAddress());
             users.setDescription(dto.getDescription());
             users.setTelephoneNumber(dto.getTelephoneNumber());
+            users.setCityId(dto.getCityid());
+            users.setJobLevelId(dto.getJobLevelID());
             users.setLastModify(new Timestamp(date.getTime()));
             try {
                 LOGGER.info("End updateUser in User Repository with result: {}", users.toString());
@@ -222,6 +244,7 @@ public class UsersServiceImpl implements UsersService {
         Page<Users> usersPage = null;
         try {
             usersPage = usersRepository.findAll(pageable, search, status);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -236,6 +259,9 @@ public class UsersServiceImpl implements UsersService {
         int success;
         success = usersRepository.changeStatus(id, newStatus);
         Users users = usersRepository.findOne(id);
+        if(users.getRoleId() == 2){
+
+        }
         if (newStatus.equals("ban") || newStatus.equals("active ban")) {
 
             List<Job> jobList = users.getJobsById();
@@ -258,18 +284,18 @@ public class UsersServiceImpl implements UsersService {
                 }
             }
         }
-        emailService.sendEmailStatus(users.getEmail(),users.getFullName(),users.getFullName(),
-                newStatus,"user");
+        emailService.sendEmailStatus(users.getEmail(), users.getFullName(), users.getFullName(),
+                newStatus, "user");
         LOGGER.info("End changeStatus in User Service with result: {}", success);
         return success;
     }
 
     @Override
-    public int confirmUser(String token, String newStatus) {
+    public int confirmUser(int id, String newStatus) {
         LOGGER.info("Begin confirmUser in User Service  {}");
         int success = -1;
         try {
-            UsersDTO2 user = findUserByToken(token);
+            Users user = usersRepository.findOne(id);
             System.out.println(user);
             if (user != null) {
                 Calendar c1 = Calendar.getInstance();
@@ -281,11 +307,14 @@ public class UsersServiceImpl implements UsersService {
                 c2.setTime(new Date());
 
                 // Công thức tính số ngày giữa 2 mốc thời gian:
+                //1 ngày = 86.400.000
                 long noDay = (c2.getTime().getTime() - c1.getTime().getTime());
                 System.out.println(noDay);
                 if (noDay < 24 * 3600 * 1000) {
                     if (user.getStatus().equals("new")) {
-                        success = usersRepository.confirmUser(token, newStatus);
+                        user.setStatus(newStatus);
+                        usersRepository.save(user);
+                        success = 1;
                     }
                 }
 

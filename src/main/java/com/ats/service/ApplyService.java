@@ -1,12 +1,11 @@
 package com.ats.service;
 
-import com.ats.entity.Cv;
+import com.ats.dto.JobDTO;
 import com.ats.util.RestResponse;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
-@Service
+import java.util.List;
+
 public interface ApplyService {
     RestResponse create(int CvId, int JobID);
 
@@ -18,7 +17,13 @@ public interface ApplyService {
 
     RestResponse listJob(int JobSeekerId);
 
-    Page<Cv> listCv(int JobId, Pageable pageable);
+    List<JobDTO> listJobMobile(int JobSeekerId);
+
+    RestResponse listCv(int JobId, Pageable pageable);
+
+    RestResponse getAllApply(int userId);
+
+    int getAllApplyMobile(int userId);
 
     RestResponse checkStatusApply(int CvId, int JobId);
 }

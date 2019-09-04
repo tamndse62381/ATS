@@ -2,7 +2,6 @@ package com.ats.service;
 
 import com.ats.dto.EmployercompanyDTO;
 import com.ats.dto.EmployercompanyDTO2;
-import com.ats.entity.Employercompany;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

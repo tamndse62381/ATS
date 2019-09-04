@@ -2,7 +2,6 @@ package com.ats.service.impl;
 
 import com.ats.dto.SkillDTO;
 import com.ats.entity.Skill;
-
 import com.ats.entity.Skillmaster;
 import com.ats.entity.Skillneedforjob;
 import com.ats.repository.SkillRepository;

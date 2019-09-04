@@ -1,6 +1,5 @@
 package com.ats.dto;
 
-import com.ats.entity.Companyindustry;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;

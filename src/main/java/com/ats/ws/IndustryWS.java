@@ -52,4 +52,10 @@ public class IndustryWS {
         }
         return ResponseEntity.badRequest().body(null);
     }
+
+    @GetMapping("/getAll/mobile")
+    @CrossOrigin(origins = "*")
+    public List<Industry> getAllMobile(){
+        return industryService.getAll();
+    }
 }

@@ -1,6 +1,5 @@
 package com.ats.dto;
 
-import com.ats.entity.*;
 import lombok.Data;
 
 import java.io.Serializable;

@@ -1,7 +1,6 @@
 package com.ats.service.impl;
 
 import com.ats.dto.SkillMasterDTO;
-import com.ats.entity.Skill;
 import com.ats.entity.Skillmaster;
 import com.ats.entity.Skilltype;
 import com.ats.repository.SkillmasterRepository;
@@ -11,13 +10,14 @@ import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class SkillmasterServiceImpl implements SkillmasterService {
@@ -29,14 +29,22 @@ public class SkillmasterServiceImpl implements SkillmasterService {
     @Override
     public boolean createANewSkillMaster(SkillMasterDTO skillmasterDTO) {
         try {
-            Skillmaster newSkillMaster;
-            ModelMapper mapper = new ModelMapper();
-            newSkillMaster = mapper.map(skillmasterDTO,Skillmaster.class);
-            Skilltype skilltype = new Skilltype();
-            skilltype.setId(newSkillMaster.getSkillTypeId());
-            newSkillMaster.setSkilltypeBySkillTypeId(skilltype);
-            skillmasterRepository.save(newSkillMaster);
-            return true;
+            Skillmaster newSkillMaster = null;
+            System.out.println(skillmasterDTO.getSkillTypeId());
+            System.out.println(skillmasterDTO.getSkillName());
+            newSkillMaster = skillmasterRepository.checkExistSkill(skillmasterDTO.getSkillTypeId(), skillmasterDTO.getSkillName());
+            System.out.println(newSkillMaster);
+            if (newSkillMaster == null) {
+                ModelMapper mapper = new ModelMapper();
+                newSkillMaster = mapper.map(skillmasterDTO, Skillmaster.class);
+                Skilltype skilltype = new Skilltype();
+                skilltype.setId(newSkillMaster.getSkillTypeId());
+                newSkillMaster.setSkilltypeBySkillTypeId(skilltype);
+                skillmasterRepository.save(newSkillMaster);
+                return true;
+            }
+
+
         } catch (RuntimeException e) {
             System.out.println(e);
         }
@@ -102,5 +110,28 @@ public class SkillmasterServiceImpl implements SkillmasterService {
         }
         LOGGER.info("End getSkillNameById in SkillMaster Service with List size : ", integerList.size());
         return listSkillName;
+    }
+
+    @Override
+    public Page<Skillmaster> getAllSkillMaster(Pageable pageable, String search, String type) {
+        LOGGER.info("Begin getAllSkillMaster in SM Service");
+        Page<Skillmaster> listofJob = null;
+        try {
+            LOGGER.info("Begin getAllSkillMaster in SM Repository ");
+            System.out.println(search);
+            listofJob = skillmasterRepository.getAll(pageable, search, type);
+            System.out.println(listofJob.getContent().size());
+            LOGGER.info("End getAllSkillMaster in SM Repository");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getAllSkillMaster in SM Service");
+        return listofJob;
+    }
+
+    @Override
+    public boolean checkExistSkill(int skillTypeId, String skillName) {
+
+        return false;
     }
 }

@@ -1,9 +1,12 @@
 package com.ats.ws;
 
+import com.ats.dto.JobDTO;
 import com.ats.service.JobseekerlikejobService;
 import com.ats.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/jobseekerlikejob")
@@ -32,6 +35,13 @@ public class JobseekerlikejobWS {
     @CrossOrigin(origins = "*")
     public RestResponse listJob(@PathVariable int JobSeekerId){
         return jobseekerlikejobService.listJob(JobSeekerId);
+    }
+
+    // list ra cho mobile
+    @GetMapping("/list/mobile/{JobSeekerId}")
+    @CrossOrigin(origins = "*")
+    public List<JobDTO> listJobMobile(@PathVariable int JobSeekerId){
+        return jobseekerlikejobService.listJobMobile(JobSeekerId);
     }
 
     // un-check = delete

@@ -1,8 +1,5 @@
 package com.ats.repository;
 
-import java.util.Date;
-import java.util.Optional;
-
 import com.ats.entity.Users;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +9,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.Optional;
 
 
 @Repository
@@ -57,7 +57,7 @@ public interface UsersRepository extends JpaRepository<Users, Integer> {
     Optional<Users> findById(int id);
 
     @Query("select u from Users u where " +
-            "u.status LIKE CONCAT('%',LOWER(:status),'%') and " +
+            "u.status LIKE CONCAT('%',LOWER(:status),'%') and u.roleId <> 4 and" +
             "(u.email LIKE CONCAT('%',LOWER(:search),'%') or " +
             "u.fullName LIKE CONCAT('%',LOWER(:search),'%'))")
     Page<Users> findAll(Pageable pageable,

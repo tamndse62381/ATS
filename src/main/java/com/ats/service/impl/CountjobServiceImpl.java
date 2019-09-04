@@ -9,6 +9,7 @@ import com.ats.repository.UsersRepository;
 import com.ats.service.CountjobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import javax.ws.rs.NotFoundException;
 import java.sql.Timestamp;
 import java.util.Date;

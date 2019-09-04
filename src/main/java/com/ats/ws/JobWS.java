@@ -1,22 +1,20 @@
 package com.ats.ws;
 
 import com.ats.dto.*;
-import com.ats.entity.*;
-import com.ats.repository.JobRepository;
+import com.ats.entity.City;
+import com.ats.entity.Industry;
+import com.ats.entity.Job;
+import com.ats.entity.Joblevel;
 import com.ats.service.*;
-
+import com.ats.util.RestResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.ats.util.RestResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
 import org.springframework.data.web.PageableDefault;
-
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -41,6 +39,8 @@ public class JobWS {
     IndustryService industryService;
     @Autowired
     CompanyService companyService;
+    @Autowired
+    CVService cvService;
 
     private static final Logger LOGGER = LogManager.getLogger(JobWS.class);
 
@@ -51,20 +51,26 @@ public class JobWS {
         LOGGER.info("Begin createJob in JobWS with Job title : {}" + job.getTitle());
         int result = 0;
         try {
-            Date dt = new Date();
-            Calendar c = Calendar.getInstance();
-            c.setTime(dt);
-            job.setCreatedDate(new Timestamp(c.getTimeInMillis()));
-            job.setStatus("new");
-            result = jobService.createJob(job);
-            List<Integer> listSkillId = new ArrayList<>();
-            for (int i = 0; i < job.getListSkill().size(); i++) {
-                listSkillId.add(skillService.addNewSkill(job.getListSkill().get(i)));
+            if (job.getListSkill().isEmpty()) {
+                return new RestResponse(false, "Fail To Create New Job ", null);
             }
-            boolean finish = skillNeedForJobService.addSkillForJob(listSkillId, result);
-            if (finish) {
-                return new RestResponse(true, "Create New Job Successfull", result);
+            if (!job.getListSkill().isEmpty()) {
+                Date dt = new Date();
+                Calendar c = Calendar.getInstance();
+                c.setTime(dt);
+                job.setCreatedDate(new Timestamp(c.getTimeInMillis()));
+                job.setStatus("new");
+                result = jobService.createJob(job);
+                List<Integer> listSkillId = new ArrayList<>();
+                for (int i = 0; i < job.getListSkill().size(); i++) {
+                    listSkillId.add(skillService.addNewSkill(job.getListSkill().get(i)));
+                }
+                boolean finish = skillNeedForJobService.addSkillForJob(listSkillId, result);
+                if (finish) {
+                    return new RestResponse(true, "Create New Job Successfull", result);
+                }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -79,6 +85,7 @@ public class JobWS {
         int result = 0;
 
         try {
+            job.setLastmodifyDate(new Date());
             result = jobService.updateJob(job);
             List<Integer> listSkillId = new ArrayList<>();
             for (int i = 0; i < job.getListSkill().size(); i++) {
@@ -112,6 +119,29 @@ public class JobWS {
         LOGGER.info("End searchJob in JobWS with Search value : {}" + search);
         return new RestResponse(true, "searchJob Successfull with list Size : ", listJob);
     }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping(value = "/searchMobile")
+    @ResponseBody
+    public List<JobDTO> searchMobile(@RequestParam(value = "search") String search,
+                                     @RequestParam(value = "city") String city,
+                                     @RequestParam(value = "industry") String industry,
+                                     @PageableDefault Pageable pageable) {
+        LOGGER.info("Begin searchMobile in JobWS  with Search value : {}" + search + " " + city + " " + industry);
+        Page<JobDTO> listJob = null;
+        pageable = new PageRequest(0, Integer.MAX_VALUE);
+        try {
+            listJob = jobService.searchJob(search, city, industry, pageable);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End searchMobile in JobWS with Search value : {}" + search);
+        if (listJob.getContent().size() < 14) {
+            return listJob.getContent();
+        }
+        return listJob.getContent().subList(0, 14);
+    }
+
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/suggestJobByJobId")
@@ -178,7 +208,6 @@ public class JobWS {
         LOGGER.info("End suggestJob in JobWS  with userId : " + userId);
         return new RestResponse(true, "suggestJob Successfull", listJob);
     }
-
 
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/changeJobStatus")
@@ -264,10 +293,11 @@ public class JobWS {
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getJobByEmployerId")
-    public RestResponse getJobByEmployerId(@PageableDefault Pageable pageable,
+    public RestResponse getJobByEmployerId(@PageableDefault(value = 5) Pageable pageable,
                                            @RequestParam("employerId") int employerId,
                                            @RequestParam("status") String status) {
         LOGGER.info("Begin getJobByEmployerId in JobWS ");
+
         Page<JobDTO> listJobs = null;
         try {
             listJobs = jobService.getJobByEmployerId(employerId, pageable, status);
@@ -280,12 +310,27 @@ public class JobWS {
     }
 
     @CrossOrigin(origins = "*")
+    @GetMapping(value = "/getProfileByEmployerId")
+    public RestResponse getJobByEmployerIdProfile(@RequestParam("employerId") int employerId) {
+        LOGGER.info("Begin getJobByEmployerIdProfile in JobWS ");
+        HashMap<String, Integer> map;
+        try {
+            map = jobService.getJobListByEmployerId(employerId);
+            return new RestResponse(true, "get getJobByEmployerIdProfile Successfull with list size is : ", map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getJobByEmployerIdProfile in JobWS ");
+        return new RestResponse(false, "get getJobByEmployerIdProfile Fail", null);
+    }
+
+    @CrossOrigin(origins = "*")
     @GetMapping(value = "/getJobDetailAdmin", produces = "application/json;charset=UTF-8")
     public RestResponse getJobDetailAdmin(@RequestParam("id") int id) {
         LOGGER.info("Begin getJobDetailAdmin in JobWS with id " + id);
-        Job job;
+        JobDTO3 job;
         try {
-            job = jobService.getJobDetailToUpdate(id);
+            job = jobService.getJobDetail(id);
             LOGGER.info("End getJobDetailAdmin in JobWS with id " + id);
             if (job != null) {
                 return new RestResponse(true, "getJobDetailAdmin with job id : " + id, job);
@@ -305,9 +350,18 @@ public class JobWS {
         try {
             job = jobService.getJobDetailToUpdate(id);
             ModelMapper mapper = new ModelMapper();
-            JobDTO2 jobDTO2 = mapper.map(job,JobDTO2.class);
+            JobDTO2 jobDTO2 = mapper.map(job, JobDTO2.class);
+            List<SkillDTO> skillDTOList = new ArrayList<>();
+            for (int i = 0; i < job.getSkillneedforjobsById().size(); i++) {
+                SkillDTO dto = new SkillDTO();
+                dto.setId(job.getSkillneedforjobsById().get(i).getSkillBySkillId().getId());
+                dto.setSkillMasterId(job.getSkillneedforjobsById().get(i).getSkillBySkillId().getSkillMasterId());
+                dto.setSkillLevel(job.getSkillneedforjobsById().get(i).getSkillBySkillId().getSkillLevel());
+                skillDTOList.add(dto);
+            }
+            jobDTO2.setListSkill(skillDTOList);
             LOGGER.info("End getJobDetailToUpdate in JobWS with id " + id);
-            if (job != null) {
+            if (jobDTO2 != null) {
                 return new RestResponse(true, "getJobDetailToUpdate with job id : " + id, jobDTO2);
             }
         } catch (Exception e) {
@@ -316,6 +370,7 @@ public class JobWS {
 
         return new RestResponse(false, "Job is Not Available : ", null);
     }
+
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/getJobDetail", produces = "application/json;charset=UTF-8")
     public RestResponse getJobDetail(@RequestParam("id") int id,
@@ -413,6 +468,12 @@ public class JobWS {
         return jobService.findListJobValid(EmployerId);
     }
 
+    @GetMapping("/list/{EmployerId}")
+    @CrossOrigin(origins = "*")
+    public RestResponse listJobsByEmployerId(@PathVariable(name = "EmployerId") int EmployerId) {
+        return jobService.listJobsByEmployerId(EmployerId);
+    }
+
     @GetMapping("/list-invalid/{EmployerId}")
     @CrossOrigin(origins = "*")
     public RestResponse listJobsByEmployerIdInValid(@PathVariable(name = "EmployerId") int EmployerId) {
@@ -460,5 +521,25 @@ public class JobWS {
         LOGGER.info("End getSearchComponent in JobWS");
 
         return new RestResponse(false, "Get Search Component Admin Fail ", null);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping(value = "/getAllCvAndJob")
+    public RestResponse getAllCvAndJob() {
+        LOGGER.info("Begin getAllCvAndJob in JobWS");
+        List<JobDTO4> jobDTO4s = jobService.getAllCvAndJob();
+        List<CVDTO2> cvdto2s = cvService.getAllCV();
+        HashMap<String,List> map = new HashMap<>();
+        try {
+            map.put("cv",cvdto2s);
+            map.put("job",jobDTO4s);
+            return new RestResponse(true, "Get All Cv and Job Successful", map);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End getAllCvAndJob in JobWS");
+
+        return new RestResponse(false, "Get All Cv and Job Fail ", null);
     }
 }

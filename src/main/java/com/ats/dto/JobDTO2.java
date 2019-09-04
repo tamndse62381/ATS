@@ -3,6 +3,7 @@ package com.ats.dto;
 
 import com.ats.enummerator.WorkingType;
 import lombok.Data;
+
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class JobDTO2 {
     private Double salaryTo;
     private Integer yearExperience;
     private Date createdDate;
+    private Date lastmodifyDate;
     private Date endDateForApply;
     private String jobDescription;
     private String additionalRequest;

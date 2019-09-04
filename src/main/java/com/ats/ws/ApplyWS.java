@@ -1,13 +1,14 @@
 package com.ats.ws;
 
-import com.ats.entity.Cv;
+import com.ats.dto.JobDTO;
 import com.ats.service.ApplyService;
 import com.ats.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/apply")
@@ -58,7 +59,7 @@ public class ApplyWS {
     // get List Cv applied for one Job
     @GetMapping("/cv-applied/{jobid}")
     @CrossOrigin(origins = "*")
-    public Page<Cv> getListCvAppliedForOneJob(@PathVariable(name = "jobid") int JobId,
+    public RestResponse getListCvAppliedForOneJob(@PathVariable(name = "jobid") int JobId,
                                               @PageableDefault(size = 5) Pageable pageable){
         return applyService.listCv(JobId, pageable);
     }
@@ -69,5 +70,25 @@ public class ApplyWS {
     public RestResponse checkStatusApply(@PathVariable(name = "CvId") int CvId,
                                          @PathVariable(name = "JobId") int JobId){
         return applyService.checkStatusApply(CvId, JobId);
+    }
+
+    @GetMapping("/getAllAplly/{userId}")
+    @CrossOrigin("*")
+    public RestResponse getAllAplly(@PathVariable(name = "userId") int userId){
+        return applyService.getAllApply(userId);
+    }
+
+    @GetMapping("/getAllApllyMobile/{userId}")
+    @CrossOrigin("*")
+    public int getAllApllyMobile(@PathVariable(name = "userId") int userId){
+        return applyService.getAllApplyMobile(userId);
+    }
+
+
+    // get list job applied of JobSeekerId
+    @GetMapping("/list-applied/mobile/{id}")
+    @CrossOrigin(origins = "*")
+    public List<JobDTO> getListJobAppliedMobile(@PathVariable int id){
+        return applyService.listJobMobile(id);
     }
 }

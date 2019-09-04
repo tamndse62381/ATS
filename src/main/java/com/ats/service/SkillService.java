@@ -1,7 +1,6 @@
 package com.ats.service;
 
 import com.ats.dto.SkillDTO;
-import com.ats.entity.Skill;
 import com.ats.entity.Skillneedforjob;
 import org.springframework.stereotype.Service;
 
