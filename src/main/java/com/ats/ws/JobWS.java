@@ -41,6 +41,8 @@ public class JobWS {
     CompanyService companyService;
     @Autowired
     CVService cvService;
+    @Autowired
+    SuggestService suggestService;
 
     private static final Logger LOGGER = LogManager.getLogger(JobWS.class);
 
@@ -527,19 +529,13 @@ public class JobWS {
     @GetMapping(value = "/getAllCvAndJob")
     public RestResponse getAllCvAndJob() {
         LOGGER.info("Begin getAllCvAndJob in JobWS");
-        List<JobDTO4> jobDTO4s = jobService.getAllCvAndJob();
-        List<CVDTO2> cvdto2s = cvService.getAllCV();
-        HashMap<String,List> map = new HashMap<>();
+        Map<String,List> mapListJobAndListCv=suggestService.getListCvAndJob();
         try {
-            map.put("cv",cvdto2s);
-            map.put("job",jobDTO4s);
-            return new RestResponse(true, "Get All Cv and Job Successful", map);
-
+            return new RestResponse(true, "Get All Cv and Job Successful", mapListJobAndListCv);
         } catch (Exception e) {
             e.printStackTrace();
         }
         LOGGER.info("End getAllCvAndJob in JobWS");
-
         return new RestResponse(false, "Get All Cv and Job Fail ", null);
     }
 }
