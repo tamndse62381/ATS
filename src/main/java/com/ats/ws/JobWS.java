@@ -529,9 +529,10 @@ public class JobWS {
     @GetMapping(value = "/getAllCvAndJob")
     public RestResponse getAllCvAndJob() {
         LOGGER.info("Begin getAllCvAndJob in JobWS");
-        Map<String,List> mapListJobAndListCv=suggestService.getListCvAndJob();
+        //Map<String,List> mapListJobAndListCv=suggestService.getListCvAndJob();
+        List<VectorDTO> test=suggestService.test();
         try {
-            return new RestResponse(true, "Get All Cv and Job Successful", mapListJobAndListCv);
+            return new RestResponse(true, "Get All Cv and Job Successful", test);
         } catch (Exception e) {
             e.printStackTrace();
         }
