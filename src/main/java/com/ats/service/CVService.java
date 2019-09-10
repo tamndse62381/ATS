@@ -36,6 +36,7 @@ public interface CVService {
     Page<Cv> listCvDenied (int EmployerId, Pageable pageable);
 
     boolean check(int JobSeekerId);
+    Cv getCVByID(int id);
 
-    List<CVDTO2> getAllCV();
+    List<Cv> getAllCV();
 }

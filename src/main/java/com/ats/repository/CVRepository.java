@@ -15,6 +15,8 @@ import java.util.Optional;
 public interface CVRepository extends JpaRepository<Cv, Integer> {
     @Query("Select c from Cv c where c.email = :email")
     Cv findCVByEmail (@Param("email") String email);
+    @Query("Select c from Cv c where c.id = :id")
+    Cv findCVByCVID (@Param("id") int id);
 
     @Query("select c from Cv c where c.userId = :userid and c.isActive = :status")
     List<Cv> checkIsActive(@Param("userid") Integer userid, @Param("status") Integer status);
