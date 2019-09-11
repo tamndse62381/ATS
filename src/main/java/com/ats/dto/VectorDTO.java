@@ -9,6 +9,8 @@ public class VectorDTO implements Serializable {
     private int cvId;
     private double vectorJobAndCv;
     private double lenghtVectorCV;
+    private double positionLength;
+    private double positionVector;
     private double average;
 
     public VectorDTO(JobDTO4 job, int cvId, double vectorJobAndCv, double lenghtVectorCV, double average) {
@@ -17,6 +19,22 @@ public class VectorDTO implements Serializable {
         this.vectorJobAndCv = vectorJobAndCv;
         this.lenghtVectorCV = lenghtVectorCV;
         this.average = average;
+    }
+
+    public double getPositionLength() {
+        return positionLength;
+    }
+
+    public void setPositionLength(double positionLength) {
+        this.positionLength = positionLength;
+    }
+
+    public double getPositionVector() {
+        return positionVector;
+    }
+
+    public void setPositionVector(double positionVector) {
+        this.positionVector = positionVector;
     }
 
     public double getAverage() {

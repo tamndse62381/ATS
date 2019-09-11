@@ -234,30 +234,33 @@ public class SuggestServiceImpl implements SuggestService {
             @Override
             public int compare(VectorDTO lhs, VectorDTO rhs) {
                 // -1 - less than, 1 - greater than, 0 - equal từ nhỏ tới lớn
-                return lhs.getVectorJobAndCv() < rhs.getVectorJobAndCv() ? -1 : (lhs.getVectorJobAndCv() > rhs.getVectorJobAndCv()) ? 1 : 0;
+                return lhs.getVectorJobAndCv() > rhs.getVectorJobAndCv() ? -1 : (lhs.getVectorJobAndCv() < rhs.getVectorJobAndCv()) ? 1 : 0;
             }
         });
 
         result.addAll(lenght);
         for(int i = 0; i < result.size(); i ++){
             int cvid = result.get(i).getCvId();// lấy cv id
-            double lg = 0;
+            double lg = i+1;
             double ed = 0;
-            for (int j = 0; j < lenght.size() ; j++ ){// tìm cv by cvid của list độ dài
-                if(lenght.get(j).getCvId() == cvid){
-                    lg = j + 1 ;
-                }
-            }
+
             for (int j = 0; j < tmpEdge.size()  ; j++ ){// tìm cv by cvid của list góc
                 if(tmpEdge.get(j).getCvId() == cvid){
                     ed = j + 1;
                 }
             }
+            result.get(i).setPositionLength(lg);
+            result.get(i).setPositionVector(ed);
             result.get(i).setAverage((lg + ed) / 2);// tính trung bình số thứ tự cho mỗi record
-
         }
-
-
+        // sort list kết quả
+        Collections.sort(result, new Comparator<VectorDTO>() {
+            @Override
+            public int compare(VectorDTO lhs, VectorDTO rhs) {
+                // -1 - less than, 1 - greater than, 0 - equal từ nhỏ tới lớn
+                return lhs.getAverage() < rhs.getAverage() ? -1 : (lhs.getAverage() > rhs.getAverage()) ? 1 : 0;
+            }
+        });
         return result;
     }
 

@@ -461,35 +461,8 @@ public class CVServiceImpl implements CVService {
     }
 
     @Override
-    public Cv getCVByID(int id){
+    public Cv getCVByID(int id) {
         Cv cv = cvRepository.findCVByCVID(id);
-        List<Skillincv> skillincvs = skillincvRepository.findSkillincvsByCvid(id);
-
-
-        List<Education> educationsById = educationRepository.findAllEduByCVID(id);
-
-
-        List<Projectorproductworked> projectorproductworkedsById
-                = projectorproductworkedRepository.findByCVID(id);
-
-
-
-        List<Socialactivities> socialactivitiesById =
-                socialactivityRepository.findAllSocialactivityByCVID(id);
-
-        List<Workexperience> workexperiencesById = workexperienceRepository.findByCVID(id);
-
-        List<Certification> certificationsById = certificationRepository.findListCertificationByCVID(id);
-
-
-        cv.setSkillincvsById(skillincvs);
-        cv.setCertificationsById(certificationsById);
-       cv.setEducationsById(educationsById);
-        cv.setWorkexperiencesById(workexperiencesById);
-        cv.setSocialactivitiesById(socialactivitiesById);
-        cv.setProjectorproductworkedsById(projectorproductworkedsById);
-
-
         return cv;
     }
 
@@ -568,33 +541,32 @@ public class CVServiceImpl implements CVService {
         List<Cv> cvList = cvRepository.findAll();
 
 
-        for (int i = 0; i < cvList.size(); i++) {
-            List<Skillincv> skillincvs = skillincvRepository.findSkillincvsByCvid(cvList.get(i).getId());
-
-
-            List<Education> educationsById = educationRepository.findAllEduByCVID(cvList.get(i).getId());
-
-
-            List<Projectorproductworked> projectorproductworkedsById
-                    = projectorproductworkedRepository.findByCVID(cvList.get(i).getId());
-
-
-
-            List<Socialactivities> socialactivitiesById =
-                    socialactivityRepository.findAllSocialactivityByCVID(cvList.get(i).getId());
-
-            List<Workexperience> workexperiencesById = workexperienceRepository.findByCVID(cvList.get(i).getId());
-
-            List<Certification> certificationsById = certificationRepository.findListCertificationByCVID(cvList.get(i).getId());
-
-
-            cvList.get(i).setSkillincvsById(skillincvs);
-            cvList.get(i).setCertificationsById(certificationsById);
-            cvList.get(i).setEducationsById(educationsById);
-            cvList.get(i).setWorkexperiencesById(workexperiencesById);
-            cvList.get(i).setSocialactivitiesById(socialactivitiesById);
-            cvList.get(i).setProjectorproductworkedsById(projectorproductworkedsById);
-        }
+//        for (int i = 0; i < cvList.size(); i++) {
+//            List<Skillincv> skillincvs = skillincvRepository.findSkillincvsByCvid(cvList.get(i).getId());
+//
+//
+//            List<Education> educationsById = educationRepository.findAllEduByCVID(cvList.get(i).getId());
+//
+//
+//            List<Projectorproductworked> projectorproductworkedsById
+//                    = projectorproductworkedRepository.findByCVID(cvList.get(i).getId());
+//
+//
+//            List<Socialactivities> socialactivitiesById =
+//                    socialactivityRepository.findAllSocialactivityByCVID(cvList.get(i).getId());
+//
+//            List<Workexperience> workexperiencesById = workexperienceRepository.findByCVID(cvList.get(i).getId());
+//
+//            List<Certification> certificationsById = certificationRepository.findListCertificationByCVID(cvList.get(i).getId());
+//
+//
+//            cvList.get(i).setSkillincvsById(skillincvs);
+//            cvList.get(i).setCertificationsById(certificationsById);
+//            cvList.get(i).setEducationsById(educationsById);
+//            cvList.get(i).setWorkexperiencesById(workexperiencesById);
+//            cvList.get(i).setSocialactivitiesById(socialactivitiesById);
+//            cvList.get(i).setProjectorproductworkedsById(projectorproductworkedsById);
+//        }
         return cvList;
     }
 
