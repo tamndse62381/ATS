@@ -46,6 +46,7 @@ public class Cv {
     private List<Socialactivities> socialactivitiesById;
     private List<Userslikecv> userslikecvsById;
     private List<Workexperience> workexperiencesById;
+    private List<Suggest> suggestsById;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,7 +70,7 @@ public class Cv {
     }
 
     @Basic
-    @Column(name = "UserID", nullable = false , insertable = false , updatable = false)
+    @Column(name = "UserID", nullable = false, insertable = false, updatable = false)
     public int getUserId() {
         return userId;
     }
@@ -149,7 +150,7 @@ public class Cv {
     }
 
     @Basic
-    @Column(name = "CityID", nullable = false , insertable = false , updatable = false)
+    @Column(name = "CityID", nullable = false, insertable = false, updatable = false)
     public int getCityId() {
         return cityId;
     }
@@ -169,7 +170,7 @@ public class Cv {
     }
 
     @Basic
-    @Column(name = "IndustryID", nullable = false , insertable = false , updatable = false)
+    @Column(name = "IndustryID", nullable = false, insertable = false, updatable = false)
     public int getIndustryId() {
         return industryId;
     }
@@ -418,4 +419,14 @@ public class Cv {
     public void setWorkexperiencesById(List<Workexperience> workexperiencesById) {
         this.workexperiencesById = workexperiencesById;
     }
+
+    @OneToMany(mappedBy = "cvByCvid")
+    public List<Suggest> getSuggestsById() {
+        return suggestsById;
+    }
+
+    public void setSuggestsById(List<Suggest> suggestsById) {
+        this.suggestsById = suggestsById;
+    }
+
 }
