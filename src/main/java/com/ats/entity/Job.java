@@ -43,6 +43,7 @@ public class Job {
     private List<Logjob> logjobsById;
     private List<Skillneedforjob> skillneedforjobsById;
     private List<Feedback> feedbacksById;
+    private List<Suggest> suggestsById;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -382,4 +383,12 @@ public class Job {
         this.feedbacksById = feedbacksById;
     }
 
+    @OneToMany(mappedBy = "jobByJobid")
+    public List<Suggest> getSuggestsById() {
+        return suggestsById;
+    }
+
+    public void setSuggestsById(List<Suggest> suggestsById) {
+        this.suggestsById = suggestsById;
+    }
 }

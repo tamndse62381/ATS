@@ -12,6 +12,7 @@
     <mapping class="com.ats.entity.Certification"/>
     <mapping class="com.ats.entity.City"/>
     <mapping class="com.ats.entity.Company"/>
+    <mapping class="com.ats.entity.Companyimagecertification"/>
     <mapping class="com.ats.entity.Companyindustry"/>
     <mapping class="com.ats.entity.Countcv"/>
     <mapping class="com.ats.entity.Countjob"/>
@@ -36,6 +37,7 @@
     <mapping class="com.ats.entity.Skillmaster"/>
     <mapping class="com.ats.entity.Skillneedforjob"/>
     <mapping class="com.ats.entity.Skilltype"/>
+    <mapping class="com.ats.entity.Suggest"/>
     <mapping class="com.ats.entity.Socialactivities"/>
     <mapping class="com.ats.entity.Users"/>
     <mapping class="com.ats.entity.Userslikecv"/>
