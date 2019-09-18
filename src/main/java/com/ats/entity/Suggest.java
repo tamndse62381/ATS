@@ -1,6 +1,8 @@
 package com.ats.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -67,7 +69,9 @@ public class Suggest {
         this.cvByCvid = cvByCvid;
     }
 
+
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "jobid", referencedColumnName = "ID", nullable = false, insertable = false , updatable = false)
     public Job getJobByJobid() {
         return jobByJobid;

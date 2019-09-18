@@ -5,7 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface SuggestRepository extends JpaRepository<Suggest,Integer> {
     @Query("Select a from Suggest a where a.jobid = :jobid")
-    Suggest getCVByJobid( @Param("jobid") int jobid);
+    List<Suggest> getListCVByJobid(@Param("jobid") int jobid);
 }

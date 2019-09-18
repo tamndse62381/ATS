@@ -395,7 +395,8 @@ public class Job {
         this.feedbacksById = feedbacksById;
     }
 
-    @OneToMany(mappedBy = "jobByJobid")
+    @OneToMany(mappedBy = "jobByJobid" )
+    @JsonBackReference
     public List<Suggest> getSuggestsById() {
         return suggestsById;
     }

@@ -62,6 +62,8 @@ public class CVServiceImpl implements CVService {
     private ApplyRepository applyRepository;
     @Autowired
     private UserlikecvRepository userlikecvRepository;
+    @Autowired
+    private SuggestRepository suggestRepository;
 
     //Mapping Object
     ModelMapper modelMapper = new ModelMapper();
@@ -385,39 +387,47 @@ public class CVServiceImpl implements CVService {
 
     @Override
     public Page<Cv> suggest(int JobId, Pageable pageable) {
-        Job job = jobRepository.findOne(JobId);
-        if (job == null)
-            return null;
-        String cityName = job.getCityByCityId().getFullName();
-        String industryName = job.getIndustryByIndustryId().getName();
-        List<Skill> listSkill = new ArrayList<>();
-        for (Skillneedforjob skillneedforjob : job.getSkillneedforjobsById()) {
-            listSkill.add(skillneedforjob.getSkillBySkillId());
-        }
-        List<Skillmaster> listSkillMaster = new ArrayList<>();
-        for (Skill skill : listSkill) {
-            listSkillMaster.add(skill.getSkillmasterBySkillMasterId());
-        }
-        String listSkillName = "";
-        int i = 0;
-        for (Skillmaster skillmaster : listSkillMaster) {
-            if (i < listSkillMaster.size() - 1) {
-                listSkillName = listSkillName + skillmaster.getSkillName() + ",";
-                i++;
-            } else {
-                listSkillName = listSkillName + skillmaster.getSkillName();
-            }
-        }
+//        Job job = jobRepository.findOne(JobId);
+//        if (job == null)
+//            return null;
+//        String cityName = job.getCityByCityId().getFullName();
+//        String industryName = job.getIndustryByIndustryId().getName();
+//        List<Skill> listSkill = new ArrayList<>();
+//        for (Skillneedforjob skillneedforjob : job.getSkillneedforjobsById()) {
+//            listSkill.add(skillneedforjob.getSkillBySkillId());
+//        }
+//        List<Skillmaster> listSkillMaster = new ArrayList<>();
+//        for (Skill skill : listSkill) {
+//            listSkillMaster.add(skill.getSkillmasterBySkillMasterId());
+//        }
+//        String listSkillName = "";
+//        int i = 0;
+//        for (Skillmaster skillmaster : listSkillMaster) {
+//            if (i < listSkillMaster.size() - 1) {
+//                listSkillName = listSkillName + skillmaster.getSkillName() + ",";
+//                i++;
+//            } else {
+//                listSkillName = listSkillName + skillmaster.getSkillName();
+//            }
+//        }
         try {
+
             // get ListCv liked by this Employer
-            List<Userslikecv> listUserslikecv = userlikecvRepository.findUserslikecvsByUserId(job.getUserId());
-            List<Cv> listLikedCv = new ArrayList<>();
-            if (listUserslikecv != null) {
-                for (Userslikecv userslikecv : listUserslikecv) {
-                    listLikedCv.add(userslikecv.getCvByCvid());
-                }
+//            List<Userslikecv> listUserslikecv = userlikecvRepository.findUserslikecvsByUserId(job.getUserId());
+//            List<Cv> listLikedCv = new ArrayList<>();
+//            if (listUserslikecv != null) {
+//                for (Userslikecv userslikecv : listUserslikecv) {
+//                    listLikedCv.add(userslikecv.getCvByCvid());
+//                }
+//            }
+            List<Suggest> suggestList = suggestRepository.getListCVByJobid(JobId);
+            List<Cv> listCv = new ArrayList<>();
+            for (int i = 0 ; i < suggestList.size(); i++){
+              listCv.add(suggestList.get(i).getCvByCvid());
+
             }
-            Page<Cv> pageCv = cvRepository.searchListCv(listSkillName, pageable, cityName, industryName);
+
+            Page<Cv> pageCv = new PageImpl<>(listCv, pageable, listCv.size());
 //            listCv.removeAll(listLikedCv);
 
             return pageCv;
@@ -539,13 +549,7 @@ public class CVServiceImpl implements CVService {
 //    }
     public List<Cv> getAllCV() {
         List<Cv> cvList = cvRepository.findAll();
-        List<Cv> result = new ArrayList<>();
-        for( int i = 0; i < cvList.size(); i++){
-            if(cvList.get(i).getIsActive() == 1){
-                result.add(cvList.get(i));
-                continue;
-            }
-        }
+
         return cvList;
     }
 

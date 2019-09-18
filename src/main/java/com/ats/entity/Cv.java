@@ -420,6 +420,7 @@ public class Cv {
         this.workexperiencesById = workexperiencesById;
     }
 
+    @JsonBackReference
     @OneToMany(mappedBy = "cvByCvid")
     public List<Suggest> getSuggestsById() {
         return suggestsById;
