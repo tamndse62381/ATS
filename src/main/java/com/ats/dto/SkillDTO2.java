@@ -6,4 +6,5 @@ import lombok.Data;
 public class SkillDTO2 {
     String skillName;
     int level;
+    boolean require;
 }

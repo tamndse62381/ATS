@@ -539,34 +539,13 @@ public class CVServiceImpl implements CVService {
 //    }
     public List<Cv> getAllCV() {
         List<Cv> cvList = cvRepository.findAll();
-
-
-//        for (int i = 0; i < cvList.size(); i++) {
-//            List<Skillincv> skillincvs = skillincvRepository.findSkillincvsByCvid(cvList.get(i).getId());
-//
-//
-//            List<Education> educationsById = educationRepository.findAllEduByCVID(cvList.get(i).getId());
-//
-//
-//            List<Projectorproductworked> projectorproductworkedsById
-//                    = projectorproductworkedRepository.findByCVID(cvList.get(i).getId());
-//
-//
-//            List<Socialactivities> socialactivitiesById =
-//                    socialactivityRepository.findAllSocialactivityByCVID(cvList.get(i).getId());
-//
-//            List<Workexperience> workexperiencesById = workexperienceRepository.findByCVID(cvList.get(i).getId());
-//
-//            List<Certification> certificationsById = certificationRepository.findListCertificationByCVID(cvList.get(i).getId());
-//
-//
-//            cvList.get(i).setSkillincvsById(skillincvs);
-//            cvList.get(i).setCertificationsById(certificationsById);
-//            cvList.get(i).setEducationsById(educationsById);
-//            cvList.get(i).setWorkexperiencesById(workexperiencesById);
-//            cvList.get(i).setSocialactivitiesById(socialactivitiesById);
-//            cvList.get(i).setProjectorproductworkedsById(projectorproductworkedsById);
-//        }
+        List<Cv> result = new ArrayList<>();
+        for( int i = 0; i < cvList.size(); i++){
+            if(cvList.get(i).getIsActive() == 1){
+                result.add(cvList.get(i));
+                continue;
+            }
+        }
         return cvList;
     }
 

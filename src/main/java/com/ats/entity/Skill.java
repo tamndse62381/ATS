@@ -14,6 +14,7 @@ public class Skill implements Serializable {
     private int id;
     private int skillMasterId;
     private Integer skillLevel;
+
     private Skillmaster skillmasterBySkillMasterId;
     private List<Skillincv> skillincvsById;
     private List<Skillneedforjob> skillneedforjobsById;
@@ -48,6 +49,7 @@ public class Skill implements Serializable {
     public void setSkillLevel(Integer skillLevel) {
         this.skillLevel = skillLevel;
     }
+
 
     @Override
     public boolean equals(Object o) {

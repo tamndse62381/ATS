@@ -889,6 +889,7 @@ public class JobServiceImpl implements JobService {
                     SkillDTO2 dto2 = new SkillDTO2();
                     dto2.setSkillName(skillneedforjobList.get(j).getSkillBySkillId().getSkillmasterBySkillMasterId().getSkillName());
                     dto2.setLevel(skillneedforjobList.get(j).getSkillBySkillId().getSkillLevel());
+                    dto2.setRequire(skillneedforjobList.get(j).getRequire());
                     skillDTO2s.add(dto2);
             }
             listofDTO.get(i).setListSkill(skillDTO2s);

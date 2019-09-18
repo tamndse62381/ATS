@@ -1,10 +1,10 @@
 package com.ats.service.impl;
 
 import com.ats.dto.*;
-import com.ats.entity.Cv;
-import com.ats.entity.Job;
-import com.ats.entity.Skillincv;
-import com.ats.entity.Skillneedforjob;
+import com.ats.entity.*;
+import com.ats.repository.CVRepository;
+import com.ats.repository.JobRepository;
+import com.ats.repository.SuggestRepository;
 import com.ats.service.JobService;
 import com.ats.service.SuggestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +21,15 @@ public class SuggestServiceImpl implements SuggestService {
     @Autowired
     CVServiceImpl cvService;
 
+    @Autowired
+    private SuggestRepository suggestRepository;
+
+    @Autowired
+    private JobRepository jobRepository;
+
+    @Autowired
+    private CVRepository cvRepository;
+
     @Override
     public Map<String, List> getListCvAndJob() {
         Map<String, List> mapCvAndJob = new HashMap<>();
@@ -36,18 +45,117 @@ public class SuggestServiceImpl implements SuggestService {
     public List<VectorDTO> test() {
         List listJob = jobService.getAllCvAndJob();
         List listCv = cvService.getAllCV();
-        JobDTO4 dto4 = (JobDTO4) listJob.get(0);
-        List resultCalculateVectorJobAndListCV = getListCvByVector(calculateVectorJobAndListCv(dto4, listCv));// lay list cv
-        //return calculateVectorJobAndListCv(dto4, listCv);
-       // return calculateLenghtOfVectorJobAndListCv(dto4, resultCalculateVectorJobAndListCV);
-        return averageLenghtAndEdge(calculateLenghtOfVectorJobAndListCv(dto4, resultCalculateVectorJobAndListCV),calculateVectorJobAndListCv(dto4, listCv));
+        JobDTO4 dto4 = (JobDTO4) listJob.get(0); // get cai job dau tien trong list
+        List<Cv> listCVByHardCondition = getListCVByHardCondition(dto4,listCv);
+
+        List resultCalculateVectorJobAndListCV = getListCvByVector(calculateVectorJobAndListCv(dto4, listCVByHardCondition));// lay list cv
+
+        return averageLenghtAndEdge(calculateLenghtOfVectorJobAndListCv(dto4, resultCalculateVectorJobAndListCV), calculateVectorJobAndListCv(dto4, listCVByHardCondition));
+}
+    @Override
+    public void suggestCVToJob() {
+        suggestRepository.deleteAll();
+        List<VectorDTO> result = new ArrayList<>();
+        List<VectorDTO> tmp = new ArrayList<>();
+        List listJob = jobService.getAllCvAndJob();
+        List listCv = cvService.getAllCV();
+        for(int i = 0; i < listJob.size(); i++){
+            JobDTO4 dto4 = (JobDTO4) listJob.get(i); // get cai job dau tien trong list
+            List<Cv> listCVByHardCondition = getListCVByHardCondition(dto4,listCv);
+
+            List resultCalculateVectorJobAndListCV = getListCvByVector(calculateVectorJobAndListCv(dto4, listCVByHardCondition));// lay list cv
+
+            tmp =  averageLenghtAndEdge(calculateLenghtOfVectorJobAndListCv(dto4, resultCalculateVectorJobAndListCV), calculateVectorJobAndListCv(dto4, listCVByHardCondition));
+            result.addAll(tmp);
+
+        }
+
+        for (int j = 0 ; j < result.size(); j ++){
+            Cv cv = cvRepository.findOne(result.get(j).getCvId());
+            Job job = jobRepository.findOne(result.get(j).getJob().getId());
+            Suggest suggest = new Suggest();
+            suggest.setCvid(result.get(j).getCvId());
+            suggest.setCvByCvid(cv);
+            suggest.setJobid(result.get(j).getJob().getId());
+            suggest.setJobByJobid(job);
+            suggestRepository.save(suggest);
+        }
+
+
+    }
+
+
+    public List<Cv> getListCVByHardCondition( JobDTO4 job, List listCv  ){
+        List<Cv> listCvBySalaryOfJob = new ArrayList();
+        double salaryFrom = job.getSalaryFrom();
+        double salaryTo = job.getSalaryTo();
+
+
+
+        for (int i = 0; i < listCv.size(); i++) {
+            Cv cv = (Cv) listCv.get(i);
+            if (salaryFrom == 0 && salaryTo == 0 && job.getCityId() == cv.getCityId()) {
+                listCvBySalaryOfJob=listCv;
+                break;
+            } else if (cv.getSalaryFrom() == 0 && cv.getSalaryTo() == 0) {
+                if (job.getCityId() == cv.getCityId()) {
+                    listCvBySalaryOfJob.add(cv);
+                    continue;
+                } else {
+                    continue;
+                }
+            } else if (salaryFrom != 0 && salaryTo == 0) {
+                if (cv.getSalaryFrom() >= salaryFrom || cv.getSalaryTo() >= salaryFrom) {
+                    if (job.getCityId() == cv.getCityId()) {
+                        listCvBySalaryOfJob.add(cv);
+                        continue;
+                    } else {
+                        continue;
+                    }
+                }
+            } else if (salaryFrom == 0 && salaryTo != 0) { // salary up to
+                if (cv.getSalaryFrom() <= salaryTo && cv.getSalaryTo() == 0) { // cv co from ma khong co to
+                    if (job.getCityId() == cv.getCityId()) {
+                        listCvBySalaryOfJob.add(cv);
+                        continue;
+                    } else {
+                        continue;
+                    }
+                } else if (cv.getSalaryTo() <= salaryTo) {
+                    if (job.getCityId() == cv.getCityId()) {
+                        listCvBySalaryOfJob.add(cv);
+                        continue;
+                    } else {
+                        continue;
+                    }
+                }
+            } else if (salaryFrom != 0 && salaryTo != 0) {
+                if (cv.getSalaryTo() >= salaryFrom && cv.getSalaryTo() <= salaryTo) { // xet salaryto cua cv nam trong khoang tu from toi to cua cv
+                    if (job.getCityId() == cv.getCityId()) {
+                        listCvBySalaryOfJob.add(cv);
+                        continue;
+                    } else {
+                        continue;
+                    }
+                } else if (cv.getSalaryFrom() <= salaryTo && cv.getSalaryTo() == 0) { // luong cua cv tu...
+                    if (job.getCityId() == cv.getCityId()) {
+                        listCvBySalaryOfJob.add(cv);
+                        continue;
+                    } else {
+                        continue;
+                    }
+                }
+            }
+
+        }
+        return listCvBySalaryOfJob;
     }
 
     public List getListCvByVector(List<VectorDTO> listVector) { // lay ra nhung thang co vector > 0 trong list vector
         List cvList = new ArrayList();
-        for (int i = 0 ; i < listVector.size(); i++){
-            VectorDTO vectorDTO=listVector.get(i);
-            if(vectorDTO.getVectorJobAndCv() > 0){
+        for (int i = 0; i < listVector.size(); i++) {
+            VectorDTO vectorDTO = listVector.get(i);
+            if (vectorDTO.getVectorJobAndCv() > 0) {
                 int idCv = vectorDTO.getCvId(); // id cua cv tra ve cv
                 Cv cv = cvService.getCVByID(idCv);
                 cvList.add(cv);
@@ -63,17 +171,28 @@ public class SuggestServiceImpl implements SuggestService {
         List<VectorDTO> listResult = new ArrayList<>();
         VectorDTO vectorDTO = new VectorDTO();
 
-
+        boolean checkRequire = false;
         List<Integer> listLevelOfJob = new ArrayList<>();
         List<SkillDTO2> listSkillJob = job.getListSkill();
+        List<String> listSkillRequire = new ArrayList<>();
         for (int i = 0; i < listSkillJob.size(); i++) {
             int level = listSkillJob.get(i).getLevel();
             listLevelOfJob.add(level);
+            if(listSkillJob.get(i).isRequire()){
+                String skillName = listSkillJob.get(i).getSkillName();
+                listSkillRequire.add(skillName);
+            }
+
         }// co dc list level cua skill
+        if(listSkillRequire.size() > 0){
+            checkRequire = true;
+        }
 
         boolean findSkill = false;
 
+
         for (int i = 0; i < cvList.size(); i++) { // duyet cv
+
             vectorDTO.setJob(job);
             Cv cvdto = (Cv) cvList.get(i);
             List<Skillincv> skillincvs = cvdto.getSkillincvsById();
@@ -84,13 +203,27 @@ public class SuggestServiceImpl implements SuggestService {
                 dto2.setLevel(skillincvs.get(j).getSkillBySkillId().getSkillLevel());
                 skillListOfCv.add(dto2);
             } // lay duoc lít skill cua cv
+            int count = 0;
+
             for (int j = 0; j < listSkillJob.size(); j++) {
                 findSkill = false;
                 SkillDTO2 skillJob = listSkillJob.get(j); //skill of job
+                boolean skillrequire = skillJob.isRequire();
                 for (int k = 0; k < skillListOfCv.size(); k++) { // duyet list skill of cv
                     SkillDTO2 skillOfCv = skillListOfCv.get(k);
                     boolean checkSkill = checkSkillOfCvInJob(skillOfCv, skillJob); // check xem 2 skill skill job voi skill cv co giong nhau 0
-                    if (checkSkill == true) {
+                    if(skillrequire == true && skillJob.getLevel() <= skillOfCv.getLevel() && checkSkill == true ){
+                        findSkill = true;
+                        skillrequire = false;
+                        count++;
+                        continue;
+
+                    }
+                    if(listSkillRequire.size() == count){
+                        mapLevelSkillJobAndSkillCv.put(skillJob.getSkillName() + skillJob.getLevel(), skillOfCv.getLevel());
+                        count = 0;
+                    }
+                    if (checkSkill == true && checkRequire == false) {
                         mapLevelSkillJobAndSkillCv.put(skillJob.getSkillName() + skillJob.getLevel(), skillOfCv.getLevel());
                         findSkill = true;
                         break;
@@ -141,7 +274,7 @@ public class SuggestServiceImpl implements SuggestService {
                 dto2.setLevel(skillincvs.get(j).getSkillBySkillId().getSkillLevel());
                 skillListOfCv.add(dto2);
             }
-           // List<SkillDTO2> skillListOfCv = cvdto.getSkillincvsById(); // lay duoc lít skill cua cv
+            // List<SkillDTO2> skillListOfCv = cvdto.getSkillincvsById(); // lay duoc lít skill cua cv
             for (int j = 0; j < listSkillJob.size(); j++) {
                 findSkill = false;
                 SkillDTO2 skillJob = listSkillJob.get(j); //skill of job
@@ -212,16 +345,16 @@ public class SuggestServiceImpl implements SuggestService {
     }
 
     @Override
-    public List<VectorDTO> averageLenghtAndEdge(List<VectorDTO> lenght, List<VectorDTO> edge){
+    public List<VectorDTO> averageLenghtAndEdge(List<VectorDTO> lenght, List<VectorDTO> edge) {
         List<VectorDTO> result = new ArrayList<>();
         List<VectorDTO> tmpEdge = new ArrayList<>();
-        for (int i = 0 ; i < edge.size(); i++){
+        for (int i = 0; i < edge.size(); i++) {
             VectorDTO vectorDTO = edge.get(i);
-            if(vectorDTO.getVectorJobAndCv() > 0){
+            if (vectorDTO.getVectorJobAndCv() > 0) {
                 tmpEdge.add(vectorDTO);
             }
         }
-     // sort list độ dài
+        // sort list độ dài
         Collections.sort(lenght, new Comparator<VectorDTO>() {
             @Override
             public int compare(VectorDTO lhs, VectorDTO rhs) {
@@ -239,13 +372,13 @@ public class SuggestServiceImpl implements SuggestService {
         });
 
         result.addAll(lenght);
-        for(int i = 0; i < result.size(); i ++){
+        for (int i = 0; i < result.size(); i++) {
             int cvid = result.get(i).getCvId();// lấy cv id
-            double lg = i+1;
+            double lg = i + 1;
             double ed = 0;
 
-            for (int j = 0; j < tmpEdge.size()  ; j++ ){// tìm cv by cvid của list góc
-                if(tmpEdge.get(j).getCvId() == cvid){
+            for (int j = 0; j < tmpEdge.size(); j++) {// tìm cv by cvid của list góc
+                if (tmpEdge.get(j).getCvId() == cvid) {
                     ed = j + 1;
                 }
             }

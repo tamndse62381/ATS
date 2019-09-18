@@ -1,6 +1,7 @@
 package com.ats.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -10,6 +11,7 @@ public class Skillneedforjob {
     private int id;
     private int jobId;
     private int skillId;
+    private Boolean require;
     private Job jobByJobId;
     private Skill skillBySkillId;
 
@@ -42,6 +44,15 @@ public class Skillneedforjob {
 
     public void setSkillId(int skillId) {
         this.skillId = skillId;
+    }
+
+    @Column(name = "Require",columnDefinition = "BOOLEAN", length = 1)
+    public Boolean getRequire() {
+        return require;
+    }
+
+    public void setRequire(Boolean require) {
+        this.require = require;
     }
 
     @Override

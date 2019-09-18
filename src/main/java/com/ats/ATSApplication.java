@@ -1,6 +1,7 @@
 package com.ats;
 
 
+import com.ats.service.SuggestService;
 import com.ats.service.impl.SuggestServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -25,7 +26,7 @@ import java.util.Date;
 public class ATSApplication {
 
     @Autowired
-     SuggestServiceImpl suggestService;
+    SuggestService suggestService;
 
     public static void main(String[] args) {
         SpringApplication.run(ATSApplication.class, args);
@@ -35,7 +36,7 @@ public class ATSApplication {
     public  void excuteSuggestCvForJob() {
         System.out.println("The suggest executed at " + new Date());
         try {
-			suggestService.test();
+			suggestService.suggestCVToJob();
             Thread.sleep(10000);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
