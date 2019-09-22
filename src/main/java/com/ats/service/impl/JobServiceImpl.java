@@ -141,25 +141,40 @@ public class JobServiceImpl implements JobService {
     @Override
     public Page<JobDTO> searchJob(String job, String city, String industry, Pageable pageable) {
         LOGGER.info("Begin searchJob in Job Service with job name : {} ", job);
-        Page<Job> pageOfJob;
+        List<Job> pageOfJob = null;
+        List<Job> listofJob = new ArrayList<>();
+        List<JobDTO> listofDTO = null;
         Page<JobDTO> pageDTO = null;
+        List<String> result = new ArrayList<>();
         try {
             LOGGER.info("Begin searchJob in Job Repository with job name : {} ", job);
             System.out.println("String search : " + job);
-            System.out.println("City : " + city);
-            System.out.println("Industry : " + industry);
-            pageOfJob = jobRepository.searchJob(job, pageable, "approved", new Date(), city, industry);
-            System.out.println(pageOfJob.getContent().size());
-            ModelMapper mapper = new ModelMapper();
-            pageDTO = pageOfJob.map(new Converter<Job, JobDTO>() {
-                @Override
-                public JobDTO convert(Job job) {
-                    JobDTO dto;
-                    dto = mapper.map(job, JobDTO.class);
-                    return dto;
+            if (job.contains(",")) {
+                String[] arStr = job.split(",");
+                for (String item : arStr) {
+                    System.out.println(item);
+                    result.add(item);
                 }
-            });
+            }
+            if (job.contains(" ")) {
+                String[] arStr = job.split(" ");
+                for (String item : arStr) {
+                    System.out.println(item);
+                    result.add(item);
+                }
+            }
+            System.out.println("siz : "+result.size());
+            for (int i = 0; i < result.size(); i++) {
+                System.out.println("Kết quả : " + result.get(i));
+                pageOfJob = jobRepository.searchJob(result.get(i), pageable, "approved", new Date(), city, industry);
+                listofJob.addAll(pageOfJob);
+            }
+            ModelMapper mapper = new ModelMapper();
 
+            java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
+            }.getType();
+            listofDTO = mapper.map(listofJob, targetListType);
+            pageDTO = new PageImpl<>(listofDTO, new PageRequest(0, 10), listofDTO.size());
             LOGGER.info("End searchJob in Job Repository with job list size : {} ");
         } catch (Exception e) {
             e.printStackTrace();
@@ -228,7 +243,7 @@ public class JobServiceImpl implements JobService {
         Page<JobDTO> pageDTO = null;
         try {
             LOGGER.info("Begin getJobByCompanyId in Job Repository ");
-            listofJob = jobRepository.getJobByCompanyId(pageable, companyId, "approved");
+            listofJob = jobRepository.getJobByCompanyId(pageable, companyId, "approved", new Timestamp(new Date().getTime()));
             ModelMapper mapper = new ModelMapper();
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
             }.getType();
@@ -258,10 +273,10 @@ public class JobServiceImpl implements JobService {
             e.printStackTrace();
         }
         LOGGER.info("End getTop8 in Job Service");
-        if(listofDTO.size() < 8){
+        if (listofDTO.size() < 8) {
             return listofDTO;
         }
-        return listofDTO.subList(0,8);
+        return listofDTO.subList(0, 8);
     }
 
     @Override
@@ -354,7 +369,7 @@ public class JobServiceImpl implements JobService {
             LOGGER.info("Begin getJobDetail in Job Repository with id : " + id);
             job = jobRepository.findOne(id);
             LOGGER.info("End getJobDetail in Job Repository with id : " + id);
-            List<Job> listJobOfCompany = jobRepository.getJobByCompanyID(job.getCompanyId(), job.getId(),"approved");
+            List<Job> listJobOfCompany = jobRepository.getJobByCompanyID(job.getCompanyId(), job.getId(), "approved");
             List<String> listSkillName = skillService.getSkillName(job.getSkillneedforjobsById());
             String jobLevelName = joblevelService.getJobLevelNameById(job.getJobLevelId());
             ModelMapper mapper = new ModelMapper();
@@ -401,7 +416,7 @@ public class JobServiceImpl implements JobService {
             }
 
             LOGGER.info("End getJobDetail in Job Repository with id : " + id);
-            List<Job> listJobOfCompany = jobRepository.getJobByCompanyID(job.getCompanyId(), job.getId(),"approved");
+            List<Job> listJobOfCompany = jobRepository.getJobByCompanyID(job.getCompanyId(), job.getId(), "approved");
             List<String> listSkillName = skillService.getSkillName(job.getSkillneedforjobsById());
             String jobLevelName = joblevelService.getJobLevelNameById(job.getJobLevelId());
             ModelMapper mapper = new ModelMapper();
@@ -606,7 +621,7 @@ public class JobServiceImpl implements JobService {
 
             List<Job> jobList1 = new ArrayList<>();
             for (int i = 0; i < jobList.size(); i++) {
-                if(jobList.get(i).getId() != job.getId()){
+                if (jobList.get(i).getId() != job.getId()) {
                     jobList1.add(jobList.get(i));
                 }
             }
@@ -838,13 +853,15 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public RestResponse listJobsByEmployerId(int EmployerId) {
-        List<Job> listJob = jobRepository.getJobInValid(EmployerId, new Timestamp(new Date().getTime()));
+        List<Job> listJob = jobRepository.getJobValid(EmployerId, new Timestamp(new Date().getTime()), "approved");
         Page<Job> jobPage;
         List<MainEmpJobDTO> mainEmpJobDTOS = new ArrayList<>();
         Users users = usersRepository.findOne(EmployerId);
-        if (users.getRoleId() == 2) {
+        System.out.println("HERE : " + listJob.size());
+        if (users.getRoleId() == 2 && listJob.size() != 0) {
             int companyId = listJob.get(0).getCompanyId();
-            jobPage = jobRepository.getJobByCompanyId(null, companyId, "approved");
+            jobPage = jobRepository.getJobByCompanyId(null, companyId, "approved",
+                    new Timestamp(new Date().getTime()));
             listJob = jobPage.getContent();
             for (int i = 0; i < listJob.size(); i++) {
                 MainEmpJobDTO dto = new MainEmpJobDTO();
@@ -886,10 +903,10 @@ public class JobServiceImpl implements JobService {
             List<Skillneedforjob> skillneedforjobList = skillNeedForJobRepository.getAllByJobId(listofDTO.get(i).getId());
             List<SkillDTO2> skillDTO2s = new ArrayList<>();
             for (int j = 0; j < skillneedforjobList.size(); j++) {
-                    SkillDTO2 dto2 = new SkillDTO2();
-                    dto2.setSkillName(skillneedforjobList.get(j).getSkillBySkillId().getSkillmasterBySkillMasterId().getSkillName());
-                    dto2.setLevel(skillneedforjobList.get(j).getSkillBySkillId().getSkillLevel());
-                    skillDTO2s.add(dto2);
+                SkillDTO2 dto2 = new SkillDTO2();
+                dto2.setSkillName(skillneedforjobList.get(j).getSkillBySkillId().getSkillmasterBySkillMasterId().getSkillName());
+                dto2.setLevel(skillneedforjobList.get(j).getSkillBySkillId().getSkillLevel());
+                skillDTO2s.add(dto2);
             }
             listofDTO.get(i).setListSkill(skillDTO2s);
         }

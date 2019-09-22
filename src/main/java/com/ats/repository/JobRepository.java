@@ -32,7 +32,7 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
             "(j.title LIKE CONCAT('%',LOWER(:search),'%')" +
             "OR m.skillName LIKE CONCAT('%',LOWER(:search),'%')" +
             "OR j.companyByCompanyId.nameCompany LIKE CONCAT('%',LOWER(:search),'%'))")
-    Page<Job> searchJob(@Param("search") String search, Pageable pageable,
+    List<Job> searchJob(@Param("search") String search, Pageable pageable,
                         @Param("status") String status, @Param("now") Date endDateForApply,
                         @Param("city") String city, @Param("industry") String industry);
 
@@ -60,10 +60,11 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
     List<Job> getJobByCompanyID(@Param("companyId") int companyId, @Param("jobId") int jobId,
                                 @Param("status") String status);
 
-    @Query("Select b from Job b where b.companyId = :companyId and b.status = :status")
+    @Query("Select b from Job b where b.companyId = :companyId and b.status = :status and b.endDateForApply > :now")
     Page<Job> getJobByCompanyId(Pageable pageable,
                                 @Param("companyId") int companyId,
-                                @Param("status") String status);
+                                @Param("status") String status,
+                                @Param("now") Timestamp now );
 
     @Query("Select b from Job b where b.companyId = :companyId " +
             "and b.status = :status " +
