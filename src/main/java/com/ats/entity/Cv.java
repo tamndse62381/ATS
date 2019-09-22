@@ -421,6 +421,7 @@ public class Cv {
     }
 
     @OneToMany(mappedBy = "cvByCvid")
+    @JsonBackReference
     public List<Suggest> getSuggestsById() {
         return suggestsById;
     }

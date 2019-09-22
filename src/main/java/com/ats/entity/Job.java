@@ -384,6 +384,7 @@ public class Job {
     }
 
     @OneToMany(mappedBy = "jobByJobid")
+    @JsonBackReference
     public List<Suggest> getSuggestsById() {
         return suggestsById;
     }
