@@ -16,6 +16,9 @@ public interface SkillmasterRepository extends JpaRepository<Skillmaster, Intege
     @Query("Select s from Skillmaster s where s.skillTypeId = :id")
     public List<Skillmaster> findAllLanguageSkill (@Param("id") int id);
 
+    @Query("Select s.skillName from Skillmaster s where s.id = :id")
+    public String findSkillNameById (@Param("id") int id);
+
     @Query("Select s from Skillmaster s " +
             "where s.skilltypeBySkillTypeId.typeName LIKE CONCAT('%',LOWER(:type),'%') and " +
             "s.skillName LIKE CONCAT('%',LOWER(:search),'%')")

@@ -29,6 +29,6 @@ public class JobDTO2 {
     private String additionalRequest;
     private String candidateBenefits;
     private String status;
-    private List<SkillDTO> listSkill;
+    private List<SkillHasRequireDTO> listSkill;
 
 }

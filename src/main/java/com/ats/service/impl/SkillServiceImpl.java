@@ -1,6 +1,7 @@
 package com.ats.service.impl;
 
 import com.ats.dto.SkillDTO;
+import com.ats.dto.SkillHasRequireDTO;
 import com.ats.entity.Skill;
 import com.ats.entity.Skillmaster;
 import com.ats.entity.Skillneedforjob;
@@ -51,6 +52,7 @@ public class SkillServiceImpl implements SkillService {
         LOGGER.info("End addNewSkill in Skill Service with skillmaster id {}", skill.getSkillMasterId());
         return skillResult;
     }
+
 
     @Override
     public int checkSkillBySkillLevel(SkillDTO skill) {
