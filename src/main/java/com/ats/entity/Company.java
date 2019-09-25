@@ -22,6 +22,7 @@ public class Company {
     private Timestamp createdDate;
     private Timestamp lastModify;
     private String status;
+    private Integer taxNumber;
     private City cityByCityId;
     private List<Companyindustry> companyindustriesById;
     private List<Employercompany> employercompaniesById;
@@ -66,6 +67,16 @@ public class Company {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Basic
+    @Column(name = "TaxNumber", nullable = true, length = 50)
+    public Integer getTaxNumber() {
+        return taxNumber;
+    }
+
+    public void setTaxNumber(Integer taxNumber) {
+        this.taxNumber = taxNumber;
     }
 
     @Basic

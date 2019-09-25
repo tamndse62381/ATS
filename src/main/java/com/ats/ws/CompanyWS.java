@@ -48,7 +48,7 @@ public class CompanyWS {
 
     // edit info's company
     @PutMapping("")
-    @CrossOrigin("")
+    @CrossOrigin("*")
     public ResponseEntity<Company> edit(@RequestBody Company editedCompany) {
         try {
 
@@ -62,13 +62,13 @@ public class CompanyWS {
 
     // Paging
     @RequestMapping("/pagingAll")
-    @CrossOrigin("")
+    @CrossOrigin("*")
     public ResponseEntity<Page<Company>> test(@PageableDefault Pageable pageable) {
         return ResponseEntity.ok().body(companyRepository.findAllPaging(pageable));
     }
 
     @GetMapping("/listCompany")
-    @CrossOrigin("")
+    @CrossOrigin("*")
     public ResponseEntity<List<CompanyDTO2>> getCompanyById() {
         List<CompanyDTO2> company = companyService.listAll();
         return new ResponseEntity<List<CompanyDTO2>>(company, HttpStatus.OK);

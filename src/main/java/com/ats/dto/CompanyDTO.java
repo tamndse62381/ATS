@@ -18,6 +18,7 @@ public class CompanyDTO {
     private String telephoneNumber;
     @NotNull
     private String email;
+    private Integer taxNumber;
     private String logoImg;
     private String description;
     private Timestamp createdDate;
