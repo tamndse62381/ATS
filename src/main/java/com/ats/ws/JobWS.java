@@ -1,10 +1,9 @@
 package com.ats.ws;
 
 import com.ats.dto.*;
-import com.ats.entity.City;
-import com.ats.entity.Industry;
-import com.ats.entity.Job;
-import com.ats.entity.Joblevel;
+import com.ats.entity.*;
+import com.ats.repository.SkillRepository;
+import com.ats.repository.SkillmasterRepository;
 import com.ats.service.*;
 import com.ats.util.RestResponse;
 import org.apache.logging.log4j.LogManager;
@@ -27,6 +26,8 @@ public class JobWS {
     JobService jobService;
     @Autowired
     SkillService skillService;
+    @Autowired
+    SkillmasterRepository skillRepository;
     @Autowired
     SkillNeedForJobService skillNeedForJobService;
     @Autowired
@@ -64,11 +65,27 @@ public class JobWS {
                 job.setStatus("new");
                 result = jobService.createJob(job);
                 List<Integer> listSkillId = new ArrayList<>();
+                Map<Integer, Boolean> skillNeedForJob = new HashMap<>();
                 for (int i = 0; i < job.getListSkill().size(); i++) {
-                    listSkillId.add(skillService.addNewSkill(job.getListSkill().get(i)));
+                    SkillDTO tmp = new SkillDTO();
+                    tmp.setId(job.getListSkill().get(i).getId());
+                    tmp.setSkillMasterId(job.getListSkill().get(i).getSkillMasterId());
+                    tmp.setSkillLevel(job.getListSkill().get(i).getSkillLevel());
+                   // listSkillId.add(skillService.addNewSkill(tmp));
+                    skillNeedForJob.put(skillService.addNewSkill(tmp),job.getListSkill().get(i).isRequire());
                 }
-                boolean finish = skillNeedForJobService.addSkillForJob(listSkillId, result);
+                boolean finish = skillNeedForJobService.addSkillForJob(skillNeedForJob, result);
                 if (finish) {
+                    Thread thread = new Thread(){
+                        @Override
+                        public void run() {
+                            suggestService.suggestCVToOneJob();
+                        }
+                    };
+                    thread.start();
+
+
+
                     return new RestResponse(true, "Create New Job Successfull", result);
                 }
             }
@@ -91,7 +108,11 @@ public class JobWS {
             result = jobService.updateJob(job);
             List<Integer> listSkillId = new ArrayList<>();
             for (int i = 0; i < job.getListSkill().size(); i++) {
-                listSkillId.add(skillService.addNewSkill(job.getListSkill().get(i)));
+                SkillDTO tmp = new SkillDTO();
+                tmp.setId(job.getListSkill().get(i).getId());
+                tmp.setSkillMasterId(job.getListSkill().get(i).getSkillMasterId());
+                tmp.setSkillLevel(job.getListSkill().get(i).getSkillLevel());
+                listSkillId.add(skillService.addNewSkill(tmp));
             }
             boolean finish = skillNeedForJobService.updateSkillForJob(listSkillId, result);
             if (finish) {
@@ -353,9 +374,9 @@ public class JobWS {
             job = jobService.getJobDetailToUpdate(id);
             ModelMapper mapper = new ModelMapper();
             JobDTO2 jobDTO2 = mapper.map(job, JobDTO2.class);
-            List<SkillDTO> skillDTOList = new ArrayList<>();
+            List<SkillHasRequireDTO> skillDTOList = new ArrayList<>();
             for (int i = 0; i < job.getSkillneedforjobsById().size(); i++) {
-                SkillDTO dto = new SkillDTO();
+                SkillHasRequireDTO dto = new SkillHasRequireDTO();
                 dto.setId(job.getSkillneedforjobsById().get(i).getSkillBySkillId().getId());
                 dto.setSkillMasterId(job.getSkillneedforjobsById().get(i).getSkillBySkillId().getSkillMasterId());
                 dto.setSkillLevel(job.getSkillneedforjobsById().get(i).getSkillBySkillId().getSkillLevel());

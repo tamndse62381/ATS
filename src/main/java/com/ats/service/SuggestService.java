@@ -21,5 +21,6 @@ public interface SuggestService {
     List<VectorDTO> calculateLenghtOfVectorJobAndListCv(JobDTO4 job, List cvList);
     List<VectorDTO> averageLenghtAndEdge(List<VectorDTO> lenght, List<VectorDTO> edge);
     void suggestCVToJob();
+    void suggestCVToOneJob();
 
 }

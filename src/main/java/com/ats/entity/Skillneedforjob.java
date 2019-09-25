@@ -11,7 +11,7 @@ public class Skillneedforjob {
     private int id;
     private int jobId;
     private int skillId;
-    private Boolean require;
+    private boolean require;
     private Job jobByJobId;
     private Skill skillBySkillId;
 
