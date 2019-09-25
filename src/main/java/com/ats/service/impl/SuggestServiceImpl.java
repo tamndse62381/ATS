@@ -106,6 +106,27 @@ public class SuggestServiceImpl implements SuggestService {
         }
 
     }
+    public void suggestCVToUpdateJob(JobDTO4 dto4){
+        List<VectorDTO> result = new ArrayList<>();
+        List listCv = cvService.getAllCV();
+        suggestRepository.deleteSuggestByJobID(dto4.getId());
+
+        List<Cv> listCVByHardCondition = getListCVByHardCondition(dto4,listCv);
+
+        List resultCalculateVectorJobAndListCV = getListCvByVector(calculateVectorJobAndListCv(dto4, listCVByHardCondition));// lay list cv
+
+        result =  averageLenghtAndEdge(calculateLenghtOfVectorJobAndListCv(dto4, resultCalculateVectorJobAndListCV), calculateVectorJobAndListCv(dto4, listCVByHardCondition));
+        for (int j = 0 ; j < result.size(); j ++){
+            Cv cv = cvRepository.findOne(result.get(j).getCvId());
+            Job job = jobRepository.findOne(result.get(j).getJob().getId());
+            Suggest suggest = new Suggest();
+            suggest.setCvid(result.get(j).getCvId());
+            suggest.setCvByCvid(cv);
+            suggest.setJobid(result.get(j).getJob().getId());
+            suggest.setJobByJobid(job);
+            suggestRepository.save(suggest);
+        }
+    }
 
     public List<Cv> getListCVByHardCondition( JobDTO4 job, List listCv  ){
         List<Cv> listCvBySalaryOfJob = new ArrayList();

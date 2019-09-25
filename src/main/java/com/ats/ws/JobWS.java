@@ -35,6 +35,9 @@ public class JobWS {
     @Autowired
     SkillmasterService skillmasterService;
     @Autowired
+    SkillmasterRepository skillmasterRepository;
+
+    @Autowired
     CityService cityService;
     @Autowired
     IndustryService industryService;
@@ -65,8 +68,11 @@ public class JobWS {
                 job.setStatus("new");
                 result = jobService.createJob(job);
                 List<Integer> listSkillId = new ArrayList<>();
+
                 Map<Integer, Boolean> skillNeedForJob = new HashMap<>();
                 for (int i = 0; i < job.getListSkill().size(); i++) {
+
+
                     SkillDTO tmp = new SkillDTO();
                     tmp.setId(job.getListSkill().get(i).getId());
                     tmp.setSkillMasterId(job.getListSkill().get(i).getSkillMasterId());
@@ -108,16 +114,34 @@ public class JobWS {
             result = jobService.updateJob(job);
            // List<Integer> listSkillId = new ArrayList<>();
             Map<Integer, Boolean> skillNeedForJob = new HashMap<>();
+            List<SkillDTO2> ls = new ArrayList<>();
             for (int i = 0; i < job.getListSkill().size(); i++) {
+                SkillDTO2 dto2 = new SkillDTO2();
                 SkillDTO tmp = new SkillDTO();
+                dto2.setLevel(job.getListSkill().get(i).getSkillLevel());
+                dto2.setSkillName(skillmasterRepository.findSkillNameById(job.getListSkill().get(i).getSkillMasterId()));
+                dto2.setRequire(job.getListSkill().get(i).isRequire());
                 tmp.setId(job.getListSkill().get(i).getId());
                 tmp.setSkillMasterId(job.getListSkill().get(i).getSkillMasterId());
                 tmp.setSkillLevel(job.getListSkill().get(i).getSkillLevel());
                 //listSkillId.add(skillService.addNewSkill(tmp));
                 skillNeedForJob.put(skillService.addNewSkill(tmp),job.getListSkill().get(i).isRequire());
             }
+
             boolean finish = skillNeedForJobService.updateSkillForJob(skillNeedForJob, result);
             if (finish) {
+
+                JobDTO4 dto4 = new JobDTO4(job.getId(), job.getCityId(), job.getSalaryFrom(), job.getSalaryTo(),
+                        ls);
+                Thread thread = new Thread(){
+                    @Override
+                    public void run() {
+                        suggestService.suggestCVToUpdateJob(dto4);
+                    }
+                };
+                thread.start();
+
+
                 return new RestResponse(true, "Update Job Successfull", result);
             }
         } catch (Exception e) {
@@ -382,6 +406,7 @@ public class JobWS {
                 dto.setId(job.getSkillneedforjobsById().get(i).getSkillBySkillId().getId());
                 dto.setSkillMasterId(job.getSkillneedforjobsById().get(i).getSkillBySkillId().getSkillMasterId());
                 dto.setSkillLevel(job.getSkillneedforjobsById().get(i).getSkillBySkillId().getSkillLevel());
+                dto.setRequire(job.getSkillneedforjobsById().get(i).getRequire());
                 skillDTOList.add(dto);
             }
             jobDTO2.setListSkill(skillDTOList);
