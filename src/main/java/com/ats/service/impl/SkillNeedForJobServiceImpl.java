@@ -76,23 +76,24 @@ public class SkillNeedForJobServiceImpl implements SkillNeedForJobService {
     }
 
     @Override
-    public boolean updateSkillForJob(List<Integer> listSkillId, int jobId) {
+    public boolean updateSkillForJob(Map<Integer, Boolean> skillNeedForJob, int jobId) {
         boolean result = false;
         int skillResult = -1;
-        LOGGER.info("Begin addSkillForJob in SkillNeedForJob Service with JobID {}", listSkillId.size());
+        LOGGER.info("Begin addSkillForJob in SkillNeedForJob Service with JobID {}", skillNeedForJob.size());
         try {
             List<Skillneedforjob> skillneedforjobList = skillNeedForJobRepository.getAllByJobId(jobId);
             for (int i = 0; i < skillneedforjobList.size(); i++) {
                 skillNeedForJobRepository.delete(skillneedforjobList.get(i).getId());
             }
-            for (int i = 0; i < listSkillId.size(); i++) {
+            for (Map.Entry<Integer, Boolean> maps : skillNeedForJob.entrySet()) {
                 Skillneedforjob skillneedforjob = new Skillneedforjob();
                 skillneedforjob.setJobId(jobId);
-                skillneedforjob.setSkillId(listSkillId.get(i));
+                skillneedforjob.setSkillId(maps.getKey());
+                skillneedforjob.setRequire(maps.getValue());
                 skillResult = checkSkillNeedForJob(skillneedforjob);
                 if (skillResult == -1) {
                     Skill skill = new Skill();
-                    skill.setId(listSkillId.get(i));
+                    skill.setId(maps.getKey());
 
                     Job job = new Job();
                     job.setId(jobId);
@@ -100,7 +101,7 @@ public class SkillNeedForJobServiceImpl implements SkillNeedForJobService {
                     skillneedforjob.setSkillBySkillId(skill);
                     skillneedforjob.setJobByJobId(job);
 
-                    skillNeedForJobRepository.save(skillneedforjob);
+                    skillNeedForJobRepository.insertSkillNeedForJob(skillneedforjob.getJobId(),skillneedforjob.getSkillId(),skillneedforjob.getRequire());
 
                 }
                 result = true;

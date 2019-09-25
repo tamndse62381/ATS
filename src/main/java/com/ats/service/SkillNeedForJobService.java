@@ -12,5 +12,5 @@ public interface SkillNeedForJobService {
 
     int checkSkillNeedForJob(Skillneedforjob entity);
 
-    boolean updateSkillForJob(List<Integer> listSkillId , int jobId);
+    boolean updateSkillForJob(Map<Integer, Boolean> skillNeedForJob , int jobId);
 }

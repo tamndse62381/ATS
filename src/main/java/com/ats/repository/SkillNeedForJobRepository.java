@@ -25,5 +25,7 @@ public interface SkillNeedForJobRepository extends JpaRepository<Skillneedforjob
     void insertSkillNeedForJob(@Param("jobid") int jobid,@Param("skillid") int skillid,@Param("require") boolean require );
 
 
+
+
 }
 

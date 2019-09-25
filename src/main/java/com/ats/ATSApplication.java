@@ -37,7 +37,7 @@ public class ATSApplication {
         System.out.println("The suggest executed at " + new Date());
         try {
 			suggestService.suggestCVToJob();
-            Thread.sleep(600000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

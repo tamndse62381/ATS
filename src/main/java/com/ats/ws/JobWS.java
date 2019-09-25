@@ -106,15 +106,17 @@ public class JobWS {
         try {
             job.setLastmodifyDate(new Date());
             result = jobService.updateJob(job);
-            List<Integer> listSkillId = new ArrayList<>();
+           // List<Integer> listSkillId = new ArrayList<>();
+            Map<Integer, Boolean> skillNeedForJob = new HashMap<>();
             for (int i = 0; i < job.getListSkill().size(); i++) {
                 SkillDTO tmp = new SkillDTO();
                 tmp.setId(job.getListSkill().get(i).getId());
                 tmp.setSkillMasterId(job.getListSkill().get(i).getSkillMasterId());
                 tmp.setSkillLevel(job.getListSkill().get(i).getSkillLevel());
-                listSkillId.add(skillService.addNewSkill(tmp));
+                //listSkillId.add(skillService.addNewSkill(tmp));
+                skillNeedForJob.put(skillService.addNewSkill(tmp),job.getListSkill().get(i).isRequire());
             }
-            boolean finish = skillNeedForJobService.updateSkillForJob(listSkillId, result);
+            boolean finish = skillNeedForJobService.updateSkillForJob(skillNeedForJob, result);
             if (finish) {
                 return new RestResponse(true, "Update Job Successfull", result);
             }
