@@ -357,22 +357,25 @@ public class CVServiceImpl implements CVService {
                 while (matcher.find()) {
                     list.add(Integer.parseInt(matcher.group()));
                 }
-                String skillName = "";
+                List<String> skillName = new ArrayList<>();
                 int i = 0;
                 for (Integer integer : list) {
                     Skillmaster skillmaster = skillmasterRepository.findOne(integer);
                     if (i < list.size() - 1) {
-                        skillName = skillName + skillmaster.getSkillName() + ",";
+                        skillName.add(skillmaster.getSkillName());
                         i++;
                     } else {
-                        skillName = skillName + skillmaster.getSkillName();
+                        skillName.add(skillmaster.getSkillName());
                     }
                 }
                 if (skillName.isEmpty()) {
                     listCv = cvRepository.searchWithoutSkill(pageable, city, industry);
                     return listCv;
                 } else {
-                    System.out.println(skillName);
+                    for (int j = 0; j < skillName.size(); j++) {
+                        System.out.println(skillName.get(j));
+                    }
+
                     System.out.println(city);
                     System.out.println(industry);
                     listCv = cvRepository.searchCv(skillName, pageable, city, industry);
@@ -422,8 +425,8 @@ public class CVServiceImpl implements CVService {
 //            }
             List<Suggest> suggestList = suggestRepository.getListCVByJobid(JobId);
             List<Cv> listCv = new ArrayList<>();
-            for (int i = 0 ; i < suggestList.size(); i++){
-              listCv.add(suggestList.get(i).getCvByCvid());
+            for (int i = 0; i < suggestList.size(); i++) {
+                listCv.add(suggestList.get(i).getCvByCvid());
 
             }
 
