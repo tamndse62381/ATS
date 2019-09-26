@@ -228,7 +228,7 @@ public class JobServiceImpl implements JobService {
         Page<JobDTO> pageDTO = null;
         try {
             LOGGER.info("Begin getJobByCompanyId in Job Repository ");
-            listofJob = jobRepository.getJobByCompanyId(pageable, companyId, "approved", new Date());
+            listofJob = jobRepository.getJobByCompanyId(pageable, companyId, "approved");
             ModelMapper mapper = new ModelMapper();
             java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
             }.getType();
@@ -844,7 +844,7 @@ public class JobServiceImpl implements JobService {
         Users users = usersRepository.findOne(EmployerId);
         if (users.getRoleId() == 2) {
             int companyId = listJob.get(0).getCompanyId();
-            jobPage = jobRepository.getJobByCompanyId(null, companyId, "approved",new Date());
+            jobPage = jobRepository.getJobByCompanyId(null, companyId, "approved");
             listJob = jobPage.getContent();
             for (int i = 0; i < listJob.size(); i++) {
                 MainEmpJobDTO dto = new MainEmpJobDTO();

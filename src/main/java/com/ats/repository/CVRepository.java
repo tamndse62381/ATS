@@ -39,8 +39,8 @@ public interface CVRepository extends JpaRepository<Cv, Integer> {
             "inner join c.industryByIndustryId i where c.status = 1 " +
             "and (ci.fullName LIKE CONCAT('%',LOWER(:city),'%')" +
             "and i.name LIKE CONCAT('%',LOWER(:industry),'%')) " +
-            "and m.skillName in (:skillstring) order by c.lastModify desc")
-    Page<Cv> searchCv(@Param("skillstring") List<String> skillstring, Pageable pageable,
+            "or m.skillName in (:skillstring) order by c.lastModify desc")
+    Page<Cv> searchCv(@Param("skillstring") String skillstring, Pageable pageable,
                       @Param("city") String city, @Param("industry") String industry);
 
     // test
