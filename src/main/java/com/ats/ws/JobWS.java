@@ -77,19 +77,18 @@ public class JobWS {
                     tmp.setId(job.getListSkill().get(i).getId());
                     tmp.setSkillMasterId(job.getListSkill().get(i).getSkillMasterId());
                     tmp.setSkillLevel(job.getListSkill().get(i).getSkillLevel());
-                   // listSkillId.add(skillService.addNewSkill(tmp));
-                    skillNeedForJob.put(skillService.addNewSkill(tmp),job.getListSkill().get(i).isRequire());
+                    // listSkillId.add(skillService.addNewSkill(tmp));
+                    skillNeedForJob.put(skillService.addNewSkill(tmp), job.getListSkill().get(i).isRequire());
                 }
                 boolean finish = skillNeedForJobService.addSkillForJob(skillNeedForJob, result);
                 if (finish) {
-                    Thread thread = new Thread(){
+                    Thread thread = new Thread() {
                         @Override
                         public void run() {
                             suggestService.suggestCVToOneJob();
                         }
                     };
                     thread.start();
-
 
 
                     return new RestResponse(true, "Create New Job Successfull", result);
@@ -112,7 +111,7 @@ public class JobWS {
         try {
             job.setLastmodifyDate(new Date());
             result = jobService.updateJob(job);
-           // List<Integer> listSkillId = new ArrayList<>();
+            // List<Integer> listSkillId = new ArrayList<>();
             Map<Integer, Boolean> skillNeedForJob = new HashMap<>();
             List<SkillDTO2> ls = new ArrayList<>();
             for (int i = 0; i < job.getListSkill().size(); i++) {
@@ -125,7 +124,7 @@ public class JobWS {
                 tmp.setSkillMasterId(job.getListSkill().get(i).getSkillMasterId());
                 tmp.setSkillLevel(job.getListSkill().get(i).getSkillLevel());
                 //listSkillId.add(skillService.addNewSkill(tmp));
-                skillNeedForJob.put(skillService.addNewSkill(tmp),job.getListSkill().get(i).isRequire());
+                skillNeedForJob.put(skillService.addNewSkill(tmp), job.getListSkill().get(i).isRequire());
             }
 
             boolean finish = skillNeedForJobService.updateSkillForJob(skillNeedForJob, result);
@@ -133,7 +132,7 @@ public class JobWS {
 
                 JobDTO4 dto4 = new JobDTO4(job.getId(), job.getCityId(), job.getSalaryFrom(), job.getSalaryTo(),
                         ls);
-                Thread thread = new Thread(){
+                Thread thread = new Thread() {
                     @Override
                     public void run() {
                         suggestService.suggestCVToUpdateJob(dto4);
@@ -220,6 +219,24 @@ public class JobWS {
             e.printStackTrace();
         }
         LOGGER.info("End suggestJob in JobWS  with cvId : " + jobId);
+        return listJob.getContent();
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping(value = "/suggestJobByCvIdMobile")
+    @ResponseBody
+    public List<JobDTO> suggestJobByCvIdMobile(@RequestParam(value = "cvId") int cvId, @PageableDefault Pageable pageable) {
+        LOGGER.info("Begin suggestJob in JobWS  with cvId : " + cvId);
+        Page<JobDTO> listJob = null;
+        try {
+            listJob = jobService.suggestJob(cvId, pageable);
+            if (listJob.getContent().size() > 8) {
+                return listJob.getContent().subList(0, 8);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("End suggestJob in JobWS  with cvId : " + cvId);
         return listJob.getContent();
     }
 
@@ -578,7 +595,7 @@ public class JobWS {
     public RestResponse getAllCvAndJob() {
         LOGGER.info("Begin getAllCvAndJob in JobWS");
         //Map<String,List> mapListJobAndListCv=suggestService.getListCvAndJob();
-        List<VectorDTO> test=suggestService.test();
+        List<VectorDTO> test = suggestService.test();
 
         try {
             return new RestResponse(true, "Get All Cv and Job Successful", test);
