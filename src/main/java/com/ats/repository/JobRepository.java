@@ -83,11 +83,11 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
             "INNER JOIN j.cityByCityId c " +
             "INNER JOIN j.industryByIndustryId d " +
             "WHERE j.status = :status and " +
-            "j.yearExperience <= :yE and " +
+
             "j.endDateForApply > :now and " +
             "c.fullName LIKE CONCAT('%',LOWER(:cityId),'%') and " +
             "d.name LIKE CONCAT('%',LOWER(:industryId),'%')")
-    Page<Job> suggestJob(@Param("yE") int yearExperience,
+    Page<Job> suggestJob(
                          @Param("industryId") String industryId,
                          @Param("cityId") String city,
                          @Param("status") String status,

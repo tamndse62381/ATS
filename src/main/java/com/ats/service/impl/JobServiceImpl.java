@@ -717,21 +717,21 @@ public class JobServiceImpl implements JobService {
                 String cityName = cv.getCityByCityId().getFullName();
                 String industryName = cv.getIndustryByIndustryId().getName();
 
-                jobPage = jobRepository.suggestJob(cv.getYearExperience(), industryName,
+                jobPage = jobRepository.suggestJob( industryName,
                         cityName, "approved", date, pageable);
                 System.out.println("Lần 1 : " + jobPage.getContent().size());
                 if (jobPage.getContent().size() < 4) {
-                    jobPage = jobRepository.suggestJob(100, industryName,
+                    jobPage = jobRepository.suggestJob( industryName,
                             cityName, "approved", date, pageable);
                     System.out.println("Lần 2 : " + jobPage.getContent().size());
                 }
                 if (jobPage.getContent().size() < 4) {
-                    jobPage = jobRepository.suggestJob(100, industryName,
+                    jobPage = jobRepository.suggestJob( industryName,
                             "", "approved", date, pageable);
                     System.out.println("Lần 3 : " + jobPage.getContent().size());
                 }
                 if (jobPage.getContent().size() < 4) {
-                    jobPage = jobRepository.suggestJob(100, "",
+                    jobPage = jobRepository.suggestJob( "",
                             "", "approved", date, pageable);
                     System.out.println("Lần 4 : " + jobPage.getContent().size());
                 }
