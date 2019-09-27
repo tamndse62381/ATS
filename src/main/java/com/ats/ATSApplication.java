@@ -32,7 +32,7 @@ public class ATSApplication {
         SpringApplication.run(ATSApplication.class, args);
     }
 
-    @Scheduled(fixedRate = 1800000)
+    @Scheduled(fixedRate = 7200000)
     public  void excuteSuggestCvForJob() {
         System.out.println("The suggest executed at " + new Date());
         try {
