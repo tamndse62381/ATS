@@ -223,21 +223,26 @@ public class JobWS {
     }
 
     @CrossOrigin(origins = "*")
-    @GetMapping(value = "/suggestJobByCvIdMobile")
+    @GetMapping(value = "/suggestJobByUserIdMobile")
     @ResponseBody
-    public List<JobDTO> suggestJobByCvIdMobile(@RequestParam(value = "cvId") int cvId, @PageableDefault Pageable pageable) {
-        LOGGER.info("Begin suggestJob in JobWS  with cvId : " + cvId);
+    public List<JobDTO> suggestJobByUserIdMobile(@RequestParam(value = "userId") int userId, @PageableDefault Pageable pageable) {
+        LOGGER.info("Begin suggestJob in JobWS  with userId : " + userId);
         Page<JobDTO> listJob = null;
         try {
-            listJob = jobService.suggestJob(cvId, pageable);
-            if (listJob.getContent().size() > 8) {
-                return listJob.getContent().subList(0, 8);
+            listJob = jobService.suggestJobByUserId(userId, pageable);
+            if (listJob != null) {
+                if (listJob.getContent().size() > 8) {
+                    return listJob.getContent().subList(0, 8);
+                }
+                if (listJob.getContent().size() < 8) {
+                    return listJob.getContent();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOGGER.info("End suggestJob in JobWS  with cvId : " + cvId);
-        return listJob.getContent();
+        LOGGER.info("End suggestJob in JobWS  with userId : " + userId);
+        return null;
     }
 
     @CrossOrigin(origins = "*")

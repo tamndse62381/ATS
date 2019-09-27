@@ -706,106 +706,110 @@ public class JobServiceImpl implements JobService {
                     jobs.add(applies.get(i).getJobByJobId());
                 }
             }
-            for (int i = 0; i < cv.getSkillincvsById().size(); i++) {
-                skillObjinCv.add(cv.getSkillincvsById().get(i).getSkillBySkillId());
-            }
-            Date date = new Date();
+            if (cv != null) {
 
-            String cityName = cv.getCityByCityId().getFullName();
-            String industryName = cv.getIndustryByIndustryId().getName();
 
-            jobPage = jobRepository.suggestJob(cv.getYearExperience(), industryName,
-                    cityName, "approved", date, pageable);
-            System.out.println("Lần 1 : " + jobPage.getContent().size());
-            if (jobPage.getContent().size() < 4) {
-                jobPage = jobRepository.suggestJob(100, industryName,
+                for (int i = 0; i < cv.getSkillincvsById().size(); i++) {
+                    skillObjinCv.add(cv.getSkillincvsById().get(i).getSkillBySkillId());
+                }
+                Date date = new Date();
+
+                String cityName = cv.getCityByCityId().getFullName();
+                String industryName = cv.getIndustryByIndustryId().getName();
+
+                jobPage = jobRepository.suggestJob(cv.getYearExperience(), industryName,
                         cityName, "approved", date, pageable);
-                System.out.println("Lần 2 : " + jobPage.getContent().size());
-            }
-            if (jobPage.getContent().size() < 4) {
-                jobPage = jobRepository.suggestJob(100, industryName,
-                        "", "approved", date, pageable);
-                System.out.println("Lần 3 : " + jobPage.getContent().size());
-            }
-            if (jobPage.getContent().size() < 4) {
-                jobPage = jobRepository.suggestJob(100, "",
-                        "", "approved", date, pageable);
-                System.out.println("Lần 4 : " + jobPage.getContent().size());
-            }
+                System.out.println("Lần 1 : " + jobPage.getContent().size());
+                if (jobPage.getContent().size() < 4) {
+                    jobPage = jobRepository.suggestJob(100, industryName,
+                            cityName, "approved", date, pageable);
+                    System.out.println("Lần 2 : " + jobPage.getContent().size());
+                }
+                if (jobPage.getContent().size() < 4) {
+                    jobPage = jobRepository.suggestJob(100, industryName,
+                            "", "approved", date, pageable);
+                    System.out.println("Lần 3 : " + jobPage.getContent().size());
+                }
+                if (jobPage.getContent().size() < 4) {
+                    jobPage = jobRepository.suggestJob(100, "",
+                            "", "approved", date, pageable);
+                    System.out.println("Lần 4 : " + jobPage.getContent().size());
+                }
 
-            jobList = jobPage.getContent();
-            System.out.println("Size sau Hard Condition : " + jobList.size());
-            for (int i = 0; i < jobList.size(); i++) {
-                int check = 0;
-                for (int j = 0; j < skillObjinCv.size(); j++) {
-                    for (int k = 0; k < jobList.get(i).getSkillneedforjobsById().size(); k++) {
-                        if (skillObjinCv.get(j).getSkillMasterId() ==
-                                jobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillMasterId()) {
-                            if (skillObjinCv.get(j).getSkillLevel() >=
-                                    jobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillLevel()) {
-                                check++;
+                jobList = jobPage.getContent();
+                System.out.println("Size sau Hard Condition : " + jobList.size());
+                for (int i = 0; i < jobList.size(); i++) {
+                    int check = 0;
+                    for (int j = 0; j < skillObjinCv.size(); j++) {
+                        for (int k = 0; k < jobList.get(i).getSkillneedforjobsById().size(); k++) {
+                            if (skillObjinCv.get(j).getSkillMasterId() ==
+                                    jobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillMasterId()) {
+                                if (skillObjinCv.get(j).getSkillLevel() >=
+                                        jobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillLevel()) {
+                                    check++;
+                                }
                             }
                         }
                     }
-                }
-                if (check == jobList.get(i).getSkillneedforjobsById().size()) {
-                    suggestJobList.add(jobList.get(i));
-                }
-            }
-            System.out.println("Size sau Soft Condition Phase 1 : " + suggestJobList.size());
-            System.out.println("đã apply : " + jobs.size());
-            if (jobs.size() > 0) {
-                for (int i = 0; i < jobs.size(); i++) {
-                    if (suggestJobList.contains(jobs.get(i))) {
-                        suggestJobList.remove(jobs.get(i));
-                    }
-                }
-            }
-            for (int i = 0; i < suggestJobList.size(); i++) {
-                int sum = 0;
-
-                for (int j = 0; j < skillObjinCv.size(); j++) {
-                    boolean flag = true;
-                    for (int k = 0; k < suggestJobList.get(i).getSkillneedforjobsById().size(); k++) {
-                        if (skillObjinCv.get(j).getSkillMasterId() ==
-                                suggestJobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillMasterId()) {
-                            sum += skillObjinCv.get(j).getSkillLevel() -
-                                    suggestJobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillLevel();
-                            flag = false;
-                        }
-                    }
-                    if (flag) {
-                        sum += skillObjinCv.get(j).getSkillLevel();
-                    }
-                }
-                SuggestDTO dto = new SuggestDTO();
-                dto.setSum(sum);
-                dto.setJob(suggestJobList.get(i));
-                suggestDTOS.add(dto);
-            }
-            Collections.sort(suggestDTOS);
-            suggestJobList.clear();
-            for (int i = 0; i < suggestDTOS.size(); i++) {
-                System.out.println(i + "-" + suggestDTOS.get(i).getSum());
-                System.out.println(i + "-" + suggestDTOS.get(i).getJob().getTitle());
-                suggestJobList.add(suggestDTOS.get(i).getJob());
-            }
-            System.out.println("Size sau Soft Condition Phase 2 : " + suggestJobList.size());
-            if (suggestJobList.size() < 10) {
-                for (int i = 0; i < jobList.size(); i++) {
-                    if (!suggestJobList.contains(jobList.get(i)) && !jobs.contains(jobList.get(i))) {
+                    if (check == jobList.get(i).getSkillneedforjobsById().size()) {
                         suggestJobList.add(jobList.get(i));
                     }
                 }
+                System.out.println("Size sau Soft Condition Phase 1 : " + suggestJobList.size());
+                System.out.println("đã apply : " + jobs.size());
+                if (jobs.size() > 0) {
+                    for (int i = 0; i < jobs.size(); i++) {
+                        if (suggestJobList.contains(jobs.get(i))) {
+                            suggestJobList.remove(jobs.get(i));
+                        }
+                    }
+                }
+                for (int i = 0; i < suggestJobList.size(); i++) {
+                    int sum = 0;
+
+                    for (int j = 0; j < skillObjinCv.size(); j++) {
+                        boolean flag = true;
+                        for (int k = 0; k < suggestJobList.get(i).getSkillneedforjobsById().size(); k++) {
+                            if (skillObjinCv.get(j).getSkillMasterId() ==
+                                    suggestJobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillMasterId()) {
+                                sum += skillObjinCv.get(j).getSkillLevel() -
+                                        suggestJobList.get(i).getSkillneedforjobsById().get(k).getSkillBySkillId().getSkillLevel();
+                                flag = false;
+                            }
+                        }
+                        if (flag) {
+                            sum += skillObjinCv.get(j).getSkillLevel();
+                        }
+                    }
+                    SuggestDTO dto = new SuggestDTO();
+                    dto.setSum(sum);
+                    dto.setJob(suggestJobList.get(i));
+                    suggestDTOS.add(dto);
+                }
+                Collections.sort(suggestDTOS);
+                suggestJobList.clear();
+                for (int i = 0; i < suggestDTOS.size(); i++) {
+                    System.out.println(i + "-" + suggestDTOS.get(i).getSum());
+                    System.out.println(i + "-" + suggestDTOS.get(i).getJob().getTitle());
+                    suggestJobList.add(suggestDTOS.get(i).getJob());
+                }
+                System.out.println("Size sau Soft Condition Phase 2 : " + suggestJobList.size());
+                if (suggestJobList.size() < 10) {
+                    for (int i = 0; i < jobList.size(); i++) {
+                        if (!suggestJobList.contains(jobList.get(i)) && !jobs.contains(jobList.get(i))) {
+                            suggestJobList.add(jobList.get(i));
+                        }
+                    }
+                }
+                System.out.println("Size sau khi bổ sung : " + suggestJobList.size());
+
+                ModelMapper mapper = new ModelMapper();
+                java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
+                }.getType();
+                listofDTO = mapper.map(suggestJobList, targetListType);
+
+                pageDTO = new PageImpl<>(listofDTO, new PageRequest(0, 10), listofDTO.size());
             }
-            System.out.println("Size sau khi bổ sung : " + suggestJobList.size());
-
-            ModelMapper mapper = new ModelMapper();
-            java.lang.reflect.Type targetListType = new TypeToken<List<JobDTO>>() {
-            }.getType();
-            listofDTO = mapper.map(suggestJobList, targetListType);
-
-            pageDTO = new PageImpl<>(listofDTO, new PageRequest(0, 10), listofDTO.size());
         } catch (
                 Exception e) {
             e.printStackTrace();
