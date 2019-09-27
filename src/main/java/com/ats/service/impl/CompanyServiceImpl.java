@@ -180,6 +180,7 @@ public class CompanyServiceImpl implements CompanyService {
         }
         if(company.getStatus().equals("approved") && company.getEmployercompaniesById().size() == 1){
             email_main = company.getEmployercompaniesById().get(0).getUsersByUserId().getEmail();
+            name = company.getEmployercompaniesById().get(0).getUsersByUserId().getFullName();
         }
 
 

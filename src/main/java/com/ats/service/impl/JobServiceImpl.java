@@ -258,10 +258,10 @@ public class JobServiceImpl implements JobService {
             e.printStackTrace();
         }
         LOGGER.info("End getTop8 in Job Service");
-        if(listofDTO.size() < 8){
+        if (listofDTO.size() < 8) {
             return listofDTO;
         }
-        return listofDTO.subList(0,8);
+        return listofDTO.subList(0, 8);
     }
 
     @Override
@@ -354,7 +354,7 @@ public class JobServiceImpl implements JobService {
             LOGGER.info("Begin getJobDetail in Job Repository with id : " + id);
             job = jobRepository.findOne(id);
             LOGGER.info("End getJobDetail in Job Repository with id : " + id);
-            List<Job> listJobOfCompany = jobRepository.getJobByCompanyID(job.getCompanyId(), job.getId(),"approved");
+            List<Job> listJobOfCompany = jobRepository.getJobByCompanyID(job.getCompanyId(), job.getId(), "approved");
             List<String> listSkillName = skillService.getSkillName(job.getSkillneedforjobsById());
             String jobLevelName = joblevelService.getJobLevelNameById(job.getJobLevelId());
             ModelMapper mapper = new ModelMapper();
@@ -401,7 +401,7 @@ public class JobServiceImpl implements JobService {
             }
 
             LOGGER.info("End getJobDetail in Job Repository with id : " + id);
-            List<Job> listJobOfCompany = jobRepository.getJobByCompanyID(job.getCompanyId(), job.getId(),"approved");
+            List<Job> listJobOfCompany = jobRepository.getJobByCompanyID(job.getCompanyId(), job.getId(), "approved");
             List<String> listSkillName = skillService.getSkillName(job.getSkillneedforjobsById());
             String jobLevelName = joblevelService.getJobLevelNameById(job.getJobLevelId());
             ModelMapper mapper = new ModelMapper();
@@ -606,7 +606,7 @@ public class JobServiceImpl implements JobService {
 
             List<Job> jobList1 = new ArrayList<>();
             for (int i = 0; i < jobList.size(); i++) {
-                if(jobList.get(i).getId() != job.getId()){
+                if (jobList.get(i).getId() != job.getId()) {
                     jobList1.add(jobList.get(i));
                 }
             }
@@ -818,7 +818,7 @@ public class JobServiceImpl implements JobService {
         List<Job> listJob = jobRepository.getJobValid(EmployerId, new Timestamp(new Date().getTime()), "approved");
         Page<Job> jobPage;
         Users users = usersRepository.findOne(EmployerId);
-        if (users.getRoleId() == 2) {
+        if (users.getRoleId() == 2 && listJob.size() > 0) {
             int companyId = listJob.get(0).getCompanyId();
             jobPage = jobRepository.getInvalidJobByCompanyId(null, companyId, "approved", new Timestamp(new Date().getTime()));
             listJob = jobPage.getContent();
@@ -842,9 +842,9 @@ public class JobServiceImpl implements JobService {
         Page<Job> jobPage;
         List<MainEmpJobDTO> mainEmpJobDTOS = new ArrayList<>();
         Users users = usersRepository.findOne(EmployerId);
-        if (users.getRoleId() == 2) {
+        if (users.getRoleId() == 2 && listJob.size() > 0) {
             int companyId = listJob.get(0).getCompanyId();
-            jobPage = jobRepository.getJobByCompanyId(null, companyId, "approved",new Date());
+            jobPage = jobRepository.getJobByCompanyId(null, companyId, "approved", new Date());
             listJob = jobPage.getContent();
             for (int i = 0; i < listJob.size(); i++) {
                 MainEmpJobDTO dto = new MainEmpJobDTO();
@@ -886,11 +886,11 @@ public class JobServiceImpl implements JobService {
             List<Skillneedforjob> skillneedforjobList = skillNeedForJobRepository.getAllByJobId(listofDTO.get(i).getId());
             List<SkillDTO2> skillDTO2s = new ArrayList<>();
             for (int j = 0; j < skillneedforjobList.size(); j++) {
-                    SkillDTO2 dto2 = new SkillDTO2();
-                    dto2.setSkillName(skillneedforjobList.get(j).getSkillBySkillId().getSkillmasterBySkillMasterId().getSkillName());
-                    dto2.setLevel(skillneedforjobList.get(j).getSkillBySkillId().getSkillLevel());
-                    dto2.setRequire(skillneedforjobList.get(j).getRequire());
-                    skillDTO2s.add(dto2);
+                SkillDTO2 dto2 = new SkillDTO2();
+                dto2.setSkillName(skillneedforjobList.get(j).getSkillBySkillId().getSkillmasterBySkillMasterId().getSkillName());
+                dto2.setLevel(skillneedforjobList.get(j).getSkillBySkillId().getSkillLevel());
+                dto2.setRequire(skillneedforjobList.get(j).getRequire());
+                skillDTO2s.add(dto2);
             }
             listofDTO.get(i).setListSkill(skillDTO2s);
         }
